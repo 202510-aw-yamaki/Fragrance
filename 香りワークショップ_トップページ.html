@@ -1,517 +1,229 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="ja">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>香りワークショップ | 来店前の香りづくり準備</title>
-  <meta name="description" content="あなたに合う香りを知るための来店前準備。8問・約1分・あとから調整OK。スタッフと一緒に当日仕上げます。">
+  <meta name="description" content="8問・約1分で香りづくりの準備。結果は固定されず、当日スタッフと一緒に仕上げます。">
   <style>
     :root {
-      --bg: #fbf7f2;
-      --surface: #fffdf9;
-      --surface-2: #f5efe8;
+      --bg: #fcf8f3;
       --line: #e6ddd2;
-      --text: #2f2824;
-      --muted: #6f6660;
-      --accent: #a86f4a;
-      --accent-strong: #8f5c3c;
-      --sage: #dce8de;
-      --sky: #dce7f1;
-      --rose: #efdcd8;
-      --shadow: 0 16px 36px rgba(77, 58, 44, 0.12);
-      --radius-lg: 24px;
+      --text: #2f2925;
+      --muted: #6f665f;
+      --accent: #ba8155;
+      --accent-deep: #9c6740;
+      --shadow: 0 16px 34px rgba(80, 63, 48, 0.14);
+      --radius-lg: 22px;
       --radius-md: 16px;
-      --radius-sm: 12px;
-      --container: min(1120px, calc(100% - 32px));
+      --container: min(1160px, calc(100% - 40px));
     }
-
     * { box-sizing: border-box; }
     body {
       margin: 0;
-      font-family: "Hiragino Sans", "Yu Gothic", "Noto Sans JP", system-ui, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
       color: var(--text);
-      background:
-        radial-gradient(circle at 0% 0%, rgba(239, 220, 210, 0.5), transparent 32%),
-        radial-gradient(circle at 100% 0%, rgba(220, 232, 222, 0.5), transparent 30%),
-        linear-gradient(180deg, #f8f3ed 0%, #fbf7f2 36%, #fffdf9 100%);
+      background: linear-gradient(180deg, #f9f4ed 0%, #fcf8f3 40%, #fffdf9 100%);
       line-height: 1.7;
-      letter-spacing: 0.02em;
     }
-
-    a { color: inherit; }
-    img, svg { max-width: 100%; display: block; }
-
-    .section-inner {
-      width: var(--container);
-      margin: 0 auto;
-    }
-
+    .header-inner, .section-inner { width: var(--container); margin: 0 auto; }
     .site-header {
       position: sticky;
       top: 0;
-      z-index: 80;
-      background: rgba(251, 247, 242, 0.82);
-      border-bottom: 1px solid var(--line);
+      z-index: 30;
+      background: rgba(252,248,243,.85);
+      border-bottom: 1px solid rgba(230,221,210,.9);
       backdrop-filter: blur(10px);
     }
-    .site-header .section-inner {
-      min-height: 64px;
+    .header-inner {
+      min-height: 72px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
     }
-    .brand {
-      font-weight: 700;
-      font-size: 0.95rem;
-      text-decoration: none;
-      letter-spacing: 0.04em;
-    }
-    .header-link {
-      font-size: 0.88rem;
-      color: var(--muted);
-      text-decoration: none;
-      border-bottom: 1px solid transparent;
-    }
-    .header-link:hover,
-    .header-link:focus-visible {
-      border-bottom-color: var(--muted);
-    }
-
-    .eyebrow {
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--muted);
-      margin-bottom: 8px;
-      display: block;
-    }
-
-    h1, h2, h3, p { margin: 0; }
-
+    .brand { text-decoration: none; font-weight: 700; letter-spacing: .06em; }
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       min-height: 48px;
-      padding: 0 20px;
       border-radius: 999px;
+      padding: 0 18px;
       text-decoration: none;
       font-weight: 700;
       border: 1px solid transparent;
-      transition: .18s ease;
     }
     .btn-primary {
-      background: linear-gradient(180deg, var(--accent), var(--accent-strong));
       color: #fff;
-      box-shadow: 0 12px 24px rgba(143, 92, 60, 0.25);
+      background: linear-gradient(180deg, var(--accent), var(--accent-deep));
+      box-shadow: 0 10px 24px rgba(156,103,64,.25);
     }
-    .btn-sub {
-      background: rgba(255,255,255,0.75);
-      border-color: var(--line);
+    .btn-secondary {
       color: var(--text);
+      background: rgba(255,255,255,.8);
+      border-color: var(--line);
     }
-    .btn:hover, .btn:focus-visible { transform: translateY(-1px); }
+    section { padding: 84px 0; }
 
-    section { padding: 72px 0; }
-
-    .hero { padding-top: 28px; }
+    .hero { padding-top: 40px; }
     .hero-wrap {
       display: grid;
-      grid-template-columns: 1.08fr 0.92fr;
-      gap: 20px;
+      grid-template-columns: 1fr;
+      gap: 28px;
       align-items: stretch;
     }
+    .hero-copy, .hero-visual, .card, .preview-shell, .cta-box {
+      background: rgba(255,255,255,.85);
+      border: 1px solid rgba(230,221,210,.9);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+    }
+    .hero-copy { padding: 30px; }
+    .hero-copy h1 { margin: 0 0 14px; font-size: clamp(2rem, 4.8vw, 4rem); line-height: 1.1; }
+    .hero-copy p { margin: 0 0 16px; color: var(--muted); }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 14px 0 0; }
+    .chips li { border: 1px solid var(--line); background: #fff; border-radius: 999px; padding: 8px 12px; font-size: .9rem; }
+    .hero-visual {
+      min-height: 360px;
+      background:
+        radial-gradient(circle at 30% 20%, rgba(241,223,207,.8), transparent 45%),
+        radial-gradient(circle at 80% 75%, rgba(223,233,239,.8), transparent 35%),
+        linear-gradient(140deg, #f6eee6, #efe3d6);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-note {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      font-size: .84rem;
+      color: var(--muted);
+      background: rgba(255,255,255,.78);
+      border: 1px solid rgba(230,221,210,.9);
+    }
     .hero-gallery {
-      margin-top: 16px;
+      margin-top: 14px;
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 12px;
     }
     .hero-shot {
-      min-height: 120px;
+      min-height: clamp(96px, 12vw, 140px);
       border-radius: var(--radius-md);
       border: 1px dashed #ccb9a8;
-      background:
-        linear-gradient(145deg, rgba(255,255,255,0.85), rgba(245, 239, 232, 0.7)),
-        radial-gradient(circle at 80% 20%, rgba(220,231,241,0.5), transparent 45%);
+      background: linear-gradient(145deg, rgba(255,255,255,.9), rgba(245,239,232,.75));
       padding: 12px;
       display: grid;
       align-content: space-between;
     }
-    .hero-shot strong {
-      font-size: 0.86rem;
-      line-height: 1.4;
-    }
-    .hero-shot span {
-      color: var(--muted);
-      font-size: 0.78rem;
-    }
-    .hero-copy,
-    .hero-visual,
-    .card,
-    .preview-shell,
-    .reassure-item,
-    .cta-box {
-      background: rgba(255,255,255,0.78);
-      border: 1px solid var(--line);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(8px);
-    }
-    .hero-copy {
-      padding: 30px;
-      display: grid;
-      gap: 14px;
-    }
-    .hero-copy h1 {
-      font-size: clamp(2rem, 4.8vw, 3.9rem);
-      line-height: 1.1;
-    }
-    .hero-copy p { color: var(--muted); }
-    .hero-actions {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      padding-top: 4px;
-    }
-    .chips {
-      list-style: none;
-      padding: 0;
-      margin: 4px 0 0;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-    .chips li {
-      border-radius: 999px;
-      padding: 8px 12px;
-      background: #fff;
-      border: 1px solid var(--line);
-      font-size: 0.88rem;
-      color: #5f5650;
-    }
+    .hero-shot strong { font-size: .88rem; }
+    .hero-shot span { color: var(--muted); font-size: .8rem; }
 
-    .hero-visual {
-      position: relative;
-      overflow: hidden;
-      min-height: 460px;
-      background:
-        linear-gradient(140deg, rgba(255,255,255,0.72), rgba(255,255,255,0.2)),
-        radial-gradient(circle at 30% 20%, rgba(239, 220, 210, 0.65), transparent 48%),
-        radial-gradient(circle at 80% 75%, rgba(220, 231, 241, 0.7), transparent 38%),
-        radial-gradient(circle at 70% 30%, rgba(220, 232, 222, 0.58), transparent 44%),
-        #efe5db;
-    }
-    .hero-visual::after {
-      content: "";
-      position: absolute;
-      inset: auto 8% 8% 8%;
-      height: 34%;
-      border-radius: 18px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.55), rgba(255,255,255,0.1));
-      border: 1px solid rgba(255,255,255,0.4);
-    }
-    .hero-note {
-      position: absolute;
-      left: 18px;
-      top: 18px;
-      padding: 10px 12px;
-      border-radius: 12px;
-      background: rgba(255,255,255,0.78);
-      border: 1px solid rgba(230,221,210,.9);
-      font-size: 0.84rem;
-      color: var(--muted);
-    }
+    .section-head { margin-bottom: 24px; max-width: 780px; }
+    .section-head h2 { margin: 0 0 8px; font-size: clamp(1.7rem, 3.3vw, 2.8rem); line-height: 1.2; }
+    .section-head p { margin: 0; color: var(--muted); }
 
-    .section-head {
-      max-width: 760px;
-      margin-bottom: 24px;
-    }
-    .section-head h2 {
-      font-size: clamp(1.6rem, 3.3vw, 2.7rem);
-      line-height: 1.2;
-      margin-bottom: 8px;
-    }
-    .section-head p { color: var(--muted); }
-
-    .three-grid,
-    .value-grid,
-    .reassure-grid {
+    .flow-grid, .value-grid, .reassure-grid {
       display: grid;
       gap: 16px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
-    .three-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .value-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .reassure-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .card { padding: 22px; }
 
-    .card {
-      padding: 22px;
-      border-radius: var(--radius-md);
-    }
-    .step-num {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
-      display: inline-grid;
-      place-items: center;
-      font-weight: 800;
-      background: var(--rose);
-      color: #704a36;
-      margin-bottom: 10px;
-    }
-    .card h3 {
-      font-size: 1.14rem;
-      margin-bottom: 6px;
-    }
-    .card p { color: var(--muted); font-size: 0.95rem; }
-
-    .preview-layout {
+    #question-preview .preview-layout {
       display: grid;
       gap: 16px;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      margin-top: 8px;
     }
-
-    .preview-shell {
-      padding: 16px;
-      border-radius: var(--radius-md);
-      background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(248,241,233,0.8));
-    }
+    .preview-shell { padding: 16px; }
     .shell-head {
       display: flex;
       justify-content: space-between;
-      font-size: 0.82rem;
+      gap: 10px;
       color: var(--muted);
+      font-size: .84rem;
       margin-bottom: 10px;
     }
-
-    .pc-preview {
-      display: grid;
-      grid-template-columns: 138px 1fr;
-      gap: 12px;
-    }
-    .pc-nav,
-    .pc-main,
-    .mobile-screen {
+    .pc-preview { display: grid; grid-template-columns: minmax(110px, 28%) 1fr; gap: 10px; }
+    .pc-nav, .pc-main, .mobile-screen {
       border: 1px solid var(--line);
-      background: rgba(255,255,255,0.88);
+      background: rgba(255,255,255,.9);
       border-radius: 12px;
       padding: 10px;
     }
-    .pc-nav ol {
-      margin: 0;
-      padding-left: 18px;
-      display: grid;
-      gap: 4px;
-      font-size: 0.78rem;
-      color: var(--muted);
-    }
-    .pc-main h4,
-    .mobile-screen h4 {
-      margin: 0 0 6px;
-      font-size: 0.94rem;
-      line-height: 1.4;
-    }
+    .pc-nav ol { margin: 0; padding-left: 18px; font-size: .76rem; color: var(--muted); }
     .branch-note {
-      border-radius: 10px;
-      padding: 8px;
-      background: var(--sky);
-      border: 1px solid #c9d9e8;
-      font-size: 0.76rem;
-      color: #4e5d67;
       margin: 8px 0;
-    }
-
-    .option-row,
-    .mobile-option,
-    .sim-option {
-      border: 1px solid var(--line);
+      padding: 8px;
       border-radius: 10px;
-      background: #fff;
+      background: rgba(223,233,239,.5);
+      border: 1px solid #c9d9e8;
+      font-size: .78rem;
+      color: #55646a;
     }
     .option-row {
       display: grid;
-      grid-template-columns: 60px 1fr;
+      grid-template-columns: 56px 1fr;
       gap: 8px;
+      align-items: center;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
       padding: 8px;
       margin-bottom: 6px;
-      font-size: 0.76rem;
-      align-items: center;
+      font-size: .78rem;
     }
-    .thumb {
-      height: 36px;
-      border-radius: 8px;
-      background:
-        linear-gradient(135deg, rgba(239,220,210,.9), rgba(220,231,241,.85));
-    }
-    .minor-options {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6px;
-      font-size: 0.72rem;
-    }
-    .minor-options span {
-      text-align: center;
-      padding: 6px;
-      border-radius: 8px;
-      border: 1px solid var(--line);
-      background: #fff;
-    }
-
+    .thumb { height: 34px; border-radius: 8px; background: linear-gradient(135deg, #efdbcf, #dfe9ef); }
+    .minor-options { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    .minor-options span { text-align: center; border: 1px solid var(--line); border-radius: 8px; padding: 6px; background: #fff; font-size: .74rem; }
     .mobile-frame {
-      width: min(290px, 100%);
-      margin-inline: auto;
-      border-radius: 20px;
-      border: 1px solid #cfc3b7;
-      padding: 10px;
-      background: #f2e9df;
+      width: min(290px, 92%);
+      margin: 0 auto;
+      border-radius: 18px;
+      border: 1px solid #d9cbbd;
+      background: #f5efe7;
+      padding: 8px;
     }
-    .mobile-progress {
-      font-size: 0.78rem;
-      color: var(--muted);
-      margin-bottom: 4px;
-    }
-    .mobile-bar {
-      height: 8px;
-      border-radius: 999px;
-      background: #e5d9ce;
-      margin-bottom: 8px;
-      overflow: hidden;
-    }
-    .mobile-bar span {
-      display: block;
-      height: 100%;
-      width: 37.5%;
-      background: linear-gradient(90deg, var(--accent), #d4ad92);
-    }
-    .mobile-option {
-      padding: 10px;
-      font-size: 0.82rem;
-      margin-top: 6px;
-    }
+    .mobile-progress { font-size: .78rem; color: var(--muted); margin-bottom: 4px; }
+    .mobile-bar { height: 8px; border-radius: 999px; background: #e5d9ce; overflow: hidden; margin-bottom: 8px; }
+    .mobile-bar span { display: block; height: 100%; width: 37.5%; background: linear-gradient(90deg, var(--accent), #d8b091); }
+    .mobile-option { border: 1px solid var(--line); border-radius: 10px; background: #fff; padding: 9px; margin-top: 6px; font-size: .82rem; }
 
-    .preview-cta-row {
-      margin-top: 16px;
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-    .caption {
-      color: var(--muted);
-      font-size: 0.88rem;
-    }
+    .cta-box { padding: 28px; display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: center; }
 
-    .simulator {
-      display: grid;
-      grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
-      gap: 16px;
-      align-items: start;
-    }
-    .radar-box,
-    .slider-box {
-      padding: 16px;
-      border-radius: var(--radius-md);
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,0.85);
-    }
-    .radar-caption {
-      font-size: 0.84rem;
-      color: var(--muted);
-      margin-top: 8px;
-    }
-
-    .slider-row {
-      display: grid;
-      grid-template-columns: 90px 1fr 40px;
-      gap: 10px;
-      align-items: center;
-      margin-bottom: 10px;
-      font-size: 0.88rem;
-    }
-    input[type="range"] { width: 100%; accent-color: var(--accent); }
-
-    .cta-box {
-      padding: 26px;
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 16px;
-      align-items: center;
-      background:
-        radial-gradient(circle at 88% 10%, rgba(220,232,222,.5), transparent 35%),
-        linear-gradient(180deg, rgba(255,255,255,.92), rgba(248,241,233,.85));
-    }
-    .cta-box h2 {
-      font-size: clamp(1.5rem, 3.2vw, 2.4rem);
-      line-height: 1.25;
-      margin-bottom: 6px;
-    }
-    .cta-box p { color: var(--muted); }
-
-    .mobile-fixed {
-      position: fixed;
-      left: 12px;
-      right: 12px;
-      bottom: 10px;
-      z-index: 50;
-      padding: 10px;
-      border-radius: 14px;
-      background: rgba(255,255,255,0.82);
-      border: 1px solid rgba(230,221,210,0.95);
-      box-shadow: 0 8px 22px rgba(77,58,44,0.16);
-      backdrop-filter: blur(8px);
-      display: none;
-      gap: 8px;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .mobile-fixed p {
-      margin: 0;
-      font-size: 0.78rem;
-      color: var(--muted);
-      line-height: 1.45;
-    }
-
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      border: 0;
-    }
-
-    @media (max-width: 960px) {
-      section { padding: 64px 0; }
-      .hero-wrap,
+    @media (max-width: 64em) {
       .hero-gallery,
-      .three-grid,
+      .flow-grid,
       .value-grid,
       .reassure-grid,
-      .preview-layout,
-      .simulator,
+      #question-preview .preview-layout,
       .cta-box {
         grid-template-columns: 1fr;
       }
-      .hero-visual { min-height: 280px; }
-      .hero-copy { order: -1; }
+    }
+    @media (min-width: 48em), (min-aspect-ratio: 16/9) {
+      .hero-wrap {
+        grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+      }
+    }
+    @media (max-width: 48em) {
       .pc-preview { grid-template-columns: 1fr; }
-      .cta-box .btn { width: 100%; }
-      .mobile-fixed { display: flex; }
-      body { padding-bottom: 88px; }
     }
   </style>
 </head>
 <body>
   <header class="site-header" aria-label="ページヘッダー">
-    <div class="section-inner">
+    <div class="header-inner">
       <a class="brand" href="#">FRAGRANCE WORKSHOP</a>
-      <a class="header-link" href="questionnaire.html">8問からはじめる</a>
+      <a class="btn btn-primary" href="questionnaire.html">香りづくりをはじめる</a>
     </div>
   </header>
+
   <main>
     <section class="hero" aria-labelledby="hero-title">
       <div class="section-inner">
@@ -520,109 +232,32 @@
             <div class="hero-note">日本の上質な香り工房をイメージしたプレビュー</div>
           </div>
           <div class="hero-copy">
-            <span class="eyebrow">Fragrance Workshop</span>
             <h1 id="hero-title">あなたに合う香りを知る、<br>来店前の準備をはじめる</h1>
             <p>8問・約1分で、今のあなたに合う香りバランスのベースをつくります。診断で決めきるのではなく、最後は当日スタッフと一緒に仕上げます。</p>
             <div class="hero-actions">
-              <a class="btn btn-primary" href="questionnaire.html" aria-label="香りづくりをはじめる">香りづくりをはじめる</a>
-              <a class="btn btn-sub" href="#question-preview">質問ページを先に見る</a>
+              <a class="btn btn-primary" href="questionnaire.html">香りづくりをはじめる</a>
+              <a class="btn btn-secondary" href="#question-preview">質問ページを先に見る</a>
             </div>
             <ul class="chips" aria-label="安心情報">
-              <li>約1分</li>
-              <li>8問</li>
-              <li>予約前に完了</li>
+              <li>約1分</li><li>8問</li><li>予約前に完了</li>
             </ul>
           </div>
         </div>
         <div class="hero-gallery" aria-label="トップビュー手順画像プレースホルダー">
-          <div class="hero-shot">
-            <strong>アンケート画面イメージ</strong>
-            <span>ここに画像を配置（PC/スマホUI）</span>
-          </div>
-          <div class="hero-shot">
-            <strong>SVGグラフイメージ</strong>
-            <span>ここに画像を配置（5軸レーダー）</span>
-          </div>
-          <div class="hero-shot">
-            <strong>スライダー調整画面イメージ</strong>
-            <span>ここに画像を配置（調整UI）</span>
-          </div>
+          <div class="hero-shot"><strong>アンケート画面イメージ</strong><span>ここに画像を配置（PC/スマホUI）</span></div>
+          <div class="hero-shot"><strong>SVGグラフイメージ</strong><span>ここに画像を配置（5軸レーダー）</span></div>
+          <div class="hero-shot"><strong>スライダー調整画面イメージ</strong><span>ここに画像を配置（調整UI）</span></div>
         </div>
       </div>
     </section>
 
-    <section aria-labelledby="step-heading">
+    <section id="flow" aria-labelledby="flow-heading">
       <div class="section-inner">
-        <div class="section-head">
-          <span class="eyebrow">3 Step</span>
-          <h2 id="step-heading">やることはシンプル。香りづくりの土台を先につくるだけ</h2>
-        </div>
-        <div class="three-grid">
-          <article class="card">
-            <div class="step-num" aria-hidden="true">1</div>
-            <h3>8問に答える</h3>
-            <p>惹かれる香り、好きな色、気分、使いたい時、音楽などを直感で選びます。</p>
-          </article>
-          <article class="card">
-            <div class="step-num" aria-hidden="true">2</div>
-            <h3>香りバランスが見えてくる</h3>
-            <p>固定5問のあと、あなた向けの分岐2問で方向性を深掘り。最後に仕上がりを確認します。</p>
-          </article>
-          <article class="card">
-            <div class="step-num" aria-hidden="true">3</div>
-            <h3>店頭で一緒に仕上げる</h3>
-            <p>結果は固定しません。ベースを持って来店し、当日スタッフと調整して完成させます。</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section aria-labelledby="value-heading">
-      <div class="section-inner">
-        <div class="section-head">
-          <span class="eyebrow">Experience Value</span>
-          <h2 id="value-heading">当日が楽しみになる準備としての価値</h2>
-        </div>
-        <div class="value-grid">
-          <article class="card">
-            <h3>自分の好みが見えてくる</h3>
-            <p>言語化しづらい「好き」が、5軸の形として見えやすくなります。</p>
-          </article>
-          <article class="card">
-            <h3>スタッフに話しやすくなる</h3>
-            <p>来店時に「どんな香りにしたいか」を伝えやすくなり、相談がスムーズです。</p>
-          </article>
-          <article class="card">
-            <h3>来店前から体験が始まる</h3>
-            <p>当日まで待つのではなく、事前に香りづくりの入口を体験できます。</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section aria-labelledby="reassure-heading">
-      <div class="section-inner">
-        <div class="section-head">
-          <span class="eyebrow">Reassurance</span>
-          <h2 id="reassure-heading">不安を減らすための安心情報</h2>
-        </div>
-        <div class="reassure-grid">
-          <article class="reassure-item card">
-            <h3>結果は固定されません</h3>
-            <p>アンケートは方向性を決めるためのベースです。最終決定はあなた自身が行えます。</p>
-          </article>
-          <article class="reassure-item card">
-            <h3>あとからバランスを動かせます</h3>
-            <p>5軸の香りバランスは、回答後に調整可能。気になる項目だけ微調整できます。</p>
-          </article>
-          <article class="reassure-item card">
-            <h3>当日スタッフと一緒に調整</h3>
-            <p>店頭で香りを確かめながら、強さや余韻を一緒に整えて仕上げられます。</p>
-          </article>
-          <article class="reassure-item card">
-            <h3>軽く答えられる8問構成</h3>
-            <p>固定5問のあとに分岐2問＋最終1問。重い入力はなく、約1分で完了します。</p>
-          </article>
+        <div class="section-head"><h2 id="flow-heading">3ステップで、来店前の準備が完了</h2></div>
+        <div class="flow-grid">
+          <article class="card"><h3>STEP1 8問に答える</h3><p>固定5問＋分岐2問＋最終1問。</p></article>
+          <article class="card"><h3>STEP2 バランスが見える</h3><p>全体像を見ながら、必要なら後から調整。</p></article>
+          <article class="card"><h3>STEP3 店頭で仕上げる</h3><p>当日スタッフと一緒に香りを完成。</p></article>
         </div>
       </div>
     </section>
@@ -630,200 +265,73 @@
     <section id="question-preview" aria-labelledby="preview-heading">
       <div class="section-inner">
         <div class="section-head">
-          <span class="eyebrow">Question Page Preview</span>
           <h2 id="preview-heading">次ページで始まる体験を、PC版とスマホ版で先に確認</h2>
-          <p>固定5問のあとに「ここまでの回答をもとに、あと少しだけお聞きします」と分岐へ進み、最後に香りバランス調整へつながります。</p>
+          <p>固定5問のあとに分岐へ進み、最後に香りバランス調整へつながります。</p>
         </div>
-
         <div class="preview-layout">
           <article class="preview-shell" aria-label="PC版プレビュー">
-            <div class="shell-head">
-              <strong>PC版プレビュー</strong>
-              <span>見渡せる段階構成</span>
-            </div>
+            <div class="shell-head"><strong>PC版プレビュー</strong><span>見渡せる段階構成</span></div>
             <div class="pc-preview">
-              <div class="pc-nav">
-                <ol aria-label="進行ナビ">
-                  <li>Q1 惹かれる香り</li>
-                  <li>Q2 好きな色</li>
-                  <li>Q3 なりたい気分</li>
-                  <li>Q4 使いたい時</li>
-                  <li>Q5 好きな音楽</li>
-                  <li>Q6 分岐質問</li>
-                  <li>Q7 分岐質問</li>
-                  <li>Q8 今日の仕上がり</li>
-                </ol>
-              </div>
+              <div class="pc-nav"><ol><li>Q1〜Q5 固定質問</li><li>Q6〜Q7 分岐質問</li><li>Q8 今日の仕上がり</li></ol></div>
               <div class="pc-main">
                 <h4>Q7A 甘さの出方はどれが近いですか？</h4>
                 <div class="branch-note">ここまでの回答をもとに、あと少しだけお聞きします</div>
-                <div class="option-row"><span class="thumb" aria-hidden="true"></span><span>A ふわっと最初に香る</span></div>
-                <div class="option-row"><span class="thumb" aria-hidden="true"></span><span>B 時間とともにやさしく</span></div>
-                <div class="option-row"><span class="thumb" aria-hidden="true"></span><span>C 甘さは控えめがいい</span></div>
+                <div class="option-row"><span class="thumb"></span><span>A ふわっと最初に香る</span></div>
+                <div class="option-row"><span class="thumb"></span><span>B 時間とともにやさしく</span></div>
+                <div class="option-row"><span class="thumb"></span><span>C 甘さは控えめがいい</span></div>
                 <div class="minor-options"><span>全部好き</span><span>この中にはない</span></div>
               </div>
             </div>
           </article>
-
           <article class="preview-shell" aria-label="スマホ版プレビュー">
-            <div class="shell-head">
-              <strong>スマホ版プレビュー</strong>
-              <span>1問1画面の集中UI</span>
-            </div>
+            <div class="shell-head"><strong>スマホ版プレビュー</strong><span>1問1画面の集中UI</span></div>
             <div class="mobile-frame">
               <div class="mobile-screen">
                 <div class="mobile-progress">3 / 8　残り5問です</div>
-                <div class="mobile-bar" aria-hidden="true"><span></span></div>
+                <div class="mobile-bar"><span></span></div>
                 <h4>どんな気分になりたいですか？</h4>
                 <div class="mobile-option">やさしく癒やされたい</div>
                 <div class="mobile-option">すっきり切り替えたい</div>
                 <div class="mobile-option">自分らしさを出したい</div>
-                <div class="mobile-option">全部好き / この中にはない</div>
               </div>
             </div>
           </article>
         </div>
-
-        <div class="preview-cta-row">
-          <a class="btn btn-primary" href="questionnaire.html">8問からはじめる</a>
-          <span class="caption">8問・約1分・あとから調整可能。最後は香りバランス調整へ進みます。</span>
-        </div>
       </div>
     </section>
 
-    <section aria-labelledby="balance-heading">
+    <section id="value" aria-labelledby="value-heading">
       <div class="section-inner">
-        <div class="section-head">
-          <span class="eyebrow">Balance Preview</span>
-          <h2 id="balance-heading">回答後は、全体の形を見ながら気になる項目だけ調整</h2>
-          <p>あなたの回答をもとに、まずは基本の形を作りました。必要なところだけスライダーで動かしてください。</p>
-        </div>
-
-        <div class="simulator">
-          <article class="radar-box">
-            <svg id="radar" viewBox="0 0 300 300" role="img" aria-labelledby="radar-title radar-desc">
-              <title id="radar-title">香りバランス レーダーグラフ</title>
-              <desc id="radar-desc">フローラル、フレッシュ、ウッディ、スパイシー、スウィートの5軸バランス</desc>
-              <g fill="none" stroke="#d8cbbf" stroke-width="1">
-                <polygon points="150,38 256,116 216,242 84,242 44,116"/>
-                <polygon points="150,64 233,126 202,224 98,224 67,126"/>
-                <polygon points="150,90 210,136 188,206 112,206 90,136"/>
-                <polygon points="150,116 187,146 174,188 126,188 113,146"/>
-              </g>
-              <g stroke="#d8cbbf" stroke-width="1">
-                <line x1="150" y1="150" x2="150" y2="38"/>
-                <line x1="150" y1="150" x2="256" y2="116"/>
-                <line x1="150" y1="150" x2="216" y2="242"/>
-                <line x1="150" y1="150" x2="84" y2="242"/>
-                <line x1="150" y1="150" x2="44" y2="116"/>
-              </g>
-              <polygon id="shape" points="150,60 220,126 185,200 108,206 80,130" fill="rgba(168,111,74,0.28)" stroke="#9a6543" stroke-width="2"/>
-              <g id="dots" fill="#8f5c3c"></g>
-              <g fill="#5e5550" font-size="12" text-anchor="middle">
-                <text x="150" y="22">フローラル</text>
-                <text x="274" y="114">フレッシュ</text>
-                <text x="224" y="258">ウッディ</text>
-                <text x="76" y="258">スパイシー</text>
-                <text x="26" y="114">スウィート</text>
-              </g>
-            </svg>
-            <p class="radar-caption">全体像を先に確認してから調整できるので、「決めつけられる不安」を減らせます。</p>
-          </article>
-
-          <article class="slider-box">
-            <div class="slider-row">
-              <label for="floral">フローラル</label>
-              <input id="floral" type="range" min="0" max="100" value="74">
-              <output for="floral" id="floral-val">74</output>
-            </div>
-            <div class="slider-row">
-              <label for="fresh">フレッシュ</label>
-              <input id="fresh" type="range" min="0" max="100" value="58">
-              <output for="fresh" id="fresh-val">58</output>
-            </div>
-            <div class="slider-row">
-              <label for="woody">ウッディ</label>
-              <input id="woody" type="range" min="0" max="100" value="43">
-              <output for="woody" id="woody-val">43</output>
-            </div>
-            <div class="slider-row">
-              <label for="spicy">スパイシー</label>
-              <input id="spicy" type="range" min="0" max="100" value="31">
-              <output for="spicy" id="spicy-val">31</output>
-            </div>
-            <div class="slider-row">
-              <label for="sweet">スウィート</label>
-              <input id="sweet" type="range" min="0" max="100" value="49">
-              <output for="sweet" id="sweet-val">49</output>
-            </div>
-            <div class="preview-cta-row">
-              <a class="btn btn-sub" href="questionnaire.html">今の自分に合う香りを見てみる</a>
-              <span class="caption">あとから何度でも動かせます</span>
-            </div>
-          </article>
+        <div class="section-head"><h2 id="value-heading">当日が楽しみになる準備としての価値</h2></div>
+        <div class="value-grid">
+          <article class="card"><h3>自分の好みが見えてくる</h3><p>言語化しづらい好みを整理しやすくなります。</p></article>
+          <article class="card"><h3>スタッフに話しやすくなる</h3><p>来店時の相談がスムーズになります。</p></article>
+          <article class="card"><h3>来店前から体験が始まる</h3><p>当日の体験をより楽しめます。</p></article>
         </div>
       </div>
     </section>
 
-    <section aria-labelledby="final-cta-heading">
+    <section id="reassurance" aria-labelledby="reassurance-heading">
+      <div class="section-inner">
+        <div class="section-head"><h2 id="reassurance-heading">不安を減らすための安心情報</h2></div>
+        <div class="reassure-grid">
+          <article class="card"><h3>結果は固定されません</h3><p>最終的にはあなたが決められます。</p></article>
+          <article class="card"><h3>あとから調整可能</h3><p>5軸バランスは回答後に動かせます。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-section" aria-labelledby="cta-heading">
       <div class="section-inner">
         <div class="cta-box">
           <div>
-            <span class="eyebrow">Final CTA</span>
-            <h2 id="final-cta-heading">来店前の1分で、香りづくりをもっと話しやすく</h2>
-            <p>診断で決めるページではなく、当日の準備ページです。まずは8問から、あなたのベースを作っておきましょう。</p>
+            <h2 id="cta-heading">8問から、香りづくりをはじめる</h2>
+            <p>診断ではなく、来店前の準備として気軽に進められます。</p>
           </div>
           <a class="btn btn-primary" href="questionnaire.html">香りづくりをはじめる</a>
         </div>
       </div>
     </section>
   </main>
-
-  <div class="mobile-fixed" aria-label="モバイル固定CTA">
-    <p>8問・約1分。<br>来店前の準備をはじめる</p>
-    <a class="btn btn-primary" href="questionnaire.html">はじめる</a>
-  </div>
-
-  <script>
-    (function () {
-      var sliders = ["floral", "fresh", "woody", "spicy", "sweet"];
-      var shape = document.getElementById("shape");
-      var dots = document.getElementById("dots");
-      var center = { x: 150, y: 150 };
-      var angles = [-90, -18, 54, 126, 198];
-      var maxR = 112;
-
-      function toPoint(value, angleDeg) {
-        var r = (value / 100) * maxR;
-        var rad = angleDeg * Math.PI / 180;
-        return {
-          x: center.x + Math.cos(rad) * r,
-          y: center.y + Math.sin(rad) * r
-        };
-      }
-
-      function draw() {
-        var points = [];
-        var dotSvg = "";
-
-        sliders.forEach(function (id, i) {
-          var el = document.getElementById(id);
-          var value = Number(el.value);
-          document.getElementById(id + "-val").textContent = value;
-          var p = toPoint(value, angles[i]);
-          points.push(p.x.toFixed(1) + "," + p.y.toFixed(1));
-          dotSvg += '<circle cx="' + p.x.toFixed(1) + '" cy="' + p.y.toFixed(1) + '" r="3.2"></circle>';
-        });
-
-        shape.setAttribute("points", points.join(" "));
-        dots.innerHTML = dotSvg;
-      }
-
-      sliders.forEach(function (id) {
-        document.getElementById(id).addEventListener("input", draw);
-      });
-      draw();
-    })();
-  </script>
 </body>
 </html>
