@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="ja" class="h-full">
 <head>
   <meta charset="UTF-8">
@@ -19,62 +19,179 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    .app-shell {
+      height: 100dvh;
+      display: grid;
+      grid-template-rows: 15fr 75fr 10fr;
+      gap: 0.75rem;
+      padding: 0.75rem;
+      overflow: hidden;
+    }
+    .header-grid {
+      height: 100%;
+      display: grid;
+      grid-template-columns: 20% 50% 30%;
+      gap: 0.6rem;
+      align-items: center;
+    }
+    .main-grid {
+      height: 100%;
+      display: grid;
+      grid-template-rows: 15fr 70fr 15fr;
+      gap: 0.7rem;
+      padding-inline: 5%;
+    }
+    .main-nav {
+      display: grid;
+      grid-template-columns: 20% 20% 1fr;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    .main-columns {
+      display: grid;
+      grid-template-columns: 30% 40% 30%;
+      gap: 0.7rem;
+      min-height: 0;
+    }
+    .bottom-row {
+      display: grid;
+      grid-template-columns: 20% 50% 30%;
+      gap: 0.7rem;
+      align-items: center;
+    }
+    .left-cards {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 1.25%;
+    }
+    .left-card {
+      flex: 0 0 15%;
+      padding: 5%;
+    }
+    .center-panel {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 1.67%;
+    }
+    .question-title {
+      flex: 0 0 15%;
+    }
+    .choice-row {
+      flex: 0 0 20%;
+    }
+    .choice-bottom {
+      flex: 0 0 15%;
+      display: grid;
+      grid-template-columns: 5% 40% 10% 40% 5%;
+      align-items: center;
+    }
+    .right-column {
+      height: 100%;
+      display: grid;
+      grid-template-rows: 62% 38%;
+      gap: 0.7rem;
+    }
+    @media (max-width: 767px) {
+      .header-grid {
+        grid-template-columns: 20% 70% 10%;
+      }
+      .nav-full {
+        display: none;
+      }
+      .nav-hamburger {
+        display: flex;
+      }
+    }
+    @media (min-width: 768px) {
+      .nav-hamburger {
+        display: none;
+      }
+    }
+  </style>
 </head>
-<body class="h-full bg-[#f5f4f2] text-gray-800 dark:bg-gray-50">
-  <div class="min-h-full">
-    <header class="mx-auto w-full max-w-[1200px] px-3 pt-3 sm:px-5">
-      <div class="h-7 rounded-lg border border-[#d8d3cd] bg-[#dedbd7]"></div>
-      <div class="mt-2 flex gap-2">
-        <div class="h-5 w-24 rounded-md bg-[#e7e2de]"></div>
-        <div class="h-5 w-24 rounded-md bg-[#dbe1d6]"></div>
-      </div>
-    </header>
-<!--ブラウザサイズは12：6.5想定-->
-    <main class="mx-auto w-full max-w-[1200px] px-3 pb-3 pt-2 sm:px-5">
-      <section class="grid gap-4 lg:grid-cols-[160px_minmax(0,1fr)_270px]">
-        <aside class="space-y-3">
-          <div class="h-10 rounded-md border border-[#d7a8a2] bg-[#ebe8e6]"></div>
-          <div class="h-10 rounded-md border border-[#d7a8a2] bg-[#ebe8e6]"></div>
-          <div class="h-10 rounded-md border border-[#d7a8a2] bg-[#ebe8e6]"></div>
-          <div class="h-10 rounded-md border border-[#d9cab7] bg-[#efedeb]"></div>
-          <div class="h-10 rounded-md border border-[#d9cab7] bg-[#efedeb]"></div>
-        </aside>
+<body class="m-0 h-full overflow-hidden bg-[#f5f4f2] text-gray-800 dark:bg-gray-50">
+  <div>
+    <div class="app-shell">
+      <header class="header-grid py-1">
+        <div class="h-[86%] self-center rounded-lg border border-[#d8d3cd] bg-[#e7e2de] px-4 py-3 flex items-center text-xl font-bold">LOGO</div>
+        <div class="h-[86%] self-center rounded-lg border border-[#d8d3cd] bg-[#dedbd7] px-4 py-3 flex items-center text-lg font-semibold">
+          香りワークショップ PC問 ワイヤーフレーム
+        </div>
+        <nav class="nav-full h-[86%] self-center rounded-lg border border-[#d8d3cd] bg-[#dbe1d6] px-4 py-3 flex items-center justify-end gap-4 text-sm">
+          <span>TOP</span>
+          <span>STEP</span>
+          <span>HELP</span>
+        </nav>
+        <button class="nav-hamburger h-[86%] w-full self-center rounded-lg border border-[#d8d3cd] bg-[#dbe1d6] items-center justify-center text-xl" aria-label="メニュー">
+          ☰
+        </button>
+      </header>
 
-        <section class="rounded-md border border-[#cdbeb1] bg-[#f4f2ef] px-4 py-3 sm:px-5">
-          <h1 class="text-[34px] font-black tracking-[0.08em]">Q<!--？？？？？？？--></h1>
-<!--固定パネル内で選択。3つの画像つき選択肢 + 中立ボタン2つで構成。-->
-
-          <div class="mt-4 space-y-3">
-            <button class="flex h-11 w-full items-center justify-center rounded border border-[#d2b9a8] bg-[#ece8e5] text-2xl font-bold">選択肢 A</button>
-            <button class="flex h-11 w-full items-center justify-center rounded border border-[#c3cbbf] bg-[#dee3dc] text-2xl font-bold">選択肢 B</button>
-            <button class="flex h-11 w-full items-center justify-center rounded border border-[#c4cdd8] bg-[#e3e9ef] text-2xl font-bold">選択肢 C</button>
-          </div>
-
-          <div class="mt-4 grid gap-3 sm:grid-cols-2">
-            <button class="h-10 rounded border border-[#d2b9a8] bg-[#f3f1ef] text-sm">全部好き</button>
-            <button class="h-10 rounded border border-[#d2b9a8] bg-[#f3f1ef] text-sm">この中にはない</button>
-          </div>
+      <main class="main-grid">
+        <section class="main-nav rounded-md border border-[#cdbeb1] bg-[#eee9e3] px-3 py-2">
+          <div class="h-full rounded-md border border-[#d7a8a2] bg-[#f0ece8] flex items-center justify-center font-semibold">STEP1</div>
+          <div class="h-full rounded-md border border-[#d9cab7] bg-[#f0ece8] flex items-center justify-center font-semibold">STEP2（現在）</div>
+          <div></div>
         </section>
 
-        <aside class="space-y-3">
-          <div class="flex h-[245px] items-center justify-center rounded-[34px] border border-[#ccb9a6] bg-[#e8d5c0]">
-            <!--店舗の雰囲気画像-->
-          </div>
-          <div class="rounded-2xl border border-[#a8b4a4] bg-[#b9c5b2] p-3">
-            <h2 class="text-[30px] font-bold leading-none">豆知識</h2>
-<!-- ランダムで20パターン程度の香水に関する豆知識が表示される。将来的な拡張要素。日にちに応じた豆知識も。 -->
+        <section class="main-columns">
+          <aside class="left-cards rounded-md border border-[#cdbeb1] bg-[#f4f2ef] p-2">
+            <div class="left-card rounded-md border border-[#d7a8a2] bg-[#ebe8e6]"></div>
+            <div class="left-card rounded-md border border-[#d7a8a2] bg-[#ebe8e6]"></div>
+            <div class="left-card rounded-md border border-[#d7a8a2] bg-[#ebe8e6]"></div>
+            <div class="left-card rounded-md border border-[#d9cab7] bg-[#efedeb]"></div>
+            <div class="left-card rounded-md border border-[#d9cab7] bg-[#efedeb]"></div>
+          </aside>
 
-          </div>
-        </aside>
-      </section>
-    </main>
+          <section class="center-panel rounded-md border border-[#cdbeb1] bg-[#f4f2ef] px-4 py-3">
+            <div class="question-title">
+              <h1 class="text-2xl font-black tracking-[0.08em]">Q ？？？？？？？</h1>
+              <!--固定パネル内で選択。3つの画像つき選択肢 + 中立ボタン2つで構成。-->
+            </div>
+            <button class="choice-row rounded border border-[#d2b9a8] bg-[#ece8e5] text-xl font-bold">選択肢 A</button>
+            <button class="choice-row rounded border border-[#c3cbbf] bg-[#dee3dc] text-xl font-bold">選択肢 B</button>
+            <button class="choice-row rounded border border-[#c4cdd8] bg-[#e3e9ef] text-xl font-bold">選択肢 C</button>
+            <div class="choice-bottom">
+              <div></div>
+              <button class="h-full rounded border border-[#d2b9a8] bg-[#f3f1ef] text-sm">全部好き</button>
+              <div></div>
+              <button class="h-full rounded border border-[#d2b9a8] bg-[#f3f1ef] text-sm">この中にはない</button>
+              <div></div>
+            </div>
+          </section>
 
-    <footer class="mx-auto w-full max-w-[1200px] px-3 pb-3 sm:px-5">
-      <div class="grid gap-3 sm:grid-cols-[2fr_1fr]">
-        <div class="h-12 rounded-xl bg-[#e4dfdc]"></div>
-        <button class="h-12 rounded-xl bg-[#e4dfdc] text-sm text-gray-600">次のステップへ進む</button>
-      </div>
-    </footer>
+          <aside class="right-column">
+            <div class="rounded-[34px] border border-[#ccb9a6] bg-[#e8d5c0] flex items-center justify-center">
+              <!--店舗雰囲気イメージ画像-->
+            </div>
+            <div class="rounded-2xl border border-[#a8b4a4] bg-[#b9c5b2] p-3">
+              <h2 class="text-2xl font-bold leading-none">豆知識</h2>
+                <!--ランダムで20パターン程度の香水に関する豆知識が表示される。将来的な拡張要素。日にちに応じた豆知識も。-->
+            </div>
+          </aside>
+        </section>
+
+        <section class="bottom-row rounded-md border border-[#cdbeb1] bg-[#eee9e3] px-3 py-2">
+          <div></div>
+          <p class="h-full rounded-md bg-[#e4dfdc] px-4 py-3 text-sm text-gray-700 flex items-center">
+           <!-- 左は進行ナビ、中央は固定回答パネル。回答すると次の質問へ進み、前の質問にも戻れる。 -->
+          </p>
+          <button class="h-full rounded-md bg-[#e4dfdc] px-4 py-3 text-sm text-gray-700">次のSTEPへ進む</button>
+        </section>
+      </main>
+
+      <footer class="rounded-md border border-[#d8d3cd] bg-[#f1ece7] px-4 py-2 text-sm text-gray-600 flex items-center">
+        Browser ratio: 12:6.5 / Layout: Header 15% - Main 75% - Footer 10%
+      </footer>
+    </div>
   </div>
 </body>
 </html>
