@@ -35,6 +35,7 @@
     }
 
     a { color: inherit; }
+    img, svg { display: block; max-width: 100%; }
     .header-inner, .section-inner, .footer-inner {
       width: var(--container);
       margin: 0 auto;
@@ -67,14 +68,17 @@
       padding: 0;
       display: flex;
       gap: 14px;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       justify-content: flex-end;
     }
     .main-nav a {
       text-decoration: none;
       color: var(--muted);
       font-size: .92rem;
+      white-space: nowrap;
     }
+    .main-nav a:hover,
+    .main-nav a:focus-visible { color: var(--text); }
 
     .btn {
       display: inline-flex;
@@ -97,6 +101,11 @@
       border-color: var(--line);
       color: var(--text);
     }
+    .btn:hover,
+    .btn:focus-visible {
+      transform: translateY(-1px);
+      box-shadow: 0 16px 34px rgba(80, 63, 48, .14);
+    }
 
     main section { padding: 78px 0; }
 
@@ -112,6 +121,13 @@
       line-height: 1.2;
     }
     .section-header p { margin: 0; color: var(--muted); }
+    .overline {
+      display: block;
+      color: var(--muted);
+      font-size: .82rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
 
     .hero {
       padding-top: 34px;
@@ -142,6 +158,7 @@
     }
 
     .hero-copy { padding: 28px; }
+    .hero-gallery { padding-top: 30px; }
     .hero-copy h1 {
       margin: 12px 0 16px;
       font-size: clamp(2rem, 5vw, 4.3rem);
@@ -198,6 +215,48 @@
 
     .flow-grid { gap: 18px; }
     .card { padding: 22px; }
+    .flow-bullets,
+    .benefit-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 8px;
+    }
+    .flow-bullets {
+      margin-top: 12px;
+    }
+    .flow-bullets li,
+    .benefit-list li {
+      padding-left: 18px;
+      position: relative;
+      color: var(--text);
+      font-size: .95rem;
+    }
+    .flow-bullets li::before,
+    .benefit-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: .72em;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(186, 129, 85, .78);
+      transform: translateY(-50%);
+    }
+    .step-no {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: rgba(241, 223, 207, .92);
+      color: var(--accent-deep);
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
 
     #question-preview .preview-shell,
     #question-preview .preview-balance { padding: 16px; }
@@ -352,6 +411,76 @@
       grid-template-columns: 1fr;
       align-items: center;
     }
+    .cta-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .helper-note {
+      margin: 0;
+      color: var(--muted);
+      font-size: .92rem;
+    }
+    .reassure-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .reassure-item {
+      padding: 16px 18px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.76);
+      border: 1px solid rgba(230, 221, 210, .9);
+    }
+    .reassure-item strong {
+      display: block;
+      font-size: 1rem;
+      margin-bottom: 4px;
+    }
+    .reassure-item p {
+      margin: 0;
+      color: var(--muted);
+      font-size: .93rem;
+    }
+    .faq-grid {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin-top: 18px;
+    }
+    .faq-grid details {
+      border-radius: 18px;
+      padding: 18px 20px;
+      background: rgba(255,255,255,.86);
+      border: 1px solid rgba(230, 221, 210, .92);
+      box-shadow: var(--shadow);
+    }
+    .faq-grid summary {
+      cursor: pointer;
+      font-weight: 700;
+      list-style: none;
+    }
+    .faq-grid summary::-webkit-details-marker { display: none; }
+    .faq-grid details p {
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: .94rem;
+    }
+    .site-footer {
+      padding: 24px 0 72px;
+      color: var(--muted);
+      font-size: .88rem;
+    }
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      border-top: 1px solid rgba(230, 221, 210, .92);
+      padding-top: 18px;
+    }
 
     /* PC layout when width >= 768px OR aspect ratio >= 16:9 */
     @media (min-width: 48em), (min-aspect-ratio: 16/9) {
@@ -364,6 +493,7 @@
       .reassure-grid { grid-template-columns: 1.15fr .85fr; }
       #question-preview .preview-layout { grid-template-columns: 1fr 1fr; }
       .balance-grid { grid-template-columns: .95fr 1.05fr; }
+      .faq-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
       .preview-pc { display: block; }
       .preview-mobile { display: none; }
@@ -371,9 +501,23 @@
     }
 
     @media (max-width: 48em) {
-      .header-inner { min-height: auto; padding: 10px 0; align-items: flex-start; }
-      .main-nav ul { gap: 8px; }
+      .header-inner {
+        min-height: auto;
+        padding: 10px 0;
+        align-items: flex-start;
+        flex-direction: column;
+      }
+      .main-nav {
+        width: 100%;
+        overflow-x: auto;
+      }
+      .main-nav ul {
+        gap: 8px;
+        width: max-content;
+        min-width: 100%;
+      }
       #question-preview .pc-preview { grid-template-columns: 1fr; }
+      .faq-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -385,7 +529,7 @@
         <ul>
           <li><a href="#top">TOP</a></li>
           <li><a href="#flow">流れ</a></li>
-          <li><a href="#question-preview">Question Page Preview</a></li>
+          <li><a href="#question-preview">質問のイメージ</a></li>
           <li><a href="#value">体験価値</a></li>
           <li><a href="#reassurance">安心して進める理由</a></li>
         </ul>
@@ -474,14 +618,15 @@
         <div class="section-header">
           <span class="eyebrow">Question Page Preview</span>
           <h2 id="preview-heading">次ページで始まる体験を先に確認</h2>
-           </div>
+          <p>固定5問で傾向をつかみ、分岐2問で少しだけ自分向けに深掘りします。最後はレーダー風グラフとスライダーで全体像を見ながら調整できます。</p>
+        </div>
 
         <div class="preview-layout">
           <article class="preview-shell preview-pc" aria-label="PC版プレビュー">
             <div class="shell-head"><strong>PC版プレビュー</strong><span>見渡せる段階構成</span></div>
             <div class="pc-preview">
               <div class="pc-nav">
-                <ol><li>Q1?Q5 固定質問</li><li>Q6?Q7 分岐質問</li><li>Q8 今日の仕上がり</li></ol>
+                <ol><li>Q1-Q5 固定質問</li><li>Q6-Q7 分岐質問</li><li>Q8 今日の仕上がり</li></ol>
               </div>
               <div class="pc-main">
                 <h3 class="shell-title">Q7A 甘さの出方はどれが近いですか？</h3>
@@ -637,11 +782,13 @@
           <div>
             <span class="eyebrow">Final Call To Action</span>
             <h2 id="cta-heading">来店前の1分で、香りづくりをもっと話しやすく</h2>
-                 <div class="cta-actions">
+            <p>診断で決め切るのではなく、当日の会話を始めやすくするための準備ページです。まずは8問から、自分に合いそうな方向を見つけてください。</p>
+          </div>
+          <div class="cta-actions">
             <a class="btn btn-primary" href="questionnaire.html">香りづくりをはじめる</a>
             <a class="btn btn-secondary" href="#top">上へ戻る</a>
             <p class="helper-note">8問・約1分・あとから調整OK</p>
-          </div> </div>
+          </div>
         </div>
       </div>
     </section>
