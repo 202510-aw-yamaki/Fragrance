@@ -38,6 +38,12 @@
       gap: 0.6rem;
       align-items: center;
     }
+    .nav-full {
+      display: flex;
+    }
+    .nav-hamburger {
+      display: none;
+    }
     .main-grid {
       height: 100%;
       display: grid;
@@ -104,15 +110,24 @@
         grid-template-columns: 20% 70% 10%;
       }
       .nav-full {
-        display: none;
+        display: none !important;
       }
       .nav-hamburger {
-        display: flex;
+        display: flex !important;
+      }
+      .mobile-menu {
+        display: block;
       }
     }
     @media (min-width: 768px) {
       .nav-hamburger {
-        display: none;
+        display: none !important;
+      }
+      .nav-full {
+        display: flex !important;
+      }
+      .mobile-menu {
+        display: none !important;
       }
     }
   </style>
@@ -120,7 +135,7 @@
 <body class="m-0 h-full overflow-hidden bg-[#f5f4f2] text-gray-800 dark:bg-gray-50">
   <div>
     <div class="app-shell">
-      <header class="header-grid py-1">
+      <header class="header-grid relative py-1">
         <div class="h-[86%] self-center rounded-lg border border-[#d8d3cd] bg-[#e7e2de] px-4 py-3 flex items-center text-xl font-bold">LOGO</div>
         <div class="h-[86%] self-center rounded-lg border border-[#d8d3cd] bg-[#dedbd7] px-4 py-3 flex items-center text-lg font-semibold">
           香りワークショップ PC問 ワイヤーフレーム
@@ -130,9 +145,14 @@
           <span>STEP</span>
           <span>HELP</span>
         </nav>
-        <button class="nav-hamburger h-[86%] w-full self-center rounded-lg border border-[#d8d3cd] bg-[#dbe1d6] items-center justify-center text-xl" aria-label="メニュー">
+        <button id="menuToggle" class="nav-hamburger h-[86%] w-full self-center rounded-lg border border-[#d8d3cd] bg-[#dbe1d6] items-center justify-center text-xl" aria-label="メニュー" aria-expanded="false" aria-controls="mobileMenu">
           ☰
         </button>
+        <nav id="mobileMenu" class="mobile-menu absolute right-0 top-[100%] z-20 mt-2 hidden w-[160px] rounded-lg border border-[#d8d3cd] bg-[#dbe1d6] p-2 shadow-md">
+          <a href="#" class="block rounded px-3 py-2 text-sm hover:bg-[#cfd8ca]">TOP</a>
+          <a href="#" class="mt-1 block rounded px-3 py-2 text-sm hover:bg-[#cfd8ca]">STEP</a>
+          <a href="#" class="mt-1 block rounded px-3 py-2 text-sm hover:bg-[#cfd8ca]">HELP</a>
+        </nav>
       </header>
 
       <main class="main-grid">
@@ -193,5 +213,25 @@
       </footer>
     </div>
   </div>
+  <script>
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    if (menuToggle && mobileMenu) {
+      menuToggle.addEventListener('click', () => {
+        const isHidden = mobileMenu.classList.contains('hidden');
+        mobileMenu.classList.toggle('hidden');
+        menuToggle.setAttribute('aria-expanded', String(isHidden));
+      });
+
+      document.addEventListener('click', (event) => {
+        const target = event.target;
+        if (!mobileMenu.contains(target) && !menuToggle.contains(target)) {
+          mobileMenu.classList.add('hidden');
+          menuToggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+  </script>
 </body>
 </html>
