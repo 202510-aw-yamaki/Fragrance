@@ -1,0 +1,1356 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>香りワークショップ | あなたに合う香りを知る</title>
+  <meta name="description" content="8問・約1分。診断ではなく、来店前から始める香りづくりの準備。回答をもとにベースを整え、当日はスタッフと一緒に仕上げます。">
+  <meta name="theme-color" content="#f5efe7">
+  <meta property="og:title" content="香りワークショップ | あなたに合う香りを知る">
+  <meta property="og:description" content="8問・約1分・あとから調整OK。来店前の準備として、今の自分に合う香りの方向を見つけるページです。">
+  <meta property="og:type" content="website">
+  <style>
+    :root {
+      --bg: #fcf8f3;
+      --bg-soft: #f5efe7;
+      --surface: rgba(255,255,255,.84);
+      --surface-strong: #fffdfb;
+      --line: #e6ddd2;
+      --line-strong: #d9cbbd;
+      --text: #2f2925;
+      --muted: #6f665f;
+      --accent: #ba8155;
+      --accent-deep: #9c6740;
+      --accent-soft: #f1dfcf;
+      --green: #dfe9de;
+      --green-deep: #6d8570;
+      --blue-soft: #dfe9ef;
+      --shadow: 0 18px 42px rgba(80, 63, 48, 0.10);
+      --shadow-soft: 0 10px 28px rgba(80, 63, 48, 0.08);
+      --radius-xl: 28px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --radius-sm: 12px;
+      --container: min(1160px, calc(100% - 40px));
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(239, 219, 199, .58), transparent 28%),
+        radial-gradient(circle at top right, rgba(222, 233, 222, .58), transparent 30%),
+        linear-gradient(180deg, #f9f4ed 0%, #fcf8f3 34%, #fffdf9 100%);
+      line-height: 1.7;
+      letter-spacing: .02em;
+    }
+
+    a { color: inherit; }
+    img, svg { display: block; max-width: 100%; }
+
+    .skip-link {
+      position: absolute;
+      left: 12px;
+      top: -100px;
+      padding: 10px 14px;
+      background: #111;
+      color: #fff;
+      border-radius: 10px;
+      z-index: 1000;
+    }
+    .skip-link:focus { top: 12px; }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(18px);
+      background: rgba(252, 248, 243, .78);
+      border-bottom: 1px solid rgba(230, 221, 210, .88);
+    }
+
+    .header-inner,
+    .section-inner,
+    .footer-inner {
+      width: var(--container);
+      margin: 0 auto;
+    }
+
+    .header-inner {
+      min-height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      border: 1px solid rgba(186, 129, 85, .20);
+      background:
+        radial-gradient(circle at 35% 30%, rgba(255,255,255,.95), rgba(255,255,255,.25) 34%, transparent 35%),
+        linear-gradient(135deg, rgba(241,223,207,.95), rgba(223,233,222,.95));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.9);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      inset: 9px 12px;
+      border-radius: 999px;
+      border: 1.5px solid rgba(156, 103, 64, .62);
+      border-top-color: transparent;
+      border-left-color: transparent;
+      transform: rotate(45deg);
+    }
+
+    .brand-copy { min-width: 0; }
+    .brand-copy small,
+    .eyebrow,
+    .overline {
+      display: block;
+      color: var(--muted);
+      font-size: .82rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .brand-copy strong {
+      display: block;
+      font-size: .98rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .main-nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .main-nav a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: .95rem;
+    }
+    .main-nav a:hover,
+    .main-nav a:focus-visible { color: var(--text); }
+
+    .main-nav .header-cta {
+      color: #fff;
+      margin-left: 6px;
+    }
+
+    .header-cta,
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 50px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 700;
+      transition: transform .18s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease;
+    }
+
+    .header-cta,
+    .btn-primary {
+      padding: 0 20px;
+      background: linear-gradient(180deg, var(--accent) 0%, var(--accent-deep) 100%);
+      border: 1px solid rgba(156, 103, 64, .18);
+      color: #fff;
+      box-shadow: 0 12px 26px rgba(156, 103, 64, .18);
+    }
+
+    .btn-secondary {
+      padding: 0 18px;
+      background: rgba(255,255,255,.78);
+      border: 1px solid var(--line);
+      color: var(--text);
+    }
+
+    .header-cta:hover,
+    .header-cta:focus-visible,
+    .btn:hover,
+    .btn:focus-visible {
+      transform: translateY(-1px);
+      box-shadow: 0 16px 34px rgba(80, 63, 48, .14);
+    }
+
+    main section {
+      padding: 84px 0;
+    }
+
+    .hero {
+      padding-top: 44px;
+      padding-bottom: 72px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(320px, .95fr);
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    .glass-card,
+    .card,
+    .qa-card,
+    .cta-box,
+    .faq details,
+    .floating-cta,
+    .hero-panel,
+    .subpanel {
+      background: var(--surface);
+      border: 1px solid rgba(230, 221, 210, .92);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .hero-copy {
+      padding: 34px;
+      border-radius: var(--radius-xl);
+      background: linear-gradient(180deg, rgba(255,255,255,.84), rgba(255,252,248,.84));
+      border: 1px solid rgba(230, 221, 210, .92);
+      box-shadow: var(--shadow);
+    }
+
+    .hero h1 {
+      margin: 14px 0 18px;
+      font-size: clamp(2.3rem, 5vw, 4.8rem);
+      line-height: 1.06;
+      letter-spacing: .01em;
+    }
+
+    .lead {
+      margin: 0 0 22px;
+      color: var(--muted);
+      font-size: 1.08rem;
+      max-width: 40rem;
+    }
+
+    .lead strong { color: var(--text); }
+
+    .hero-points,
+    .meta-list,
+    .value-list,
+    .benefit-list,
+    .flow-bullets {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .hero-points {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .hero-points li,
+    .mini-chip,
+    .preview-chip {
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-size: .95rem;
+      border: 1px solid rgba(109, 133, 112, .22);
+      background: rgba(255,255,255,.76);
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .helper-note {
+      margin: 0;
+      color: var(--muted);
+      font-size: .92rem;
+    }
+
+    .hero-footnote {
+      margin-top: 22px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(230, 221, 210, .92);
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .hero-stat {
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.64);
+      border: 1px solid rgba(230, 221, 210, .82);
+    }
+
+    .hero-stat strong {
+      display: block;
+      font-size: 1.08rem;
+      margin-bottom: 4px;
+    }
+
+    .hero-stat span {
+      color: var(--muted);
+      font-size: .9rem;
+    }
+
+    .hero-panel {
+      padding: 18px;
+      border-radius: var(--radius-xl);
+      display: grid;
+      gap: 16px;
+      align-content: start;
+      background: linear-gradient(180deg, rgba(255,255,255,.88), rgba(250,244,236,.82));
+    }
+
+    .panel-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: 16px;
+      background: rgba(245, 239, 231, .88);
+      border: 1px solid rgba(230, 221, 210, .96);
+      color: var(--muted);
+      font-size: .88rem;
+    }
+
+    .dots {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .dots span {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: #e0c4b6;
+    }
+
+    .dots span:nth-child(2) { background: #e5d9bf; }
+    .dots span:nth-child(3) { background: #cbd7de; }
+
+    .panel-layout {
+      display: grid;
+      grid-template-columns: 1.08fr .92fr;
+      gap: 14px;
+      min-height: 100%;
+    }
+
+    .preview-stack {
+      display: grid;
+      gap: 14px;
+      align-content: start;
+    }
+
+    .subpanel {
+      border-radius: 20px;
+      padding: 18px;
+      background: rgba(255,255,255,.72);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .preview-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 10px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(241, 223, 207, .9);
+      color: var(--accent-deep);
+      font-size: .8rem;
+      font-weight: 700;
+    }
+
+    .preview-title {
+      margin: 0 0 8px;
+      font-size: 1.7rem;
+      line-height: 1.2;
+    }
+
+    .preview-copy {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: .95rem;
+    }
+
+    .preview-chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .preview-chip {
+      font-size: .82rem;
+      padding: 7px 10px;
+    }
+
+    .preview-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 0 18px;
+      border-radius: 14px;
+      background: rgba(186, 129, 85, .14);
+      color: var(--accent-deep);
+      font-weight: 700;
+      border: 1px solid rgba(186, 129, 85, .24);
+      text-decoration: none;
+      width: fit-content;
+    }
+
+    .question-preview {
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 20% 15%, rgba(241,223,207,.7), transparent 35%),
+        linear-gradient(180deg, #fffefe 0%, #faf4ed 100%);
+    }
+
+    .question-preview::after {
+      content: "";
+      position: absolute;
+      inset: auto -18% -40% auto;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(223,233,222,.8), rgba(223,233,222,0) 66%);
+      pointer-events: none;
+    }
+
+    .progress-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: .82rem;
+    }
+
+    .progress {
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(217, 203, 189, .4);
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+
+    .progress > span {
+      display: block;
+      height: 100%;
+      width: 62.5%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--accent) 0%, #d8b091 100%);
+    }
+
+    .question-title {
+      margin: 0 0 6px;
+      font-size: 1.2rem;
+      line-height: 1.45;
+    }
+
+    .question-caption {
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: .88rem;
+    }
+
+    .option-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 9px;
+    }
+
+    .option-list li {
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.88);
+      border: 1px solid rgba(230, 221, 210, .9);
+      font-size: .93rem;
+    }
+
+    .option-list li.active {
+      border-color: rgba(186, 129, 85, .45);
+      background: rgba(241, 223, 207, .62);
+      box-shadow: inset 0 0 0 1px rgba(186,129,85,.10);
+    }
+
+    .option-list li small {
+      display: block;
+      color: var(--muted);
+      font-size: .78rem;
+      margin-top: 3px;
+    }
+
+    .split-note {
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(223, 233, 239, .54);
+      color: #55646a;
+      font-size: .86rem;
+      border: 1px solid rgba(201, 214, 223, .88);
+    }
+
+    .axis-wrap {
+      display: grid;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .axis-item {
+      display: grid;
+      grid-template-columns: 84px 1fr 38px;
+      align-items: center;
+      gap: 10px;
+      font-size: .84rem;
+    }
+
+    .axis-item strong {
+      font-size: .82rem;
+    }
+
+    .axis-item .bar {
+      position: relative;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(217, 203, 189, .40);
+      overflow: hidden;
+    }
+
+    .axis-item .bar span {
+      position: absolute;
+      inset: 0 auto 0 0;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--green-deep), #bda588);
+    }
+
+    .axis-item:nth-child(1) .bar span { width: 74%; }
+    .axis-item:nth-child(2) .bar span { width: 58%; }
+    .axis-item:nth-child(3) .bar span { width: 43%; }
+    .axis-item:nth-child(4) .bar span { width: 31%; }
+    .axis-item:nth-child(5) .bar span { width: 49%; }
+
+    .section-header {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 28px;
+      max-width: 820px;
+    }
+
+    .section-header h2 {
+      margin: 0;
+      font-size: clamp(1.8rem, 3.2vw, 3rem);
+      line-height: 1.18;
+    }
+
+    .section-header p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .flow-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      padding: 26px;
+      border-radius: var(--radius-lg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .step-no {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: rgba(241, 223, 207, .92);
+      color: var(--accent-deep);
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: 1.28rem;
+    }
+
+    .card p {
+      margin: 0 0 14px;
+      color: var(--muted);
+    }
+
+    .flow-bullets {
+      display: grid;
+      gap: 8px;
+    }
+
+    .flow-bullets li {
+      padding-left: 18px;
+      position: relative;
+      color: var(--text);
+      font-size: .95rem;
+    }
+
+    .flow-bullets li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: .72em;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(186, 129, 85, .78);
+      transform: translateY(-50%);
+    }
+
+    .question-grid {
+      display: grid;
+      grid-template-columns: minmax(0, .98fr) minmax(0, 1.02fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .qa-card {
+      padding: 24px;
+      border-radius: var(--radius-lg);
+    }
+
+    .qa-card h3 {
+      margin: 0 0 10px;
+      font-size: 1.26rem;
+    }
+
+    .qa-card p {
+      margin: 0 0 14px;
+      color: var(--muted);
+    }
+
+    .meta-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .meta-list li {
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.76);
+      border: 1px solid rgba(230, 221, 210, .9);
+    }
+
+    .question-example {
+      display: grid;
+      gap: 14px;
+    }
+
+    .example-shell {
+      border-radius: 22px;
+      padding: 18px;
+      background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(250,244,236,.86));
+      border: 1px solid rgba(217, 203, 189, .84);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .shell-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 12px;
+      color: var(--muted);
+      font-size: .83rem;
+    }
+
+    .shell-title {
+      margin: 0 0 8px;
+      font-size: 1.1rem;
+    }
+
+    .shell-sub {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: .88rem;
+    }
+
+    .shell-options {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .shell-options span,
+    .shell-inline span {
+      display: block;
+      padding: 11px 13px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.9);
+      border: 1px solid rgba(230, 221, 210, .92);
+      font-size: .9rem;
+    }
+
+    .shell-options span.emphasis {
+      background: rgba(223, 233, 222, .62);
+      border-color: rgba(109, 133, 112, .26);
+    }
+
+    .shell-note {
+      padding: 11px 12px;
+      border-radius: 14px;
+      background: rgba(223, 233, 239, .48);
+      border: 1px solid rgba(201, 214, 223, .88);
+      color: #54656c;
+      font-size: .84rem;
+    }
+
+    .shell-inline {
+      display: grid;
+      gap: 10px;
+    }
+
+    .value-grid,
+    .benefits-grid,
+    .reassure-grid,
+    .faq-grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .value-grid,
+    .benefits-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .value-list,
+    .benefit-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .value-list li,
+    .benefit-list li {
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .value-list li::before,
+    .benefit-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: .74em;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green-deep);
+      transform: translateY(-50%);
+    }
+
+    .benefits-grid .card:first-child { background: linear-gradient(180deg, rgba(255,255,255,.86), rgba(241,223,207,.48)); }
+    .benefits-grid .card:last-child { background: linear-gradient(180deg, rgba(255,255,255,.86), rgba(223,233,222,.44)); }
+
+    .reassure-grid {
+      grid-template-columns: 1.15fr .85fr;
+      align-items: stretch;
+    }
+
+    .reassure-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .reassure-item {
+      padding: 16px 18px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.76);
+      border: 1px solid rgba(230, 221, 210, .9);
+    }
+
+    .reassure-item strong {
+      display: block;
+      font-size: 1rem;
+      margin-bottom: 4px;
+    }
+
+    .reassure-item p {
+      margin: 0;
+      color: var(--muted);
+      font-size: .93rem;
+    }
+
+    .faq-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin-top: 18px;
+    }
+
+    .faq details {
+      border-radius: 18px;
+      padding: 18px 20px;
+    }
+
+    .faq summary {
+      cursor: pointer;
+      font-weight: 700;
+      list-style: none;
+    }
+
+    .faq summary::-webkit-details-marker { display: none; }
+
+    .faq details p {
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: .94rem;
+    }
+
+    .cta-section {
+      padding-top: 28px;
+      padding-bottom: 110px;
+    }
+
+    .cta-box {
+      border-radius: 30px;
+      padding: 34px;
+      display: grid;
+      grid-template-columns: 1.1fr auto;
+      gap: 24px;
+      align-items: center;
+      background:
+        radial-gradient(circle at top right, rgba(223,233,222,.55), transparent 35%),
+        linear-gradient(180deg, rgba(255,255,255,.92), rgba(250,244,236,.88));
+    }
+
+    .cta-box h2 {
+      margin: 8px 0 12px;
+      font-size: clamp(1.7rem, 3vw, 2.8rem);
+      line-height: 1.18;
+    }
+
+    .cta-box p {
+      margin: 0;
+      color: var(--muted);
+      max-width: 44rem;
+    }
+
+    .cta-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 12px;
+    }
+
+    .site-footer {
+      padding: 24px 0 96px;
+      color: var(--muted);
+      font-size: .88rem;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      border-top: 1px solid rgba(230, 221, 210, .92);
+      padding-top: 18px;
+    }
+
+    .floating-cta {
+      position: fixed;
+      left: 50%;
+      bottom: 16px;
+      transform: translateX(-50%);
+      z-index: 60;
+      width: min(720px, calc(100% - 20px));
+      border-radius: 18px;
+      padding: 12px;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: rgba(255, 252, 247, .92);
+    }
+
+    .floating-cta p {
+      margin: 0;
+      min-width: 0;
+      font-size: .86rem;
+      color: var(--muted);
+    }
+
+    .floating-cta strong {
+      display: block;
+      color: var(--text);
+      font-size: .95rem;
+      margin-bottom: 2px;
+    }
+
+    .floating-cta .btn {
+      flex: 0 0 auto;
+      min-height: 46px;
+      padding: 0 18px;
+    }
+
+    .only-mobile { display: none; }
+
+    @media (max-width: 1024px) {
+      .hero-grid,
+      .question-grid,
+      .reassure-grid,
+      .cta-box {
+        grid-template-columns: 1fr;
+      }
+
+      .value-grid,
+      .benefits-grid,
+      .faq-grid,
+      .flow-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cta-actions {
+        align-items: flex-start;
+      }
+
+      .panel-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 780px) {
+      :root { --container: min(100% - 24px, 1120px); }
+
+      .site-header { position: static; }
+
+      .header-inner {
+        min-height: auto;
+        padding: 14px 0;
+        align-items: flex-start;
+      }
+
+      .main-nav ul {
+        gap: 10px;
+      }
+
+      .main-nav li:not(:last-child) { display: none; }
+
+      .hero-copy,
+      .hero-panel,
+      .card,
+      .qa-card,
+      .cta-box,
+      .faq details {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .hero h1 {
+        font-size: clamp(2rem, 10vw, 3.2rem);
+      }
+
+      .hero-footnote {
+        grid-template-columns: 1fr;
+      }
+
+      .axis-item {
+        grid-template-columns: 76px 1fr 30px;
+      }
+
+      .floating-cta { display: flex; }
+      .only-mobile { display: block; }
+      .site-footer { padding-bottom: 132px; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">本文へスキップ</a>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#top" aria-label="香りワークショップ トップへ戻る">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-copy">
+          <small>Fragrance Workshop</small>
+          <strong>あなたに合う香りを知る</strong>
+        </span>
+      </a>
+
+      <nav class="main-nav" aria-label="ページ内メニュー">
+        <ul>
+          <li><a href="#flow">流れ</a></li>
+          <li><a href="#questions">質問のイメージ</a></li>
+          <li><a href="#value">体験価値</a></li>
+          <li><a href="#reassurance">安心して進める理由</a></li>
+          <li><a class="header-cta" href="questionnaire.html">香りづくりをはじめる</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="section-inner hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow">Top Page / First View</span>
+          <h1>あなたに合う香りを知る</h1>
+          <p class="lead">
+            これは<strong>診断</strong>ではなく、来店前から始める<strong>香りづくりの準備</strong>です。<br>
+            8問に答えると、今の自分に合いそうな香りの方向が見えてきます。ベースは事前に整え、当日はスタッフと一緒に仕上げます。
+          </p>
+
+          <ul class="hero-points" aria-label="安心材料">
+            <li>8問</li>
+            <li>約1分</li>
+            <li>あとから調整OK</li>
+            <li>予約前に完了</li>
+          </ul>
+
+          <div class="cta-row">
+            <a class="btn btn-primary" href="questionnaire.html">香りづくりをはじめる</a>
+            <a class="btn btn-secondary" href="#questions">どんな質問か見る</a>
+          </div>
+          <p class="helper-note">結果は固定されません。最後はご自身で決められます。</p>
+
+          <div class="hero-footnote" aria-label="ファーストビューで伝える情報">
+            <div class="hero-stat">
+              <strong>何が起きるか</strong>
+              <span>簡単な質問に答えて、香りのベース方向を見つけます。</span>
+            </div>
+            <div class="hero-stat">
+              <strong>どれくらい軽いか</strong>
+              <span>1問1答で、気分や色など直感で選べる質問が中心です。</span>
+            </div>
+            <div class="hero-stat">
+              <strong>その先どうなるか</strong>
+              <span>回答内容は当日の会話の起点になり、店頭で仕上げます。</span>
+            </div>
+          </div>
+        </div>
+
+        <aside class="hero-panel" aria-label="次に進むページのプレビュー">
+          <div class="panel-top">
+            <div class="dots" aria-hidden="true"><span></span><span></span><span></span></div>
+            <span>QUESTION PAGE PREVIEW</span>
+          </div>
+
+          <div class="panel-layout">
+            <div class="preview-stack">
+              <div class="subpanel">
+                <span class="preview-kicker">このあと進む内容</span>
+                <h2 class="preview-title">迷わず答えられて、あとで整えられる</h2>
+                <p class="preview-copy">
+                  まずは答えやすい5問から始まり、途中から少しだけ自分向けの質問へ。最後に香りバランスを微調整して予約へ進みます。
+                </p>
+                <div class="preview-chip-row" aria-label="質問ページの特徴">
+                  <span class="preview-chip">1問1答</span>
+                  <span class="preview-chip">進捗表示</span>
+                  <span class="preview-chip">分岐あり</span>
+                  <span class="preview-chip">5軸を微調整</span>
+                </div>
+                <a class="preview-cta" href="questionnaire.html">8問を始める</a>
+              </div>
+
+              <div class="subpanel">
+                <span class="overline">回答後の見え方</span>
+                <div class="axis-wrap" aria-label="香りバランスの例">
+                  <div class="axis-item"><strong>フローラル</strong><div class="bar"><span></span></div><span>74</span></div>
+                  <div class="axis-item"><strong>フレッシュ</strong><div class="bar"><span></span></div><span>58</span></div>
+                  <div class="axis-item"><strong>ウッディ</strong><div class="bar"><span></span></div><span>43</span></div>
+                  <div class="axis-item"><strong>スパイシー</strong><div class="bar"><span></span></div><span>31</span></div>
+                  <div class="axis-item"><strong>スウィート</strong><div class="bar"><span></span></div><span>49</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="subpanel question-preview">
+              <div class="progress-meta">
+                <span>3 / 8</span>
+                <span>残り5問です</span>
+              </div>
+              <div class="progress" aria-hidden="true"><span></span></div>
+              <h3 class="question-title">好きな色は<br>何ですか？</h3>
+              <p class="question-caption">直感でひとつ選んでください。</p>
+              <ul class="option-list" aria-label="設問の選択肢例">
+                <li class="active">やさしいピンク・ベージュ<small>やわらかさ・華やかさの手がかり</small></li>
+                <li>白・水色・透明感</li>
+                <li>ブラウン・深いグリーン</li>
+                <li>全部好き</li>
+                <li>この中にはない</li>
+              </ul>
+              <div class="split-note">5問目のあとに「ここまでの回答をもとに、あと少しだけお聞きします」と表示され、自分向けの2問へ進みます。</div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="flow" aria-labelledby="flow-heading">
+      <div class="section-inner">
+        <div class="section-header">
+          <span class="eyebrow">3 Step Flow</span>
+          <h2 id="flow-heading">答える → ベースができる → 店頭で完成</h2>
+          <p>トップページで期待を高め、質問ページでは軽く答えられ、予約ページでは来店意思を固める。その流れを崩さないために、トップでは説明しすぎず次へ押しやすい構成にしています。</p>
+        </div>
+
+        <div class="flow-grid">
+          <article class="card">
+            <div class="step-no" aria-hidden="true">1</div>
+            <h3>答える</h3>
+            <p>前半は香り・色・気分・使いたいシーン・音楽など、答えやすい質問だけで進みます。</p>
+            <ul class="flow-bullets">
+              <li>1問1答で、迷わず直感で選べる</li>
+              <li>8問・約1分の軽さを最初から明示</li>
+              <li>途中まででも結果へ進める設計に接続しやすい</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <div class="step-no" aria-hidden="true">2</div>
+            <h3>ベースができる</h3>
+            <p>5問目までは共通、後半2問は回答傾向に応じて少しだけ分岐します。自分向けに聞かれている感触をつくるための設計です。</p>
+            <ul class="flow-bullets">
+              <li>固定5問で土台をそろえる</li>
+              <li>分岐2問で自分向け感を出す</li>
+              <li>最後の1問で今日の仕上がりを微調整</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <div class="step-no" aria-hidden="true">3</div>
+            <h3>店頭で完成</h3>
+            <p>回答内容はそのまま確定結果になるのではなく、当日スタッフと会話を始めるための起点になります。</p>
+            <ul class="flow-bullets">
+              <li>今の傾向と方向性を持って来店できる</li>
+              <li>スタッフは会話のスタート地点を持てる</li>
+              <li>最終決定はご自身が行う</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="questions" aria-labelledby="questions-heading">
+      <div class="section-inner">
+        <div class="section-header">
+          <span class="eyebrow">Question Flow</span>
+          <h2 id="questions-heading">質問ページとの整合性を、その場で想像できるように</h2>
+          <p>トップページから質問ページへ進んだ時の違和感を減らすため、導入・回答中・微調整の流れをあらかじめ見せています。ここで「重そう」「難しそう」を感じさせないことが重要です。</p>
+        </div>
+
+        <div class="question-grid">
+          <article class="qa-card">
+            <span class="overline">導入で伝えること</span>
+            <h3>「8問・約1分・あとから調整できる」を先に伝える</h3>
+            <p>質問ページの入口で見える文言と同じトーンで、トップでも負荷の低さを揃えています。ページ遷移後に急に説明が増える印象を避けます。</p>
+            <ul class="meta-list">
+              <li><strong>まずはあなたの好みを教えてください</strong><br>軽い導入で始め、心理テスト感を出しすぎない</li>
+              <li><strong>8問・約1分</strong><br>開始前に所要時間を見せる</li>
+              <li><strong>あとから香りバランスは調整できます</strong><br>結果が固定される不安を先に外す</li>
+              <li><strong>診断ではなく来店前の準備です</strong><br>全画面で一貫させるメッセージ</li>
+            </ul>
+          </article>
+
+          <div class="question-example" aria-label="質問ページの例">
+            <article class="example-shell">
+              <div class="shell-head">
+                <span>導入</span>
+                <span>約1分で完了</span>
+              </div>
+              <h3 class="shell-title">まずはあなたの好みを教えてください</h3>
+              <p class="shell-sub">質問は8問。各1タップで進みます。あとから香りバランスは調整できます。</p>
+              <div class="shell-inline">
+                <span class="emphasis">香りづくりをはじめる</span>
+                <span>※ 診断ではなく、来店前の準備です</span>
+              </div>
+            </article>
+
+            <article class="example-shell">
+              <div class="shell-head">
+                <span>回答中</span>
+                <span>1問1答 + 進捗表示</span>
+              </div>
+              <h3 class="shell-title">今いちばん惹かれる香りは？</h3>
+              <p class="shell-sub">前半は全員共通。香り・色・気分・利用シーン・音楽からベース傾向をとります。</p>
+              <div class="shell-options">
+                <span>花がふわっと香る</span>
+                <span class="emphasis">みずみずしく爽やか</span>
+                <span>木や森の落ち着き</span>
+                <span>全部好き</span>
+                <span>この中にはない</span>
+              </div>
+              <div class="shell-note">5問目のあとに「ここまでの回答をもとに、あと少しだけお聞きします」と出して、分岐2問へ接続します。</div>
+            </article>
+
+            <article class="example-shell">
+              <div class="shell-head">
+                <span>結果・微調整</span>
+                <span>予約ページへ接続</span>
+              </div>
+              <h3 class="shell-title">香りバランスを微調整してください</h3>
+              <p class="shell-sub">気になる項目だけ少し動かし、その内容を持ったまま予約へ進みます。</p>
+              <div class="shell-inline">
+                <span>フローラル / フレッシュ / ウッディ / スパイシー / スウィート</span>
+                <span class="emphasis">この内容で予約へ進む</span>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="value" aria-labelledby="value-heading">
+      <div class="section-inner">
+        <div class="section-header">
+          <span class="eyebrow">Experience Value</span>
+          <h2 id="value-heading">自分の好みが見えて、スタッフにも話しやすくなる</h2>
+          <p>体験価値は「正しい香りを当てること」ではなく、来店前の気持ちを高めながら、当日の会話を始めやすくすることにあります。だからトップでも結果の断定より、進んでみたくなる見せ方を優先しています。</p>
+        </div>
+
+        <div class="benefits-grid">
+          <article class="card">
+            <span class="overline">ユーザーにとっての価値</span>
+            <h3>「もう半分、香りづくりが始まっている」感覚をつくる</h3>
+            <ul class="benefit-list">
+              <li>今の自分がどの方向に惹かれているか見えやすい</li>
+              <li>当日が少し楽しみになり、来店意欲が高まる</li>
+              <li>スタッフに希望を伝える最初の言葉を持てる</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <span class="overline">スタッフにとっての価値</span>
+            <h3>「無」から始めない接客につなげる</h3>
+            <ul class="benefit-list">
+              <li>共通5問でベース傾向を読みやすくそろえられる</li>
+              <li>分岐2問で今日の提案方向をつかみやすい</li>
+              <li>最終的には会話の中で仕上げる前提を保てる</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="reassurance" aria-labelledby="reassurance-heading" class="faq">
+      <div class="section-inner">
+        <div class="section-header">
+          <span class="eyebrow">Reassurance</span>
+          <h2 id="reassurance-heading">結果は固定されない。最後は自分で決める。</h2>
+          <p>トップページで不安を減らすために、重たい専門説明より先に、安心して進める条件を明確にしています。きれいな世界観だけで終わらせず、「何をするページか」が伝わるようにしています。</p>
+        </div>
+
+        <div class="reassure-grid">
+          <article class="card">
+            <span class="overline">安心情報</span>
+            <h3>押しやすさを阻害しないためのルール</h3>
+            <div class="reassure-list">
+              <div class="reassure-item">
+                <strong>結果を断定しない</strong>
+                <p>回答は提案の起点です。当日の香りは店頭で調整し、最終的にはご自身で決めます。</p>
+              </div>
+              <div class="reassure-item">
+                <strong>最初から重くしない</strong>
+                <p>香料の専門説明や深いパーソナル要素は前面に出さず、まずは始めやすさを優先します。</p>
+              </div>
+              <div class="reassure-item">
+                <strong>導線を深くしない</strong>
+                <p>ファーストビュー、質問イメージ、最後の再CTAまで、どの段でも質問ページへ進めます。</p>
+              </div>
+            </div>
+          </article>
+
+          <div>
+            <div class="faq-grid">
+              <details open>
+                <summary>どんなことを聞かれますか？</summary>
+                <p>香り・色・気分・使いたいシーン・音楽など、直感で答えやすい内容が中心です。前半5問は全員共通で、後半2問だけ少し自分向けに変わります。</p>
+              </details>
+              <details>
+                <summary>本当に1分くらいで終わりますか？</summary>
+                <p>1問1答で進む前提なので、読み物のように長くはなりません。迷いにくい選択肢を使い、所要時間の感覚と実体験がずれにくい構成です。</p>
+              </details>
+              <details>
+                <summary>結果はそのまま確定しますか？</summary>
+                <p>確定しません。最後に5軸の香りバランスを少し動かせて、店頭でもスタッフと一緒に仕上げていきます。</p>
+              </details>
+              <details>
+                <summary>予約前にやる意味はありますか？</summary>
+                <p>あります。来店前に方向性が少し見えていると、当日の会話が始めやすくなり、スタッフ側もベースの提案を準備しやすくなります。</p>
+              </details>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-section" aria-labelledby="cta-heading">
+      <div class="section-inner">
+        <div class="cta-box">
+          <div>
+            <span class="eyebrow">Final Call To Action</span>
+            <h2 id="cta-heading">今の自分に合う香りの方向を、まずは気軽に見つける</h2>
+            <p>トップページの役割は、世界観を見せるだけでなく、次へ押させることです。ここでは説明しすぎず、質問ページでの体験を想像できる状態まで整えています。準備ができたら、そのまま8問へ進んでください。</p>
+          </div>
+          <div class="cta-actions">
+            <a class="btn btn-primary" href="questionnaire.html">香りづくりをはじめる</a>
+            <a class="btn btn-secondary" href="#top">上へ戻る</a>
+            <p class="helper-note">8問・約1分・あとから調整OK</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p>Fragrance Workshop Landing Page</p>
+      <p>診断ではなく、来店前の準備として設計されたトップページ</p>
+    </div>
+  </footer>
+
+  <div class="floating-cta only-mobile" aria-label="固定CTA">
+    <p><strong>8問・約1分で開始</strong>今の自分に合いそうな香りの方向を見つけます</p>
+    <a class="btn btn-primary" href="questionnaire.html">始める</a>
+  </div>
+</body>
+</html>
