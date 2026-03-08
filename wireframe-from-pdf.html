@@ -20,218 +20,287 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
-    * {
-      box-sizing: border-box;
-    }
-    .app-shell {
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+
+    .frame {
       height: 100dvh;
-      display: grid;
-      grid-template-rows: 15fr 75fr 10fr;
-      gap: 0.75rem;
-      padding: 0.75rem;
       overflow: hidden;
-    }
-    .header-grid {
-      height: 100%;
+      padding: 10px;
+      background: #f5f4f2;
       display: grid;
-      grid-template-columns: 20% 50% 30%;
-      gap: 0.6rem;
-      align-items: center;
+      grid-template-rows: 7% 9% 70% 14%;
+      gap: 10px;
     }
-    .nav-full {
+
+    .browser-bar {
+      border-radius: 10px;
+      background: #e2dfdb;
+      border: 1px solid #ddd7cf;
       display: flex;
+      align-items: center;
+      padding: 0 12px;
     }
-    .nav-hamburger {
-      display: none;
-    }
-    .main-grid {
-      height: 100%;
+
+    .steps {
       display: grid;
-      grid-template-rows: 15fr 70fr 15fr;
-      gap: 0.7rem;
-      padding-inline: 5%;
-    }
-    .main-nav {
-      display: grid;
-      grid-template-columns: 20% 20% 1fr;
-      gap: 0.5rem;
+      grid-template-columns: 12% 12% 1fr;
+      gap: 10px;
       align-items: center;
     }
-    .main-columns {
+
+    .step-btn {
+      height: 100%;
+      border-radius: 8px;
+      border: 1px solid #d8cdc2;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .main {
       display: grid;
-      grid-template-columns: 30% 40% 30%;
-      gap: 0.7rem;
+      grid-template-columns: 19% 47% 34%;
+      gap: 14px;
       min-height: 0;
     }
-    .bottom-row {
-      display: grid;
-      grid-template-columns: 20% 50% 30%;
-      gap: 0.7rem;
+
+    .left-nav { display: grid; grid-template-rows: repeat(3, 17%); gap: 14px; align-content: start; }
+
+    .left-item {
+      border-radius: 7px;
+      border: 1px solid #cfb8a8;
+      background: #eef3ea;
+      padding: 10px 14px;
+      font-size: 30px;
+      font-weight: 500;
+      display: flex;
       align-items: center;
+      justify-content: center;
     }
-    .left-cards {
-      height: 100%;
+
+    .left-item.two { background: #f6efee; border-color: #d9a7a1; }
+    .left-item.three { background: #edf2f8; border-color: #abc0d3; }
+
+    .center {
+      border: 1px solid #cdbeb1;
+      border-radius: 6px;
+      background: #f7f6f4;
+      padding: 18px 20px 14px;
+      display: grid;
+      grid-template-rows: 12% 20% 20% 20% 16%;
+      gap: 12px;
+      min-height: 0;
+    }
+
+    .q-title { font-size: 46px; font-weight: 700; line-height: 1; color: #17324f; }
+    .mobile-progress { display: none; }
+
+    .choice {
+      border: 1px solid #dbcfc3;
+      border-radius: 6px;
       display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 1.25%;
+      align-items: center;
+      justify-content: center;
+      font-size: 46px;
+      font-weight: 700;
+      color: #17324f;
+      background-size: cover;
+      background-position: center;
+      overflow: hidden;
     }
-    .left-card {
-      flex: 0 0 15%;
-      padding: 5%;
+
+    .choice.a {
+      background-image: linear-gradient(rgba(245, 241, 236, 0.72), rgba(245, 241, 236, 0.72)), url('https://images.unsplash.com/photo-1525310072745-f49212b5ac6d?auto=format&fit=crop&w=1200&q=60');
     }
-    .center-panel {
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 1.67%;
-    }
-    .question-title {
-      flex: 0 0 15%;
-    }
-    .choice-row {
-      flex: 0 0 20%;
-    }
+    .choice.b { background: #dbe2da; }
+    .choice.c { background: #dbe5ef; }
+
     .choice-bottom {
-      flex: 0 0 15%;
       display: grid;
       grid-template-columns: 5% 40% 10% 40% 5%;
       align-items: center;
     }
-    .right-column {
+
+    .small-btn {
       height: 100%;
-      display: grid;
-      grid-template-rows: 62% 38%;
-      gap: 0.7rem;
+      border-radius: 6px;
+      border: 1px solid #d5c4b5;
+      background: #f5f3f0;
+      font-size: 28px;
+      color: #333;
     }
-    @media (max-width: 767px) {
-      .header-grid {
-        grid-template-columns: 20% 70% 10%;
+
+    .right {
+      display: grid;
+      grid-template-rows: 63% 37%;
+      gap: 12px;
+      min-height: 0;
+    }
+
+    .visual {
+      border-radius: 48px;
+      border: 1px solid #ccb9a6;
+      background: #ebdac4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 54px;
+      line-height: 1.2;
+      letter-spacing: 0.2em;
+      text-align: center;
+    }
+
+    .tips {
+      border-radius: 28px 28px 0 0;
+      border: 1px solid #a2b09d;
+      background: #a7b89f;
+      padding: 12px 16px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      font-size: 52px;
+      font-weight: 500;
+    }
+
+    .bottom {
+      display: grid;
+      grid-template-columns: 4% 56% 4% 30% 6%;
+      align-items: center;
+    }
+
+    .note-box,
+    .next-btn {
+      height: 72%;
+      border-radius: 14px;
+      background: #ece7e4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #4a4a4a;
+      font-size: 38px;
+    }
+
+    @media (max-width: 1200px) {
+      .left-item { font-size: 18px; }
+      .q-title { font-size: 28px; }
+      .choice { font-size: 34px; }
+      .small-btn { font-size: 20px; }
+      .visual { font-size: 36px; }
+      .tips { font-size: 30px; }
+      .note-box, .next-btn { font-size: 22px; }
+    }
+
+    @media (max-width: 900px) {
+      .frame { grid-template-rows: 8% 9% 69% 14%; gap: 8px; padding: 8px; }
+      .main { grid-template-columns: 20% 48% 32%; gap: 8px; }
+      .steps { grid-template-columns: 18% 18% 1fr; }
+    }
+
+    @media (max-width: 640px) and (orientation: portrait) {
+      .frame {
+        grid-template-rows: 100%;
+        padding: 6px;
+        gap: 0;
       }
-      .nav-full {
-        display: none !important;
+      .browser-bar,
+      .steps,
+      .left-nav,
+      .right,
+      .bottom {
+        display: none;
       }
-      .nav-hamburger {
-        display: flex !important;
+      .main {
+        display: block;
+        height: 100%;
       }
-      .mobile-menu {
+      .center {
+        height: 100%;
+        border-radius: 14px;
+        padding: 14px 12px;
+        grid-template-rows: auto auto repeat(5, 1fr);
+        gap: 10px;
+      }
+      .q-title {
+        font-size: 48px;
+        text-align: center;
+        line-height: 1.2;
+      }
+      .mobile-progress {
         display: block;
       }
-    }
-    @media (min-width: 768px) {
-      .nav-hamburger {
-        display: none !important;
+      .choice {
+        font-size: 30px;
       }
-      .nav-full {
-        display: flex !important;
+      .choice.a {
+        background-image: none;
+        background-color: #ece5df;
       }
-      .mobile-menu {
-        display: none !important;
+      .choice-bottom {
+        grid-template-columns: 0 1fr 0 1fr 0;
+        gap: 10px;
+      }
+      .small-btn {
+        font-size: 28px;
       }
     }
   </style>
 </head>
-<body class="m-0 h-full overflow-hidden bg-[#f5f4f2] text-gray-800 dark:bg-gray-50">
-  <div>
-    <div class="app-shell">
-      <header class="header-grid relative py-1">
-        <div class="h-[86%] self-center rounded-lg border border-[#d8d3cd] bg-[#e7e2de] px-4 py-3 flex items-center text-xl font-bold">LOGO</div>
-        <div class="h-[86%] self-center rounded-lg border border-[#d8d3cd] bg-[#dedbd7] px-4 py-3 flex items-center text-lg font-semibold">
-          香りワークショップ PC問 ワイヤーフレーム
+<body class="h-full bg-[#f5f4f2] text-gray-900 dark:bg-gray-50">
+  <div class="frame">
+    <header class="browser-bar">
+      <div class="h-2 w-2 rounded-full bg-[#d7b1a7]"></div>
+      <div class="ml-2 h-2 w-2 rounded-full bg-[#d9ccc0]"></div>
+      <div class="ml-2 h-2 w-2 rounded-full bg-[#b7c7b2]"></div>
+    </header>
+
+    <section class="steps">
+      <div class="step-btn bg-[#eee6e6]">STEP1</div>
+      <div class="step-btn bg-[#e1e8df]">STEP2</div>
+      <div></div>
+    </section>
+
+    <main class="main">
+      <aside class="left-nav">
+        <div class="left-item">Q6 身につけた時の印象</div>
+        <div class="left-item two">Q7 甘さの出方</div>
+        <div class="left-item three">Q8 今日の仕上がり</div>
+      </aside>
+
+      <section class="center">
+        <h1 class="q-title">好きな色は<br>何ですか？</h1>
+        <div class="mobile-progress">
+          <p class="text-center text-[20px] text-[#17324f]">3 / 8　残り5問です</p>
+          <div class="mx-auto mt-2 h-3 w-[82%] rounded-full bg-[#e5e0da]">
+            <div class="h-3 w-[37.5%] rounded-full bg-[#d6a8a0]"></div>
+          </div>
         </div>
-        <nav class="nav-full h-[86%] self-center rounded-lg border border-[#d8d3cd] bg-[#dbe1d6] px-4 py-3 flex items-center justify-end gap-4 text-sm">
-          <span>TOP</span>
-          <span>STEP</span>
-          <span>HELP</span>
-        </nav>
-        <button id="menuToggle" class="nav-hamburger h-[86%] w-full self-center rounded-lg border border-[#d8d3cd] bg-[#dbe1d6] items-center justify-center text-xl" aria-label="メニュー" aria-expanded="false" aria-controls="mobileMenu">
-          ☰
-        </button>
-        <nav id="mobileMenu" class="mobile-menu absolute right-0 top-[100%] z-20 mt-2 hidden w-[160px] rounded-lg border border-[#d8d3cd] bg-[#dbe1d6] p-2 shadow-md">
-          <a href="#" class="block rounded px-3 py-2 text-sm hover:bg-[#cfd8ca]">TOP</a>
-          <a href="#" class="mt-1 block rounded px-3 py-2 text-sm hover:bg-[#cfd8ca]">STEP</a>
-          <a href="#" class="mt-1 block rounded px-3 py-2 text-sm hover:bg-[#cfd8ca]">HELP</a>
-        </nav>
-      </header>
-
-      <main class="main-grid">
-        <section class="main-nav rounded-md border border-[#cdbeb1] bg-[#eee9e3] px-3 py-2">
-          <div class="h-full rounded-md border border-[#d7a8a2] bg-[#f0ece8] flex items-center justify-center font-semibold">STEP1</div>
-          <div class="h-full rounded-md border border-[#d9cab7] bg-[#f0ece8] flex items-center justify-center font-semibold">STEP2（現在）</div>
+        <button class="choice a">やさしいピンク・ベージュ</button>
+        <button class="choice b">白・水色・透明感</button>
+        <button class="choice c">ブラウン・深いグリーン</button>
+        <div class="choice-bottom">
           <div></div>
-        </section>
-
-        <section class="main-columns">
-          <aside class="left-cards rounded-md border border-[#cdbeb1] bg-[#f4f2ef] p-2">
-            <div class="left-card rounded-md border border-[#d7a8a2] bg-[#ebe8e6]"></div>
-            <div class="left-card rounded-md border border-[#d7a8a2] bg-[#ebe8e6]"></div>
-            <div class="left-card rounded-md border border-[#d7a8a2] bg-[#ebe8e6]"></div>
-            <div class="left-card rounded-md border border-[#d9cab7] bg-[#efedeb]"></div>
-            <div class="left-card rounded-md border border-[#d9cab7] bg-[#efedeb]"></div>
-          </aside>
-
-          <section class="center-panel rounded-md border border-[#cdbeb1] bg-[#f4f2ef] px-4 py-3">
-            <div class="question-title">
-              <h1 class="text-2xl font-black tracking-[0.08em]">Q ？？？？？？？</h1>
-              <!--固定パネル内で選択。3つの画像つき選択肢 + 中立ボタン2つで構成。-->
-            </div>
-            <button class="choice-row rounded border border-[#d2b9a8] bg-[#ece8e5] text-xl font-bold">選択肢 A</button>
-            <button class="choice-row rounded border border-[#c3cbbf] bg-[#dee3dc] text-xl font-bold">選択肢 B</button>
-            <button class="choice-row rounded border border-[#c4cdd8] bg-[#e3e9ef] text-xl font-bold">選択肢 C</button>
-            <div class="choice-bottom">
-              <div></div>
-              <button class="h-full rounded border border-[#d2b9a8] bg-[#f3f1ef] text-sm">全部好き</button>
-              <div></div>
-              <button class="h-full rounded border border-[#d2b9a8] bg-[#f3f1ef] text-sm">この中にはない</button>
-              <div></div>
-            </div>
-          </section>
-
-          <aside class="right-column">
-            <div class="rounded-[34px] border border-[#ccb9a6] bg-[#e8d5c0] flex items-center justify-center">
-              <!--店舗雰囲気イメージ画像-->
-            </div>
-            <div class="rounded-2xl border border-[#a8b4a4] bg-[#b9c5b2] p-3">
-              <h2 class="text-2xl font-bold leading-none">豆知識</h2>
-                <!--ランダムで20パターン程度の香水に関する豆知識が表示される。将来的な拡張要素。日にちに応じた豆知識も。-->
-            </div>
-          </aside>
-        </section>
-
-        <section class="bottom-row rounded-md border border-[#cdbeb1] bg-[#eee9e3] px-3 py-2">
+          <button class="small-btn">全部好き</button>
           <div></div>
-          <p class="h-full rounded-md bg-[#e4dfdc] px-4 py-3 text-sm text-gray-700 flex items-center">
-           <!-- 左は進行ナビ、中央は固定回答パネル。回答すると次の質問へ進み、前の質問にも戻れる。 -->
-          </p>
-          <button class="h-full rounded-md bg-[#e4dfdc] px-4 py-3 text-sm text-gray-700">次のSTEPへ進む</button>
-        </section>
-      </main>
+          <button class="small-btn">この中にはない</button>
+          <div></div>
+        </div>
+      </section>
 
-      <footer class="rounded-md border border-[#d8d3cd] bg-[#f1ece7] px-4 py-2 text-sm text-gray-600 flex items-center">
-        Browser ratio: 12:6.5 / Layout: Header 15% - Main 75% - Footer 10%
-      </footer>
-    </div>
+      <aside class="right">
+        <div class="visual">店<br>舗<br>の<br>雰<br>囲<br>気<br>画<br>像</div>
+        <div class="tips">豆知識</div>
+      </aside>
+    </main>
+
+    <footer class="bottom">
+      <div></div>
+      <div class="note-box">解答をもとにグラフを表示する</div>
+      <div></div>
+      <button class="next-btn">次のステップへ進む</button>
+      <div></div>
+    </footer>
   </div>
-  <script>
-    const menuToggle = document.getElementById('menuToggle');
-    const mobileMenu = document.getElementById('mobileMenu');
-
-    if (menuToggle && mobileMenu) {
-      menuToggle.addEventListener('click', () => {
-        const isHidden = mobileMenu.classList.contains('hidden');
-        mobileMenu.classList.toggle('hidden');
-        menuToggle.setAttribute('aria-expanded', String(isHidden));
-      });
-
-      document.addEventListener('click', (event) => {
-        const target = event.target;
-        if (!mobileMenu.contains(target) && !menuToggle.contains(target)) {
-          mobileMenu.classList.add('hidden');
-          menuToggle.setAttribute('aria-expanded', 'false');
-        }
-      });
-    }
-  </script>
 </body>
 </html>
