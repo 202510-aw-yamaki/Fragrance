@@ -272,10 +272,12 @@
     #question-preview .pc-preview {
       display: grid;
       gap: 10px;
-      grid-template-columns: minmax(110px, 28%) 1fr;
+      grid-template-columns: 128px minmax(0, 1fr) 156px;
+      align-items: start;
     }
     #question-preview .pc-nav,
     #question-preview .pc-main,
+    #question-preview .pc-side,
     #question-preview .mobile-screen {
       border: 1px solid var(--line);
       background: rgba(255,255,255,.9);
@@ -288,6 +290,31 @@
       display: grid;
       gap: 4px;
       font-size: .78rem;
+      color: var(--muted);
+    }
+    #question-preview .pc-side {
+      display: grid;
+      gap: 8px;
+    }
+    #question-preview .pc-store {
+      min-height: 148px;
+      border-radius: 10px;
+      border: 1px dashed #ccb9a8;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,.88), rgba(245,239,232,.76)),
+        radial-gradient(circle at 70% 30%, rgba(223,233,239,.7), transparent 40%);
+      padding: 10px;
+      display: grid;
+      align-content: end;
+      font-size: .74rem;
+      color: var(--muted);
+    }
+    #question-preview .pc-note {
+      padding: 9px 10px;
+      border-radius: 10px;
+      background: rgba(241,223,207,.45);
+      border: 1px solid rgba(230,221,210,.92);
+      font-size: .74rem;
       color: var(--muted);
     }
     #question-preview .branch-note {
@@ -411,6 +438,25 @@
       grid-template-columns: 1fr;
       align-items: center;
     }
+    .value-visual,
+    .cta-media {
+      min-height: 220px;
+      border-radius: var(--radius-lg);
+      border: 1px dashed #ccb9a8;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,.9), rgba(245,239,232,.75)),
+        radial-gradient(circle at 75% 25%, rgba(223,233,239,.75), transparent 42%);
+      padding: 16px;
+      display: grid;
+      align-content: end;
+      color: var(--muted);
+    }
+    .value-visual strong,
+    .cta-media strong {
+      display: block;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
     .cta-actions {
       display: flex;
       flex-direction: column;
@@ -489,15 +535,14 @@
       }
       .hero-gallery { grid-template-columns: repeat(3, minmax(0, 1fr)); }
       .flow-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-      .benefits-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .benefits-grid { grid-template-columns: 1.1fr 1fr 1fr; }
       .reassure-grid { grid-template-columns: 1.15fr .85fr; }
-      #question-preview .preview-layout { grid-template-columns: 1fr 1fr; }
-      .balance-grid { grid-template-columns: .95fr 1.05fr; }
+      #question-preview .preview-layout { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); }
+      .cta-box { grid-template-columns: minmax(0, 1.1fr) minmax(280px, .9fr); }
       .faq-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
       .preview-pc { display: block; }
       .preview-mobile { display: none; }
-      #question-preview .pc-preview { grid-template-columns: minmax(110px, 28%) 1fr; }
     }
 
     @media (max-width: 48em) {
@@ -626,15 +671,25 @@
             <div class="shell-head"><strong>PC版プレビュー</strong><span>見渡せる段階構成</span></div>
             <div class="pc-preview">
               <div class="pc-nav">
-                <ol><li>Q1-Q5 固定質問</li><li>Q6-Q7 分岐質問</li><li>Q8 今日の仕上がり</li></ol>
+                <ol>
+                  <li>Q1 惹かれる香り</li>
+                  <li>Q2 好きな色</li>
+                  <li>Q3 なりたい気分</li>
+                  <li>Q4 使いたい時</li>
+                  <li>Q5 好きな音楽</li>
+                </ol>
               </div>
               <div class="pc-main">
-                <h3 class="shell-title">Q7A 甘さの出方はどれが近いですか？</h3>
-                <div class="branch-note">ここまでの回答をもとに、あと少しだけお聞きします</div>
-                <div class="option-row"><span class="thumb" aria-hidden="true"></span><span>A ふわっと最初に香る</span></div>
-                <div class="option-row"><span class="thumb" aria-hidden="true"></span><span>B 時間とともにやさしく</span></div>
-                <div class="option-row"><span class="thumb" aria-hidden="true"></span><span>C 甘さは控えめがいい</span></div>
+                <h3 class="shell-title">Q3 どんな気分になりたいですか？</h3>
+                <div class="branch-note">5問すべて答えると、あなた向けの追加質問へ進みます</div>
+                <div class="option-row"><span class="thumb" aria-hidden="true"></span><span>A やさしく癒やされたい</span></div>
+                <div class="option-row"><span class="thumb" aria-hidden="true"></span><span>B すっきり切り替えたい</span></div>
+                <div class="option-row"><span class="thumb" aria-hidden="true"></span><span>C 自分らしさを出したい</span></div>
                 <div class="minor-options"><span>全部好き</span><span>この中にはない</span></div>
+              </div>
+              <div class="pc-side">
+                <div class="pc-store"><span>店舗画像予定</span></div>
+                <div class="pc-note">豆知識：トップノートは、つけた直後に感じる第一印象の香りです。</div>
               </div>
             </div>
           </article>
@@ -700,6 +755,12 @@
           <p>来店前に準備しておくことで、当日の体験がよりスムーズになります。</p>
         </div>
         <div class="benefits-grid">
+          <article class="value-visual" aria-label="体験価値エリアの画像プレースホルダー">
+            <div>
+              <strong>画像予定</strong>
+              <span>ここに体験価値を伝えるビジュアルを配置</span>
+            </div>
+          </article>
           <article class="card">
             <span class="overline">ユーザーにとっての価値</span>
             <h3>「もう半分、香りづくりが始まっている」感覚をつくる</h3>
@@ -783,11 +844,17 @@
             <span class="eyebrow">Final Call To Action</span>
             <h2 id="cta-heading">来店前の1分で、香りづくりをもっと話しやすく</h2>
             <p>診断で決め切るのではなく、当日の会話を始めやすくするための準備ページです。まずは8問から、自分に合いそうな方向を見つけてください。</p>
+            <div class="cta-actions">
+              <a class="btn btn-primary" href="questionnaire.html">香りづくりをはじめる</a>
+              <a class="btn btn-secondary" href="#top">上へ戻る</a>
+              <p class="helper-note">8問・約1分・あとから調整OK</p>
+            </div>
           </div>
-          <div class="cta-actions">
-            <a class="btn btn-primary" href="questionnaire.html">香りづくりをはじめる</a>
-            <a class="btn btn-secondary" href="#top">上へ戻る</a>
-            <p class="helper-note">8問・約1分・あとから調整OK</p>
+          <div class="cta-media" aria-label="最終CTAエリアの画像プレースホルダー">
+            <div>
+              <strong>画像予定</strong>
+              <span>ここに来店前の期待感を高めるビジュアルを配置</span>
+            </div>
           </div>
         </div>
       </div>
