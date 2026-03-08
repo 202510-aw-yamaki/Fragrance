@@ -1,1356 +1,829 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="ja">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>香りワークショップ | あなたに合う香りを知る</title>
-  <meta name="description" content="8問・約1分。診断ではなく、来店前から始める香りづくりの準備。回答をもとにベースを整え、当日はスタッフと一緒に仕上げます。">
-  <meta name="theme-color" content="#f5efe7">
-  <meta property="og:title" content="香りワークショップ | あなたに合う香りを知る">
-  <meta property="og:description" content="8問・約1分・あとから調整OK。来店前の準備として、今の自分に合う香りの方向を見つけるページです。">
-  <meta property="og:type" content="website">
+  <title>香りワークショップ | 来店前の香りづくり準備</title>
+  <meta name="description" content="あなたに合う香りを知るための来店前準備。8問・約1分・あとから調整OK。スタッフと一緒に当日仕上げます。">
   <style>
     :root {
-      --bg: #fcf8f3;
-      --bg-soft: #f5efe7;
-      --surface: rgba(255,255,255,.84);
-      --surface-strong: #fffdfb;
+      --bg: #fbf7f2;
+      --surface: #fffdf9;
+      --surface-2: #f5efe8;
       --line: #e6ddd2;
-      --line-strong: #d9cbbd;
-      --text: #2f2925;
-      --muted: #6f665f;
-      --accent: #ba8155;
-      --accent-deep: #9c6740;
-      --accent-soft: #f1dfcf;
-      --green: #dfe9de;
-      --green-deep: #6d8570;
-      --blue-soft: #dfe9ef;
-      --shadow: 0 18px 42px rgba(80, 63, 48, 0.10);
-      --shadow-soft: 0 10px 28px rgba(80, 63, 48, 0.08);
-      --radius-xl: 28px;
-      --radius-lg: 22px;
+      --text: #2f2824;
+      --muted: #6f6660;
+      --accent: #a86f4a;
+      --accent-strong: #8f5c3c;
+      --sage: #dce8de;
+      --sky: #dce7f1;
+      --rose: #efdcd8;
+      --shadow: 0 16px 36px rgba(77, 58, 44, 0.12);
+      --radius-lg: 24px;
       --radius-md: 16px;
       --radius-sm: 12px;
-      --container: min(1160px, calc(100% - 40px));
+      --container: min(1120px, calc(100% - 32px));
     }
 
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
     body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+      font-family: "Hiragino Sans", "Yu Gothic", "Noto Sans JP", system-ui, sans-serif;
       color: var(--text);
       background:
-        radial-gradient(circle at top left, rgba(239, 219, 199, .58), transparent 28%),
-        radial-gradient(circle at top right, rgba(222, 233, 222, .58), transparent 30%),
-        linear-gradient(180deg, #f9f4ed 0%, #fcf8f3 34%, #fffdf9 100%);
+        radial-gradient(circle at 0% 0%, rgba(239, 220, 210, 0.5), transparent 32%),
+        radial-gradient(circle at 100% 0%, rgba(220, 232, 222, 0.5), transparent 30%),
+        linear-gradient(180deg, #f8f3ed 0%, #fbf7f2 36%, #fffdf9 100%);
       line-height: 1.7;
-      letter-spacing: .02em;
+      letter-spacing: 0.02em;
     }
 
     a { color: inherit; }
-    img, svg { display: block; max-width: 100%; }
+    img, svg { max-width: 100%; display: block; }
 
-    .skip-link {
-      position: absolute;
-      left: 12px;
-      top: -100px;
-      padding: 10px 14px;
-      background: #111;
-      color: #fff;
-      border-radius: 10px;
-      z-index: 1000;
-    }
-    .skip-link:focus { top: 12px; }
-
-    .site-header {
-      position: sticky;
-      top: 0;
-      z-index: 40;
-      backdrop-filter: blur(18px);
-      background: rgba(252, 248, 243, .78);
-      border-bottom: 1px solid rgba(230, 221, 210, .88);
-    }
-
-    .header-inner,
-    .section-inner,
-    .footer-inner {
+    .section-inner {
       width: var(--container);
       margin: 0 auto;
     }
 
-    .header-inner {
-      min-height: 78px;
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 80;
+      background: rgba(251, 247, 242, 0.82);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(10px);
+    }
+    .site-header .section-inner {
+      min-height: 64px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 20px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
       gap: 12px;
+    }
+    .brand {
+      font-weight: 700;
+      font-size: 0.95rem;
       text-decoration: none;
-      min-width: 0;
+      letter-spacing: 0.04em;
     }
-
-    .brand-mark {
-      width: 42px;
-      height: 42px;
-      border-radius: 14px;
-      border: 1px solid rgba(186, 129, 85, .20);
-      background:
-        radial-gradient(circle at 35% 30%, rgba(255,255,255,.95), rgba(255,255,255,.25) 34%, transparent 35%),
-        linear-gradient(135deg, rgba(241,223,207,.95), rgba(223,233,222,.95));
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.9);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .brand-mark::after {
-      content: "";
-      position: absolute;
-      inset: 9px 12px;
-      border-radius: 999px;
-      border: 1.5px solid rgba(156, 103, 64, .62);
-      border-top-color: transparent;
-      border-left-color: transparent;
-      transform: rotate(45deg);
-    }
-
-    .brand-copy { min-width: 0; }
-    .brand-copy small,
-    .eyebrow,
-    .overline {
-      display: block;
+    .header-link {
+      font-size: 0.88rem;
       color: var(--muted);
-      font-size: .82rem;
-      letter-spacing: .08em;
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+    }
+    .header-link:hover,
+    .header-link:focus-visible {
+      border-bottom-color: var(--muted);
+    }
+
+    .eyebrow {
+      font-size: 0.8rem;
       text-transform: uppercase;
-    }
-
-    .brand-copy strong {
-      display: block;
-      font-size: .98rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .main-nav ul {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
-
-    .main-nav a {
-      text-decoration: none;
+      letter-spacing: 0.1em;
       color: var(--muted);
-      font-size: .95rem;
-    }
-    .main-nav a:hover,
-    .main-nav a:focus-visible { color: var(--text); }
-
-    .main-nav .header-cta {
-      color: #fff;
-      margin-left: 6px;
+      margin-bottom: 8px;
+      display: block;
     }
 
-    .header-cta,
+    h1, h2, h3, p { margin: 0; }
+
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 50px;
+      min-height: 48px;
+      padding: 0 20px;
       border-radius: 999px;
       text-decoration: none;
       font-weight: 700;
-      transition: transform .18s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease;
+      border: 1px solid transparent;
+      transition: .18s ease;
     }
-
-    .header-cta,
     .btn-primary {
-      padding: 0 20px;
-      background: linear-gradient(180deg, var(--accent) 0%, var(--accent-deep) 100%);
-      border: 1px solid rgba(156, 103, 64, .18);
+      background: linear-gradient(180deg, var(--accent), var(--accent-strong));
       color: #fff;
-      box-shadow: 0 12px 26px rgba(156, 103, 64, .18);
+      box-shadow: 0 12px 24px rgba(143, 92, 60, 0.25);
     }
-
-    .btn-secondary {
-      padding: 0 18px;
-      background: rgba(255,255,255,.78);
-      border: 1px solid var(--line);
+    .btn-sub {
+      background: rgba(255,255,255,0.75);
+      border-color: var(--line);
       color: var(--text);
     }
+    .btn:hover, .btn:focus-visible { transform: translateY(-1px); }
 
-    .header-cta:hover,
-    .header-cta:focus-visible,
-    .btn:hover,
-    .btn:focus-visible {
-      transform: translateY(-1px);
-      box-shadow: 0 16px 34px rgba(80, 63, 48, .14);
-    }
+    section { padding: 72px 0; }
 
-    main section {
-      padding: 84px 0;
-    }
-
-    .hero {
-      padding-top: 44px;
-      padding-bottom: 72px;
-    }
-
-    .hero-grid {
+    .hero { padding-top: 28px; }
+    .hero-wrap {
       display: grid;
-      grid-template-columns: minmax(0, 1.05fr) minmax(320px, .95fr);
-      gap: 28px;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 20px;
       align-items: stretch;
     }
-
-    .glass-card,
-    .card,
-    .qa-card,
-    .cta-box,
-    .faq details,
-    .floating-cta,
-    .hero-panel,
-    .subpanel {
-      background: var(--surface);
-      border: 1px solid rgba(230, 221, 210, .92);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(18px);
-    }
-
-    .hero-copy {
-      padding: 34px;
-      border-radius: var(--radius-xl);
-      background: linear-gradient(180deg, rgba(255,255,255,.84), rgba(255,252,248,.84));
-      border: 1px solid rgba(230, 221, 210, .92);
-      box-shadow: var(--shadow);
-    }
-
-    .hero h1 {
-      margin: 14px 0 18px;
-      font-size: clamp(2.3rem, 5vw, 4.8rem);
-      line-height: 1.06;
-      letter-spacing: .01em;
-    }
-
-    .lead {
-      margin: 0 0 22px;
-      color: var(--muted);
-      font-size: 1.08rem;
-      max-width: 40rem;
-    }
-
-    .lead strong { color: var(--text); }
-
-    .hero-points,
-    .meta-list,
-    .value-list,
-    .benefit-list,
-    .flow-bullets {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .hero-points {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 24px;
-    }
-
-    .hero-points li,
-    .mini-chip,
-    .preview-chip {
-      padding: 10px 14px;
-      border-radius: 999px;
-      font-size: .95rem;
-      border: 1px solid rgba(109, 133, 112, .22);
-      background: rgba(255,255,255,.76);
-    }
-
-    .cta-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      align-items: center;
-      margin-bottom: 16px;
-    }
-
-    .helper-note {
-      margin: 0;
-      color: var(--muted);
-      font-size: .92rem;
-    }
-
-    .hero-footnote {
-      margin-top: 22px;
-      padding-top: 18px;
-      border-top: 1px solid rgba(230, 221, 210, .92);
+    .hero-gallery {
+      margin-top: 16px;
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 12px;
     }
-
-    .hero-stat {
-      padding: 14px 16px;
-      border-radius: 16px;
-      background: rgba(255,255,255,.64);
-      border: 1px solid rgba(230, 221, 210, .82);
-    }
-
-    .hero-stat strong {
-      display: block;
-      font-size: 1.08rem;
-      margin-bottom: 4px;
-    }
-
-    .hero-stat span {
-      color: var(--muted);
-      font-size: .9rem;
-    }
-
-    .hero-panel {
-      padding: 18px;
-      border-radius: var(--radius-xl);
+    .hero-shot {
+      min-height: 120px;
+      border-radius: var(--radius-md);
+      border: 1px dashed #ccb9a8;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.85), rgba(245, 239, 232, 0.7)),
+        radial-gradient(circle at 80% 20%, rgba(220,231,241,0.5), transparent 45%);
+      padding: 12px;
       display: grid;
-      gap: 16px;
-      align-content: start;
-      background: linear-gradient(180deg, rgba(255,255,255,.88), rgba(250,244,236,.82));
+      align-content: space-between;
     }
-
-    .panel-top {
+    .hero-shot strong {
+      font-size: 0.86rem;
+      line-height: 1.4;
+    }
+    .hero-shot span {
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+    .hero-copy,
+    .hero-visual,
+    .card,
+    .preview-shell,
+    .reassure-item,
+    .cta-box {
+      background: rgba(255,255,255,0.78);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+    }
+    .hero-copy {
+      padding: 30px;
+      display: grid;
+      gap: 14px;
+    }
+    .hero-copy h1 {
+      font-size: clamp(2rem, 4.8vw, 3.9rem);
+      line-height: 1.1;
+    }
+    .hero-copy p { color: var(--muted); }
+    .hero-actions {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
       gap: 12px;
-      padding: 12px 14px;
-      border-radius: 16px;
-      background: rgba(245, 239, 231, .88);
-      border: 1px solid rgba(230, 221, 210, .96);
-      color: var(--muted);
-      font-size: .88rem;
+      flex-wrap: wrap;
+      padding-top: 4px;
     }
-
-    .dots {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-
-    .dots span {
-      width: 11px;
-      height: 11px;
-      border-radius: 50%;
-      background: #e0c4b6;
-    }
-
-    .dots span:nth-child(2) { background: #e5d9bf; }
-    .dots span:nth-child(3) { background: #cbd7de; }
-
-    .panel-layout {
-      display: grid;
-      grid-template-columns: 1.08fr .92fr;
-      gap: 14px;
-      min-height: 100%;
-    }
-
-    .preview-stack {
-      display: grid;
-      gap: 14px;
-      align-content: start;
-    }
-
-    .subpanel {
-      border-radius: 20px;
-      padding: 18px;
-      background: rgba(255,255,255,.72);
-      box-shadow: var(--shadow-soft);
-    }
-
-    .preview-kicker {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      margin-bottom: 10px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(241, 223, 207, .9);
-      color: var(--accent-deep);
-      font-size: .8rem;
-      font-weight: 700;
-    }
-
-    .preview-title {
-      margin: 0 0 8px;
-      font-size: 1.7rem;
-      line-height: 1.2;
-    }
-
-    .preview-copy {
-      margin: 0 0 14px;
-      color: var(--muted);
-      font-size: .95rem;
-    }
-
-    .preview-chip-row {
+    .chips {
+      list-style: none;
+      padding: 0;
+      margin: 4px 0 0;
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      margin-bottom: 14px;
+    }
+    .chips li {
+      border-radius: 999px;
+      padding: 8px 12px;
+      background: #fff;
+      border: 1px solid var(--line);
+      font-size: 0.88rem;
+      color: #5f5650;
     }
 
-    .preview-chip {
-      font-size: .82rem;
-      padding: 7px 10px;
-    }
-
-    .preview-cta {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 46px;
-      padding: 0 18px;
-      border-radius: 14px;
-      background: rgba(186, 129, 85, .14);
-      color: var(--accent-deep);
-      font-weight: 700;
-      border: 1px solid rgba(186, 129, 85, .24);
-      text-decoration: none;
-      width: fit-content;
-    }
-
-    .question-preview {
+    .hero-visual {
       position: relative;
       overflow: hidden;
+      min-height: 460px;
       background:
-        radial-gradient(circle at 20% 15%, rgba(241,223,207,.7), transparent 35%),
-        linear-gradient(180deg, #fffefe 0%, #faf4ed 100%);
+        linear-gradient(140deg, rgba(255,255,255,0.72), rgba(255,255,255,0.2)),
+        radial-gradient(circle at 30% 20%, rgba(239, 220, 210, 0.65), transparent 48%),
+        radial-gradient(circle at 80% 75%, rgba(220, 231, 241, 0.7), transparent 38%),
+        radial-gradient(circle at 70% 30%, rgba(220, 232, 222, 0.58), transparent 44%),
+        #efe5db;
     }
-
-    .question-preview::after {
+    .hero-visual::after {
       content: "";
       position: absolute;
-      inset: auto -18% -40% auto;
-      width: 220px;
-      height: 220px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(223,233,222,.8), rgba(223,233,222,0) 66%);
-      pointer-events: none;
+      inset: auto 8% 8% 8%;
+      height: 34%;
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.55), rgba(255,255,255,0.1));
+      border: 1px solid rgba(255,255,255,0.4);
+    }
+    .hero-note {
+      position: absolute;
+      left: 18px;
+      top: 18px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.78);
+      border: 1px solid rgba(230,221,210,.9);
+      font-size: 0.84rem;
+      color: var(--muted);
     }
 
-    .progress-meta {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
+    .section-head {
+      max-width: 760px;
+      margin-bottom: 24px;
+    }
+    .section-head h2 {
+      font-size: clamp(1.6rem, 3.3vw, 2.7rem);
+      line-height: 1.2;
       margin-bottom: 8px;
-      color: var(--muted);
-      font-size: .82rem;
     }
+    .section-head p { color: var(--muted); }
 
-    .progress {
-      height: 10px;
-      border-radius: 999px;
-      background: rgba(217, 203, 189, .4);
-      overflow: hidden;
-      margin-bottom: 14px;
-    }
-
-    .progress > span {
-      display: block;
-      height: 100%;
-      width: 62.5%;
-      border-radius: inherit;
-      background: linear-gradient(90deg, var(--accent) 0%, #d8b091 100%);
-    }
-
-    .question-title {
-      margin: 0 0 6px;
-      font-size: 1.2rem;
-      line-height: 1.45;
-    }
-
-    .question-caption {
-      margin: 0 0 12px;
-      color: var(--muted);
-      font-size: .88rem;
-    }
-
-    .option-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
+    .three-grid,
+    .value-grid,
+    .reassure-grid {
       display: grid;
-      gap: 9px;
+      gap: 16px;
     }
+    .three-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .value-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .reassure-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
-    .option-list li {
-      padding: 12px 14px;
-      border-radius: 14px;
-      background: rgba(255,255,255,.88);
-      border: 1px solid rgba(230, 221, 210, .9);
-      font-size: .93rem;
+    .card {
+      padding: 22px;
+      border-radius: var(--radius-md);
     }
-
-    .option-list li.active {
-      border-color: rgba(186, 129, 85, .45);
-      background: rgba(241, 223, 207, .62);
-      box-shadow: inset 0 0 0 1px rgba(186,129,85,.10);
+    .step-num {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: inline-grid;
+      place-items: center;
+      font-weight: 800;
+      background: var(--rose);
+      color: #704a36;
+      margin-bottom: 10px;
     }
-
-    .option-list li small {
-      display: block;
-      color: var(--muted);
-      font-size: .78rem;
-      margin-top: 3px;
+    .card h3 {
+      font-size: 1.14rem;
+      margin-bottom: 6px;
     }
+    .card p { color: var(--muted); font-size: 0.95rem; }
 
-    .split-note {
-      margin-top: 12px;
-      padding: 12px 14px;
-      border-radius: 14px;
-      background: rgba(223, 233, 239, .54);
-      color: #55646a;
-      font-size: .86rem;
-      border: 1px solid rgba(201, 214, 223, .88);
-    }
-
-    .axis-wrap {
+    .preview-layout {
       display: grid;
-      gap: 10px;
+      gap: 16px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       margin-top: 8px;
     }
 
-    .axis-item {
-      display: grid;
-      grid-template-columns: 84px 1fr 38px;
-      align-items: center;
-      gap: 10px;
-      font-size: .84rem;
+    .preview-shell {
+      padding: 16px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(248,241,233,0.8));
     }
-
-    .axis-item strong {
-      font-size: .82rem;
-    }
-
-    .axis-item .bar {
-      position: relative;
-      height: 8px;
-      border-radius: 999px;
-      background: rgba(217, 203, 189, .40);
-      overflow: hidden;
-    }
-
-    .axis-item .bar span {
-      position: absolute;
-      inset: 0 auto 0 0;
-      border-radius: inherit;
-      background: linear-gradient(90deg, var(--green-deep), #bda588);
-    }
-
-    .axis-item:nth-child(1) .bar span { width: 74%; }
-    .axis-item:nth-child(2) .bar span { width: 58%; }
-    .axis-item:nth-child(3) .bar span { width: 43%; }
-    .axis-item:nth-child(4) .bar span { width: 31%; }
-    .axis-item:nth-child(5) .bar span { width: 49%; }
-
-    .section-header {
-      display: grid;
-      gap: 8px;
-      margin-bottom: 28px;
-      max-width: 820px;
-    }
-
-    .section-header h2 {
-      margin: 0;
-      font-size: clamp(1.8rem, 3.2vw, 3rem);
-      line-height: 1.18;
-    }
-
-    .section-header p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 1rem;
-    }
-
-    .flow-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
-    }
-
-    .card {
-      padding: 26px;
-      border-radius: var(--radius-lg);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .step-no {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 44px;
-      height: 44px;
-      border-radius: 14px;
-      background: rgba(241, 223, 207, .92);
-      color: var(--accent-deep);
-      font-weight: 800;
-      margin-bottom: 16px;
-    }
-
-    .card h3 {
-      margin: 0 0 10px;
-      font-size: 1.28rem;
-    }
-
-    .card p {
-      margin: 0 0 14px;
-      color: var(--muted);
-    }
-
-    .flow-bullets {
-      display: grid;
-      gap: 8px;
-    }
-
-    .flow-bullets li {
-      padding-left: 18px;
-      position: relative;
-      color: var(--text);
-      font-size: .95rem;
-    }
-
-    .flow-bullets li::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: .72em;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: rgba(186, 129, 85, .78);
-      transform: translateY(-50%);
-    }
-
-    .question-grid {
-      display: grid;
-      grid-template-columns: minmax(0, .98fr) minmax(0, 1.02fr);
-      gap: 22px;
-      align-items: start;
-    }
-
-    .qa-card {
-      padding: 24px;
-      border-radius: var(--radius-lg);
-    }
-
-    .qa-card h3 {
-      margin: 0 0 10px;
-      font-size: 1.26rem;
-    }
-
-    .qa-card p {
-      margin: 0 0 14px;
-      color: var(--muted);
-    }
-
-    .meta-list {
-      display: grid;
-      gap: 10px;
-      margin-top: 12px;
-    }
-
-    .meta-list li {
-      padding: 12px 14px;
-      border-radius: 14px;
-      background: rgba(255,255,255,.76);
-      border: 1px solid rgba(230, 221, 210, .9);
-    }
-
-    .question-example {
-      display: grid;
-      gap: 14px;
-    }
-
-    .example-shell {
-      border-radius: 22px;
-      padding: 18px;
-      background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(250,244,236,.86));
-      border: 1px solid rgba(217, 203, 189, .84);
-      box-shadow: var(--shadow-soft);
-    }
-
     .shell-head {
       display: flex;
       justify-content: space-between;
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .pc-preview {
+      display: grid;
+      grid-template-columns: 138px 1fr;
       gap: 12px;
+    }
+    .pc-nav,
+    .pc-main,
+    .mobile-screen {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.88);
+      border-radius: 12px;
+      padding: 10px;
+    }
+    .pc-nav ol {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 4px;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    .pc-main h4,
+    .mobile-screen h4 {
+      margin: 0 0 6px;
+      font-size: 0.94rem;
+      line-height: 1.4;
+    }
+    .branch-note {
+      border-radius: 10px;
+      padding: 8px;
+      background: var(--sky);
+      border: 1px solid #c9d9e8;
+      font-size: 0.76rem;
+      color: #4e5d67;
+      margin: 8px 0;
+    }
+
+    .option-row,
+    .mobile-option,
+    .sim-option {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+    }
+    .option-row {
+      display: grid;
+      grid-template-columns: 60px 1fr;
+      gap: 8px;
+      padding: 8px;
+      margin-bottom: 6px;
+      font-size: 0.76rem;
       align-items: center;
-      margin-bottom: 12px;
+    }
+    .thumb {
+      height: 36px;
+      border-radius: 8px;
+      background:
+        linear-gradient(135deg, rgba(239,220,210,.9), rgba(220,231,241,.85));
+    }
+    .minor-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      font-size: 0.72rem;
+    }
+    .minor-options span {
+      text-align: center;
+      padding: 6px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .mobile-frame {
+      width: min(290px, 100%);
+      margin-inline: auto;
+      border-radius: 20px;
+      border: 1px solid #cfc3b7;
+      padding: 10px;
+      background: #f2e9df;
+    }
+    .mobile-progress {
+      font-size: 0.78rem;
       color: var(--muted);
-      font-size: .83rem;
-    }
-
-    .shell-title {
-      margin: 0 0 8px;
-      font-size: 1.1rem;
-    }
-
-    .shell-sub {
-      margin: 0 0 14px;
-      color: var(--muted);
-      font-size: .88rem;
-    }
-
-    .shell-options {
-      display: grid;
-      gap: 10px;
-      margin-bottom: 12px;
-    }
-
-    .shell-options span,
-    .shell-inline span {
-      display: block;
-      padding: 11px 13px;
-      border-radius: 14px;
-      background: rgba(255,255,255,.9);
-      border: 1px solid rgba(230, 221, 210, .92);
-      font-size: .9rem;
-    }
-
-    .shell-options span.emphasis {
-      background: rgba(223, 233, 222, .62);
-      border-color: rgba(109, 133, 112, .26);
-    }
-
-    .shell-note {
-      padding: 11px 12px;
-      border-radius: 14px;
-      background: rgba(223, 233, 239, .48);
-      border: 1px solid rgba(201, 214, 223, .88);
-      color: #54656c;
-      font-size: .84rem;
-    }
-
-    .shell-inline {
-      display: grid;
-      gap: 10px;
-    }
-
-    .value-grid,
-    .benefits-grid,
-    .reassure-grid,
-    .faq-grid {
-      display: grid;
-      gap: 18px;
-    }
-
-    .value-grid,
-    .benefits-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .value-list,
-    .benefit-list {
-      display: grid;
-      gap: 10px;
-      margin-top: 14px;
-    }
-
-    .value-list li,
-    .benefit-list li {
-      padding-left: 20px;
-      position: relative;
-    }
-
-    .value-list li::before,
-    .benefit-list li::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: .74em;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--green-deep);
-      transform: translateY(-50%);
-    }
-
-    .benefits-grid .card:first-child { background: linear-gradient(180deg, rgba(255,255,255,.86), rgba(241,223,207,.48)); }
-    .benefits-grid .card:last-child { background: linear-gradient(180deg, rgba(255,255,255,.86), rgba(223,233,222,.44)); }
-
-    .reassure-grid {
-      grid-template-columns: 1.15fr .85fr;
-      align-items: stretch;
-    }
-
-    .reassure-list {
-      display: grid;
-      gap: 12px;
-      margin-top: 16px;
-    }
-
-    .reassure-item {
-      padding: 16px 18px;
-      border-radius: 16px;
-      background: rgba(255,255,255,.76);
-      border: 1px solid rgba(230, 221, 210, .9);
-    }
-
-    .reassure-item strong {
-      display: block;
-      font-size: 1rem;
       margin-bottom: 4px;
     }
+    .mobile-bar {
+      height: 8px;
+      border-radius: 999px;
+      background: #e5d9ce;
+      margin-bottom: 8px;
+      overflow: hidden;
+    }
+    .mobile-bar span {
+      display: block;
+      height: 100%;
+      width: 37.5%;
+      background: linear-gradient(90deg, var(--accent), #d4ad92);
+    }
+    .mobile-option {
+      padding: 10px;
+      font-size: 0.82rem;
+      margin-top: 6px;
+    }
 
-    .reassure-item p {
-      margin: 0;
+    .preview-cta-row {
+      margin-top: 16px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .caption {
       color: var(--muted);
-      font-size: .93rem;
+      font-size: 0.88rem;
     }
 
-    .faq-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      margin-top: 18px;
+    .simulator {
+      display: grid;
+      grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+      gap: 16px;
+      align-items: start;
     }
-
-    .faq details {
-      border-radius: 18px;
-      padding: 18px 20px;
+    .radar-box,
+    .slider-box {
+      padding: 16px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.85);
     }
-
-    .faq summary {
-      cursor: pointer;
-      font-weight: 700;
-      list-style: none;
-    }
-
-    .faq summary::-webkit-details-marker { display: none; }
-
-    .faq details p {
-      margin: 12px 0 0;
+    .radar-caption {
+      font-size: 0.84rem;
       color: var(--muted);
-      font-size: .94rem;
+      margin-top: 8px;
     }
 
-    .cta-section {
-      padding-top: 28px;
-      padding-bottom: 110px;
+    .slider-row {
+      display: grid;
+      grid-template-columns: 90px 1fr 40px;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 0.88rem;
     }
+    input[type="range"] { width: 100%; accent-color: var(--accent); }
 
     .cta-box {
-      border-radius: 30px;
-      padding: 34px;
+      padding: 26px;
       display: grid;
-      grid-template-columns: 1.1fr auto;
-      gap: 24px;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
       align-items: center;
       background:
-        radial-gradient(circle at top right, rgba(223,233,222,.55), transparent 35%),
-        linear-gradient(180deg, rgba(255,255,255,.92), rgba(250,244,236,.88));
+        radial-gradient(circle at 88% 10%, rgba(220,232,222,.5), transparent 35%),
+        linear-gradient(180deg, rgba(255,255,255,.92), rgba(248,241,233,.85));
     }
-
     .cta-box h2 {
-      margin: 8px 0 12px;
-      font-size: clamp(1.7rem, 3vw, 2.8rem);
-      line-height: 1.18;
+      font-size: clamp(1.5rem, 3.2vw, 2.4rem);
+      line-height: 1.25;
+      margin-bottom: 6px;
     }
+    .cta-box p { color: var(--muted); }
 
-    .cta-box p {
-      margin: 0;
-      color: var(--muted);
-      max-width: 44rem;
-    }
-
-    .cta-actions {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 12px;
-    }
-
-    .site-footer {
-      padding: 24px 0 96px;
-      color: var(--muted);
-      font-size: .88rem;
-    }
-
-    .footer-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-      border-top: 1px solid rgba(230, 221, 210, .92);
-      padding-top: 18px;
-    }
-
-    .floating-cta {
+    .mobile-fixed {
       position: fixed;
-      left: 50%;
-      bottom: 16px;
-      transform: translateX(-50%);
-      z-index: 60;
-      width: min(720px, calc(100% - 20px));
-      border-radius: 18px;
-      padding: 12px;
+      left: 12px;
+      right: 12px;
+      bottom: 10px;
+      z-index: 50;
+      padding: 10px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.82);
+      border: 1px solid rgba(230,221,210,0.95);
+      box-shadow: 0 8px 22px rgba(77,58,44,0.16);
+      backdrop-filter: blur(8px);
       display: none;
+      gap: 8px;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
-      background: rgba(255, 252, 247, .92);
     }
-
-    .floating-cta p {
+    .mobile-fixed p {
       margin: 0;
-      min-width: 0;
-      font-size: .86rem;
+      font-size: 0.78rem;
       color: var(--muted);
+      line-height: 1.45;
     }
 
-    .floating-cta strong {
-      display: block;
-      color: var(--text);
-      font-size: .95rem;
-      margin-bottom: 2px;
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
     }
 
-    .floating-cta .btn {
-      flex: 0 0 auto;
-      min-height: 46px;
-      padding: 0 18px;
-    }
-
-    .only-mobile { display: none; }
-
-    @media (max-width: 1024px) {
-      .hero-grid,
-      .question-grid,
+    @media (max-width: 960px) {
+      section { padding: 64px 0; }
+      .hero-wrap,
+      .hero-gallery,
+      .three-grid,
+      .value-grid,
       .reassure-grid,
+      .preview-layout,
+      .simulator,
       .cta-box {
         grid-template-columns: 1fr;
       }
-
-      .value-grid,
-      .benefits-grid,
-      .faq-grid,
-      .flow-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .cta-actions {
-        align-items: flex-start;
-      }
-
-      .panel-layout {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 780px) {
-      :root { --container: min(100% - 24px, 1120px); }
-
-      .site-header { position: static; }
-
-      .header-inner {
-        min-height: auto;
-        padding: 14px 0;
-        align-items: flex-start;
-      }
-
-      .main-nav ul {
-        gap: 10px;
-      }
-
-      .main-nav li:not(:last-child) { display: none; }
-
-      .hero-copy,
-      .hero-panel,
-      .card,
-      .qa-card,
-      .cta-box,
-      .faq details {
-        padding-left: 20px;
-        padding-right: 20px;
-      }
-
-      .hero h1 {
-        font-size: clamp(2rem, 10vw, 3.2rem);
-      }
-
-      .hero-footnote {
-        grid-template-columns: 1fr;
-      }
-
-      .axis-item {
-        grid-template-columns: 76px 1fr 30px;
-      }
-
-      .floating-cta { display: flex; }
-      .only-mobile { display: block; }
-      .site-footer { padding-bottom: 132px; }
+      .hero-visual { min-height: 280px; }
+      .hero-copy { order: -1; }
+      .pc-preview { grid-template-columns: 1fr; }
+      .cta-box .btn { width: 100%; }
+      .mobile-fixed { display: flex; }
+      body { padding-bottom: 88px; }
     }
   </style>
 </head>
 <body>
-  <a class="skip-link" href="#main">本文へスキップ</a>
-
-  <header class="site-header">
-    <div class="header-inner">
-      <a class="brand" href="#top" aria-label="香りワークショップ トップへ戻る">
-        <span class="brand-mark" aria-hidden="true"></span>
-        <span class="brand-copy">
-          <small>Fragrance Workshop</small>
-          <strong>あなたに合う香りを知る</strong>
-        </span>
-      </a>
-
-      <nav class="main-nav" aria-label="ページ内メニュー">
-        <ul>
-          <li><a href="#flow">流れ</a></li>
-          <li><a href="#questions">質問のイメージ</a></li>
-          <li><a href="#value">体験価値</a></li>
-          <li><a href="#reassurance">安心して進める理由</a></li>
-          <li><a class="header-cta" href="questionnaire.html">香りづくりをはじめる</a></li>
-        </ul>
-      </nav>
+  <header class="site-header" aria-label="ページヘッダー">
+    <div class="section-inner">
+      <a class="brand" href="#">FRAGRANCE WORKSHOP</a>
+      <a class="header-link" href="questionnaire.html">8問からはじめる</a>
     </div>
   </header>
-
-  <main id="main">
-    <section class="hero" id="top">
-      <div class="section-inner hero-grid">
-        <div class="hero-copy">
-          <span class="eyebrow">Top Page / First View</span>
-          <h1>あなたに合う香りを知る</h1>
-          <p class="lead">
-            これは<strong>診断</strong>ではなく、来店前から始める<strong>香りづくりの準備</strong>です。<br>
-            8問に答えると、今の自分に合いそうな香りの方向が見えてきます。ベースは事前に整え、当日はスタッフと一緒に仕上げます。
-          </p>
-
-          <ul class="hero-points" aria-label="安心材料">
-            <li>8問</li>
-            <li>約1分</li>
-            <li>あとから調整OK</li>
-            <li>予約前に完了</li>
-          </ul>
-
-          <div class="cta-row">
-            <a class="btn btn-primary" href="questionnaire.html">香りづくりをはじめる</a>
-            <a class="btn btn-secondary" href="#questions">どんな質問か見る</a>
-          </div>
-          <p class="helper-note">結果は固定されません。最後はご自身で決められます。</p>
-
-          <div class="hero-footnote" aria-label="ファーストビューで伝える情報">
-            <div class="hero-stat">
-              <strong>何が起きるか</strong>
-              <span>簡単な質問に答えて、香りのベース方向を見つけます。</span>
-            </div>
-            <div class="hero-stat">
-              <strong>どれくらい軽いか</strong>
-              <span>1問1答で、気分や色など直感で選べる質問が中心です。</span>
-            </div>
-            <div class="hero-stat">
-              <strong>その先どうなるか</strong>
-              <span>回答内容は当日の会話の起点になり、店頭で仕上げます。</span>
-            </div>
-          </div>
-        </div>
-
-        <aside class="hero-panel" aria-label="次に進むページのプレビュー">
-          <div class="panel-top">
-            <div class="dots" aria-hidden="true"><span></span><span></span><span></span></div>
-            <span>QUESTION PAGE PREVIEW</span>
-          </div>
-
-          <div class="panel-layout">
-            <div class="preview-stack">
-              <div class="subpanel">
-                <span class="preview-kicker">このあと進む内容</span>
-                <h2 class="preview-title">迷わず答えられて、あとで整えられる</h2>
-                <p class="preview-copy">
-                  まずは答えやすい5問から始まり、途中から少しだけ自分向けの質問へ。最後に香りバランスを微調整して予約へ進みます。
-                </p>
-                <div class="preview-chip-row" aria-label="質問ページの特徴">
-                  <span class="preview-chip">1問1答</span>
-                  <span class="preview-chip">進捗表示</span>
-                  <span class="preview-chip">分岐あり</span>
-                  <span class="preview-chip">5軸を微調整</span>
-                </div>
-                <a class="preview-cta" href="questionnaire.html">8問を始める</a>
-              </div>
-
-              <div class="subpanel">
-                <span class="overline">回答後の見え方</span>
-                <div class="axis-wrap" aria-label="香りバランスの例">
-                  <div class="axis-item"><strong>フローラル</strong><div class="bar"><span></span></div><span>74</span></div>
-                  <div class="axis-item"><strong>フレッシュ</strong><div class="bar"><span></span></div><span>58</span></div>
-                  <div class="axis-item"><strong>ウッディ</strong><div class="bar"><span></span></div><span>43</span></div>
-                  <div class="axis-item"><strong>スパイシー</strong><div class="bar"><span></span></div><span>31</span></div>
-                  <div class="axis-item"><strong>スウィート</strong><div class="bar"><span></span></div><span>49</span></div>
-                </div>
-              </div>
-            </div>
-
-            <div class="subpanel question-preview">
-              <div class="progress-meta">
-                <span>3 / 8</span>
-                <span>残り5問です</span>
-              </div>
-              <div class="progress" aria-hidden="true"><span></span></div>
-              <h3 class="question-title">好きな色は<br>何ですか？</h3>
-              <p class="question-caption">直感でひとつ選んでください。</p>
-              <ul class="option-list" aria-label="設問の選択肢例">
-                <li class="active">やさしいピンク・ベージュ<small>やわらかさ・華やかさの手がかり</small></li>
-                <li>白・水色・透明感</li>
-                <li>ブラウン・深いグリーン</li>
-                <li>全部好き</li>
-                <li>この中にはない</li>
-              </ul>
-              <div class="split-note">5問目のあとに「ここまでの回答をもとに、あと少しだけお聞きします」と表示され、自分向けの2問へ進みます。</div>
-            </div>
-          </div>
-        </aside>
-      </div>
-    </section>
-
-    <section id="flow" aria-labelledby="flow-heading">
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
       <div class="section-inner">
-        <div class="section-header">
-          <span class="eyebrow">3 Step Flow</span>
-          <h2 id="flow-heading">答える → ベースができる → 店頭で完成</h2>
-          <p>トップページで期待を高め、質問ページでは軽く答えられ、予約ページでは来店意思を固める。その流れを崩さないために、トップでは説明しすぎず次へ押しやすい構成にしています。</p>
+        <div class="hero-wrap">
+          <div class="hero-visual" aria-hidden="true">
+            <div class="hero-note">日本の上質な香り工房をイメージしたプレビュー</div>
+          </div>
+          <div class="hero-copy">
+            <span class="eyebrow">Fragrance Workshop</span>
+            <h1 id="hero-title">あなたに合う香りを知る、<br>来店前の準備をはじめる</h1>
+            <p>8問・約1分で、今のあなたに合う香りバランスのベースをつくります。診断で決めきるのではなく、最後は当日スタッフと一緒に仕上げます。</p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="questionnaire.html" aria-label="香りづくりをはじめる">香りづくりをはじめる</a>
+              <a class="btn btn-sub" href="#question-preview">質問ページを先に見る</a>
+            </div>
+            <ul class="chips" aria-label="安心情報">
+              <li>約1分</li>
+              <li>8問</li>
+              <li>予約前に完了</li>
+            </ul>
+          </div>
         </div>
-
-        <div class="flow-grid">
-          <article class="card">
-            <div class="step-no" aria-hidden="true">1</div>
-            <h3>答える</h3>
-            <p>前半は香り・色・気分・使いたいシーン・音楽など、答えやすい質問だけで進みます。</p>
-            <ul class="flow-bullets">
-              <li>1問1答で、迷わず直感で選べる</li>
-              <li>8問・約1分の軽さを最初から明示</li>
-              <li>途中まででも結果へ進める設計に接続しやすい</li>
-            </ul>
-          </article>
-
-          <article class="card">
-            <div class="step-no" aria-hidden="true">2</div>
-            <h3>ベースができる</h3>
-            <p>5問目までは共通、後半2問は回答傾向に応じて少しだけ分岐します。自分向けに聞かれている感触をつくるための設計です。</p>
-            <ul class="flow-bullets">
-              <li>固定5問で土台をそろえる</li>
-              <li>分岐2問で自分向け感を出す</li>
-              <li>最後の1問で今日の仕上がりを微調整</li>
-            </ul>
-          </article>
-
-          <article class="card">
-            <div class="step-no" aria-hidden="true">3</div>
-            <h3>店頭で完成</h3>
-            <p>回答内容はそのまま確定結果になるのではなく、当日スタッフと会話を始めるための起点になります。</p>
-            <ul class="flow-bullets">
-              <li>今の傾向と方向性を持って来店できる</li>
-              <li>スタッフは会話のスタート地点を持てる</li>
-              <li>最終決定はご自身が行う</li>
-            </ul>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section id="questions" aria-labelledby="questions-heading">
-      <div class="section-inner">
-        <div class="section-header">
-          <span class="eyebrow">Question Flow</span>
-          <h2 id="questions-heading">質問ページとの整合性を、その場で想像できるように</h2>
-          <p>トップページから質問ページへ進んだ時の違和感を減らすため、導入・回答中・微調整の流れをあらかじめ見せています。ここで「重そう」「難しそう」を感じさせないことが重要です。</p>
-        </div>
-
-        <div class="question-grid">
-          <article class="qa-card">
-            <span class="overline">導入で伝えること</span>
-            <h3>「8問・約1分・あとから調整できる」を先に伝える</h3>
-            <p>質問ページの入口で見える文言と同じトーンで、トップでも負荷の低さを揃えています。ページ遷移後に急に説明が増える印象を避けます。</p>
-            <ul class="meta-list">
-              <li><strong>まずはあなたの好みを教えてください</strong><br>軽い導入で始め、心理テスト感を出しすぎない</li>
-              <li><strong>8問・約1分</strong><br>開始前に所要時間を見せる</li>
-              <li><strong>あとから香りバランスは調整できます</strong><br>結果が固定される不安を先に外す</li>
-              <li><strong>診断ではなく来店前の準備です</strong><br>全画面で一貫させるメッセージ</li>
-            </ul>
-          </article>
-
-          <div class="question-example" aria-label="質問ページの例">
-            <article class="example-shell">
-              <div class="shell-head">
-                <span>導入</span>
-                <span>約1分で完了</span>
-              </div>
-              <h3 class="shell-title">まずはあなたの好みを教えてください</h3>
-              <p class="shell-sub">質問は8問。各1タップで進みます。あとから香りバランスは調整できます。</p>
-              <div class="shell-inline">
-                <span class="emphasis">香りづくりをはじめる</span>
-                <span>※ 診断ではなく、来店前の準備です</span>
-              </div>
-            </article>
-
-            <article class="example-shell">
-              <div class="shell-head">
-                <span>回答中</span>
-                <span>1問1答 + 進捗表示</span>
-              </div>
-              <h3 class="shell-title">今いちばん惹かれる香りは？</h3>
-              <p class="shell-sub">前半は全員共通。香り・色・気分・利用シーン・音楽からベース傾向をとります。</p>
-              <div class="shell-options">
-                <span>花がふわっと香る</span>
-                <span class="emphasis">みずみずしく爽やか</span>
-                <span>木や森の落ち着き</span>
-                <span>全部好き</span>
-                <span>この中にはない</span>
-              </div>
-              <div class="shell-note">5問目のあとに「ここまでの回答をもとに、あと少しだけお聞きします」と出して、分岐2問へ接続します。</div>
-            </article>
-
-            <article class="example-shell">
-              <div class="shell-head">
-                <span>結果・微調整</span>
-                <span>予約ページへ接続</span>
-              </div>
-              <h3 class="shell-title">香りバランスを微調整してください</h3>
-              <p class="shell-sub">気になる項目だけ少し動かし、その内容を持ったまま予約へ進みます。</p>
-              <div class="shell-inline">
-                <span>フローラル / フレッシュ / ウッディ / スパイシー / スウィート</span>
-                <span class="emphasis">この内容で予約へ進む</span>
-              </div>
-            </article>
+        <div class="hero-gallery" aria-label="トップビュー手順画像プレースホルダー">
+          <div class="hero-shot">
+            <strong>アンケート画面イメージ</strong>
+            <span>ここに画像を配置（PC/スマホUI）</span>
+          </div>
+          <div class="hero-shot">
+            <strong>SVGグラフイメージ</strong>
+            <span>ここに画像を配置（5軸レーダー）</span>
+          </div>
+          <div class="hero-shot">
+            <strong>スライダー調整画面イメージ</strong>
+            <span>ここに画像を配置（調整UI）</span>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="value" aria-labelledby="value-heading">
+    <section aria-labelledby="step-heading">
       <div class="section-inner">
-        <div class="section-header">
+        <div class="section-head">
+          <span class="eyebrow">3 Step</span>
+          <h2 id="step-heading">やることはシンプル。香りづくりの土台を先につくるだけ</h2>
+        </div>
+        <div class="three-grid">
+          <article class="card">
+            <div class="step-num" aria-hidden="true">1</div>
+            <h3>8問に答える</h3>
+            <p>惹かれる香り、好きな色、気分、使いたい時、音楽などを直感で選びます。</p>
+          </article>
+          <article class="card">
+            <div class="step-num" aria-hidden="true">2</div>
+            <h3>香りバランスが見えてくる</h3>
+            <p>固定5問のあと、あなた向けの分岐2問で方向性を深掘り。最後に仕上がりを確認します。</p>
+          </article>
+          <article class="card">
+            <div class="step-num" aria-hidden="true">3</div>
+            <h3>店頭で一緒に仕上げる</h3>
+            <p>結果は固定しません。ベースを持って来店し、当日スタッフと調整して完成させます。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="value-heading">
+      <div class="section-inner">
+        <div class="section-head">
           <span class="eyebrow">Experience Value</span>
-          <h2 id="value-heading">自分の好みが見えて、スタッフにも話しやすくなる</h2>
-          <p>体験価値は「正しい香りを当てること」ではなく、来店前の気持ちを高めながら、当日の会話を始めやすくすることにあります。だからトップでも結果の断定より、進んでみたくなる見せ方を優先しています。</p>
+          <h2 id="value-heading">当日が楽しみになる準備としての価値</h2>
         </div>
-
-        <div class="benefits-grid">
+        <div class="value-grid">
           <article class="card">
-            <span class="overline">ユーザーにとっての価値</span>
-            <h3>「もう半分、香りづくりが始まっている」感覚をつくる</h3>
-            <ul class="benefit-list">
-              <li>今の自分がどの方向に惹かれているか見えやすい</li>
-              <li>当日が少し楽しみになり、来店意欲が高まる</li>
-              <li>スタッフに希望を伝える最初の言葉を持てる</li>
-            </ul>
+            <h3>自分の好みが見えてくる</h3>
+            <p>言語化しづらい「好き」が、5軸の形として見えやすくなります。</p>
           </article>
-
           <article class="card">
-            <span class="overline">スタッフにとっての価値</span>
-            <h3>「無」から始めない接客につなげる</h3>
-            <ul class="benefit-list">
-              <li>共通5問でベース傾向を読みやすくそろえられる</li>
-              <li>分岐2問で今日の提案方向をつかみやすい</li>
-              <li>最終的には会話の中で仕上げる前提を保てる</li>
-            </ul>
+            <h3>スタッフに話しやすくなる</h3>
+            <p>来店時に「どんな香りにしたいか」を伝えやすくなり、相談がスムーズです。</p>
+          </article>
+          <article class="card">
+            <h3>来店前から体験が始まる</h3>
+            <p>当日まで待つのではなく、事前に香りづくりの入口を体験できます。</p>
           </article>
         </div>
       </div>
     </section>
 
-    <section id="reassurance" aria-labelledby="reassurance-heading" class="faq">
+    <section aria-labelledby="reassure-heading">
       <div class="section-inner">
-        <div class="section-header">
+        <div class="section-head">
           <span class="eyebrow">Reassurance</span>
-          <h2 id="reassurance-heading">結果は固定されない。最後は自分で決める。</h2>
-          <p>トップページで不安を減らすために、重たい専門説明より先に、安心して進める条件を明確にしています。きれいな世界観だけで終わらせず、「何をするページか」が伝わるようにしています。</p>
+          <h2 id="reassure-heading">不安を減らすための安心情報</h2>
         </div>
-
         <div class="reassure-grid">
-          <article class="card">
-            <span class="overline">安心情報</span>
-            <h3>押しやすさを阻害しないためのルール</h3>
-            <div class="reassure-list">
-              <div class="reassure-item">
-                <strong>結果を断定しない</strong>
-                <p>回答は提案の起点です。当日の香りは店頭で調整し、最終的にはご自身で決めます。</p>
-              </div>
-              <div class="reassure-item">
-                <strong>最初から重くしない</strong>
-                <p>香料の専門説明や深いパーソナル要素は前面に出さず、まずは始めやすさを優先します。</p>
-              </div>
-              <div class="reassure-item">
-                <strong>導線を深くしない</strong>
-                <p>ファーストビュー、質問イメージ、最後の再CTAまで、どの段でも質問ページへ進めます。</p>
-              </div>
-            </div>
+          <article class="reassure-item card">
+            <h3>結果は固定されません</h3>
+            <p>アンケートは方向性を決めるためのベースです。最終決定はあなた自身が行えます。</p>
           </article>
-
-          <div>
-            <div class="faq-grid">
-              <details open>
-                <summary>どんなことを聞かれますか？</summary>
-                <p>香り・色・気分・使いたいシーン・音楽など、直感で答えやすい内容が中心です。前半5問は全員共通で、後半2問だけ少し自分向けに変わります。</p>
-              </details>
-              <details>
-                <summary>本当に1分くらいで終わりますか？</summary>
-                <p>1問1答で進む前提なので、読み物のように長くはなりません。迷いにくい選択肢を使い、所要時間の感覚と実体験がずれにくい構成です。</p>
-              </details>
-              <details>
-                <summary>結果はそのまま確定しますか？</summary>
-                <p>確定しません。最後に5軸の香りバランスを少し動かせて、店頭でもスタッフと一緒に仕上げていきます。</p>
-              </details>
-              <details>
-                <summary>予約前にやる意味はありますか？</summary>
-                <p>あります。来店前に方向性が少し見えていると、当日の会話が始めやすくなり、スタッフ側もベースの提案を準備しやすくなります。</p>
-              </details>
-            </div>
-          </div>
+          <article class="reassure-item card">
+            <h3>あとからバランスを動かせます</h3>
+            <p>5軸の香りバランスは、回答後に調整可能。気になる項目だけ微調整できます。</p>
+          </article>
+          <article class="reassure-item card">
+            <h3>当日スタッフと一緒に調整</h3>
+            <p>店頭で香りを確かめながら、強さや余韻を一緒に整えて仕上げられます。</p>
+          </article>
+          <article class="reassure-item card">
+            <h3>軽く答えられる8問構成</h3>
+            <p>固定5問のあとに分岐2問＋最終1問。重い入力はなく、約1分で完了します。</p>
+          </article>
         </div>
       </div>
     </section>
 
-    <section class="cta-section" aria-labelledby="cta-heading">
+    <section id="question-preview" aria-labelledby="preview-heading">
+      <div class="section-inner">
+        <div class="section-head">
+          <span class="eyebrow">Question Page Preview</span>
+          <h2 id="preview-heading">次ページで始まる体験を、PC版とスマホ版で先に確認</h2>
+          <p>固定5問のあとに「ここまでの回答をもとに、あと少しだけお聞きします」と分岐へ進み、最後に香りバランス調整へつながります。</p>
+        </div>
+
+        <div class="preview-layout">
+          <article class="preview-shell" aria-label="PC版プレビュー">
+            <div class="shell-head">
+              <strong>PC版プレビュー</strong>
+              <span>見渡せる段階構成</span>
+            </div>
+            <div class="pc-preview">
+              <div class="pc-nav">
+                <ol aria-label="進行ナビ">
+                  <li>Q1 惹かれる香り</li>
+                  <li>Q2 好きな色</li>
+                  <li>Q3 なりたい気分</li>
+                  <li>Q4 使いたい時</li>
+                  <li>Q5 好きな音楽</li>
+                  <li>Q6 分岐質問</li>
+                  <li>Q7 分岐質問</li>
+                  <li>Q8 今日の仕上がり</li>
+                </ol>
+              </div>
+              <div class="pc-main">
+                <h4>Q7A 甘さの出方はどれが近いですか？</h4>
+                <div class="branch-note">ここまでの回答をもとに、あと少しだけお聞きします</div>
+                <div class="option-row"><span class="thumb" aria-hidden="true"></span><span>A ふわっと最初に香る</span></div>
+                <div class="option-row"><span class="thumb" aria-hidden="true"></span><span>B 時間とともにやさしく</span></div>
+                <div class="option-row"><span class="thumb" aria-hidden="true"></span><span>C 甘さは控えめがいい</span></div>
+                <div class="minor-options"><span>全部好き</span><span>この中にはない</span></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="preview-shell" aria-label="スマホ版プレビュー">
+            <div class="shell-head">
+              <strong>スマホ版プレビュー</strong>
+              <span>1問1画面の集中UI</span>
+            </div>
+            <div class="mobile-frame">
+              <div class="mobile-screen">
+                <div class="mobile-progress">3 / 8　残り5問です</div>
+                <div class="mobile-bar" aria-hidden="true"><span></span></div>
+                <h4>どんな気分になりたいですか？</h4>
+                <div class="mobile-option">やさしく癒やされたい</div>
+                <div class="mobile-option">すっきり切り替えたい</div>
+                <div class="mobile-option">自分らしさを出したい</div>
+                <div class="mobile-option">全部好き / この中にはない</div>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="preview-cta-row">
+          <a class="btn btn-primary" href="questionnaire.html">8問からはじめる</a>
+          <span class="caption">8問・約1分・あとから調整可能。最後は香りバランス調整へ進みます。</span>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="balance-heading">
+      <div class="section-inner">
+        <div class="section-head">
+          <span class="eyebrow">Balance Preview</span>
+          <h2 id="balance-heading">回答後は、全体の形を見ながら気になる項目だけ調整</h2>
+          <p>あなたの回答をもとに、まずは基本の形を作りました。必要なところだけスライダーで動かしてください。</p>
+        </div>
+
+        <div class="simulator">
+          <article class="radar-box">
+            <svg id="radar" viewBox="0 0 300 300" role="img" aria-labelledby="radar-title radar-desc">
+              <title id="radar-title">香りバランス レーダーグラフ</title>
+              <desc id="radar-desc">フローラル、フレッシュ、ウッディ、スパイシー、スウィートの5軸バランス</desc>
+              <g fill="none" stroke="#d8cbbf" stroke-width="1">
+                <polygon points="150,38 256,116 216,242 84,242 44,116"/>
+                <polygon points="150,64 233,126 202,224 98,224 67,126"/>
+                <polygon points="150,90 210,136 188,206 112,206 90,136"/>
+                <polygon points="150,116 187,146 174,188 126,188 113,146"/>
+              </g>
+              <g stroke="#d8cbbf" stroke-width="1">
+                <line x1="150" y1="150" x2="150" y2="38"/>
+                <line x1="150" y1="150" x2="256" y2="116"/>
+                <line x1="150" y1="150" x2="216" y2="242"/>
+                <line x1="150" y1="150" x2="84" y2="242"/>
+                <line x1="150" y1="150" x2="44" y2="116"/>
+              </g>
+              <polygon id="shape" points="150,60 220,126 185,200 108,206 80,130" fill="rgba(168,111,74,0.28)" stroke="#9a6543" stroke-width="2"/>
+              <g id="dots" fill="#8f5c3c"></g>
+              <g fill="#5e5550" font-size="12" text-anchor="middle">
+                <text x="150" y="22">フローラル</text>
+                <text x="274" y="114">フレッシュ</text>
+                <text x="224" y="258">ウッディ</text>
+                <text x="76" y="258">スパイシー</text>
+                <text x="26" y="114">スウィート</text>
+              </g>
+            </svg>
+            <p class="radar-caption">全体像を先に確認してから調整できるので、「決めつけられる不安」を減らせます。</p>
+          </article>
+
+          <article class="slider-box">
+            <div class="slider-row">
+              <label for="floral">フローラル</label>
+              <input id="floral" type="range" min="0" max="100" value="74">
+              <output for="floral" id="floral-val">74</output>
+            </div>
+            <div class="slider-row">
+              <label for="fresh">フレッシュ</label>
+              <input id="fresh" type="range" min="0" max="100" value="58">
+              <output for="fresh" id="fresh-val">58</output>
+            </div>
+            <div class="slider-row">
+              <label for="woody">ウッディ</label>
+              <input id="woody" type="range" min="0" max="100" value="43">
+              <output for="woody" id="woody-val">43</output>
+            </div>
+            <div class="slider-row">
+              <label for="spicy">スパイシー</label>
+              <input id="spicy" type="range" min="0" max="100" value="31">
+              <output for="spicy" id="spicy-val">31</output>
+            </div>
+            <div class="slider-row">
+              <label for="sweet">スウィート</label>
+              <input id="sweet" type="range" min="0" max="100" value="49">
+              <output for="sweet" id="sweet-val">49</output>
+            </div>
+            <div class="preview-cta-row">
+              <a class="btn btn-sub" href="questionnaire.html">今の自分に合う香りを見てみる</a>
+              <span class="caption">あとから何度でも動かせます</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="final-cta-heading">
       <div class="section-inner">
         <div class="cta-box">
           <div>
-            <span class="eyebrow">Final Call To Action</span>
-            <h2 id="cta-heading">今の自分に合う香りの方向を、まずは気軽に見つける</h2>
-            <p>トップページの役割は、世界観を見せるだけでなく、次へ押させることです。ここでは説明しすぎず、質問ページでの体験を想像できる状態まで整えています。準備ができたら、そのまま8問へ進んでください。</p>
+            <span class="eyebrow">Final CTA</span>
+            <h2 id="final-cta-heading">来店前の1分で、香りづくりをもっと話しやすく</h2>
+            <p>診断で決めるページではなく、当日の準備ページです。まずは8問から、あなたのベースを作っておきましょう。</p>
           </div>
-          <div class="cta-actions">
-            <a class="btn btn-primary" href="questionnaire.html">香りづくりをはじめる</a>
-            <a class="btn btn-secondary" href="#top">上へ戻る</a>
-            <p class="helper-note">8問・約1分・あとから調整OK</p>
-          </div>
+          <a class="btn btn-primary" href="questionnaire.html">香りづくりをはじめる</a>
         </div>
       </div>
     </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <p>Fragrance Workshop Landing Page</p>
-      <p>診断ではなく、来店前の準備として設計されたトップページ</p>
-    </div>
-  </footer>
-
-  <div class="floating-cta only-mobile" aria-label="固定CTA">
-    <p><strong>8問・約1分で開始</strong>今の自分に合いそうな香りの方向を見つけます</p>
-    <a class="btn btn-primary" href="questionnaire.html">始める</a>
+  <div class="mobile-fixed" aria-label="モバイル固定CTA">
+    <p>8問・約1分。<br>来店前の準備をはじめる</p>
+    <a class="btn btn-primary" href="questionnaire.html">はじめる</a>
   </div>
+
+  <script>
+    (function () {
+      var sliders = ["floral", "fresh", "woody", "spicy", "sweet"];
+      var shape = document.getElementById("shape");
+      var dots = document.getElementById("dots");
+      var center = { x: 150, y: 150 };
+      var angles = [-90, -18, 54, 126, 198];
+      var maxR = 112;
+
+      function toPoint(value, angleDeg) {
+        var r = (value / 100) * maxR;
+        var rad = angleDeg * Math.PI / 180;
+        return {
+          x: center.x + Math.cos(rad) * r,
+          y: center.y + Math.sin(rad) * r
+        };
+      }
+
+      function draw() {
+        var points = [];
+        var dotSvg = "";
+
+        sliders.forEach(function (id, i) {
+          var el = document.getElementById(id);
+          var value = Number(el.value);
+          document.getElementById(id + "-val").textContent = value;
+          var p = toPoint(value, angles[i]);
+          points.push(p.x.toFixed(1) + "," + p.y.toFixed(1));
+          dotSvg += '<circle cx="' + p.x.toFixed(1) + '" cy="' + p.y.toFixed(1) + '" r="3.2"></circle>';
+        });
+
+        shape.setAttribute("points", points.join(" "));
+        dots.innerHTML = dotSvg;
+      }
+
+      sliders.forEach(function (id) {
+        document.getElementById(id).addEventListener("input", draw);
+      });
+      draw();
+    })();
+  </script>
 </body>
 </html>
