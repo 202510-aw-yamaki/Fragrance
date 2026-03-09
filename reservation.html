@@ -390,7 +390,7 @@
 
     .slot-tabs {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 10px;
     }
 
@@ -465,7 +465,7 @@
 
     .slot-panel {
       display: grid;
-      gap: 10px;
+      gap: 14px;
     }
 
     .slot-placeholder {
@@ -544,6 +544,39 @@
     }
 
     .slot-meta span {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .slot-day-block {
+      display: grid;
+      gap: 8px;
+      padding: 12px 0;
+      border-top: 1px solid rgba(216, 203, 192, 0.92);
+    }
+
+    .slot-day-block:first-child {
+      padding-top: 0;
+      border-top: 0;
+    }
+
+    .slot-day-block:last-child {
+      padding-bottom: 0;
+    }
+
+    .slot-day-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .slot-day-head strong {
+      font-size: 15px;
+    }
+
+    .slot-day-head span {
       font-size: 12px;
       color: var(--muted);
     }
@@ -788,10 +821,6 @@
         gap: 10px;
       }
 
-      .slot-tabs {
-        gap: 8px;
-      }
-
       .slot-tab {
         min-height: 50px;
         padding: 8px 10px;
@@ -883,10 +912,6 @@
 
       .select-group {
         grid-template-columns: 1fr;
-      }
-
-      .slot-tabs {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
       .time-grid {
@@ -1118,7 +1143,7 @@
     const slotClose = document.getElementById("slot-close");
 
     let selectedSlot = "";
-    let activeDayKey = "";
+    let activeWeekKey = "";
 
     function loadAxes() {
       try {
@@ -1183,59 +1208,78 @@
       const times = ["10:30", "13:00", "15:30"];
       const today = new Date();
       slotList.innerHTML = "";
-      const slotData = [];
+      const weekData = [];
 
-      for (let i = 1; i <= 4; i += 1) {
-        const date = new Date(today);
-        date.setDate(today.getDate() + i);
-        const label = formatDate(date);
-        const key = `day-${i}`;
-        slotData.push({
-          key,
-          label,
-          meta: i === 1 ? "おすすめ" : "空きあり",
-          times
+      for (let weekIndex = 0; weekIndex < 2; weekIndex += 1) {
+        const days = [];
+        for (let dayIndex = 0; dayIndex < 7; dayIndex += 1) {
+          const date = new Date(today);
+          date.setDate(today.getDate() + (weekIndex * 7) + dayIndex + 1);
+          days.push({
+            label: formatDate(date),
+            meta: weekIndex === 0 && dayIndex === 0 ? "おすすめ" : "空きあり",
+            times
+          });
+        }
+        weekData.push({
+          key: `week-${weekIndex + 1}`,
+          title: weekIndex === 0 ? "今週" : "来週",
+          range: `${days[0].label} - ${days[6].label}`,
+          days
         });
       }
 
-      activeDayKey = "";
+      activeWeekKey = "";
 
       const tabs = document.createElement("div");
       tabs.className = "slot-tabs";
       slotModalPanels.innerHTML = "";
 
-      slotData.forEach((day) => {
+      weekData.forEach((week) => {
         const tab = document.createElement("button");
         tab.type = "button";
         tab.className = "slot-tab";
-        tab.dataset.dayKey = day.key;
-        tab.innerHTML = `<strong>${day.label}</strong><span>${day.meta}</span>`;
-        tab.addEventListener("click", () => selectDay(day.key));
+        tab.dataset.weekKey = week.key;
+        tab.innerHTML = `<strong>${week.title}</strong><span>${week.range}</span>`;
+        tab.addEventListener("click", () => selectWeek(week.key));
         tabs.appendChild(tab);
 
         const panel = document.createElement("section");
         panel.className = "slot-panel";
-        panel.dataset.dayKey = day.key;
+        panel.dataset.weekKey = week.key;
         panel.innerHTML = `
           <div class="slot-meta">
-            <strong>${day.label} の時間帯</strong>
-            <span>${day.meta}</span>
+            <strong>${week.title} の予約枠</strong>
+            <span>${week.range}</span>
           </div>
-          <div class="time-grid"></div>
         `;
 
-        const grid = panel.querySelector(".time-grid");
-        day.times.forEach((time) => {
-          const button = document.createElement("button");
-          button.type = "button";
-          button.className = "time-slot";
-          button.textContent = time;
-          button.dataset.slot = `${day.label} ${time}`;
-          button.addEventListener("click", () => {
-            selectSlot(button.dataset.slot);
-            closeSlotModal();
+        week.days.forEach((day) => {
+          const dayBlock = document.createElement("section");
+          dayBlock.className = "slot-day-block";
+          dayBlock.innerHTML = `
+            <div class="slot-day-head">
+              <strong>${day.label}</strong>
+              <span>${day.meta}</span>
+            </div>
+            <div class="time-grid"></div>
+          `;
+
+          const grid = dayBlock.querySelector(".time-grid");
+          day.times.forEach((time) => {
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "time-slot";
+            button.textContent = time;
+            button.dataset.slot = `${day.label} ${time}`;
+            button.addEventListener("click", () => {
+              selectSlot(button.dataset.slot);
+              closeSlotModal();
+            });
+            grid.appendChild(button);
           });
-          grid.appendChild(button);
+
+          panel.appendChild(dayBlock);
         });
 
         slotModalPanels.appendChild(panel);
@@ -1243,21 +1287,22 @@
 
       slotList.appendChild(tabs);
       const stage = document.createElement("div");
+
       slotList.appendChild(stage);
     }
 
-    function selectDay(dayKey) {
-      activeDayKey = dayKey;
+    function selectWeek(weekKey) {
+      activeWeekKey = weekKey;
       document.querySelectorAll(".slot-tab").forEach((button) => {
-        button.classList.toggle("active", button.dataset.dayKey === dayKey);
+        button.classList.toggle("active", button.dataset.weekKey === weekKey);
       });
       document.querySelectorAll(".slot-panel").forEach((panel) => {
-        panel.classList.toggle("active", panel.dataset.dayKey === dayKey);
+        panel.classList.toggle("active", panel.dataset.weekKey === weekKey);
       });
-      const activeTab = document.querySelector(`.slot-tab[data-day-key="${dayKey}"]`);
+      const activeTab = document.querySelector(`.slot-tab[data-week-key="${weekKey}"]`);
       if (activeTab) {
-        slotModalTitle.textContent = `${activeTab.querySelector("strong").textContent} の時間帯`;
-        slotModalCopy.textContent = "ご希望の時間帯をひとつ選んでください。";
+        slotModalTitle.textContent = `${activeTab.querySelector("strong").textContent} の予約枠`;
+        slotModalCopy.textContent = "この週の7日分を表示しています。ご希望の日時をひとつ選んでください。";
       }
       openSlotModal();
     }
