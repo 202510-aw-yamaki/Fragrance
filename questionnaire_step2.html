@@ -1,306 +1,969 @@
 ﻿<!doctype html>
-<html lang="ja" class="h-full">
+<html lang="ja">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>香りワークショップ_PC問_ワイヤーフレーム</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ["'Noto Sans JP'", "sans-serif"]
-          }
-        }
-      }
-    }
-  </script>
+  <title>Fragrance Workshop STEP2</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; }
-    body { margin: 0; }
-
-    .frame {
-      height: 100dvh;
-      overflow: hidden;
-      padding: 10px;
-      background: #f5f4f2;
-      display: grid;
-      grid-template-rows: 7% 9% 70% 14%;
-      gap: 10px;
+    :root {
+      --panel: rgba(255, 251, 246, 0.92);
+      --line: rgba(211, 195, 182, 0.9);
+      --text: #1e3448;
+      --muted: #715f54;
+      --accent: #c88972;
+      --container: min(1240px, calc(100vw - 24px));
+      --shadow: 0 18px 44px rgba(81, 58, 42, 0.1);
     }
 
-    .browser-bar {
-      border-radius: 10px;
-      background: #e2dfdb;
-      border: 1px solid #ddd7cf;
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-padding-top: 88px;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Noto Sans JP", sans-serif;
+      color: var(--text);
+      background: radial-gradient(circle at top left, rgba(232, 216, 204, 0.78), transparent 32%), linear-gradient(180deg, #f8f4ef 0%, #f1ebe4 100%);
+      line-height: 1.7;
+      letter-spacing: 0.02em;
+    }
+
+    a,
+    button {
+      font: inherit;
+    }
+
+    button {
+      border: 0;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    .header-inner,
+    .page-shell {
+      width: var(--container);
+      margin: 0 auto;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(14px);
+      background: rgba(252, 248, 243, 0.82);
+      border-bottom: 1px solid rgba(230, 221, 210, 0.88);
+    }
+
+    .header-inner {
+      min-height: 72px;
       display: flex;
       align-items: center;
-      padding: 0 12px;
+      justify-content: space-between;
+      gap: 16px;
     }
 
-    .steps {
-      display: grid;
-      grid-template-columns: 12% 12% 1fr;
-      gap: 10px;
-      align-items: center;
+    .brand {
+      text-decoration: none;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+      color: var(--text);
     }
 
-    .step-btn {
-      height: 100%;
-      border-radius: 8px;
-      border: 1px solid #d8cdc2;
-      font-size: 14px;
+    .main-nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
       display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .main {
-      display: grid;
-      grid-template-columns: 19% 47% 34%;
       gap: 14px;
-      min-height: 0;
-    }
-
-    .left-nav { display: grid; grid-template-rows: repeat(3, 17%); gap: 14px; align-content: start; }
-
-    .left-item {
-      border-radius: 7px;
-      border: 1px solid #cfb8a8;
-      background: #eef3ea;
-      padding: 10px 14px;
-      font-size: 30px;
-      font-weight: 500;
-      display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-end;
+      flex-wrap: nowrap;
     }
 
-    .left-item.two { background: #f6efee; border-color: #d9a7a1; }
-    .left-item.three { background: #edf2f8; border-color: #abc0d3; }
+    .main-nav button {
+      min-height: 40px;
+      padding: 0 16px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255, 251, 246, 0.92);
+      color: var(--muted);
+      cursor: pointer;
+      transition: border-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
+    }
 
-    .center {
-      border: 1px solid #cdbeb1;
-      border-radius: 6px;
-      background: #f7f6f4;
-      padding: 18px 20px 14px;
+    .main-nav button:hover,
+    .main-nav button:focus-visible {
+      color: var(--text);
+      border-color: rgba(190, 154, 132, 0.95);
+      transform: translateY(-1px);
+    }
+
+    .main-nav button[disabled] {
+      opacity: 0.45;
+      cursor: default;
+      pointer-events: none;
+      transform: none;
+    }
+
+    .page-shell {
+      padding: 18px 0 24px;
       display: grid;
-      grid-template-rows: 12% 20% 20% 20% 16%;
-      gap: 12px;
+      gap: 14px;
+    }
+
+    .step-strip,
+    .question-shell {
+      border: 1px solid rgba(201, 174, 155, 0.65);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+    }
+
+    .step-strip {
+      border-radius: 20px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .step-group {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .step-badge {
+      min-width: 114px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      text-align: center;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .step-badge.current {
+      background: linear-gradient(135deg, #f3dfd5, #fbf1ea);
+      color: #855543;
+      border-color: #d6aa99;
+    }
+
+    .step-badge.next {
+      background: linear-gradient(135deg, #e3ece1, #f4f8f1);
+      color: #597059;
+    }
+
+    .step-copy {
+      text-align: right;
+      display: grid;
+      gap: 4px;
+    }
+
+    .step-copy strong {
+      font-size: 14px;
+      color: #8b5f4d;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .step-copy span {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .question-shell {
+      border-radius: 28px;
+      padding: 18px;
+      display: grid;
+      grid-template-columns: 240px minmax(0, 1fr) 320px;
+      gap: 18px;
       min-height: 0;
     }
 
-    .q-title { font-size: 46px; font-weight: 700; line-height: 1; color: #17324f; }
-    .mobile-progress { display: none; }
+    .panel {
+      min-height: 0;
+      border-radius: 24px;
+      background: rgba(255, 250, 245, 0.96);
+      border: 1px solid rgba(220, 206, 194, 0.82);
+    }
 
-    .choice {
-      border: 1px solid #dbcfc3;
-      border-radius: 6px;
+    .nav-panel {
+      padding: 18px;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      gap: 14px;
+      background: linear-gradient(180deg, rgba(246, 238, 231, 0.98), rgba(250, 246, 241, 0.96));
+    }
+
+    .nav-title {
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #9b7364;
+    }
+
+    .nav-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .nav-item {
+      width: 100%;
+      padding: 14px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: #f8f3ee;
+      color: var(--text);
+      text-align: left;
+      cursor: pointer;
+      transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+    }
+
+    .nav-item:hover {
+      transform: translateX(3px);
+    }
+
+    .nav-item.active {
+      border-color: #ca9d8c;
+      background: linear-gradient(135deg, #f7e7de, #fffaf7);
+      box-shadow: 0 12px 28px rgba(177, 136, 115, 0.14);
+    }
+
+    .nav-item.done {
+      background: linear-gradient(135deg, #e7efe6, #f8fbf7);
+      border-color: #bfd0bd;
+    }
+
+    .nav-item .no {
+      display: block;
+      font-size: 12px;
+      color: #8b786d;
+      margin-bottom: 4px;
+    }
+
+    .nav-item .label {
+      display: block;
+      font-size: 17px;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .nav-note {
+      margin-top: auto;
+      padding: 14px;
+      border-radius: 18px;
+      background: #f4ebe2;
+      color: #6d584b;
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    .main-panel {
+      padding: 22px;
+      display: grid;
+      grid-template-rows: auto auto auto minmax(0, 1fr) auto;
+      gap: 16px;
+    }
+
+    .question-meta {
       display: flex;
       align-items: center;
-      justify-content: center;
-      font-size: 46px;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .question-index {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: #f6eee8;
+      color: #855644;
+      font-size: 14px;
       font-weight: 700;
-      color: #17324f;
+    }
+
+    .helper-text {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .progress-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .progress-track {
+      height: 10px;
+      border-radius: 999px;
+      background: #eadfd6;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 20%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #c98f77, #d6a996);
+      transition: width 0.22s ease;
+    }
+
+    .progress-label {
+      font-size: 14px;
+      color: #7f695d;
+      white-space: nowrap;
+    }
+
+    .question-title {
+      margin: 0;
+      font-size: clamp(28px, 3vw, 48px);
+      line-height: 1.2;
+      letter-spacing: -0.03em;
+    }
+
+    .question-caption {
+      margin: 0;
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .option-list {
+      display: grid;
+      gap: 12px;
+      align-content: start;
+    }
+
+    .option-card {
+      width: 100%;
+      min-height: 122px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 18px;
+      display: flex;
+      align-items: center;
+      text-align: left;
+      cursor: pointer;
+      background-color: #fffdfa;
       background-size: cover;
       background-position: center;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
       overflow: hidden;
+      position: relative;
+      isolation: isolate;
     }
 
-    .choice.a {
-      background-image: linear-gradient(rgba(245, 241, 236, 0.72), rgba(245, 241, 236, 0.72)), url('https://images.unsplash.com/photo-1525310072745-f49212b5ac6d?auto=format&fit=crop&w=1200&q=60');
+    .option-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(255, 251, 246, 0.94) 0%, rgba(255, 251, 246, 0.88) 36%, rgba(255, 251, 246, 0.72) 62%, rgba(255, 251, 246, 0.58) 100%);
+      z-index: 0;
     }
-    .choice.b { background: #dbe2da; }
-    .choice.c { background: #dbe5ef; }
 
-    .choice-bottom {
+    .option-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 32px rgba(105, 84, 70, 0.1);
+    }
+
+    .option-card.selected {
+      border-color: #c58975;
+      box-shadow: 0 18px 36px rgba(178, 130, 104, 0.18);
+    }
+
+    .option-copy {
       display: grid;
-      grid-template-columns: 5% 40% 10% 40% 5%;
-      align-items: center;
+      gap: 8px;
+      position: relative;
+      z-index: 1;
+      max-width: min(72%, 520px);
     }
 
-    .small-btn {
-      height: 100%;
-      border-radius: 6px;
-      border: 1px solid #d5c4b5;
-      background: #f5f3f0;
-      font-size: 28px;
-      color: #333;
+    .option-label {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #906654;
+      text-transform: uppercase;
     }
 
-    .right {
+    .option-title {
+      font-size: clamp(18px, 1.8vw, 28px);
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .option-desc {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .sub-options {
       display: grid;
-      grid-template-rows: 63% 37%;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 12px;
-      min-height: 0;
     }
 
-    .visual {
-      border-radius: 48px;
-      border: 1px solid #ccb9a6;
-      background: #ebdac4;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 54px;
-      line-height: 1.2;
-      letter-spacing: 0.2em;
-      text-align: center;
+    .sub-option {
+      width: 100%;
+      min-height: 62px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: #f8f3ee;
+      color: #5d4c42;
+      cursor: pointer;
+      transition: border-color 0.18s ease, background 0.18s ease;
     }
 
-    .tips {
-      border-radius: 28px 28px 0 0;
-      border: 1px solid #a2b09d;
-      background: #a7b89f;
-      padding: 12px 16px;
-      display: flex;
-      align-items: flex-start;
-      justify-content: center;
-      font-size: 52px;
-      font-weight: 500;
+    .sub-option.selected {
+      border-color: #c58975;
+      background: #f3e2d9;
     }
 
-    .bottom {
+    .side-panel {
+      padding: 18px;
       display: grid;
-      grid-template-columns: 4% 56% 4% 30% 6%;
-      align-items: center;
+      grid-template-rows: minmax(0, 1fr) auto auto;
+      gap: 14px;
+      background: linear-gradient(180deg, rgba(250, 245, 239, 0.98), rgba(244, 239, 232, 0.98));
     }
 
-    .note-box,
-    .next-btn {
-      height: 72%;
-      border-radius: 14px;
-      background: #ece7e4;
+    .store-visual {
+      min-height: 260px;
+      border-radius: 28px;
+      padding: 18px;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #4a4a4a;
-      font-size: 38px;
+      flex-direction: column;
+      justify-content: flex-end;
+      color: #fffaf6;
+      background: linear-gradient(180deg, rgba(37, 45, 53, 0.14), rgba(56, 37, 20, 0.38)), url("https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=1400&q=80") center/cover;
+      box-shadow: inset 0 -72px 110px rgba(34, 22, 15, 0.28);
     }
 
-    @media (max-width: 1200px) {
-      .left-item { font-size: 18px; }
-      .q-title { font-size: 28px; }
-      .choice { font-size: 34px; }
-      .small-btn { font-size: 20px; }
-      .visual { font-size: 36px; }
-      .tips { font-size: 30px; }
-      .note-box, .next-btn { font-size: 22px; }
+    .store-visual strong {
+      font-size: 24px;
+      letter-spacing: 0.06em;
     }
 
-    @media (max-width: 900px) {
-      .frame { grid-template-rows: 8% 9% 69% 14%; gap: 8px; padding: 8px; }
-      .main { grid-template-columns: 20% 48% 32%; gap: 8px; }
-      .steps { grid-template-columns: 18% 18% 1fr; }
+    .store-visual span {
+      margin-top: 8px;
+      max-width: 20em;
+      font-size: 14px;
+      line-height: 1.7;
     }
 
-    @media (max-width: 640px) and (orientation: portrait) {
-      .frame {
-        grid-template-rows: 100%;
-        padding: 6px;
-        gap: 0;
+    .side-card,
+    .return-card {
+      border-radius: 22px;
+      padding: 16px;
+      background: #fffaf6;
+      border: 1px solid rgba(216, 203, 192, 0.95);
+    }
+
+    .side-card {
+      background: linear-gradient(180deg, #e4eee2, #f0f5ec);
+      border-color: rgba(191, 202, 188, 0.9);
+    }
+
+    .side-card strong,
+    .return-card strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      letter-spacing: 0.06em;
+    }
+
+    .side-card strong {
+      color: #58715b;
+    }
+
+    .return-card strong {
+      color: #906654;
+    }
+
+    .side-card p,
+    .return-card p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .side-card p {
+      color: #456049;
+    }
+
+    .return-card p {
+      color: #5e4f46;
+    }
+
+    .return-card .action-btn {
+      width: 100%;
+      margin-top: 14px;
+    }
+
+    .action-btn {
+      min-width: 168px;
+      min-height: 54px;
+      padding: 0 20px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #f8f3ee;
+      color: var(--text);
+      cursor: pointer;
+      transition: transform 0.18s ease, border-color 0.18s ease;
+    }
+
+    .action-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .action-btn.primary {
+      background: linear-gradient(135deg, var(--accent), #dfb8a6);
+      border-color: #c58975;
+      color: #fffdfb;
+    }
+
+    .action-btn[disabled] {
+      opacity: 0.45;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    @media (min-width: 841px) {
+      .page-shell {
+        height: min(calc(100vh - 72px), 900px);
+        padding: 12px 0;
+        grid-template-rows: auto minmax(0, 1fr);
       }
-      .browser-bar,
-      .steps,
-      .left-nav,
-      .right,
-      .bottom {
-        display: none;
+
+      .step-strip {
+        padding: 12px 16px;
       }
-      .main {
-        display: block;
+
+      .question-shell {
         height: 100%;
+        padding: 14px;
+        gap: 14px;
+        grid-template-columns: 19% 52% 29%;
       }
-      .center {
-        height: 100%;
-        border-radius: 14px;
-        padding: 14px 12px;
-        grid-template-rows: auto auto repeat(5, 1fr);
+
+      .nav-panel,
+      .main-panel,
+      .side-panel {
+        min-height: 0;
+        overflow: hidden;
+      }
+
+      .nav-panel,
+      .side-panel {
+        padding: 14px;
+        gap: 12px;
+      }
+
+      .main-panel {
+        padding: 16px;
         gap: 10px;
+        grid-template-rows: 10% 8% 14% minmax(0, 1fr) 14%;
       }
-      .q-title {
-        font-size: 48px;
-        text-align: center;
-        line-height: 1.2;
+
+      .nav-list {
+        height: 100%;
+        gap: 1.8%;
+        grid-template-rows: repeat(5, minmax(0, 1fr));
       }
-      .mobile-progress {
-        display: block;
+
+      .nav-item {
+        height: 100%;
+        padding: 6% 7%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
       }
-      .choice {
+
+      .question-title {
+        font-size: clamp(22px, 2.25vw, 34px);
+        line-height: 1.15;
+      }
+
+      .question-caption,
+      .helper-text,
+      .progress-label,
+      .side-card p,
+      .return-card p,
+      .store-visual span {
+        font-size: 13px;
+      }
+
+      .option-card {
+        min-height: 0;
+        height: 100%;
+        padding: 3.4% 3.6%;
+      }
+
+      .option-list {
+        height: 100%;
+        gap: 2.6%;
+        grid-template-rows: repeat(3, minmax(0, 1fr));
+      }
+
+      .option-title {
+        font-size: clamp(16px, 1.35vw, 21px);
+        line-height: 1.25;
+      }
+
+      .option-desc {
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .option-copy {
+        gap: 4px;
+        max-width: min(74%, 460px);
+      }
+
+      .sub-options {
+        height: 100%;
+        gap: 2.8%;
+      }
+
+      .sub-option,
+      .action-btn {
+        min-height: 0;
+        height: 100%;
+      }
+
+      .store-visual {
+        min-height: 0;
+        height: 100%;
+        padding: 14px;
+      }
+
+      .side-panel {
+        grid-template-rows: 56% 21% 23%;
+      }
+
+      .side-card,
+      .return-card {
+        padding: 12px;
+      }
+
+      .return-card .action-btn {
+        margin-top: 10px;
+        min-height: 42px;
+        height: auto;
+      }
+
+      .nav-item .label {
+        font-size: clamp(13px, 1.05vw, 16px);
+        line-height: 1.25;
+      }
+
+      .nav-item .no,
+      .option-label,
+      .side-card strong,
+      .return-card strong {
+        font-size: 11px;
+      }
+    }
+
+    @media (max-width: 1180px) {
+      .question-shell {
+        grid-template-columns: 220px minmax(0, 1fr);
+      }
+
+      .side-panel {
+        grid-column: 1 / -1;
+        grid-template-columns: 1.2fr 1fr 1fr;
+        grid-template-rows: auto;
+      }
+    }
+
+    @media (max-width: 840px) {
+
+      .header-inner,
+      .step-strip,
+      .question-shell {
+        width: min(1240px, calc(100vw - 16px));
+      }
+
+      .header-inner {
+        min-height: 64px;
+      }
+
+      .step-strip {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .step-copy {
+        text-align: left;
+      }
+
+      .question-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-panel {
+        display: none;
+        order: 2;
+      }
+
+      .main-panel {
+        order: 1;
+      }
+
+      .side-panel {
+        order: 3;
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .main-nav ul {
+        gap: 8px;
+      }
+
+      .main-nav button {
+        min-height: 36px;
+        padding: 0 12px;
+        font-size: 13px;
+      }
+
+      .page-shell {
+        padding-top: 10px;
+      }
+
+      .step-badge {
+        min-width: 92px;
+        padding: 8px 14px;
+        font-size: 12px;
+      }
+
+      .main-panel,
+      .nav-panel,
+      .side-panel {
+        padding: 16px;
+      }
+
+      .question-title {
         font-size: 30px;
       }
-      .choice.a {
-        background-image: none;
-        background-color: #ece5df;
+
+      .progress-row {
+        grid-template-columns: 1fr;
       }
-      .choice-bottom {
-        grid-template-columns: 0 1fr 0 1fr 0;
-        gap: 10px;
+
+      .option-card {
+        grid-template-columns: 1fr;
+        min-height: 0;
+        gap: 12px;
+        padding: 14px;
       }
-      .small-btn {
-        font-size: 28px;
+
+      .option-copy {
+        max-width: 100%;
+      }
+
+      .option-title {
+        font-size: 20px;
+      }
+
+      .sub-options {
+        grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
-<body class="h-full bg-[#f5f4f2] text-gray-900 dark:bg-gray-50">
-  <div class="frame">
-    <header class="browser-bar">
-      <div class="h-2 w-2 rounded-full bg-[#d7b1a7]"></div>
-      <div class="ml-2 h-2 w-2 rounded-full bg-[#d9ccc0]"></div>
-      <div class="ml-2 h-2 w-2 rounded-full bg-[#b7c7b2]"></div>
-    </header>
 
-    <section class="steps">
-      <div class="step-btn bg-[#eee6e6]">STEP1</div>
-      <div class="step-btn bg-[#e1e8df]">STEP2</div>
-      <div></div>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" id="brand-link" href="香りワークショップ_トップページ.html" aria-label="トップへ戻る">FRAGRANCE WORKSHOP</a>
+      <nav class="main-nav" aria-label="ページメニュー">
+        <ul>
+          <li><button id="header-prev-btn" type="button">前の質問</button></li>
+          <li><button id="header-next-btn" type="button">次の質問</button></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <div class="page-shell">
+    <section class="step-strip" aria-label="進行状況">
+      <div class="step-group">
+        <div class="step-badge next">STEP1 固定5問</div>
+        <div class="step-badge current">STEP2 追加3問</div>
+      </div>
+      <div class="step-copy">
+        <strong>Fragrance Workshop</strong>
+        <span>ここまでの回答をもとに、あと3問だけ深掘りして仕上がりを整えます。</span>
+      </div>
     </section>
-
-    <main class="main">
-      <aside class="left-nav">
-        <div class="left-item">Q6 身につけた時の印象</div>
-        <div class="left-item two">Q7 甘さの出方</div>
-        <div class="left-item three">Q8 今日の仕上がり</div>
+    <main class="question-shell">
+      <aside class="panel nav-panel" aria-label="質問ナビ">
+        <div class="nav-title">Question Navigation</div>
+        <div class="nav-list" id="nav-list"></div>
+        <div class="nav-note">STEP2 は深掘りの3問です。ここまでの回答を前提に、香りの印象と残り方をもう少しだけ整えていきます。</div>
       </aside>
-
-      <section class="center">
-        <h1 class="q-title">好きな色は<br>何ですか？</h1>
-        <div class="mobile-progress">
-          <p class="text-center text-[20px] text-[#17324f]">3 / 8　残り5問です</p>
-          <div class="mx-auto mt-2 h-3 w-[82%] rounded-full bg-[#e5e0da]">
-            <div class="h-3 w-[37.5%] rounded-full bg-[#d6a8a0]"></div>
+      <section class="panel main-panel" aria-live="polite">
+        <div class="question-meta">
+          <div class="question-index" id="question-index">Q6 / STEP2</div>
+          <div class="helper-text" id="helper-text"></div>
+        </div>
+        <div class="progress-row">
+          <div class="progress-track" aria-hidden="true">
+            <div class="progress-bar" id="progress-bar"></div>
           </div>
+          <div class="progress-label" id="progress-label">1 / 3</div>
         </div>
-        <button class="choice a">やさしいピンク・ベージュ</button>
-        <button class="choice b">白・水色・透明感</button>
-        <button class="choice c">ブラウン・深いグリーン</button>
-        <div class="choice-bottom">
-          <div></div>
-          <button class="small-btn">全部好き</button>
-          <div></div>
-          <button class="small-btn">この中にはない</button>
-          <div></div>
+        <div>
+          <h1 class="question-title" id="question-title"></h1>
+          <p class="question-caption" id="question-caption"></p>
         </div>
+        <div class="option-list" id="option-list"></div>
+        <div class="sub-options" id="sub-options"></div>
       </section>
-
-      <aside class="right">
-        <div class="visual">店<br>舗<br>の<br>雰<br>囲<br>気<br>画<br>像</div>
-        <div class="tips">豆知識</div>
+      <aside class="panel side-panel">
+        <div class="store-visual">
+          <strong>提案の空気感</strong>
+          <span>STEP2 では、工房の奥にある提案カウンターに少し近づくイメージです。静かな器具や無地ボトルが見える、落ち着いた空気感を添えています。</span>
+        </div>
+        <div class="side-card">
+          <strong id="note-title"></strong>
+          <p id="note-body"></p>
+        </div>
+        <div class="return-card">
+          <p>STEP2 の途中で戻ると、ここまでの深掘り回答は保存されません。</p>
+          <button class="action-btn" id="return-top-btn" type="button">トップページへ戻る</button>
+        </div>
       </aside>
     </main>
-
-    <footer class="bottom">
-      <div></div>
-      <div class="note-box">解答をもとにグラフを表示する</div>
-      <div></div>
-      <button class="next-btn">次のステップへ進む</button>
-      <div></div>
-    </footer>
   </div>
+  <script>
+    const questions = [
+      { id: "Q6", nav: "身につけた時の印象", title: "身につけた時の印象は？", caption: "ここまでの回答をもとに、仕上がりの空気感をもう少しだけ整えます。", helper: "いちばん近い印象を選んでください", noteTitle: "豆知識＜フローラル系＞", noteBody: "花の印象は甘さだけでなく、抜け感や透明感の調整でも大きく変わります。", footer: "STEP2 は、香りをどう見せたいかを整える段階です。", options: [{ key: "A", title: "やわらかく華やか", desc: "淡い花とやわらかな光。華やかだけれど派手すぎない印象。", visual: "linear-gradient(135deg, #efd8d2, #fcf2ec 55%, #e6c8be)" }, { key: "B", title: "親しみやすく甘い", desc: "丸みのある花器と温かなベージュ。やさしく甘い空気感。", visual: "linear-gradient(135deg, #ead8cf, #faf2eb 55%, #d9c2b6)" }, { key: "C", title: "上品で落ち着いた印象", desc: "花材を少し抑えた整った静物。静かな大人っぽさがある方向。", visual: "linear-gradient(135deg, #ddd8d2, #f7f2ee 55%, #cbc0b7)" }], subOptions: ["全部好き", "この中にはない"] },
+      { id: "Q7", nav: "甘さの出方", title: "甘さの出方はどれが近いですか？", caption: "香りの立ち上がり方で、同じ系統でも印象はかなり変わります。", helper: "甘さの出方に近いものを選んでください", noteTitle: "豆知識＜ミドルノート＞", noteBody: "香水をつけてから約30分から2時間後に香る、香りの中心となる部分をミドルノートと呼びます。", footer: "ここでは、時間とともにどう香ってほしいかを見ています。", options: [{ key: "A", title: "最初にふわっと感じたい", desc: "明るい花と軽い光。第一印象がやさしく広がるイメージ。", visual: "linear-gradient(135deg, #f1ddd8, #fdf5ef 55%, #e7cdc1)" }, { key: "B", title: "時間とともにやさしく出てほしい", desc: "層のある布と淡い花。じんわり広がるやわらかな甘さ。", visual: "linear-gradient(135deg, #e7ddd5, #fbf5f0 55%, #d8cabe)" }, { key: "C", title: "甘さは控えめがいい", desc: "白花と余白を残した構図。軽やかで静かな上品さ。", visual: "linear-gradient(135deg, #ece9e2, #fbf9f6 55%, #ddd6cd)" }], subOptions: ["全部好き", "この中にはない"] },
+      { id: "Q8", nav: "今日の仕上がり", title: "今日の仕上がりでいちばん近いのは？", caption: "最後に、今日まといたい印象をひとつだけ選んで仕上げます。", helper: "今日の気分にいちばん近いものを選んでください", noteTitle: "豆知識＜ラストノート＞", noteBody: "最後に長く残る香りは、その日全体の印象を静かに決める余韻の役割を持ちます。", footer: "最後の一問で、当日の提案方向を確定します。", options: [{ key: "A", title: "軽やかにまとめたい", desc: "白と淡いブルー、抜ける光。さらりと軽いまとまり。", visual: "linear-gradient(135deg, #dce7f2, #f8fcff 56%, #cfdeec)" }, { key: "B", title: "やわらかく心地よくしたい", desc: "ベージュと白花、やさしい昼光。肩の力が抜ける安心感。", visual: "linear-gradient(135deg, #ead9d0, #fcf4ef 56%, #e0c9be)" }, { key: "C", title: "少し印象を残したい", desc: "深すぎないブラウンと整った影。静かな存在感を残す方向。", visual: "linear-gradient(135deg, #ddd4cc, #f6f1ec 56%, #cfc2b6)" }], subOptions: ["全部好き", "この中にはない"] }
+    ];
+    const answers = {};
+    let currentIndex = 0;
+    const navList = document.getElementById("nav-list");
+    const optionList = document.getElementById("option-list");
+    const subOptions = document.getElementById("sub-options");
+    const questionIndex = document.getElementById("question-index");
+    const helperText = document.getElementById("helper-text");
+    const progressBar = document.getElementById("progress-bar");
+    const progressLabel = document.getElementById("progress-label");
+    const questionTitle = document.getElementById("question-title");
+    const questionCaption = document.getElementById("question-caption");
+    const noteTitle = document.getElementById("note-title");
+    const noteBody = document.getElementById("note-body");
+    const brandLink = document.getElementById("brand-link");
+    const returnTopBtn = document.getElementById("return-top-btn");
+    const headerPrevBtn = document.getElementById("header-prev-btn");
+    const headerNextBtn = document.getElementById("header-next-btn");
+    function hasAnyAnswer() { return Object.keys(answers).length > 0; }
+    function confirmReturnToTop() {
+      if (!hasAnyAnswer()) return true;
+      return window.confirm("トップページへ戻ると、ここまでの回答データはなくなります。戻りますか？");
+    }
+    function returnToTop() {
+      if (!confirmReturnToTop()) return;
+      window.location.href = "香りワークショップ_トップページ.html";
+    }
+    function showCompletion() { window.alert("STEP2の回答が完了しました。次は香りバランス表示や提案ページにつなげられます。"); }
+    function moveNext() { if (currentIndex < questions.length - 1) { currentIndex += 1; render(); return; } showCompletion(); }
+    function movePrev() { if (currentIndex > 0) { currentIndex -= 1; render(); } }
+    function selectAnswer(value) { const question = questions[currentIndex]; answers[question.id] = value; render(); window.setTimeout(() => { moveNext(); }, 140); }
+    function renderNav() {
+      navList.innerHTML = "";
+      questions.forEach((question, index) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "nav-item";
+        if (index === currentIndex) button.classList.add("active");
+        else if (answers[question.id]) button.classList.add("done");
+        button.innerHTML = `<span class="no">${question.id}</span><span class="label">${question.nav}</span>`;
+        button.addEventListener("click", () => { currentIndex = index; render(); });
+        navList.appendChild(button);
+      });
+    }
+    function renderOptions(question) {
+      optionList.innerHTML = "";
+      question.options.forEach((option) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "option-card";
+        if (answers[question.id] === option.title) button.classList.add("selected");
+        button.style.backgroundImage = option.visual;
+        button.innerHTML = `<div class="option-copy"><span class="option-label">${option.key}</span><span class="option-title">${option.title}</span><span class="option-desc">${option.desc}</span></div>`;
+        button.addEventListener("click", () => selectAnswer(option.title));
+        optionList.appendChild(button);
+      });
+    }
+    function renderSubOptions(question) {
+      subOptions.innerHTML = "";
+      question.subOptions.forEach((label) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "sub-option";
+        if (answers[question.id] === label) button.classList.add("selected");
+        button.textContent = label;
+        button.addEventListener("click", () => selectAnswer(label));
+        subOptions.appendChild(button);
+      });
+    }
+    function updateButtons() {
+      const onLastQuestion = currentIndex === questions.length - 1;
+      headerPrevBtn.disabled = currentIndex === 0;
+      headerNextBtn.textContent = onLastQuestion ? "仕上がりを見る" : "次の質問";
+    }
+    function render() {
+      const question = questions[currentIndex];
+      const progress = ((currentIndex + 1) / questions.length) * 100;
+      const answer = answers[question.id];
+      renderNav();
+      renderOptions(question);
+      renderSubOptions(question);
+      questionIndex.textContent = `${question.id} / STEP2`;
+      helperText.textContent = question.helper;
+      progressBar.style.width = `${progress}%`;
+      progressLabel.textContent = `${currentIndex + 1} / ${questions.length}`;
+      questionTitle.textContent = question.title;
+      questionCaption.textContent = question.caption;
+      noteTitle.textContent = question.noteTitle;
+      noteBody.textContent = question.noteBody;
+      updateButtons();
+    }
+    brandLink.addEventListener("click", (event) => {
+      event.preventDefault();
+      returnToTop();
+    });
+    returnTopBtn.addEventListener("click", returnToTop);
+    headerPrevBtn.addEventListener("click", movePrev);
+    headerNextBtn.addEventListener("click", moveNext);
+    render();
+  </script>
 </body>
+
 </html>
