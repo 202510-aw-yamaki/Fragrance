@@ -207,14 +207,16 @@
 
     .summary-panel,
     .booking-panel,
-    .side-panel {
+    .side-panel,
+    .memo-panel,
+    .action-panel {
       padding: 18px;
       display: grid;
       gap: 14px;
     }
 
     .summary-panel {
-      grid-template-rows: auto auto minmax(0, 1fr);
+      grid-template-rows: auto minmax(0, 1fr);
       background: linear-gradient(180deg, rgba(246, 238, 231, 0.98), rgba(250, 246, 241, 0.96));
     }
 
@@ -226,6 +228,23 @@
     .side-panel {
       grid-template-rows: minmax(0, 1fr) auto auto;
       background: linear-gradient(180deg, rgba(250, 245, 239, 0.98), rgba(244, 239, 232, 0.98));
+    }
+
+    .memo-panel {
+      padding: 0;
+      border: 0;
+      box-shadow: none;
+      background: transparent;
+      backdrop-filter: none;
+    }
+
+    .action-panel {
+      padding: 0;
+      border: 0;
+      box-shadow: none;
+      background: transparent;
+      backdrop-filter: none;
+      align-content: end;
     }
 
     .section-label {
@@ -290,28 +309,6 @@
       line-height: 1.35;
     }
 
-    .summary-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .summary-tags span {
-      padding: 7px 10px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.82);
-      border: 1px solid rgba(211, 195, 182, 0.88);
-      font-size: 12px;
-      color: #805848;
-    }
-
-    .info-card {
-      display: grid;
-      gap: 10px;
-      background: linear-gradient(180deg, var(--soft-green), #f8fbf7);
-      border-color: rgba(191, 202, 188, 0.9);
-    }
-
     .info-card h2,
     .axis-card h2,
     .booking-panel h2,
@@ -323,7 +320,6 @@
       font-size: 1.08rem;
     }
 
-    .info-list,
     .policy-list {
       margin: 0;
       padding-left: 18px;
@@ -385,32 +381,169 @@
     .booking-grid {
       display: grid;
       gap: 14px;
-      grid-template-columns: minmax(0, 1.2fr) minmax(240px, .8fr);
     }
 
     .slot-list {
       display: grid;
-      gap: 12px;
+      gap: 14px;
     }
 
-    .slot-day {
+    .slot-tabs {
       display: grid;
-      gap: 8px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
     }
 
-    .slot-day header {
+    .slot-tab {
+      min-height: 56px;
+      padding: 10px 12px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--text);
+      cursor: pointer;
+      text-align: left;
+      transition: border-color 0.18s ease, background 0.18s ease, transform 0.18s ease;
+    }
+
+    .slot-tab:hover,
+    .slot-tab:focus-visible {
+      transform: translateY(-1px);
+      border-color: rgba(190, 154, 132, 0.95);
+    }
+
+    .slot-tab.active {
+      border-color: #c58975;
+      background: linear-gradient(135deg, #f7e7de, #fffaf7);
+      box-shadow: 0 12px 28px rgba(177, 136, 115, 0.14);
+    }
+
+    .slot-tab strong,
+    .slot-tab span {
+      display: block;
+    }
+
+    .slot-tab strong {
+      font-size: 14px;
+      margin-bottom: 3px;
+    }
+
+    .slot-tab span {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .slot-stage {
+      padding: 18px;
+      border-radius: 20px;
+      background: rgba(246, 241, 236, 0.72);
+      border: 1px solid rgba(216, 203, 192, 0.92);
+      display: grid;
+      gap: 16px;
+    }
+
+    .slot-stage-copy {
+      display: grid;
+      gap: 4px;
+    }
+
+    .slot-stage-copy strong {
+      font-size: clamp(20px, 2.2vw, 30px);
+      line-height: 1.2;
+      letter-spacing: 0.01em;
+    }
+
+    .slot-stage-copy p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .slot-panels {
+      display: grid;
+    }
+
+    .slot-panel {
+      display: grid;
+      gap: 10px;
+    }
+
+    .slot-placeholder {
+      padding: 18px 16px;
+      border-radius: 18px;
+      border: 1px dashed rgba(201, 174, 155, 0.9);
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.56);
+      font-size: 14px;
+    }
+
+    .slot-modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(33, 26, 21, 0.32);
+      z-index: 80;
+    }
+
+    .slot-modal.open {
       display: flex;
+    }
+
+    .slot-modal-card {
+      width: min(560px, calc(100vw - 32px));
+      border-radius: 24px;
+      border: 1px solid rgba(201, 174, 155, 0.72);
+      background: rgba(255, 250, 245, 0.98);
+      box-shadow: 0 24px 52px rgba(51, 37, 28, 0.22);
+      padding: 18px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .slot-modal-head {
+      display: flex;
+      align-items: flex-start;
       justify-content: space-between;
       gap: 12px;
+    }
+
+    .slot-modal-head h3 {
+      margin: 0 0 4px;
+      font-size: 1.2rem;
+    }
+
+    .slot-modal-head p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .slot-close {
+      min-width: 42px;
+      min-height: 42px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.92);
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .slot-meta {
+      display: flex;
+      justify-content: space-between;
       align-items: center;
+      gap: 12px;
       flex-wrap: wrap;
     }
 
-    .slot-day strong {
-      font-size: 15px;
+    .slot-meta strong {
+      font-size: 16px;
     }
 
-    .slot-day span {
+    .slot-meta span {
       font-size: 12px;
       color: var(--muted);
     }
@@ -447,6 +580,7 @@
     .select-group {
       display: grid;
       gap: 12px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       align-content: start;
     }
 
@@ -589,9 +723,7 @@
 
     @media (min-width: 841px) {
       .page-shell {
-        height: min(calc(100vh - 72px), 900px);
-        padding: 12px 0;
-        grid-template-rows: auto minmax(0, 1fr);
+        padding: 12px 0 24px;
       }
 
       .step-strip {
@@ -599,17 +731,13 @@
       }
 
       .reservation-shell {
-        height: 100%;
         padding: 14px;
         gap: 14px;
-        grid-template-columns: 23% 49% 28%;
-      }
-
-      .summary-panel,
-      .booking-panel,
-      .side-panel {
-        min-height: 0;
-        overflow: hidden;
+        grid-template-columns: 25% minmax(0, 1fr) 21%;
+        grid-template-areas:
+          "summary booking side"
+          "memo memo actions";
+        align-items: start;
       }
 
       .summary-panel,
@@ -620,39 +748,66 @@
 
       .booking-panel {
         padding: 16px;
-        gap: 12px;
+        gap: 10px;
+      }
+
+      .summary-panel {
+        grid-area: summary;
+      }
+
+      .booking-panel {
+        grid-area: booking;
+      }
+
+      .side-panel {
+        grid-area: side;
+      }
+
+      .memo-panel {
+        grid-area: memo;
+      }
+
+      .action-panel {
+        grid-area: actions;
       }
 
       .lead-card h1 {
-        font-size: clamp(24px, 2.3vw, 34px);
+        font-size: clamp(22px, 2vw, 30px);
       }
 
       .lead-card p,
       .booking-intro p,
       .booking-note,
       .memo-help,
-      .info-list,
       .policy-list,
       .visual-card p {
         font-size: 13px;
       }
 
       .booking-grid {
-        min-height: 0;
+        gap: 10px;
+      }
+
+      .slot-tabs {
+        gap: 8px;
+      }
+
+      .slot-tab {
+        min-height: 50px;
+        padding: 8px 10px;
+      }
+
+      .slot-stage {
+        padding: 14px;
         gap: 12px;
       }
 
-      .slot-card,
-      .memo-card,
-      .policy-card,
-      .note-card,
-      .info-card,
-      .axis-card {
-        min-height: 0;
+      .slot-modal-card {
+        padding: 16px;
       }
 
-      .slot-list {
-        gap: 10px;
+      .slot-stage-copy strong {
+        font-size: clamp(18px, 1.9vw, 24px);
       }
 
       .time-grid {
@@ -672,21 +827,34 @@
       .memo-card textarea {
         min-height: 120px;
       }
+
+      .booking-actions {
+        display: grid;
+        gap: 12px;
+      }
+
+      .action-btn {
+        width: 100%;
+      }
     }
 
     @media (max-width: 1120px) {
       .reservation-shell {
         grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+          "summary booking"
+          "memo memo"
+          "side actions";
       }
 
       .side-panel {
-        grid-column: 1 / -1;
         grid-template-columns: 1.1fr 1fr 1fr;
         grid-template-rows: auto;
       }
     }
 
     @media (max-width: 840px) {
+
       .header-inner,
       .step-strip,
       .reservation-shell {
@@ -708,12 +876,31 @@
 
       .reservation-shell,
       .booking-grid,
-      .side-panel {
+      .side-panel,
+      .action-panel {
         grid-template-columns: 1fr;
+      }
+
+      .select-group {
+        grid-template-columns: 1fr;
+      }
+
+      .slot-tabs {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
       .time-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .memo-panel,
+      .action-panel {
+        padding: 0;
+      }
+
+      .slot-modal {
+        padding: 16px;
+        align-items: flex-end;
       }
     }
 
@@ -754,6 +941,10 @@
       .time-grid {
         grid-template-columns: 1fr;
       }
+
+      .slot-modal-card {
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -793,20 +984,8 @@
           <p id="summary-body">フローラルを軸にしつつ、重くしすぎずに整えた方向です。当日はこの土台から香りを試し始められます。</p>
         </article>
 
-        <article class="info-card">
-          <h2>スタッフが見る情報</h2>
-          <p>共有する情報は増やしすぎず、会話の起点になるものだけに絞っています。</p>
-          <ul class="info-list">
-            <li>固定5問と追加3問の回答傾向</li>
-            <li>5軸グラフの微調整値</li>
-            <li>今日の仕上がりの方向性</li>
-            <li>任意メモと来店日時</li>
-          </ul>
-        </article>
-
         <article class="axis-card">
           <h2>現在の香りバランス</h2>
-          <div class="summary-tags" id="summary-tags"></div>
           <div class="axis-list" id="axis-list"></div>
         </article>
       </aside>
@@ -853,17 +1032,6 @@
             </article>
           </div>
         </div>
-
-        <article class="memo-card">
-          <h3>スタッフに伝えたいこと（任意）</h3>
-          <p class="memo-help">例: 甘さは控えめにしたい / 仕事用で使いたい / 最初は軽い方向から試したい</p>
-          <textarea id="staff-memo" placeholder="当日スタッフに伝えておきたいことがあれば入力してください。"></textarea>
-        </article>
-
-        <div class="booking-actions">
-          <button class="action-btn primary" id="confirm-btn" type="button" disabled>予約を確定する</button>
-          <a class="action-btn" href="fragrance-graph.html">グラフへ戻る</a>
-        </div>
       </section>
 
       <aside class="panel side-panel">
@@ -886,7 +1054,35 @@
           </ul>
         </article>
       </aside>
+
+      <section class="memo-panel">
+        <article class="memo-card">
+          <h3>スタッフに伝えたいこと（任意）</h3>
+          <p class="memo-help">例: 甘さは控えめにしたい / 仕事用で使いたい / 最初は軽い方向から試したい</p>
+          <textarea id="staff-memo" placeholder="当日スタッフに伝えておきたいことがあれば入力してください。"></textarea>
+        </article>
+      </section>
+
+      <aside class="action-panel">
+        <div class="booking-actions">
+          <button class="action-btn primary" id="confirm-btn" type="button" disabled>予約を確定する</button>
+          <a class="action-btn" href="fragrance-graph.html">グラフへ戻る</a>
+        </div>
+      </aside>
     </main>
+  </div>
+
+  <div class="slot-modal" id="slot-modal" aria-hidden="true">
+    <div class="slot-modal-card" role="dialog" aria-modal="true" aria-labelledby="slot-modal-title">
+      <div class="slot-modal-head">
+        <div>
+          <h3 id="slot-modal-title">時間帯を選択</h3>
+          <p id="slot-modal-copy">日付を選ぶと、ここに時間帯が表示されます。</p>
+        </div>
+        <button class="slot-close" id="slot-close" type="button" aria-label="時間選択を閉じる">×</button>
+      </div>
+      <div class="slot-panels" id="slot-modal-panels"></div>
+    </div>
   </div>
 
   <script>
@@ -908,7 +1104,6 @@
 
     const summaryHeadline = document.getElementById("summary-headline");
     const summaryBody = document.getElementById("summary-body");
-    const summaryTags = document.getElementById("summary-tags");
     const axisList = document.getElementById("axis-list");
     const slotList = document.getElementById("slot-list");
     const selectedStatus = document.getElementById("selected-status");
@@ -916,8 +1111,14 @@
     const visitType = document.getElementById("visit-type");
     const guestCount = document.getElementById("guest-count");
     const staffMemo = document.getElementById("staff-memo");
+    const slotModal = document.getElementById("slot-modal");
+    const slotModalPanels = document.getElementById("slot-modal-panels");
+    const slotModalTitle = document.getElementById("slot-modal-title");
+    const slotModalCopy = document.getElementById("slot-modal-copy");
+    const slotClose = document.getElementById("slot-close");
 
     let selectedSlot = "";
+    let activeDayKey = "";
 
     function loadAxes() {
       try {
@@ -958,13 +1159,6 @@
 
     function renderAxes(axes, sorted) {
       axisList.innerHTML = "";
-      summaryTags.innerHTML = "";
-
-      sorted.slice(0, 3).forEach((axis) => {
-        const tag = document.createElement("span");
-        tag.textContent = `${axis.label} ${axis.value}`;
-        summaryTags.appendChild(tag);
-      });
 
       AXIS_META.forEach((axis) => {
         const row = document.createElement("div");
@@ -989,36 +1183,93 @@
       const times = ["10:30", "13:00", "15:30"];
       const today = new Date();
       slotList.innerHTML = "";
+      const slotData = [];
 
       for (let i = 1; i <= 4; i += 1) {
         const date = new Date(today);
         date.setDate(today.getDate() + i);
+        const label = formatDate(date);
+        const key = `day-${i}`;
+        slotData.push({
+          key,
+          label,
+          meta: i === 1 ? "おすすめ" : "空きあり",
+          times
+        });
+      }
 
-        const day = document.createElement("section");
-        day.className = "slot-day";
+      activeDayKey = "";
 
-        const countLabel = i === 1 ? "おすすめ" : "空きあり";
-        day.innerHTML = `
-          <header>
-            <strong>${formatDate(date)}</strong>
-            <span>${countLabel}</span>
-          </header>
+      const tabs = document.createElement("div");
+      tabs.className = "slot-tabs";
+      slotModalPanels.innerHTML = "";
+
+      slotData.forEach((day) => {
+        const tab = document.createElement("button");
+        tab.type = "button";
+        tab.className = "slot-tab";
+        tab.dataset.dayKey = day.key;
+        tab.innerHTML = `<strong>${day.label}</strong><span>${day.meta}</span>`;
+        tab.addEventListener("click", () => selectDay(day.key));
+        tabs.appendChild(tab);
+
+        const panel = document.createElement("section");
+        panel.className = "slot-panel";
+        panel.dataset.dayKey = day.key;
+        panel.innerHTML = `
+          <div class="slot-meta">
+            <strong>${day.label} の時間帯</strong>
+            <span>${day.meta}</span>
+          </div>
           <div class="time-grid"></div>
         `;
 
-        const grid = day.querySelector(".time-grid");
-        times.forEach((time) => {
+        const grid = panel.querySelector(".time-grid");
+        day.times.forEach((time) => {
           const button = document.createElement("button");
           button.type = "button";
           button.className = "time-slot";
           button.textContent = time;
-          button.dataset.slot = `${formatDate(date)} ${time}`;
-          button.addEventListener("click", () => selectSlot(button.dataset.slot));
+          button.dataset.slot = `${day.label} ${time}`;
+          button.addEventListener("click", () => {
+            selectSlot(button.dataset.slot);
+            closeSlotModal();
+          });
           grid.appendChild(button);
         });
 
-        slotList.appendChild(day);
+        slotModalPanels.appendChild(panel);
+      });
+
+      slotList.appendChild(tabs);
+      const stage = document.createElement("div");
+      slotList.appendChild(stage);
+    }
+
+    function selectDay(dayKey) {
+      activeDayKey = dayKey;
+      document.querySelectorAll(".slot-tab").forEach((button) => {
+        button.classList.toggle("active", button.dataset.dayKey === dayKey);
+      });
+      document.querySelectorAll(".slot-panel").forEach((panel) => {
+        panel.classList.toggle("active", panel.dataset.dayKey === dayKey);
+      });
+      const activeTab = document.querySelector(`.slot-tab[data-day-key="${dayKey}"]`);
+      if (activeTab) {
+        slotModalTitle.textContent = `${activeTab.querySelector("strong").textContent} の時間帯`;
+        slotModalCopy.textContent = "ご希望の時間帯をひとつ選んでください。";
       }
+      openSlotModal();
+    }
+
+    function openSlotModal() {
+      slotModal.classList.add("open");
+      slotModal.setAttribute("aria-hidden", "false");
+    }
+
+    function closeSlotModal() {
+      slotModal.classList.remove("open");
+      slotModal.setAttribute("aria-hidden", "true");
     }
 
     function selectSlot(slot) {
@@ -1053,6 +1304,15 @@
 
     guestCount.addEventListener("change", updateSelectionState);
     confirmBtn.addEventListener("click", handleConfirm);
+    slotClose.addEventListener("click", closeSlotModal);
+    slotModal.addEventListener("click", (event) => {
+      if (event.target === slotModal) closeSlotModal();
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && slotModal.classList.contains("open")) {
+        closeSlotModal();
+      }
+    });
 
     const axes = loadAxes();
     const summary = buildSummary(axes);
