@@ -433,48 +433,17 @@
       color: var(--muted);
     }
 
-    .slot-stage {
-      padding: 18px;
-      border-radius: 20px;
-      background: rgba(246, 241, 236, 0.72);
-      border: 1px solid rgba(216, 203, 192, 0.92);
-      display: grid;
-      gap: 16px;
-    }
-
-    .slot-stage-copy {
-      display: grid;
-      gap: 4px;
-    }
-
-    .slot-stage-copy strong {
-      font-size: clamp(20px, 2.2vw, 30px);
-      line-height: 1.2;
-      letter-spacing: 0.01em;
-    }
-
-    .slot-stage-copy p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
     .slot-panels {
       display: grid;
     }
 
     .slot-panel {
-      display: grid;
+      display: none;
       gap: 14px;
     }
 
-    .slot-placeholder {
-      padding: 18px 16px;
-      border-radius: 18px;
-      border: 1px dashed rgba(201, 174, 155, 0.9);
-      color: var(--muted);
-      background: rgba(255, 255, 255, 0.56);
-      font-size: 14px;
+    .slot-panel.active {
+      display: grid;
     }
 
     .slot-modal {
@@ -494,6 +463,7 @@
 
     .slot-modal-card {
       width: min(560px, calc(100vw - 32px));
+      max-height: min(82vh, 860px);
       border-radius: 24px;
       border: 1px solid rgba(201, 174, 155, 0.72);
       background: rgba(255, 250, 245, 0.98);
@@ -501,6 +471,8 @@
       padding: 18px;
       display: grid;
       gap: 14px;
+      grid-template-rows: auto minmax(0, 1fr);
+      overflow: hidden;
     }
 
     .slot-modal-head {
@@ -548,6 +520,12 @@
       color: var(--muted);
     }
 
+    .slot-modal-panels {
+      min-height: 0;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
     .slot-day-block {
       display: grid;
       gap: 8px;
@@ -562,6 +540,76 @@
 
     .slot-day-block:last-child {
       padding-bottom: 0;
+    }
+
+    .slot-modal[data-density="compact"] .slot-modal-card {
+      max-height: min(76vh, 720px);
+      padding: 14px;
+      gap: 10px;
+    }
+
+    .slot-modal[data-density="compact"] .slot-modal-head h3 {
+      font-size: 1.05rem;
+    }
+
+    .slot-modal[data-density="compact"] .slot-modal-head p,
+    .slot-modal[data-density="compact"] .slot-day-head span,
+    .slot-modal[data-density="compact"] .slot-meta span {
+      font-size: 12px;
+    }
+
+    .slot-modal[data-density="compact"] .slot-meta strong,
+    .slot-modal[data-density="compact"] .slot-day-head strong {
+      font-size: 14px;
+    }
+
+    .slot-modal[data-density="compact"] .slot-day-block {
+      gap: 6px;
+      padding: 10px 0;
+    }
+
+    .slot-modal[data-density="compact"] .time-grid {
+      gap: 6px;
+    }
+
+    .slot-modal[data-density="compact"] .time-slot {
+      min-height: 42px;
+      font-size: 13px;
+    }
+
+    .slot-modal[data-density="condensed"] .slot-modal-card {
+      max-height: min(72vh, 640px);
+      padding: 12px;
+      gap: 8px;
+    }
+
+    .slot-modal[data-density="condensed"] .slot-modal-head h3 {
+      font-size: .98rem;
+    }
+
+    .slot-modal[data-density="condensed"] .slot-modal-head p,
+    .slot-modal[data-density="condensed"] .slot-day-head span,
+    .slot-modal[data-density="condensed"] .slot-meta span {
+      font-size: 11px;
+    }
+
+    .slot-modal[data-density="condensed"] .slot-meta strong,
+    .slot-modal[data-density="condensed"] .slot-day-head strong {
+      font-size: 13px;
+    }
+
+    .slot-modal[data-density="condensed"] .slot-day-block {
+      gap: 6px;
+      padding: 8px 0;
+    }
+
+    .slot-modal[data-density="condensed"] .time-grid {
+      gap: 5px;
+    }
+
+    .slot-modal[data-density="condensed"] .time-slot {
+      min-height: 38px;
+      font-size: 12px;
     }
 
     .slot-day-head {
@@ -990,8 +1038,6 @@
   <div class="page-shell">
     <section class="step-strip" aria-label="進行状況">
       <div class="step-group">
-        <div class="step-badge done">STEP1 固定5問</div>
-        <div class="step-badge done">STEP2 追加3問</div>
         <div class="step-badge current">予約確認</div>
       </div>
       <div class="step-copy">
@@ -1106,7 +1152,7 @@
         </div>
         <button class="slot-close" id="slot-close" type="button" aria-label="時間選択を閉じる">×</button>
       </div>
-      <div class="slot-panels" id="slot-modal-panels"></div>
+      <div class="slot-panels slot-modal-panels" id="slot-modal-panels"></div>
     </div>
   </div>
 
@@ -1286,9 +1332,6 @@
       });
 
       slotList.appendChild(tabs);
-      const stage = document.createElement("div");
-
-      slotList.appendChild(stage);
     }
 
     function selectWeek(weekKey) {
@@ -1308,6 +1351,7 @@
     }
 
     function openSlotModal() {
+      updateSlotModalDensity();
       slotModal.classList.add("open");
       slotModal.setAttribute("aria-hidden", "false");
     }
@@ -1315,6 +1359,14 @@
     function closeSlotModal() {
       slotModal.classList.remove("open");
       slotModal.setAttribute("aria-hidden", "true");
+    }
+
+    function updateSlotModalDensity() {
+      const height = window.innerHeight;
+      let density = "default";
+      if (height <= 760) density = "condensed";
+      else if (height <= 900) density = "compact";
+      slotModal.dataset.density = density;
     }
 
     function selectSlot(slot) {
@@ -1358,6 +1410,7 @@
         closeSlotModal();
       }
     });
+    window.addEventListener("resize", updateSlotModalDensity);
 
     const axes = loadAxes();
     const summary = buildSummary(axes);
@@ -1366,6 +1419,7 @@
     renderAxes(axes, summary.sorted);
     renderSlots();
     updateSelectionState();
+    updateSlotModalDensity();
   </script>
 </body>
 
