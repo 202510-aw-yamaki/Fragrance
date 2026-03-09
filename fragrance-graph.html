@@ -274,8 +274,22 @@
       gap: 16px;
     }
 
+    .slider-title {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      min-width: 0;
+      flex-wrap: wrap;
+    }
+
     .slider-head label {
       font-weight: 700;
+    }
+
+    .slider-detail {
+      margin: 0;
+      color: var(--muted);
+      font-size: .92rem;
     }
 
     .slider-head output {
@@ -284,12 +298,6 @@
       font-variant-numeric: tabular-nums;
       color: var(--accent-deep);
       font-weight: 700;
-    }
-
-    .slider-row p {
-      margin: 0;
-      color: var(--muted);
-      font-size: .92rem;
     }
 
     input[type="range"] {
@@ -389,6 +397,7 @@
 
     @media (min-width: 48em),
     (min-aspect-ratio: 16/9) {
+
       html,
       body {
         height: 100%;
@@ -405,7 +414,7 @@
         margin: 0 auto;
         height: min(calc(100vh - 124px), 900px);
         display: grid;
-        grid-template-rows: minmax(0, 1fr) 22%;
+        grid-template-rows: minmax(0, 1fr) 26%;
         gap: 14px;
         padding: 14px 0;
       }
@@ -415,7 +424,7 @@
         min-height: 0;
       }
 
-      main > section > .section-inner {
+      main>section>.section-inner {
         width: 100%;
         max-width: none;
         margin: 0;
@@ -447,6 +456,7 @@
         height: 100%;
         padding: 18px 22px;
         gap: 18px;
+        align-items: stretch;
       }
 
       .section-header {
@@ -512,16 +522,18 @@
       #slider-list {
         display: grid;
         grid-template-rows: repeat(5, minmax(0, 1fr));
-        gap: 8px;
-      }
-
-      .slider-row {
-        padding: 10px 12px;
         gap: 6px;
       }
 
-      .slider-row p {
-        font-size: .84rem;
+      .slider-row {
+        padding: 8px 10px;
+        gap: 4px;
+      }
+
+      .slider-head label,
+      .slider-head output,
+      .slider-detail {
+        font-size: .92rem;
       }
 
       .slider-actions {
@@ -545,17 +557,38 @@
         line-height: 1.35;
       }
 
+      .cta-copy {
+        min-height: 0;
+        display: grid;
+        align-content: start;
+        gap: 8px;
+      }
+
       .cta-copy h2 {
-        margin: 8px 0 10px;
+        margin: 0;
         font-size: clamp(1.3rem, 1.9vw, 1.9rem);
       }
 
       .cta-copy p {
-        margin-bottom: 12px;
+        margin: 0;
       }
 
       .cta-actions {
         gap: 8px;
+      }
+
+      .cta-actions .btn {
+        min-height: 38px;
+      }
+
+      .helper-note {
+        margin: 0;
+      }
+
+      .cta-box>.reassure-card {
+        min-height: 0;
+        padding: 16px;
+        align-content: start;
       }
 
       .btn {
@@ -653,7 +686,7 @@
             <div class="section-header">
               <span class="overline">Adjustment</span>
               <h2 id="adjust-heading">気になる項目だけ微調整</h2>
-              <p>数字はその場で更新され、グラフにもリアルタイムで反映されます。</p>
+              <p>数字はその場で更新され、グラフにもすぐに反映されます。</p>
             </div>
             <div id="slider-list"></div>
             <div class="slider-actions">
@@ -688,12 +721,11 @@
           <div class="cta-copy">
             <span class="overline">Next Step</span>
             <h2>このバランスを持って、次の確認へ進みます</h2>
-            <p>ここでの調整は仮の下書きです。店頭での微調整を前提にしつつ、今のイメージを次のページへつなげられます。</p>
+            <p>ここでの調整は仮の下書きです。店頭での微調整を前提にしつつ、<br>今のイメージを次のページへつなげられます。</p>
             <div class="cta-actions">
               <a class="btn btn-primary" href="questionnaire_step2.html">この内容で結果を見る</a>
               <a class="btn btn-secondary" href="questionnaire.html">質問に戻る</a>
             </div>
-            <p class="helper-note">保存や断定のためではなく、香りづくりを始めやすくするための準備ページです。</p>
           </div>
           <div class="reassure-card" aria-label="画像プレースホルダー">
             <h3>画像プレースホルダー</h3>
@@ -822,11 +854,13 @@
         row.className = "slider-row";
         row.innerHTML = `
           <div class="slider-head">
-            <label for="${axis.id}">${axis.label}</label>
+            <div class="slider-title">
+              <label for="${axis.id}">${axis.label}</label>
+              <p class="slider-detail">${axis.description}</p>
+            </div>
             <output id="${axis.id}-value" for="${axis.id}">${axis.value}</output>
           </div>
           <input id="${axis.id}" name="${axis.id}" type="range" min="0" max="100" value="${axis.value}">
-          <p>${axis.description}</p>
         `;
         sliderList.appendChild(row);
       });
