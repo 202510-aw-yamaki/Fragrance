@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="ja">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,11 +21,15 @@
       --container: min(1160px, calc(100% - 32px));
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
+
     html {
       scroll-behavior: smooth;
       scroll-padding-top: 88px;
     }
+
     body {
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
@@ -37,9 +42,19 @@
       letter-spacing: .02em;
     }
 
-    a { color: inherit; }
-    img, svg { display: block; max-width: 100%; }
-    .header-inner, .section-inner, .footer-inner {
+    a {
+      color: inherit;
+    }
+
+    img,
+    svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    .header-inner,
+    .section-inner,
+    .footer-inner {
       width: var(--container);
       margin: 0 auto;
     }
@@ -52,6 +67,7 @@
       background: rgba(252, 248, 243, .82);
       border-bottom: 1px solid rgba(230, 221, 210, .88);
     }
+
     .header-inner {
       min-height: 72px;
       display: flex;
@@ -59,12 +75,14 @@
       justify-content: space-between;
       gap: 16px;
     }
+
     .brand {
       text-decoration: none;
       font-weight: 800;
       letter-spacing: .05em;
       white-space: nowrap;
     }
+
     .main-nav ul {
       list-style: none;
       margin: 0;
@@ -74,14 +92,18 @@
       flex-wrap: nowrap;
       justify-content: flex-end;
     }
+
     .main-nav a {
       text-decoration: none;
       color: var(--muted);
       font-size: .92rem;
       white-space: nowrap;
     }
+
     .main-nav a:hover,
-    .main-nav a:focus-visible { color: var(--text); }
+    .main-nav a:focus-visible {
+      color: var(--text);
+    }
 
     .btn {
       display: inline-flex;
@@ -94,23 +116,28 @@
       border: 1px solid transparent;
       padding: 0 18px;
     }
+
     .btn-primary {
       background: linear-gradient(180deg, var(--accent), var(--accent-deep));
       color: #fff;
       box-shadow: 0 10px 22px rgba(156, 103, 64, .24);
     }
+
     .btn-secondary {
-      background: rgba(255,255,255,.8);
+      background: rgba(255, 255, 255, .8);
       border-color: var(--line);
       color: var(--text);
     }
+
     .btn:hover,
     .btn:focus-visible {
       transform: translateY(-1px);
       box-shadow: 0 16px 34px rgba(80, 63, 48, .14);
     }
 
-    main section { padding: 78px 0; }
+    main section {
+      padding: 78px 0;
+    }
 
     .section-header {
       display: grid;
@@ -118,12 +145,18 @@
       margin-bottom: 24px;
       max-width: 860px;
     }
+
     .section-header h2 {
       margin: 0;
       font-size: clamp(1.8rem, 3.2vw, 2.9rem);
       line-height: 1.2;
     }
-    .section-header p { margin: 0; color: var(--muted); }
+
+    .section-header p {
+      margin: 0;
+      color: var(--muted);
+    }
+
     .overline {
       display: block;
       color: var(--muted);
@@ -136,6 +169,7 @@
       padding-top: 34px;
       padding-bottom: 66px;
     }
+
     .hero-wrap,
     .hero-gallery,
     .flow-grid,
@@ -154,21 +188,38 @@
     .preview-balance,
     .cta-box,
     .reassure-item {
-      background: rgba(255,255,255,.86);
+      background: rgba(255, 255, 255, .86);
       border: 1px solid rgba(230, 221, 210, .92);
       border-radius: var(--radius-lg);
       box-shadow: var(--shadow);
     }
 
-    .hero-copy { padding: 28px; }
-    .hero-gallery { padding-top: 30px; }
+    .hero-copy {
+      padding: 28px;
+    }
+
+    .hero-gallery {
+      padding-top: 30px;
+    }
+
     .hero-copy h1 {
       margin: 12px 0 16px;
       font-size: clamp(2rem, 5vw, 4.3rem);
       line-height: 1.08;
     }
-    .lead { margin: 0 0 18px; color: var(--muted); }
-    .cta-row { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+
+    .lead {
+      margin: 0 0 18px;
+      color: var(--muted);
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
     .hero-points {
       list-style: none;
       margin: 0;
@@ -177,6 +228,7 @@
       flex-wrap: wrap;
       gap: 8px;
     }
+
     .hero-points li {
       padding: 8px 12px;
       border-radius: 999px;
@@ -184,15 +236,18 @@
       border: 1px solid var(--line);
       font-size: .9rem;
     }
+
     .hero-visual {
       min-height: 320px;
       background:
-        radial-gradient(circle at 30% 20%, rgba(241,223,207,.8), transparent 45%),
-        radial-gradient(circle at 80% 75%, rgba(223,233,239,.8), transparent 35%),
-        linear-gradient(140deg, #f6eee6, #efe3d6);
+        linear-gradient(140deg, rgba(246, 238, 230, .45), rgba(239, 227, 214, .45)),
+        url("img/The image used/Lineup image_ (6).png");
+      background-size: cover;
+      background-position: center;
       position: relative;
       overflow: hidden;
     }
+
     .hero-note {
       position: absolute;
       top: 14px;
@@ -201,23 +256,37 @@
       border-radius: 10px;
       font-size: .84rem;
       color: var(--muted);
-      background: rgba(255,255,255,.8);
-      border: 1px solid rgba(230,221,210,.9);
+      background: rgba(255, 255, 255, .8);
+      border: 1px solid rgba(230, 221, 210, .9);
     }
+
     .hero-shot {
       min-height: 116px;
       border-radius: var(--radius-md);
       border: 1px dashed #ccb9a8;
-      background: linear-gradient(145deg, rgba(255,255,255,.9), rgba(245,239,232,.75));
+      background: linear-gradient(145deg, rgba(255, 255, 255, .9), rgba(245, 239, 232, .75));
       padding: 12px;
       display: grid;
       align-content: space-between;
     }
-    .hero-shot strong { font-size: .88rem; }
-    .hero-shot span { color: var(--muted); font-size: .8rem; }
 
-    .flow-grid { gap: 18px; }
-    .card { padding: 22px; }
+    .hero-shot strong {
+      font-size: .88rem;
+    }
+
+    .hero-shot span {
+      color: var(--muted);
+      font-size: .8rem;
+    }
+
+    .flow-grid {
+      gap: 18px;
+    }
+
+    .card {
+      padding: 22px;
+    }
+
     .flow-bullets,
     .benefit-list {
       list-style: none;
@@ -226,9 +295,11 @@
       display: grid;
       gap: 8px;
     }
+
     .flow-bullets {
       margin-top: 12px;
     }
+
     .flow-bullets li,
     .benefit-list li {
       padding-left: 18px;
@@ -236,6 +307,7 @@
       color: var(--text);
       font-size: .95rem;
     }
+
     .flow-bullets li::before,
     .benefit-list li::before {
       content: "";
@@ -248,6 +320,7 @@
       background: rgba(186, 129, 85, .78);
       transform: translateY(-50%);
     }
+
     .step-no {
       display: inline-flex;
       align-items: center;
@@ -262,7 +335,10 @@
     }
 
     #question-preview .preview-shell,
-    #question-preview .preview-balance { padding: 16px; }
+    #question-preview .preview-balance {
+      padding: 16px;
+    }
+
     #question-preview .shell-head {
       display: flex;
       justify-content: space-between;
@@ -278,15 +354,17 @@
       grid-template-columns: 128px minmax(0, 1fr) 156px;
       align-items: start;
     }
+
     #question-preview .pc-nav,
     #question-preview .pc-main,
     #question-preview .pc-side,
     #question-preview .mobile-screen {
       border: 1px solid var(--line);
-      background: rgba(255,255,255,.9);
+      background: rgba(255, 255, 255, .9);
       border-radius: 12px;
       padding: 10px;
     }
+
     #question-preview .pc-nav ol {
       margin: 0;
       padding-left: 18px;
@@ -295,46 +373,52 @@
       font-size: .78rem;
       color: var(--muted);
     }
+
     #question-preview .pc-side {
       display: grid;
       gap: 8px;
     }
+
     #question-preview .pc-store {
       min-height: 148px;
       border-radius: 10px;
       border: 1px dashed #ccb9a8;
       background:
-        linear-gradient(145deg, rgba(255,255,255,.88), rgba(245,239,232,.76)),
-        radial-gradient(circle at 70% 30%, rgba(223,233,239,.7), transparent 40%);
+        linear-gradient(145deg, rgba(255, 255, 255, .88), rgba(245, 239, 232, .76)),
+        radial-gradient(circle at 70% 30%, rgba(223, 233, 239, .7), transparent 40%);
       padding: 10px;
       display: grid;
       align-content: end;
       font-size: .74rem;
       color: var(--muted);
     }
+
     #question-preview .pc-note {
       padding: 9px 10px;
       border-radius: 10px;
-      background: rgba(241,223,207,.45);
-      border: 1px solid rgba(230,221,210,.92);
+      background: rgba(241, 223, 207, .45);
+      border: 1px solid rgba(230, 221, 210, .92);
       font-size: .74rem;
       color: var(--muted);
     }
+
     #question-preview .branch-note {
       margin: 8px 0;
       padding: 8px;
       border-radius: 10px;
-      background: rgba(223,233,239,.52);
+      background: rgba(223, 233, 239, .52);
       border: 1px solid #c9d9e8;
       font-size: .78rem;
       color: #55646a;
     }
+
     #question-preview .option-row,
     #question-preview .mobile-option {
       border: 1px solid var(--line);
       border-radius: 10px;
       background: #fff;
     }
+
     #question-preview .option-row {
       display: grid;
       grid-template-columns: 56px 1fr;
@@ -344,16 +428,19 @@
       margin-bottom: 6px;
       font-size: .78rem;
     }
+
     #question-preview .thumb {
       height: 34px;
       border-radius: 8px;
       background: linear-gradient(135deg, #efdbcf, #dfe9ef);
     }
+
     #question-preview .minor-options {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 6px;
     }
+
     #question-preview .minor-options span {
       display: block;
       text-align: center;
@@ -363,6 +450,7 @@
       background: #fff;
       font-size: .74rem;
     }
+
     #question-preview .mobile-frame {
       width: min(320px, 96%);
       margin: 0 auto;
@@ -371,11 +459,13 @@
       background: #f5efe7;
       padding: 8px;
     }
+
     #question-preview .mobile-progress {
       font-size: .78rem;
       color: var(--muted);
       margin-bottom: 4px;
     }
+
     #question-preview .mobile-bar {
       height: 8px;
       border-radius: 999px;
@@ -383,38 +473,48 @@
       overflow: hidden;
       margin-bottom: 8px;
     }
+
     #question-preview .mobile-bar span {
       display: block;
       height: 100%;
       width: 37.5%;
       background: linear-gradient(90deg, var(--accent), #d8b091);
     }
+
     #question-preview .mobile-option {
       padding: 9px;
       margin-top: 6px;
       font-size: .82rem;
     }
 
-    .preview-pc { display: none; }
-    .preview-mobile { display: block; }
+    .preview-pc {
+      display: none;
+    }
+
+    .preview-mobile {
+      display: block;
+    }
 
     .balance-grid {
       display: grid;
       gap: 14px;
       grid-template-columns: 1fr;
     }
+
     .radar-wrap {
       border: 1px solid var(--line);
       border-radius: 12px;
-      background: rgba(255,255,255,.9);
+      background: rgba(255, 255, 255, .9);
       padding: 12px;
     }
+
     .slider-wrap {
       border: 1px solid var(--line);
       border-radius: 12px;
-      background: rgba(255,255,255,.9);
+      background: rgba(255, 255, 255, .9);
       padding: 12px;
     }
+
     .slider-row {
       display: grid;
       grid-template-columns: 84px 1fr 36px;
@@ -423,7 +523,11 @@
       margin-bottom: 8px;
       font-size: .85rem;
     }
-    input[type="range"] { width: 100%; accent-color: var(--accent); }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--accent);
+    }
 
     .section-cta {
       margin-top: 18px;
@@ -432,7 +536,10 @@
       gap: 10px;
       align-items: center;
     }
-    .section-cta small { color: var(--muted); }
+
+    .section-cta small {
+      color: var(--muted);
+    }
 
     .cta-box {
       padding: 28px;
@@ -441,87 +548,104 @@
       grid-template-columns: 1fr;
       align-items: center;
     }
+
     .value-visual,
     .cta-media {
       min-height: 220px;
       border-radius: var(--radius-lg);
       border: 1px dashed #ccb9a8;
       background:
-        linear-gradient(145deg, rgba(255,255,255,.9), rgba(245,239,232,.75)),
-        radial-gradient(circle at 75% 25%, rgba(223,233,239,.75), transparent 42%);
+        linear-gradient(145deg, rgba(255, 255, 255, .9), rgba(245, 239, 232, .75)),
+        radial-gradient(circle at 75% 25%, rgba(223, 233, 239, .75), transparent 42%);
       padding: 16px;
       display: grid;
       align-content: end;
       color: var(--muted);
     }
+
     .value-visual strong,
     .cta-media strong {
       display: block;
       color: var(--text);
       margin-bottom: 4px;
     }
+
     .cta-actions {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
       gap: 12px;
     }
+
     .helper-note {
       margin: 0;
       color: var(--muted);
       font-size: .92rem;
     }
+
     .reassure-list {
       display: grid;
       gap: 12px;
       margin-top: 16px;
     }
+
     .reassure-item {
       padding: 16px 18px;
       border-radius: 16px;
-      background: rgba(255,255,255,.76);
+      background: rgba(255, 255, 255, .76);
       border: 1px solid rgba(230, 221, 210, .9);
     }
+
     .reassure-item strong {
       display: block;
       font-size: 1rem;
       margin-bottom: 4px;
     }
+
     .reassure-item p {
       margin: 0;
       color: var(--muted);
       font-size: .93rem;
     }
+
     .faq-grid {
       display: grid;
       gap: 18px;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       margin-top: 18px;
     }
+
     .faq-grid details {
       border-radius: 18px;
       padding: 18px 20px;
-      background: rgba(255,255,255,.86);
+      background: rgba(255, 255, 255, .86);
       border: 1px solid rgba(230, 221, 210, .92);
       box-shadow: var(--shadow);
     }
+
     .faq-grid summary {
       font-weight: 700;
       list-style: none;
       cursor: default;
       pointer-events: none;
     }
-    .faq-grid summary::-webkit-details-marker { display: none; }
+
+    .faq-grid summary::-webkit-details-marker {
+      display: none;
+    }
+
     .faq-grid details p {
       margin: 12px 0 0;
       color: var(--muted);
       font-size: .94rem;
     }
+
     .site-footer {
       padding: 24px 0 72px;
       color: var(--muted);
       font-size: .88rem;
     }
+
     .footer-inner {
       display: flex;
       align-items: center;
@@ -533,20 +657,47 @@
     }
 
     /* PC layout when width >= 768px OR aspect ratio >= 16:9 */
-    @media (min-width: 48em), (min-aspect-ratio: 16/9) {
+    @media (min-width: 48em),
+    (min-aspect-ratio: 16/9) {
       .hero-wrap {
         grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
       }
-      .hero-gallery { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-      .flow-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-      .benefits-grid { grid-template-columns: 1.1fr 1fr 1fr; }
-      .reassure-grid { grid-template-columns: 1.15fr .85fr; }
-      #question-preview .preview-layout { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); }
-      .cta-box { grid-template-columns: minmax(0, 1.1fr) minmax(280px, .9fr); }
-      .faq-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
-      .preview-pc { display: block; }
-      .preview-mobile { display: none; }
+      .hero-gallery {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .flow-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .benefits-grid {
+        grid-template-columns: 1.1fr 1fr 1fr;
+      }
+
+      .reassure-grid {
+        grid-template-columns: 1.15fr .85fr;
+      }
+
+      #question-preview .preview-layout {
+        grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+      }
+
+      .cta-box {
+        grid-template-columns: minmax(0, 1.1fr) minmax(280px, .9fr);
+      }
+
+      .faq-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .preview-pc {
+        display: block;
+      }
+
+      .preview-mobile {
+        display: none;
+      }
     }
 
     @media (max-width: 48em) {
@@ -556,20 +707,29 @@
         align-items: flex-start;
         flex-direction: column;
       }
+
       .main-nav {
         width: 100%;
         overflow-x: auto;
       }
+
       .main-nav ul {
         gap: 8px;
         width: max-content;
         min-width: 100%;
       }
-      #question-preview .pc-preview { grid-template-columns: 1fr; }
-      .faq-grid { grid-template-columns: 1fr; }
+
+      #question-preview .pc-preview {
+        grid-template-columns: 1fr;
+      }
+
+      .faq-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
+
 <body>
   <header class="site-header">
     <div class="header-inner">
@@ -592,7 +752,6 @@
       <div class="section-inner">
         <div class="hero-wrap">
           <div class="hero-visual" aria-hidden="true">
-            <div class="hero-note">日本の上質な香り工房をイメージしたプレビュー</div>
           </div>
           <div class="hero-copy">
             <span class="eyebrow">Fragrance Workshop</span>
@@ -725,28 +884,34 @@
               <div class="radar-wrap">
                 <svg id="radar" viewBox="0 0 300 300" role="img" aria-label="香りバランスレーダー">
                   <g fill="none" stroke="#d8cbbf" stroke-width="1">
-                    <polygon points="150,38 256,116 216,242 84,242 44,116"/>
-                    <polygon points="150,64 233,126 202,224 98,224 67,126"/>
-                    <polygon points="150,90 210,136 188,206 112,206 90,136"/>
-                    <polygon points="150,116 187,146 174,188 126,188 113,146"/>
+                    <polygon points="150,38 256,116 216,242 84,242 44,116" />
+                    <polygon points="150,64 233,126 202,224 98,224 67,126" />
+                    <polygon points="150,90 210,136 188,206 112,206 90,136" />
+                    <polygon points="150,116 187,146 174,188 126,188 113,146" />
                   </g>
                   <g stroke="#d8cbbf" stroke-width="1">
-                    <line x1="150" y1="150" x2="150" y2="38"/>
-                    <line x1="150" y1="150" x2="256" y2="116"/>
-                    <line x1="150" y1="150" x2="216" y2="242"/>
-                    <line x1="150" y1="150" x2="84" y2="242"/>
-                    <line x1="150" y1="150" x2="44" y2="116"/>
+                    <line x1="150" y1="150" x2="150" y2="38" />
+                    <line x1="150" y1="150" x2="256" y2="116" />
+                    <line x1="150" y1="150" x2="216" y2="242" />
+                    <line x1="150" y1="150" x2="84" y2="242" />
+                    <line x1="150" y1="150" x2="44" y2="116" />
                   </g>
-                  <polygon id="shape" points="150,60 220,126 185,200 108,206 80,130" fill="rgba(168,111,74,0.28)" stroke="#9a6543" stroke-width="2"/>
+                  <polygon id="shape" points="150,60 220,126 185,200 108,206 80,130" fill="rgba(168,111,74,0.28)"
+                    stroke="#9a6543" stroke-width="2" />
                   <g id="dots" fill="#8f5c3c"></g>
                 </svg>
               </div>
               <div class="slider-wrap">
-                <div class="slider-row"><label for="floral">フローラル</label><input id="floral" type="range" min="0" max="100" value="74"><output id="floral-val">74</output></div>
-                <div class="slider-row"><label for="fresh">フレッシュ</label><input id="fresh" type="range" min="0" max="100" value="58"><output id="fresh-val">58</output></div>
-                <div class="slider-row"><label for="woody">ウッディ</label><input id="woody" type="range" min="0" max="100" value="43"><output id="woody-val">43</output></div>
-                <div class="slider-row"><label for="spicy">スパイシー</label><input id="spicy" type="range" min="0" max="100" value="31"><output id="spicy-val">31</output></div>
-                <div class="slider-row"><label for="sweet">スウィート</label><input id="sweet" type="range" min="0" max="100" value="49"><output id="sweet-val">49</output></div>
+                <div class="slider-row"><label for="floral">フローラル</label><input id="floral" type="range" min="0"
+                    max="100" value="74"><output id="floral-val">74</output></div>
+                <div class="slider-row"><label for="fresh">フレッシュ</label><input id="fresh" type="range" min="0" max="100"
+                    value="58"><output id="fresh-val">58</output></div>
+                <div class="slider-row"><label for="woody">ウッディ</label><input id="woody" type="range" min="0" max="100"
+                    value="43"><output id="woody-val">43</output></div>
+                <div class="slider-row"><label for="spicy">スパイシー</label><input id="spicy" type="range" min="0" max="100"
+                    value="31"><output id="spicy-val">31</output></div>
+                <div class="slider-row"><label for="sweet">スウィート</label><input id="sweet" type="range" min="0" max="100"
+                    value="49"><output id="sweet-val">49</output></div>
               </div>
             </div>
           </article>
@@ -918,4 +1083,5 @@
     })();
   </script>
 </body>
+
 </html>
