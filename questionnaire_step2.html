@@ -891,7 +891,7 @@
       if (!confirmReturnToTop()) return;
       window.location.href = "香りワークショップ_トップページ.html";
     }
-    function showCompletion() { window.alert("STEP2の回答が完了しました。次は香りバランス表示や提案ページにつなげられます。"); }
+    function showCompletion() { window.location.href = "fragrance-graph.html"; }
     function moveNext() { if (currentIndex < questions.length - 1) { currentIndex += 1; render(); return; } showCompletion(); }
     function movePrev() { if (currentIndex > 0) { currentIndex -= 1; render(); } }
     function selectAnswer(value) { const question = questions[currentIndex]; answers[question.id] = value; render(); window.setTimeout(() => { moveNext(); }, 140); }
