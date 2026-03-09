@@ -239,9 +239,7 @@
 
     .hero-visual {
       min-height: 320px;
-      background:
-        linear-gradient(140deg, rgba(246, 238, 230, .45), rgba(239, 227, 214, .45)),
-        url("img/TOP/hero-visual.png");
+      background: url("img/TOP/hero-visual.png");
       background-size: cover;
       background-position: center;
       position: relative;
@@ -576,6 +574,19 @@
       display: block;
       color: var(--text);
       margin-bottom: 4px;
+    }
+
+    .cta-media {
+      padding: 0;
+      overflow: hidden;
+      align-content: stretch;
+    }
+
+    .cta-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
 
     .cta-actions {
@@ -1031,10 +1042,7 @@
             </div>
           </div>
           <div class="cta-media" aria-label="最終CTAエリアの画像プレースホルダー">
-            <div>
-              <strong>画像予定</strong>
-              <span>ここに来店前の期待感を高めるビジュアルを配置</span>
-            </div>
+            <img src="img/TOP/Final_Call_hope.png" alt="Final CTA image">
           </div>
         </div>
       </div>
