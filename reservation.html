@@ -1,0 +1,1067 @@
+<!doctype html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fragrance Workshop Reservation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --panel: rgba(255, 251, 246, 0.94);
+      --line: rgba(211, 195, 182, 0.9);
+      --text: #1e3448;
+      --muted: #715f54;
+      --accent: #c88972;
+      --accent-deep: #9f6a54;
+      --soft-green: #e7efe6;
+      --soft-blue: #eef4f7;
+      --container: min(1240px, calc(100vw - 24px));
+      --shadow: 0 18px 44px rgba(81, 58, 42, 0.1);
+      --radius-lg: 28px;
+      --radius-md: 22px;
+      --radius-sm: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-padding-top: 88px;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Noto Sans JP", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(232, 216, 204, 0.78), transparent 32%),
+        linear-gradient(180deg, #f8f4ef 0%, #f1ebe4 100%);
+      line-height: 1.7;
+      letter-spacing: 0.02em;
+    }
+
+    a,
+    button,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      border: 0;
+    }
+
+    .header-inner,
+    .page-shell {
+      width: var(--container);
+      margin: 0 auto;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(14px);
+      background: rgba(252, 248, 243, 0.82);
+      border-bottom: 1px solid rgba(230, 221, 210, 0.88);
+    }
+
+    .header-inner {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      text-decoration: none;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+      color: var(--text);
+    }
+
+    .main-nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      justify-content: flex-end;
+      flex-wrap: nowrap;
+    }
+
+    .main-nav a {
+      min-height: 40px;
+      padding: 0 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255, 251, 246, 0.92);
+      color: var(--muted);
+      text-decoration: none;
+      transition: border-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
+    }
+
+    .main-nav a:hover,
+    .main-nav a:focus-visible {
+      color: var(--text);
+      border-color: rgba(190, 154, 132, 0.95);
+      transform: translateY(-1px);
+    }
+
+    .page-shell {
+      padding: 18px 0 24px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .step-strip,
+    .reservation-shell,
+    .panel {
+      border: 1px solid rgba(201, 174, 155, 0.65);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+    }
+
+    .step-strip {
+      border-radius: 20px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .step-group {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .step-badge {
+      min-width: 114px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      text-align: center;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .step-badge.done {
+      background: linear-gradient(135deg, #e7efe6, #f8fbf7);
+      color: #597059;
+    }
+
+    .step-badge.current {
+      background: linear-gradient(135deg, #f3dfd5, #fbf1ea);
+      color: #855543;
+      border-color: #d6aa99;
+    }
+
+    .step-copy {
+      text-align: right;
+      display: grid;
+      gap: 4px;
+    }
+
+    .step-copy strong {
+      font-size: 14px;
+      color: #8b5f4d;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .step-copy span {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .reservation-shell {
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr) 310px;
+      gap: 18px;
+      min-height: 0;
+    }
+
+    .panel {
+      min-height: 0;
+      border-radius: 24px;
+      background: rgba(255, 250, 245, 0.97);
+    }
+
+    .summary-panel,
+    .booking-panel,
+    .side-panel {
+      padding: 18px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .summary-panel {
+      grid-template-rows: auto auto minmax(0, 1fr);
+      background: linear-gradient(180deg, rgba(246, 238, 231, 0.98), rgba(250, 246, 241, 0.96));
+    }
+
+    .booking-panel {
+      grid-template-rows: auto auto auto auto minmax(0, 1fr) auto;
+      padding: 22px;
+    }
+
+    .side-panel {
+      grid-template-rows: minmax(0, 1fr) auto auto;
+      background: linear-gradient(180deg, rgba(250, 245, 239, 0.98), rgba(244, 239, 232, 0.98));
+    }
+
+    .section-label {
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #9b7364;
+    }
+
+    .lead-card,
+    .info-card,
+    .axis-card,
+    .visual-card,
+    .note-card,
+    .policy-card,
+    .slot-card,
+    .memo-card {
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--line);
+      background: #fffdfa;
+    }
+
+    .lead-card,
+    .info-card,
+    .axis-card,
+    .note-card,
+    .policy-card,
+    .slot-card,
+    .memo-card {
+      padding: 16px;
+    }
+
+    .lead-card {
+      background: linear-gradient(135deg, #f7e6dd, #fffaf6);
+      border-color: rgba(207, 162, 143, 0.85);
+    }
+
+    .lead-card h1 {
+      margin: 6px 0 8px;
+      font-size: clamp(26px, 3vw, 40px);
+      line-height: 1.18;
+      letter-spacing: -0.03em;
+    }
+
+    .lead-card p,
+    .lead-card small,
+    .info-card p,
+    .memo-help,
+    .policy-card p,
+    .visual-card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .summary-copy {
+      display: grid;
+      gap: 6px;
+    }
+
+    .summary-copy strong {
+      font-size: 20px;
+      line-height: 1.35;
+    }
+
+    .summary-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .summary-tags span {
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.82);
+      border: 1px solid rgba(211, 195, 182, 0.88);
+      font-size: 12px;
+      color: #805848;
+    }
+
+    .info-card {
+      display: grid;
+      gap: 10px;
+      background: linear-gradient(180deg, var(--soft-green), #f8fbf7);
+      border-color: rgba(191, 202, 188, 0.9);
+    }
+
+    .info-card h2,
+    .axis-card h2,
+    .booking-panel h2,
+    .slot-card h3,
+    .memo-card h3,
+    .policy-card h3,
+    .note-card h3 {
+      margin: 0;
+      font-size: 1.08rem;
+    }
+
+    .info-list,
+    .policy-list {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .axis-card {
+      display: grid;
+      gap: 12px;
+      align-content: start;
+    }
+
+    .axis-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .axis-row {
+      display: grid;
+      grid-template-columns: 84px minmax(0, 1fr) 38px;
+      gap: 10px;
+      align-items: center;
+      font-size: 14px;
+    }
+
+    .axis-row strong {
+      font-size: 13px;
+      color: #7a5d52;
+    }
+
+    .axis-track {
+      height: 10px;
+      border-radius: 999px;
+      background: #eadfd6;
+      overflow: hidden;
+    }
+
+    .axis-bar {
+      display: block;
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), #dfb8a6);
+    }
+
+    .booking-intro {
+      display: grid;
+      gap: 8px;
+    }
+
+    .booking-intro p,
+    .booking-note {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .booking-grid {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: minmax(0, 1.2fr) minmax(240px, .8fr);
+    }
+
+    .slot-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .slot-day {
+      display: grid;
+      gap: 8px;
+    }
+
+    .slot-day header {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .slot-day strong {
+      font-size: 15px;
+    }
+
+    .slot-day span {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .time-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .time-slot {
+      min-height: 48px;
+      padding: 0 12px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--text);
+      cursor: pointer;
+      transition: border-color 0.18s ease, background 0.18s ease, transform 0.18s ease;
+    }
+
+    .time-slot:hover,
+    .time-slot:focus-visible {
+      transform: translateY(-1px);
+      border-color: rgba(190, 154, 132, 0.95);
+    }
+
+    .time-slot.selected {
+      border-color: #c58975;
+      background: linear-gradient(135deg, #f7e7de, #fffaf7);
+      box-shadow: 0 12px 28px rgba(177, 136, 115, 0.14);
+    }
+
+    .select-group {
+      display: grid;
+      gap: 12px;
+      align-content: start;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+    }
+
+    .field label {
+      font-size: 13px;
+      font-weight: 700;
+      color: #7a5d52;
+    }
+
+    .field select,
+    .memo-card textarea {
+      width: 100%;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--text);
+    }
+
+    .field select {
+      min-height: 48px;
+      padding: 0 14px;
+    }
+
+    .memo-card {
+      display: grid;
+      gap: 8px;
+      background: linear-gradient(180deg, var(--soft-blue), #fbfdfe);
+      border-color: rgba(188, 207, 220, 0.95);
+    }
+
+    .memo-card textarea {
+      min-height: 136px;
+      padding: 14px;
+      resize: vertical;
+    }
+
+    .booking-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 168px;
+      min-height: 52px;
+      padding: 0 20px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #f8f3ee;
+      color: var(--text);
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform 0.18s ease, border-color 0.18s ease, opacity 0.18s ease;
+    }
+
+    .action-btn:hover,
+    .action-btn:focus-visible {
+      transform: translateY(-1px);
+    }
+
+    .action-btn.primary {
+      background: linear-gradient(135deg, var(--accent), #dfb8a6);
+      border-color: #c58975;
+      color: #fffdfb;
+    }
+
+    .action-btn[disabled] {
+      opacity: 0.45;
+      cursor: default;
+      pointer-events: none;
+      transform: none;
+    }
+
+    .visual-card {
+      min-height: 260px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      color: #fffaf6;
+      background:
+        linear-gradient(180deg, rgba(37, 45, 53, 0.14), rgba(56, 37, 20, 0.38)),
+        radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.18), transparent 24%),
+        linear-gradient(135deg, #cfb29f, #b08c74 45%, #7f6759 100%);
+      box-shadow: inset 0 -72px 110px rgba(34, 22, 15, 0.24);
+    }
+
+    .visual-card strong {
+      font-size: 24px;
+      letter-spacing: 0.06em;
+    }
+
+    .visual-card p {
+      margin-top: 8px;
+      max-width: 22em;
+      color: rgba(255, 250, 246, 0.9);
+      font-size: 14px;
+    }
+
+    .note-card strong {
+      display: block;
+      margin-bottom: 8px;
+      color: #58715b;
+      font-size: 14px;
+      letter-spacing: 0.06em;
+    }
+
+    .policy-card strong {
+      display: block;
+      margin-bottom: 8px;
+      color: #906654;
+      font-size: 14px;
+      letter-spacing: 0.06em;
+    }
+
+    .status-line {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: #f6eee8;
+      color: #855644;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .booking-note {
+      font-size: 13px;
+    }
+
+    @media (min-width: 841px) {
+      .page-shell {
+        height: min(calc(100vh - 72px), 900px);
+        padding: 12px 0;
+        grid-template-rows: auto minmax(0, 1fr);
+      }
+
+      .step-strip {
+        padding: 12px 16px;
+      }
+
+      .reservation-shell {
+        height: 100%;
+        padding: 14px;
+        gap: 14px;
+        grid-template-columns: 23% 49% 28%;
+      }
+
+      .summary-panel,
+      .booking-panel,
+      .side-panel {
+        min-height: 0;
+        overflow: hidden;
+      }
+
+      .summary-panel,
+      .side-panel {
+        padding: 14px;
+        gap: 12px;
+      }
+
+      .booking-panel {
+        padding: 16px;
+        gap: 12px;
+      }
+
+      .lead-card h1 {
+        font-size: clamp(24px, 2.3vw, 34px);
+      }
+
+      .lead-card p,
+      .booking-intro p,
+      .booking-note,
+      .memo-help,
+      .info-list,
+      .policy-list,
+      .visual-card p {
+        font-size: 13px;
+      }
+
+      .booking-grid {
+        min-height: 0;
+        gap: 12px;
+      }
+
+      .slot-card,
+      .memo-card,
+      .policy-card,
+      .note-card,
+      .info-card,
+      .axis-card {
+        min-height: 0;
+      }
+
+      .slot-list {
+        gap: 10px;
+      }
+
+      .time-grid {
+        gap: 7px;
+      }
+
+      .time-slot {
+        min-height: 42px;
+        font-size: 13px;
+      }
+
+      .field select,
+      .action-btn {
+        min-height: 44px;
+      }
+
+      .memo-card textarea {
+        min-height: 120px;
+      }
+    }
+
+    @media (max-width: 1120px) {
+      .reservation-shell {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .side-panel {
+        grid-column: 1 / -1;
+        grid-template-columns: 1.1fr 1fr 1fr;
+        grid-template-rows: auto;
+      }
+    }
+
+    @media (max-width: 840px) {
+      .header-inner,
+      .step-strip,
+      .reservation-shell {
+        width: min(1240px, calc(100vw - 16px));
+      }
+
+      .header-inner {
+        min-height: 64px;
+      }
+
+      .step-strip {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .step-copy {
+        text-align: left;
+      }
+
+      .reservation-shell,
+      .booking-grid,
+      .side-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .time-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .header-inner {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 10px 0;
+      }
+
+      .main-nav {
+        width: 100%;
+        overflow-x: auto;
+      }
+
+      .main-nav ul {
+        gap: 8px;
+        width: max-content;
+        min-width: 100%;
+      }
+
+      .main-nav a {
+        min-height: 36px;
+        padding: 0 12px;
+        font-size: 13px;
+      }
+
+      .page-shell {
+        padding-top: 10px;
+      }
+
+      .summary-panel,
+      .booking-panel,
+      .side-panel {
+        padding: 16px;
+      }
+
+      .time-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="香りワークショップ_トップページ.html" aria-label="トップへ戻る">FRAGRANCE WORKSHOP</a>
+      <nav class="main-nav" aria-label="ページメニュー">
+        <ul>
+          <li><a href="fragrance-graph.html">グラフに戻る</a></li>
+          <li><a href="questionnaire.html">質問ページへ</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <div class="page-shell">
+    <section class="step-strip" aria-label="進行状況">
+      <div class="step-group">
+        <div class="step-badge done">STEP1 固定5問</div>
+        <div class="step-badge done">STEP2 追加3問</div>
+        <div class="step-badge current">予約確認</div>
+      </div>
+      <div class="step-copy">
+        <strong>Fragrance Workshop</strong>
+        <span>ここまでの傾向を持ったまま、来店日時と共有メモだけ整えて予約へ進みます。</span>
+      </div>
+    </section>
+
+    <main class="reservation-shell">
+      <aside class="panel summary-panel">
+        <div class="section-label">Current Tendency</div>
+        <article class="lead-card">
+          <small>あなたの今の傾向</small>
+          <h1 id="summary-headline">やわらかな華やかさと軽さのバランス</h1>
+          <p id="summary-body">フローラルを軸にしつつ、重くしすぎずに整えた方向です。当日はこの土台から香りを試し始められます。</p>
+        </article>
+
+        <article class="info-card">
+          <h2>スタッフが見る情報</h2>
+          <p>共有する情報は増やしすぎず、会話の起点になるものだけに絞っています。</p>
+          <ul class="info-list">
+            <li>固定5問と追加3問の回答傾向</li>
+            <li>5軸グラフの微調整値</li>
+            <li>今日の仕上がりの方向性</li>
+            <li>任意メモと来店日時</li>
+          </ul>
+        </article>
+
+        <article class="axis-card">
+          <h2>現在の香りバランス</h2>
+          <div class="summary-tags" id="summary-tags"></div>
+          <div class="axis-list" id="axis-list"></div>
+        </article>
+      </aside>
+
+      <section class="panel booking-panel" aria-live="polite">
+        <div class="section-label">Reservation</div>
+        <div class="status-line" id="selected-status">未選択: 来店日時を選んでください</div>
+        <div class="booking-intro">
+          <h2>来店予約を確定する</h2>
+          <p>ここで決めるのは、来店日時と共有メモだけです。当日の香りは店頭でスタッフと一緒に微調整できます。</p>
+        </div>
+
+        <div class="booking-grid">
+          <article class="slot-card">
+            <h3>予約枠選択</h3>
+            <p class="booking-note">都合のよい日時をひとつ選んでください。枠は仮表示です。</p>
+            <div class="slot-list" id="slot-list"></div>
+          </article>
+
+          <div class="select-group">
+            <article class="slot-card">
+              <h3>来店条件</h3>
+              <div class="field">
+                <label for="visit-type">来店内容</label>
+                <select id="visit-type">
+                  <option value="初回ワークショップ">初回ワークショップ</option>
+                  <option value="再来店の調整相談">再来店の調整相談</option>
+                  <option value="ギフト相談あり">ギフト相談あり</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="guest-count">人数</label>
+                <select id="guest-count">
+                  <option value="1名">1名</option>
+                  <option value="2名">2名</option>
+                  <option value="3名">3名</option>
+                </select>
+              </div>
+            </article>
+
+            <article class="policy-card">
+              <h3>当日の進め方</h3>
+              <p>Web上の結果は提案の起点であり、確定処方ではありません。店頭では香りを試しながら、その場で方向を整えます。</p>
+            </article>
+          </div>
+        </div>
+
+        <article class="memo-card">
+          <h3>スタッフに伝えたいこと（任意）</h3>
+          <p class="memo-help">例: 甘さは控えめにしたい / 仕事用で使いたい / 最初は軽い方向から試したい</p>
+          <textarea id="staff-memo" placeholder="当日スタッフに伝えておきたいことがあれば入力してください。"></textarea>
+        </article>
+
+        <div class="booking-actions">
+          <button class="action-btn primary" id="confirm-btn" type="button" disabled>予約を確定する</button>
+          <a class="action-btn" href="fragrance-graph.html">グラフへ戻る</a>
+        </div>
+      </section>
+
+      <aside class="panel side-panel">
+        <div class="visual-card">
+          <strong>提案カウンターの空気感</strong>
+          <p>当日は、ここまでの傾向をもとにベース候補を絞った状態から始めます。静かな器具や無地ボトルのある落ち着いた空気感を想定しています。</p>
+        </div>
+
+        <article class="note-card">
+          <strong>予約前メモ</strong>
+          <p>時間帯や人数だけ先に決めておけば十分です。細かな好みは店頭で実際に香りを試しながら詰めていけます。</p>
+        </article>
+
+        <article class="policy-card">
+          <strong>安心事項</strong>
+          <ul class="policy-list">
+            <li>予約後も当日の香りは変更できます</li>
+            <li>任意メモがなくても予約可能です</li>
+            <li>このページは来店前の準備として使います</li>
+          </ul>
+        </article>
+      </aside>
+    </main>
+  </div>
+
+  <script>
+    const AXIS_META = [
+      { id: "floral", label: "フローラル" },
+      { id: "fresh", label: "フレッシュ" },
+      { id: "woody", label: "ウッディ" },
+      { id: "spicy", label: "スパイシー" },
+      { id: "sweet", label: "スウィート" }
+    ];
+
+    const DEFAULT_AXES = {
+      floral: 68,
+      fresh: 58,
+      woody: 48,
+      spicy: 34,
+      sweet: 50
+    };
+
+    const summaryHeadline = document.getElementById("summary-headline");
+    const summaryBody = document.getElementById("summary-body");
+    const summaryTags = document.getElementById("summary-tags");
+    const axisList = document.getElementById("axis-list");
+    const slotList = document.getElementById("slot-list");
+    const selectedStatus = document.getElementById("selected-status");
+    const confirmBtn = document.getElementById("confirm-btn");
+    const visitType = document.getElementById("visit-type");
+    const guestCount = document.getElementById("guest-count");
+    const staffMemo = document.getElementById("staff-memo");
+
+    let selectedSlot = "";
+
+    function loadAxes() {
+      try {
+        const raw = window.sessionStorage.getItem("fragranceReservationDraft");
+        if (!raw) return { ...DEFAULT_AXES };
+        const parsed = JSON.parse(raw);
+        return { ...DEFAULT_AXES, ...(parsed.axes || {}) };
+      } catch (error) {
+        return { ...DEFAULT_AXES };
+      }
+    }
+
+    function buildSummary(axes) {
+      const sorted = [...AXIS_META]
+        .map((axis) => ({ ...axis, value: axes[axis.id] }))
+        .sort((a, b) => b.value - a.value);
+
+      const first = sorted[0];
+      const second = sorted[1];
+      const pair = [first.label, second.label];
+
+      let headline = pair.join(" × ") + " を軸にした今の方向";
+      let body = "当日はこのバランスを起点にして、強さや余韻をその場で整えていきます。";
+
+      if (first.id === "floral" && second.id === "fresh") {
+        headline = "やわらかな華やかさと軽さのバランス";
+        body = "フローラルを軸にしつつ、みずみずしい抜け感が残る方向です。最初は軽めに試し、必要なら甘さや深みをあとから足せます。";
+      } else if (first.id === "fresh" && second.id === "floral") {
+        headline = "透明感を主軸に、花のやわらかさを添える方向";
+        body = "清潔感のある軽さをベースにしながら、無機質になりすぎないよう花のやわらかさを添えるイメージです。";
+      } else if (first.id === "woody" || first.id === "spicy") {
+        headline = "落ち着きと余韻を持たせる方向";
+        body = "深みを感じる軸が強めなので、当日は重さを見ながら透明感や甘さを少しずつ重ねる進め方が合います。";
+      }
+
+      return { headline, body, sorted };
+    }
+
+    function renderAxes(axes, sorted) {
+      axisList.innerHTML = "";
+      summaryTags.innerHTML = "";
+
+      sorted.slice(0, 3).forEach((axis) => {
+        const tag = document.createElement("span");
+        tag.textContent = `${axis.label} ${axis.value}`;
+        summaryTags.appendChild(tag);
+      });
+
+      AXIS_META.forEach((axis) => {
+        const row = document.createElement("div");
+        row.className = "axis-row";
+        row.innerHTML = `
+          <strong>${axis.label}</strong>
+          <div class="axis-track"><span class="axis-bar" style="width:${axes[axis.id]}%"></span></div>
+          <span>${axes[axis.id]}</span>
+        `;
+        axisList.appendChild(row);
+      });
+    }
+
+    function formatDate(date) {
+      const weekdays = ["日", "月", "火", "水", "木", "金", "土"];
+      const month = date.getMonth() + 1;
+      const day = date.getDate();
+      return `${month}/${day}（${weekdays[date.getDay()]}）`;
+    }
+
+    function renderSlots() {
+      const times = ["10:30", "13:00", "15:30"];
+      const today = new Date();
+      slotList.innerHTML = "";
+
+      for (let i = 1; i <= 4; i += 1) {
+        const date = new Date(today);
+        date.setDate(today.getDate() + i);
+
+        const day = document.createElement("section");
+        day.className = "slot-day";
+
+        const countLabel = i === 1 ? "おすすめ" : "空きあり";
+        day.innerHTML = `
+          <header>
+            <strong>${formatDate(date)}</strong>
+            <span>${countLabel}</span>
+          </header>
+          <div class="time-grid"></div>
+        `;
+
+        const grid = day.querySelector(".time-grid");
+        times.forEach((time) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "time-slot";
+          button.textContent = time;
+          button.dataset.slot = `${formatDate(date)} ${time}`;
+          button.addEventListener("click", () => selectSlot(button.dataset.slot));
+          grid.appendChild(button);
+        });
+
+        slotList.appendChild(day);
+      }
+    }
+
+    function selectSlot(slot) {
+      selectedSlot = slot;
+      document.querySelectorAll(".time-slot").forEach((button) => {
+        button.classList.toggle("selected", button.dataset.slot === slot);
+      });
+      updateSelectionState();
+    }
+
+    function updateSelectionState() {
+      if (selectedSlot) {
+        selectedStatus.textContent = `選択中: ${selectedSlot} / ${guestCount.value}`;
+        confirmBtn.disabled = false;
+      } else {
+        selectedStatus.textContent = "未選択: 来店日時を選んでください";
+        confirmBtn.disabled = true;
+      }
+    }
+
+    function handleConfirm() {
+      if (!selectedSlot) return;
+      const message = [
+        "予約内容を仮確定しました。",
+        `日時: ${selectedSlot}`,
+        `来店内容: ${visitType.value}`,
+        `人数: ${guestCount.value}`,
+        staffMemo.value ? `メモ: ${staffMemo.value}` : "メモ: なし"
+      ].join("\n");
+      window.alert(message);
+    }
+
+    guestCount.addEventListener("change", updateSelectionState);
+    confirmBtn.addEventListener("click", handleConfirm);
+
+    const axes = loadAxes();
+    const summary = buildSummary(axes);
+    summaryHeadline.textContent = summary.headline;
+    summaryBody.textContent = summary.body;
+    renderAxes(axes, summary.sorted);
+    renderSlots();
+    updateSelectionState();
+  </script>
+</body>
+
+</html>

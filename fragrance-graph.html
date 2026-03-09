@@ -710,7 +710,7 @@
             <h2>このバランスを持って、次の確認へ進みます</h2>
             <p>ここでの調整は仮の下書きです。店頭での微調整を前提にしつつ、<br>今のイメージを次のページへつなげられます。</p>
             <div class="cta-actions">
-              <a class="btn btn-primary" href="questionnaire_step2.html">この内容で結果を見る</a>
+              <a class="btn btn-primary" id="reserve-link" href="reservation.html">この内容で予約へ進む</a>
               <a class="btn btn-secondary" href="questionnaire.html">質問に戻る</a>
             </div>
           </div>
@@ -754,8 +754,17 @@
     const sliderList = document.getElementById("slider-list");
     const summaryList = document.getElementById("summary-list");
     const resetBtn = document.getElementById("reset-btn");
+    const reserveLink = document.getElementById("reserve-link");
     const presetButtons = document.querySelectorAll("[data-preset]");
     const defaults = Object.fromEntries(axes.map((axis) => [axis.id, axis.value]));
+
+    function persistReservationDraft() {
+      const payload = {
+        axes: Object.fromEntries(axes.map((axis) => [axis.id, axis.value])),
+        updatedAt: new Date().toISOString()
+      };
+      window.sessionStorage.setItem("fragranceReservationDraft", JSON.stringify(payload));
+    }
 
     function polarToCartesian(centerX, centerY, radius, angle) {
       return {
@@ -859,6 +868,7 @@
           document.getElementById(`${axis.id}-value`).value = axis.value;
           renderShape();
           renderSummary();
+          persistReservationDraft();
         });
       });
     }
@@ -872,6 +882,7 @@
       });
       renderShape();
       renderSummary();
+      persistReservationDraft();
     }
 
     resetBtn.addEventListener("click", () => {
@@ -882,16 +893,20 @@
       });
       renderShape();
       renderSummary();
+      persistReservationDraft();
     });
 
     presetButtons.forEach((button) => {
       button.addEventListener("click", () => setPreset(button.dataset.preset));
     });
 
+    reserveLink.addEventListener("click", persistReservationDraft);
+
     renderGrid();
     renderSliders();
     renderShape();
     renderSummary();
+    persistReservationDraft();
   </script>
 </body>
 
