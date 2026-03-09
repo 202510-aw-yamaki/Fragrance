@@ -69,7 +69,7 @@
       border-radius: 28px; padding: 18px; display: grid; grid-template-columns: 240px minmax(0, 1fr) 320px; gap: 18px; min-height: 0;
     }
     .panel { min-height: 0; border-radius: 24px; background: rgba(255, 250, 245, 0.96); border: 1px solid rgba(220, 206, 194, 0.82); }
-    .nav-panel { padding: 18px; display: flex; flex-direction: column; gap: 14px; background: linear-gradient(180deg, rgba(246, 238, 231, 0.98), rgba(250, 246, 241, 0.96)); }
+    .nav-panel { padding: 18px; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: 14px; background: linear-gradient(180deg, rgba(246, 238, 231, 0.98), rgba(250, 246, 241, 0.96)); }
     .nav-title { font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #9b7364; }
     .nav-list { display: grid; gap: 10px; }
     .nav-item {
@@ -126,6 +126,121 @@
     .action-btn:hover { transform: translateY(-1px); }
     .action-btn.primary { background: linear-gradient(135deg, var(--accent), #dfb8a6); border-color: #c58975; color: #fffdfb; }
     .action-btn[disabled] { opacity: 0.45; cursor: default; pointer-events: none; }
+    @media (min-width: 841px) {
+      .page-shell {
+        height: min(calc(100vh - 72px), 900px);
+        padding: 12px 0;
+        grid-template-rows: auto minmax(0, 1fr);
+      }
+      .step-strip {
+        padding: 12px 16px;
+      }
+      .question-shell {
+        height: 100%;
+        padding: 14px;
+        gap: 14px;
+        grid-template-columns: 19% 52% 29%;
+      }
+      .nav-panel, .main-panel, .side-panel {
+        min-height: 0;
+        overflow: hidden;
+      }
+      .nav-panel, .side-panel {
+        padding: 14px;
+        gap: 12px;
+      }
+      .main-panel {
+        padding: 16px;
+        gap: 10px;
+        grid-template-rows: 10% 8% 14% minmax(0, 1fr) 14%;
+      }
+      .nav-list {
+        height: 100%;
+        gap: 1.8%;
+        grid-template-rows: repeat(5, minmax(0, 1fr));
+      }
+      .nav-item {
+        height: 100%;
+        padding: 6% 7%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .question-title {
+        font-size: clamp(22px, 2.25vw, 34px);
+        line-height: 1.15;
+      }
+      .question-caption,
+      .helper-text,
+      .progress-label,
+      .side-card p,
+      .return-card p,
+      .store-visual span {
+        font-size: 13px;
+      }
+      .option-card {
+        min-height: 0;
+        height: 100%;
+        padding: 3.4% 3.6%;
+        gap: 3.4%;
+        grid-template-columns: 26% minmax(0, 1fr);
+      }
+      .option-list {
+        height: 100%;
+        gap: 2.6%;
+        grid-template-rows: repeat(3, minmax(0, 1fr));
+      }
+      .option-visual {
+        height: 100%;
+        min-height: 0;
+      }
+      .option-title {
+        font-size: clamp(16px, 1.35vw, 21px);
+        line-height: 1.25;
+      }
+      .option-desc {
+        font-size: 12px;
+        line-height: 1.45;
+      }
+      .option-copy {
+        gap: 4px;
+      }
+      .sub-options {
+        height: 100%;
+        gap: 2.8%;
+      }
+      .sub-option,
+      .action-btn {
+        min-height: 0;
+        height: 100%;
+      }
+      .store-visual {
+        min-height: 0;
+        height: 100%;
+        padding: 14px;
+      }
+      .side-panel {
+        grid-template-rows: 56% 21% 23%;
+      }
+      .side-card,
+      .return-card {
+        padding: 12px;
+      }
+      .return-card .action-btn {
+        margin-top: 10px;
+        min-height: 42px;
+      }
+      .nav-item .label {
+        font-size: clamp(13px, 1.05vw, 16px);
+        line-height: 1.25;
+      }
+      .nav-item .no,
+      .option-label,
+      .side-card strong,
+      .return-card strong {
+        font-size: 11px;
+      }
+    }
     @media (max-width: 1180px) {
       .question-shell { grid-template-columns: 220px minmax(0, 1fr); }
       .side-panel { grid-column: 1 / -1; grid-template-columns: 1.2fr 1fr 1fr; grid-template-rows: auto; }
@@ -136,7 +251,7 @@
       .step-strip { flex-direction: column; align-items: flex-start; }
       .step-copy { text-align: left; }
       .question-shell { grid-template-columns: 1fr; }
-      .nav-panel { order: 2; }
+      .nav-panel { display: none; order: 2; }
       .main-panel { order: 1; }
       .side-panel { order: 3; grid-template-columns: 1fr; }
     }
