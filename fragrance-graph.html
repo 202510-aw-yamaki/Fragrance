@@ -83,30 +83,12 @@
       white-space: nowrap;
     }
 
-    .main-nav {
-      overflow-x: auto;
-    }
-
-    .main-nav ul {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      gap: 14px;
-      flex-wrap: nowrap;
-      justify-content: flex-end;
-    }
-
-    .main-nav a {
-      text-decoration: none;
+    .header-note {
       color: var(--muted);
       font-size: .92rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
       white-space: nowrap;
-    }
-
-    .main-nav a:hover,
-    .main-nav a:focus-visible {
-      color: var(--text);
     }
 
     .btn {
@@ -614,16 +596,6 @@
         padding: 12px 0;
       }
 
-      .main-nav {
-        width: 100%;
-      }
-
-      .main-nav ul {
-        justify-content: flex-start;
-        min-width: max-content;
-        padding-bottom: 2px;
-      }
-
       main section {
         padding: 52px 0;
       }
@@ -649,14 +621,8 @@
 <body>
   <header class="site-header">
     <div class="header-inner">
-      <a class="brand" href="香りワークショップ_トップページ.html" aria-label="トップへ戻る">FRAGRANCE WORKSHOP</a>
-      <nav class="main-nav" aria-label="ページメニュー">
-        <ul>
-          <li><a href="香りワークショップ_トップページ.html">TOP</a></li>
-          <li><a href="questionnaire.html">質問</a></li>
-          <li><a href="#graph-adjustment">香りグラフ</a></li>
-        </ul>
-      </nav>
+      <a class="brand" href="questionnaire.html" aria-label="質問ページへ戻る">FRAGRANCE WORKSHOP</a>
+      <div class="header-note">Graph Page</div>
     </div>
   </header>
 
