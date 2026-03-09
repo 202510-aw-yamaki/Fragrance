@@ -1,5 +1,6 @@
 ﻿<!doctype html>
 <html lang="ja">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,8 +18,15 @@
       --container: min(1240px, calc(100vw - 24px));
       --shadow: 0 18px 44px rgba(81, 58, 42, 0.1);
     }
-    * { box-sizing: border-box; }
-    html { scroll-padding-top: 88px; }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-padding-top: 88px;
+    }
+
     body {
       margin: 0;
       min-height: 100vh;
@@ -28,137 +36,563 @@
       line-height: 1.7;
       letter-spacing: 0.02em;
     }
-    a, button { font: inherit; }
-    button { border: 0; }
-    img { display: block; max-width: 100%; }
-    .header-inner, .page-shell { width: var(--container); margin: 0 auto; }
+
+    a,
+    button {
+      font: inherit;
+    }
+
+    button {
+      border: 0;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    .header-inner,
+    .page-shell {
+      width: var(--container);
+      margin: 0 auto;
+    }
+
     .site-header {
-      position: sticky; top: 0; z-index: 50; backdrop-filter: blur(14px);
-      background: rgba(252, 248, 243, 0.82); border-bottom: 1px solid rgba(230, 221, 210, 0.88);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(14px);
+      background: rgba(252, 248, 243, 0.82);
+      border-bottom: 1px solid rgba(230, 221, 210, 0.88);
     }
+
     .header-inner {
-      min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
     }
-    .brand { text-decoration: none; font-weight: 800; letter-spacing: 0.05em; white-space: nowrap; color: var(--text); }
+
+    .brand {
+      text-decoration: none;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+      color: var(--text);
+    }
+
     .main-nav ul {
-      list-style: none; margin: 0; padding: 0; display: flex; gap: 14px; align-items: center; justify-content: flex-end; flex-wrap: nowrap;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      justify-content: flex-end;
+      flex-wrap: nowrap;
     }
+
     .main-nav button {
-      min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--line); background: rgba(255, 251, 246, 0.92);
-      color: var(--muted); cursor: pointer; transition: border-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
+      min-height: 40px;
+      padding: 0 16px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255, 251, 246, 0.92);
+      color: var(--muted);
+      cursor: pointer;
+      transition: border-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
     }
-    .main-nav button:hover, .main-nav button:focus-visible { color: var(--text); border-color: rgba(190, 154, 132, 0.95); transform: translateY(-1px); }
-    .main-nav button[disabled] { opacity: 0.45; cursor: default; pointer-events: none; transform: none; }
-    .page-shell { padding: 18px 0 24px; display: grid; gap: 14px; }
-    .step-strip, .question-shell {
-      border: 1px solid rgba(201, 174, 155, 0.65); background: var(--panel); box-shadow: var(--shadow); backdrop-filter: blur(8px);
+
+    .main-nav button:hover,
+    .main-nav button:focus-visible {
+      color: var(--text);
+      border-color: rgba(190, 154, 132, 0.95);
+      transform: translateY(-1px);
     }
-    .step-strip {
-      border-radius: 20px; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+
+    .main-nav button[disabled] {
+      opacity: 0.45;
+      cursor: default;
+      pointer-events: none;
+      transform: none;
     }
-    .step-group { display: flex; gap: 10px; align-items: center; }
-    .step-badge {
-      min-width: 114px; padding: 10px 18px; border-radius: 999px; border: 1px solid var(--line); text-align: center; font-size: 14px; font-weight: 700; letter-spacing: 0.08em;
+
+    .page-shell {
+      padding: 18px 0 24px;
+      display: grid;
+      gap: 14px;
     }
-    .step-badge.current { background: linear-gradient(135deg, #f3dfd5, #fbf1ea); color: #855543; border-color: #d6aa99; }
-    .step-badge.next { background: linear-gradient(135deg, #e3ece1, #f4f8f1); color: #597059; }
-    .step-copy { text-align: right; display: grid; gap: 4px; }
-    .step-copy strong { font-size: 14px; color: #8b5f4d; letter-spacing: 0.06em; text-transform: uppercase; }
-    .step-copy span { font-size: 14px; color: var(--muted); }
+
+    .step-strip,
     .question-shell {
-      border-radius: 28px; padding: 18px; display: grid; grid-template-columns: 240px minmax(0, 1fr) 320px; gap: 18px; min-height: 0;
+      border: 1px solid rgba(201, 174, 155, 0.65);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
     }
-    .panel { min-height: 0; border-radius: 24px; background: rgba(255, 250, 245, 0.96); border: 1px solid rgba(220, 206, 194, 0.82); }
-    .nav-panel { padding: 18px; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: 14px; background: linear-gradient(180deg, rgba(246, 238, 231, 0.98), rgba(250, 246, 241, 0.96)); }
-    .nav-title { font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #9b7364; }
-    .nav-list { display: grid; gap: 10px; }
+
+    .step-strip {
+      border-radius: 20px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .step-group {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .step-badge {
+      min-width: 114px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      text-align: center;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .step-badge.current {
+      background: linear-gradient(135deg, #f3dfd5, #fbf1ea);
+      color: #855543;
+      border-color: #d6aa99;
+    }
+
+    .step-badge.next {
+      background: linear-gradient(135deg, #e3ece1, #f4f8f1);
+      color: #597059;
+    }
+
+    .step-copy {
+      text-align: right;
+      display: grid;
+      gap: 4px;
+    }
+
+    .step-copy strong {
+      font-size: 14px;
+      color: #8b5f4d;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .step-copy span {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .question-shell {
+      border-radius: 28px;
+      padding: 18px;
+      display: grid;
+      grid-template-columns: 240px minmax(0, 1fr) 320px;
+      gap: 18px;
+      min-height: 0;
+    }
+
+    .panel {
+      min-height: 0;
+      border-radius: 24px;
+      background: rgba(255, 250, 245, 0.96);
+      border: 1px solid rgba(220, 206, 194, 0.82);
+    }
+
+    .nav-panel {
+      padding: 18px;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      gap: 14px;
+      background: linear-gradient(180deg, rgba(246, 238, 231, 0.98), rgba(250, 246, 241, 0.96));
+    }
+
+    .nav-title {
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #9b7364;
+    }
+
+    .nav-list {
+      display: grid;
+      gap: 10px;
+    }
+
     .nav-item {
-      width: 100%; padding: 14px; border-radius: 18px; border: 1px solid var(--line); background: #f8f3ee; color: var(--text); text-align: left; cursor: pointer; transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+      width: 100%;
+      padding: 14px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: #f8f3ee;
+      color: var(--text);
+      text-align: left;
+      cursor: pointer;
+      transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
     }
-    .nav-item:hover { transform: translateX(3px); }
-    .nav-item.active { border-color: #ca9d8c; background: linear-gradient(135deg, #f7e7de, #fffaf7); box-shadow: 0 12px 28px rgba(177, 136, 115, 0.14); }
-    .nav-item.done { background: linear-gradient(135deg, #e7efe6, #f8fbf7); border-color: #bfd0bd; }
-    .nav-item .no { display: block; font-size: 12px; color: #8b786d; margin-bottom: 4px; }
-    .nav-item .label { display: block; font-size: 17px; font-weight: 700; line-height: 1.35; }
-    .nav-note { margin-top: auto; padding: 14px; border-radius: 18px; background: #f4ebe2; color: #6d584b; font-size: 13px; line-height: 1.65; }
-    .main-panel { padding: 22px; display: grid; grid-template-rows: auto auto auto minmax(0, 1fr) auto; gap: 16px; }
-    .question-meta { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
-    .question-index { display: inline-flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 999px; background: #f6eee8; color: #855644; font-size: 14px; font-weight: 700; }
-    .helper-text { font-size: 14px; color: var(--muted); }
-    .progress-row { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: center; }
-    .progress-track { height: 10px; border-radius: 999px; background: #eadfd6; overflow: hidden; }
-    .progress-bar { height: 100%; width: 20%; border-radius: 999px; background: linear-gradient(90deg, #c98f77, #d6a996); transition: width 0.22s ease; }
-    .progress-label { font-size: 14px; color: #7f695d; white-space: nowrap; }
-    .question-title { margin: 0; font-size: clamp(28px, 3vw, 48px); line-height: 1.2; letter-spacing: -0.03em; }
-    .question-caption { margin: 0; font-size: 15px; color: var(--muted); line-height: 1.75; }
-    .option-list { display: grid; gap: 12px; align-content: start; }
+
+    .nav-item:hover {
+      transform: translateX(3px);
+    }
+
+    .nav-item.active {
+      border-color: #ca9d8c;
+      background: linear-gradient(135deg, #f7e7de, #fffaf7);
+      box-shadow: 0 12px 28px rgba(177, 136, 115, 0.14);
+    }
+
+    .nav-item.done {
+      background: linear-gradient(135deg, #e7efe6, #f8fbf7);
+      border-color: #bfd0bd;
+    }
+
+    .nav-item .no {
+      display: block;
+      font-size: 12px;
+      color: #8b786d;
+      margin-bottom: 4px;
+    }
+
+    .nav-item .label {
+      display: block;
+      font-size: 17px;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .nav-note {
+      margin-top: auto;
+      padding: 14px;
+      border-radius: 18px;
+      background: #f4ebe2;
+      color: #6d584b;
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    .main-panel {
+      padding: 22px;
+      display: grid;
+      grid-template-rows: auto auto auto minmax(0, 1fr) auto;
+      gap: 16px;
+    }
+
+    .question-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .question-index {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: #f6eee8;
+      color: #855644;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .helper-text {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .progress-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .progress-track {
+      height: 10px;
+      border-radius: 999px;
+      background: #eadfd6;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 20%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #c98f77, #d6a996);
+      transition: width 0.22s ease;
+    }
+
+    .progress-label {
+      font-size: 14px;
+      color: #7f695d;
+      white-space: nowrap;
+    }
+
+    .question-title {
+      margin: 0;
+      font-size: clamp(28px, 3vw, 48px);
+      line-height: 1.2;
+      letter-spacing: -0.03em;
+    }
+
+    .question-caption {
+      margin: 0;
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .option-list {
+      display: grid;
+      gap: 12px;
+      align-content: start;
+    }
+
     .option-card {
-      width: 100%; min-height: 122px; border: 1px solid var(--line); border-radius: 24px; padding: 18px; display: grid; grid-template-columns: 132px minmax(0, 1fr); gap: 18px; align-items: center; text-align: left; cursor: pointer; background: #fffdfa; transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; overflow: hidden;
+      width: 100%;
+      min-height: 122px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 18px;
+      display: flex;
+      align-items: center;
+      text-align: left;
+      cursor: pointer;
+      background-color: #fffdfa;
+      background-size: cover;
+      background-position: center;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+      overflow: hidden;
+      position: relative;
+      isolation: isolate;
     }
-    .option-card:hover { transform: translateY(-2px); box-shadow: 0 18px 32px rgba(105, 84, 70, 0.1); }
-    .option-card.selected { border-color: #c58975; box-shadow: 0 18px 36px rgba(178, 130, 104, 0.18); }
-    .option-visual { height: 86px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.45); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55); }
-    .option-copy { display: grid; gap: 8px; }
-    .option-label { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; color: #906654; text-transform: uppercase; }
-    .option-title { font-size: clamp(18px, 1.8vw, 28px); font-weight: 700; line-height: 1.35; }
-    .option-desc { font-size: 14px; color: var(--muted); line-height: 1.7; }
-    .sub-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-    .sub-option { width: 100%; min-height: 62px; border-radius: 18px; border: 1px solid var(--line); background: #f8f3ee; color: #5d4c42; cursor: pointer; transition: border-color 0.18s ease, background 0.18s ease; }
-    .sub-option.selected { border-color: #c58975; background: #f3e2d9; }
-    .side-panel { padding: 18px; display: grid; grid-template-rows: minmax(0, 1fr) auto auto; gap: 14px; background: linear-gradient(180deg, rgba(250, 245, 239, 0.98), rgba(244, 239, 232, 0.98)); }
+
+    .option-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(255, 251, 246, 0.94) 0%, rgba(255, 251, 246, 0.88) 36%, rgba(255, 251, 246, 0.72) 62%, rgba(255, 251, 246, 0.58) 100%);
+      z-index: 0;
+    }
+
+    .option-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 32px rgba(105, 84, 70, 0.1);
+    }
+
+    .option-card.selected {
+      border-color: #c58975;
+      box-shadow: 0 18px 36px rgba(178, 130, 104, 0.18);
+    }
+
+    .option-copy {
+      display: grid;
+      gap: 8px;
+      position: relative;
+      z-index: 1;
+      max-width: min(72%, 520px);
+    }
+
+    .option-label {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #906654;
+      text-transform: uppercase;
+    }
+
+    .option-title {
+      font-size: clamp(18px, 1.8vw, 28px);
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .option-desc {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .sub-options {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .sub-option {
+      width: 100%;
+      min-height: 62px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: #f8f3ee;
+      color: #5d4c42;
+      cursor: pointer;
+      transition: border-color 0.18s ease, background 0.18s ease;
+    }
+
+    .sub-option.selected {
+      border-color: #c58975;
+      background: #f3e2d9;
+    }
+
+    .side-panel {
+      padding: 18px;
+      display: grid;
+      grid-template-rows: minmax(0, 1fr) auto auto;
+      gap: 14px;
+      background: linear-gradient(180deg, rgba(250, 245, 239, 0.98), rgba(244, 239, 232, 0.98));
+    }
+
     .store-visual {
-      min-height: 260px; border-radius: 28px; padding: 18px; display: flex; flex-direction: column; justify-content: flex-end; color: #fffaf6;
+      min-height: 260px;
+      border-radius: 28px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      color: #fffaf6;
       background: linear-gradient(180deg, rgba(37, 45, 53, 0.14), rgba(56, 37, 20, 0.38)), url("https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=1400&q=80") center/cover;
       box-shadow: inset 0 -72px 110px rgba(34, 22, 15, 0.28);
     }
-    .store-visual strong { font-size: 24px; letter-spacing: 0.06em; }
-    .store-visual span { margin-top: 8px; max-width: 20em; font-size: 14px; line-height: 1.7; }
-    .side-card, .return-card { border-radius: 22px; padding: 16px; background: #fffaf6; border: 1px solid rgba(216, 203, 192, 0.95); }
-    .side-card { background: linear-gradient(180deg, #e4eee2, #f0f5ec); border-color: rgba(191, 202, 188, 0.9); }
-    .side-card strong, .return-card strong { display: block; margin-bottom: 8px; font-size: 14px; letter-spacing: 0.06em; }
-    .side-card strong { color: #58715b; }
-    .return-card strong { color: #906654; }
-    .side-card p, .return-card p { margin: 0; font-size: 14px; line-height: 1.7; }
-    .side-card p { color: #456049; }
-    .return-card p { color: #5e4f46; }
-    .return-card .action-btn { width: 100%; margin-top: 14px; }
-    .action-btn { min-width: 168px; min-height: 54px; padding: 0 20px; border-radius: 999px; border: 1px solid var(--line); background: #f8f3ee; color: var(--text); cursor: pointer; transition: transform 0.18s ease, border-color 0.18s ease; }
-    .action-btn:hover { transform: translateY(-1px); }
-    .action-btn.primary { background: linear-gradient(135deg, var(--accent), #dfb8a6); border-color: #c58975; color: #fffdfb; }
-    .action-btn[disabled] { opacity: 0.45; cursor: default; pointer-events: none; }
+
+    .store-visual strong {
+      font-size: 24px;
+      letter-spacing: 0.06em;
+    }
+
+    .store-visual span {
+      margin-top: 8px;
+      max-width: 20em;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .side-card,
+    .return-card {
+      border-radius: 22px;
+      padding: 16px;
+      background: #fffaf6;
+      border: 1px solid rgba(216, 203, 192, 0.95);
+    }
+
+    .side-card {
+      background: linear-gradient(180deg, #e4eee2, #f0f5ec);
+      border-color: rgba(191, 202, 188, 0.9);
+    }
+
+    .side-card strong,
+    .return-card strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      letter-spacing: 0.06em;
+    }
+
+    .side-card strong {
+      color: #58715b;
+    }
+
+    .return-card strong {
+      color: #906654;
+    }
+
+    .side-card p,
+    .return-card p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .side-card p {
+      color: #456049;
+    }
+
+    .return-card p {
+      color: #5e4f46;
+    }
+
+    .return-card .action-btn {
+      width: 100%;
+      margin-top: 14px;
+    }
+
+    .action-btn {
+      min-width: 168px;
+      min-height: 54px;
+      padding: 0 20px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #f8f3ee;
+      color: var(--text);
+      cursor: pointer;
+      transition: transform 0.18s ease, border-color 0.18s ease;
+    }
+
+    .action-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .action-btn.primary {
+      background: linear-gradient(135deg, var(--accent), #dfb8a6);
+      border-color: #c58975;
+      color: #fffdfb;
+    }
+
+    .action-btn[disabled] {
+      opacity: 0.45;
+      cursor: default;
+      pointer-events: none;
+    }
+
     @media (min-width: 841px) {
       .page-shell {
         height: min(calc(100vh - 72px), 900px);
         padding: 12px 0;
         grid-template-rows: auto minmax(0, 1fr);
       }
+
       .step-strip {
         padding: 12px 16px;
       }
+
       .question-shell {
         height: 100%;
         padding: 14px;
         gap: 14px;
         grid-template-columns: 19% 52% 29%;
       }
-      .nav-panel, .main-panel, .side-panel {
+
+      .nav-panel,
+      .main-panel,
+      .side-panel {
         min-height: 0;
         overflow: hidden;
       }
-      .nav-panel, .side-panel {
+
+      .nav-panel,
+      .side-panel {
         padding: 14px;
         gap: 12px;
       }
+
       .main-panel {
         padding: 16px;
         gap: 10px;
         grid-template-rows: 10% 8% 14% minmax(0, 1fr) 14%;
       }
+
       .nav-list {
         height: 100%;
         gap: 1.8%;
         grid-template-rows: repeat(5, minmax(0, 1fr));
       }
+
       .nav-item {
         height: 100%;
         padding: 6% 7%;
@@ -166,10 +600,12 @@
         flex-direction: column;
         justify-content: center;
       }
+
       .question-title {
         font-size: clamp(22px, 2.25vw, 34px);
         line-height: 1.15;
       }
+
       .question-caption,
       .helper-text,
       .progress-label,
@@ -178,62 +614,70 @@
       .store-visual span {
         font-size: 13px;
       }
+
       .option-card {
         min-height: 0;
         height: 100%;
         padding: 3.4% 3.6%;
-        gap: 3.4%;
-        grid-template-columns: 26% minmax(0, 1fr);
       }
+
       .option-list {
         height: 100%;
         gap: 2.6%;
         grid-template-rows: repeat(3, minmax(0, 1fr));
       }
-      .option-visual {
-        height: 100%;
-        min-height: 0;
-      }
+
       .option-title {
         font-size: clamp(16px, 1.35vw, 21px);
         line-height: 1.25;
       }
+
       .option-desc {
         font-size: 12px;
         line-height: 1.45;
       }
+
       .option-copy {
         gap: 4px;
+        max-width: min(74%, 460px);
       }
+
       .sub-options {
         height: 100%;
         gap: 2.8%;
       }
+
       .sub-option,
       .action-btn {
         min-height: 0;
         height: 100%;
       }
+
       .store-visual {
         min-height: 0;
         height: 100%;
         padding: 14px;
       }
+
       .side-panel {
         grid-template-rows: 56% 21% 23%;
       }
+
       .side-card,
       .return-card {
         padding: 12px;
       }
+
       .return-card .action-btn {
         margin-top: 10px;
         min-height: 42px;
       }
+
       .nav-item .label {
         font-size: clamp(13px, 1.05vw, 16px);
         line-height: 1.25;
       }
+
       .nav-item .no,
       .option-label,
       .side-card strong,
@@ -241,35 +685,116 @@
         font-size: 11px;
       }
     }
+
     @media (max-width: 1180px) {
-      .question-shell { grid-template-columns: 220px minmax(0, 1fr); }
-      .side-panel { grid-column: 1 / -1; grid-template-columns: 1.2fr 1fr 1fr; grid-template-rows: auto; }
+      .question-shell {
+        grid-template-columns: 220px minmax(0, 1fr);
+      }
+
+      .side-panel {
+        grid-column: 1 / -1;
+        grid-template-columns: 1.2fr 1fr 1fr;
+        grid-template-rows: auto;
+      }
     }
+
     @media (max-width: 840px) {
-      .header-inner, .step-strip, .question-shell { width: min(1240px, calc(100vw - 16px)); }
-      .header-inner { min-height: 64px; }
-      .step-strip { flex-direction: column; align-items: flex-start; }
-      .step-copy { text-align: left; }
-      .question-shell { grid-template-columns: 1fr; }
-      .nav-panel { display: none; order: 2; }
-      .main-panel { order: 1; }
-      .side-panel { order: 3; grid-template-columns: 1fr; }
+
+      .header-inner,
+      .step-strip,
+      .question-shell {
+        width: min(1240px, calc(100vw - 16px));
+      }
+
+      .header-inner {
+        min-height: 64px;
+      }
+
+      .step-strip {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .step-copy {
+        text-align: left;
+      }
+
+      .question-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-panel {
+        display: none;
+        order: 2;
+      }
+
+      .main-panel {
+        order: 1;
+      }
+
+      .side-panel {
+        order: 3;
+        grid-template-columns: 1fr;
+      }
     }
+
     @media (max-width: 640px) {
-      .main-nav ul { gap: 8px; }
-      .main-nav button { min-height: 36px; padding: 0 12px; font-size: 13px; }
-      .page-shell { padding-top: 10px; }
-      .step-badge { min-width: 92px; padding: 8px 14px; font-size: 12px; }
-      .main-panel, .nav-panel, .side-panel { padding: 16px; }
-      .question-title { font-size: 30px; }
-      .progress-row { grid-template-columns: 1fr; }
-      .option-card { grid-template-columns: 1fr; min-height: 0; gap: 12px; padding: 14px; }
-      .option-visual { height: 92px; }
-      .option-title { font-size: 20px; }
-      .sub-options { grid-template-columns: 1fr; }
+      .main-nav ul {
+        gap: 8px;
+      }
+
+      .main-nav button {
+        min-height: 36px;
+        padding: 0 12px;
+        font-size: 13px;
+      }
+
+      .page-shell {
+        padding-top: 10px;
+      }
+
+      .step-badge {
+        min-width: 92px;
+        padding: 8px 14px;
+        font-size: 12px;
+      }
+
+      .main-panel,
+      .nav-panel,
+      .side-panel {
+        padding: 16px;
+      }
+
+      .question-title {
+        font-size: 30px;
+      }
+
+      .progress-row {
+        grid-template-columns: 1fr;
+      }
+
+      .option-card {
+        grid-template-columns: 1fr;
+        min-height: 0;
+        gap: 12px;
+        padding: 14px;
+      }
+
+      .option-copy {
+        max-width: 100%;
+      }
+
+      .option-title {
+        font-size: 20px;
+      }
+
+      .sub-options {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
+
 <body>
   <header class="site-header">
     <div class="header-inner">
@@ -305,7 +830,9 @@
           <div class="helper-text" id="helper-text"></div>
         </div>
         <div class="progress-row">
-          <div class="progress-track" aria-hidden="true"><div class="progress-bar" id="progress-bar"></div></div>
+          <div class="progress-track" aria-hidden="true">
+            <div class="progress-bar" id="progress-bar"></div>
+          </div>
           <div class="progress-label" id="progress-label">1 / 5</div>
         </div>
         <div>
@@ -325,7 +852,6 @@
           <p id="note-body"></p>
         </div>
         <div class="return-card">
-          <strong>トップページへ戻る</strong>
           <p>回答の途中で戻ると、ここまでに選んだ内容は保存されません。</p>
           <button class="action-btn" id="return-top-btn" type="button">トップページへ戻る</button>
         </div>
@@ -334,11 +860,11 @@
   </div>
   <script>
     const questions = [
-      { id: "Q1", nav: "惹かれる香り", title: "今いちばん惹かれる香りは？", caption: "花・透明感・森の落ち着きのうち、空気感として近いものを選んでください。", helper: "直感でひとつ選んでください", noteTitle: "豆知識＜香りの第一印象＞", noteBody: "最初に好きだと感じる香りは、その後の全体印象にも強く影響しやすいです。", footer: "最初の一問は、好みの入口をつかむための軽い質問です。", options: [ { key: "A", title: "花がふわっと香る", desc: "淡い花びらとやわらかな朝の光。甘すぎず、軽く上品な華やかさ。", visual: "linear-gradient(135deg, #f1d9d4, #f7eee8 55%, #e9d4cb)" }, { key: "B", title: "みずみずしく爽やか", desc: "透明なガラス、水滴、白い窓辺。朝の空気みたいな清潔感。", visual: "linear-gradient(135deg, #d8e6ef, #f5fbff 52%, #cfe0ea)" }, { key: "C", title: "木や森の落ち着き", desc: "木の天板と深いグリーン。静けさと安心感のある穏やかな方向。", visual: "linear-gradient(135deg, #d7ddcf, #f3f5ef 55%, #c6d1bc)" } ], subOptions: ["全部好き", "この中にはない"] },
-      { id: "Q2", nav: "好きな色", title: "好きな色は何ですか？", caption: "色の印象から、香りの温度感や落ち着き方の好みを見ていきます。", helper: "色の印象にいちばん近いものを選んでください", noteTitle: "豆知識＜色と香り＞", noteBody: "色の好みは、香りの軽さ・温度感・落ち着きの好みとつながることが多いです。", footer: "色の選び方は、香りの見えない印象を言葉にしやすくします。", options: [ { key: "A", title: "やさしいピンク・ベージュ", desc: "温かく上品で、やさしさと親しみを感じるトーン。", visual: "linear-gradient(135deg, #edd1c8, #fbf3ec 55%, #e8c6bd)" }, { key: "B", title: "白・水色・透明感", desc: "軽やかで清潔。澄んだガラスや光を感じる方向。", visual: "linear-gradient(135deg, #d5e6f2, #f7fcff 58%, #c6dae9)" }, { key: "C", title: "ブラウン・深いグリーン", desc: "自然素材の落ち着き。安心感と静けさを感じる色合い。", visual: "linear-gradient(135deg, #d9d4c7, #f4f1e9 54%, #c8d1c0)" } ], subOptions: ["全部好き", "この中にはない"] },
-      { id: "Q3", nav: "なりたい気分", title: "どんな気分になりたいですか？", caption: "香りをまとったあと、自分がどう整っていたいかで選んでください。", helper: "香りをまとったあとの気分で選んでください", noteTitle: "豆知識＜香りと気分＞", noteBody: "香りは『香りそのものの好み』だけでなく、『なりたい気分』から選ぶと決めやすくなります。", footer: "この質問は、当日の提案トーンを合わせるための軸になります。", options: [ { key: "A", title: "やさしく癒やされたい", desc: "白い花とやわらかい布。包まれるような安心感がある方向。", visual: "linear-gradient(135deg, #efe1d8, #fff9f3 55%, #e3d3c9)" }, { key: "B", title: "すっきり切り替えたい", desc: "透明な器と軽い陰影。空気が入れ替わるようなクリアさ。", visual: "linear-gradient(135deg, #d7e7ed, #f7fdff 55%, #cee0e6)" }, { key: "C", title: "自分らしさを出したい", desc: "少し深い色の花材と整ったテーブル。芯のある静かな個性。", visual: "linear-gradient(135deg, #d9d4cf, #f8f3ef 55%, #cec0b7)" } ], subOptions: ["全部好き", "この中にはない"] },
-      { id: "Q4", nav: "使いたい時", title: "どんな時に使いたいですか？", caption: "使う場面を先に決めると、強さや余韻のちょうどよさが見えやすくなります。", helper: "香りを使う場面に近いものを選んでください", noteTitle: "豆知識＜香りのシーン設計＞", noteBody: "同じ香りでも、使う時間帯や場面によって『ちょうどよい強さ』は変わります。", footer: "休日、仕事、夜時間では、似合う香りの抜け方も少しずつ変わります。", options: [ { key: "A", title: "休日に気分を上げたい", desc: "明るい昼の室内と軽い花材。少し気分が上がる軽快さ。", visual: "linear-gradient(135deg, #f2ddcf, #fff8f0 56%, #ead0be)" }, { key: "B", title: "仕事や外出で心地よく整えたい", desc: "白とグレージュの整い。毎日使いやすい清潔感のある方向。", visual: "linear-gradient(135deg, #dde5dd, #fbfdf8 56%, #d1ddd0)" }, { key: "C", title: "夜や特別な時間を深く楽しみたい", desc: "少し影のある花材と静かなテーブル。余韻を楽しむ落ち着き。", visual: "linear-gradient(135deg, #d9cec8, #f6f1ed 54%, #c7bbb3)" } ], subOptions: ["全部好き", "この中にはない"] },
-      { id: "Q5", nav: "好きな音楽", title: "好きな音楽は何ですか？", caption: "テンポや余韻の好みから、香りの立ち上がり方や残り方を見ていきます。", helper: "音の雰囲気にいちばん近いものを選んでください", noteTitle: "豆知識＜香りとリズム＞", noteBody: "音楽の好みは、香りの『立ち上がりの軽さ』や『余韻の長さ』の好みに重なることがあります。", footer: "5問目まで来ると、次の深掘り質問に進む準備がほぼ整います。", options: [ { key: "A", title: "明るいポップ", desc: "軽快で明るい空気感。ぱっと抜けるような軽やかさ。", visual: "linear-gradient(135deg, #dce7f4, #f8fcff 56%, #d5dff0)" }, { key: "B", title: "心にしみるストリングス", desc: "やわらかな布と花。繊細で感情に寄り添うやさしい温度。", visual: "linear-gradient(135deg, #ead8d0, #fcf5f0 56%, #e1cbc1)" }, { key: "C", title: "自然に耳に残るクラシック", desc: "木の質感と静かな影。上品で洗練された余韻。", visual: "linear-gradient(135deg, #d9d5cb, #f7f3ea 56%, #cbc7ba)" } ], subOptions: ["全部好き", "この中にはない"] }
+      { id: "Q1", nav: "惹かれる香り", title: "今いちばん惹かれる香りは？", caption: "花・透明感・森の落ち着きのうち、空気感として近いものを選んでください。", helper: "直感でひとつ選んでください", noteTitle: "豆知識＜香りの第一印象＞", noteBody: "最初に好きだと感じる香りは、その後の全体印象にも強く影響しやすいです。", footer: "最初の一問は、好みの入口をつかむための軽い質問です。", options: [{ key: "A", title: "花がふわっと香る", desc: "淡い花びらとやわらかな朝の光。甘すぎず、軽く上品な華やかさ。", visual: "linear-gradient(135deg, #f1d9d4, #f7eee8 55%, #e9d4cb)" }, { key: "B", title: "みずみずしく爽やか", desc: "透明なガラス、水滴、白い窓辺。朝の空気みたいな清潔感。", visual: "linear-gradient(135deg, #d8e6ef, #f5fbff 52%, #cfe0ea)" }, { key: "C", title: "木や森の落ち着き", desc: "木の天板と深いグリーン。静けさと安心感のある穏やかな方向。", visual: "linear-gradient(135deg, #d7ddcf, #f3f5ef 55%, #c6d1bc)" }], subOptions: ["全部好き", "この中にはない"] },
+      { id: "Q2", nav: "好きな色", title: "好きな色は何ですか？", caption: "色の印象から、香りの温度感や落ち着き方の好みを見ていきます。", helper: "色の印象にいちばん近いものを選んでください", noteTitle: "豆知識＜色と香り＞", noteBody: "色の好みは、香りの軽さ・温度感・落ち着きの好みとつながることが多いです。", footer: "色の選び方は、香りの見えない印象を言葉にしやすくします。", options: [{ key: "A", title: "やさしいピンク・ベージュ", desc: "温かく上品で、やさしさと親しみを感じるトーン。", visual: "linear-gradient(135deg, #edd1c8, #fbf3ec 55%, #e8c6bd)" }, { key: "B", title: "白・水色・透明感", desc: "軽やかで清潔。澄んだガラスや光を感じる方向。", visual: "linear-gradient(135deg, #d5e6f2, #f7fcff 58%, #c6dae9)" }, { key: "C", title: "ブラウン・深いグリーン", desc: "自然素材の落ち着き。安心感と静けさを感じる色合い。", visual: "linear-gradient(135deg, #d9d4c7, #f4f1e9 54%, #c8d1c0)" }], subOptions: ["全部好き", "この中にはない"] },
+      { id: "Q3", nav: "なりたい気分", title: "どんな気分になりたいですか？", caption: "香りをまとったあと、自分がどう整っていたいかで選んでください。", helper: "香りをまとったあとの気分で選んでください", noteTitle: "豆知識＜香りと気分＞", noteBody: "香りは『香りそのものの好み』だけでなく、『なりたい気分』から選ぶと決めやすくなります。", footer: "この質問は、当日の提案トーンを合わせるための軸になります。", options: [{ key: "A", title: "やさしく癒やされたい", desc: "白い花とやわらかい布。包まれるような安心感がある方向。", visual: "linear-gradient(135deg, #efe1d8, #fff9f3 55%, #e3d3c9)" }, { key: "B", title: "すっきり切り替えたい", desc: "透明な器と軽い陰影。空気が入れ替わるようなクリアさ。", visual: "linear-gradient(135deg, #d7e7ed, #f7fdff 55%, #cee0e6)" }, { key: "C", title: "自分らしさを出したい", desc: "少し深い色の花材と整ったテーブル。芯のある静かな個性。", visual: "linear-gradient(135deg, #d9d4cf, #f8f3ef 55%, #cec0b7)" }], subOptions: ["全部好き", "この中にはない"] },
+      { id: "Q4", nav: "使いたい時", title: "どんな時に使いたいですか？", caption: "使う場面を先に決めると、強さや余韻のちょうどよさが見えやすくなります。", helper: "香りを使う場面に近いものを選んでください", noteTitle: "豆知識＜香りのシーン設計＞", noteBody: "同じ香りでも、使う時間帯や場面によって『ちょうどよい強さ』は変わります。", footer: "休日、仕事、夜時間では、似合う香りの抜け方も少しずつ変わります。", options: [{ key: "A", title: "休日に気分を上げたい", desc: "明るい昼の室内と軽い花材。少し気分が上がる軽快さ。", visual: "linear-gradient(135deg, #f2ddcf, #fff8f0 56%, #ead0be)" }, { key: "B", title: "仕事や外出で心地よく整えたい", desc: "白とグレージュの整い。毎日使いやすい清潔感のある方向。", visual: "linear-gradient(135deg, #dde5dd, #fbfdf8 56%, #d1ddd0)" }, { key: "C", title: "夜や特別な時間を深く楽しみたい", desc: "少し影のある花材と静かなテーブル。余韻を楽しむ落ち着き。", visual: "linear-gradient(135deg, #d9cec8, #f6f1ed 54%, #c7bbb3)" }], subOptions: ["全部好き", "この中にはない"] },
+      { id: "Q5", nav: "好きな音楽", title: "好きな音楽は何ですか？", caption: "テンポや余韻の好みから、香りの立ち上がり方や残り方を見ていきます。", helper: "音の雰囲気にいちばん近いものを選んでください", noteTitle: "豆知識＜香りとリズム＞", noteBody: "音楽の好みは、香りの『立ち上がりの軽さ』や『余韻の長さ』の好みに重なることがあります。", footer: "5問目まで来ると、次の深掘り質問に進む準備がほぼ整います。", options: [{ key: "A", title: "明るいポップ", desc: "軽快で明るい空気感。ぱっと抜けるような軽やかさ。", visual: "linear-gradient(135deg, #dce7f4, #f8fcff 56%, #d5dff0)" }, { key: "B", title: "心にしみるストリングス", desc: "やわらかな布と花。繊細で感情に寄り添うやさしい温度。", visual: "linear-gradient(135deg, #ead8d0, #fcf5f0 56%, #e1cbc1)" }, { key: "C", title: "自然に耳に残るクラシック", desc: "木の質感と静かな影。上品で洗練された余韻。", visual: "linear-gradient(135deg, #d9d5cb, #f7f3ea 56%, #cbc7ba)" }], subOptions: ["全部好き", "この中にはない"] }
     ];
     const answers = {};
     let currentIndex = 0;
@@ -390,7 +916,8 @@
         button.type = "button";
         button.className = "option-card";
         if (answers[question.id] === option.title) button.classList.add("selected");
-        button.innerHTML = `<div class="option-visual" style="background:${option.visual}"></div><div class="option-copy"><span class="option-label">${option.key}</span><span class="option-title">${option.title}</span><span class="option-desc">${option.desc}</span></div>`;
+        button.style.backgroundImage = option.visual;
+        button.innerHTML = `<div class="option-copy"><span class="option-label">${option.key}</span><span class="option-title">${option.title}</span><span class="option-desc">${option.desc}</span></div>`;
         button.addEventListener("click", () => selectAnswer(option.title));
         optionList.appendChild(button);
       });
@@ -439,4 +966,5 @@
     render();
   </script>
 </body>
+
 </html>
