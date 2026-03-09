@@ -50,7 +50,7 @@
     .main-nav button:hover, .main-nav button:focus-visible { color: var(--text); border-color: rgba(190, 154, 132, 0.95); transform: translateY(-1px); }
     .main-nav button[disabled] { opacity: 0.45; cursor: default; pointer-events: none; transform: none; }
     .page-shell { padding: 18px 0 24px; display: grid; gap: 14px; }
-    .step-strip, .question-shell, .footer-bar {
+    .step-strip, .question-shell {
       border: 1px solid rgba(201, 174, 155, 0.65); background: var(--panel); box-shadow: var(--shadow); backdrop-filter: blur(8px);
     }
     .step-strip {
@@ -113,19 +113,15 @@
     }
     .store-visual strong { font-size: 24px; letter-spacing: 0.06em; }
     .store-visual span { margin-top: 8px; max-width: 20em; font-size: 14px; line-height: 1.7; }
-    .side-card, .preview-answer { border-radius: 22px; padding: 16px; background: #fffaf6; border: 1px solid rgba(216, 203, 192, 0.95); }
+    .side-card, .return-card { border-radius: 22px; padding: 16px; background: #fffaf6; border: 1px solid rgba(216, 203, 192, 0.95); }
     .side-card { background: linear-gradient(180deg, #e4eee2, #f0f5ec); border-color: rgba(191, 202, 188, 0.9); }
-    .side-card strong, .preview-answer strong { display: block; margin-bottom: 8px; font-size: 14px; letter-spacing: 0.06em; }
+    .side-card strong, .return-card strong { display: block; margin-bottom: 8px; font-size: 14px; letter-spacing: 0.06em; }
     .side-card strong { color: #58715b; }
-    .preview-answer strong { color: #906654; }
-    .side-card p, .preview-answer p { margin: 0; font-size: 14px; line-height: 1.7; }
+    .return-card strong { color: #906654; }
+    .side-card p, .return-card p { margin: 0; font-size: 14px; line-height: 1.7; }
     .side-card p { color: #456049; }
-    .preview-answer p { color: #5e4f46; }
-    .footer-bar { border-radius: 24px; padding: 14px 18px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px; align-items: center; }
-    .footer-copy { display: grid; gap: 8px; }
-    .footer-copy strong { font-size: 15px; color: #855644; }
-    .footer-copy p { margin: 0; font-size: 14px; line-height: 1.7; color: var(--muted); }
-    .footer-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: flex-end; }
+    .return-card p { color: #5e4f46; }
+    .return-card .action-btn { width: 100%; margin-top: 14px; }
     .action-btn { min-width: 168px; min-height: 54px; padding: 0 20px; border-radius: 999px; border: 1px solid var(--line); background: #f8f3ee; color: var(--text); cursor: pointer; transition: transform 0.18s ease, border-color 0.18s ease; }
     .action-btn:hover { transform: translateY(-1px); }
     .action-btn.primary { background: linear-gradient(135deg, var(--accent), #dfb8a6); border-color: #c58975; color: #fffdfb; }
@@ -135,7 +131,7 @@
       .side-panel { grid-column: 1 / -1; grid-template-columns: 1.2fr 1fr 1fr; grid-template-rows: auto; }
     }
     @media (max-width: 840px) {
-      .header-inner, .step-strip, .question-shell, .footer-bar { width: min(1240px, calc(100vw - 16px)); }
+      .header-inner, .step-strip, .question-shell { width: min(1240px, calc(100vw - 16px)); }
       .header-inner { min-height: 64px; }
       .step-strip { flex-direction: column; align-items: flex-start; }
       .step-copy { text-align: left; }
@@ -143,9 +139,6 @@
       .nav-panel { order: 2; }
       .main-panel { order: 1; }
       .side-panel { order: 3; grid-template-columns: 1fr; }
-      .footer-bar { grid-template-columns: 1fr; }
-      .footer-actions { justify-content: stretch; }
-      .footer-actions .action-btn { width: 100%; }
     }
     @media (max-width: 640px) {
       .main-nav ul { gap: 8px; }
@@ -165,7 +158,7 @@
 <body>
   <header class="site-header">
     <div class="header-inner">
-      <a class="brand" href="香りワークショップ_トップページ.html" aria-label="トップへ戻る">FRAGRANCE WORKSHOP</a>
+      <a class="brand" id="brand-link" href="香りワークショップ_トップページ.html" aria-label="トップへ戻る">FRAGRANCE WORKSHOP</a>
       <nav class="main-nav" aria-label="ページメニュー">
         <ul>
           <li><button id="header-prev-btn" type="button">前の質問</button></li>
@@ -216,22 +209,13 @@
           <strong id="note-title"></strong>
           <p id="note-body"></p>
         </div>
-        <div class="preview-answer">
-          <strong>選択中の回答</strong>
-          <p id="answer-preview"></p>
+        <div class="return-card">
+          <strong>トップページへ戻る</strong>
+          <p>回答の途中で戻ると、ここまでに選んだ内容は保存されません。</p>
+          <button class="action-btn" id="return-top-btn" type="button">トップページへ戻る</button>
         </div>
       </aside>
     </main>
-    <footer class="footer-bar">
-      <div class="footer-copy">
-        <strong id="footer-title"></strong>
-        <p id="footer-copy"></p>
-      </div>
-      <div class="footer-actions">
-        <button class="action-btn" id="prev-btn" type="button">前の質問へ</button>
-        <button class="action-btn primary" id="next-btn" type="button">次の質問へ</button>
-      </div>
-    </footer>
   </div>
   <script>
     const questions = [
@@ -254,13 +238,19 @@
     const questionCaption = document.getElementById("question-caption");
     const noteTitle = document.getElementById("note-title");
     const noteBody = document.getElementById("note-body");
-    const answerPreview = document.getElementById("answer-preview");
-    const footerTitle = document.getElementById("footer-title");
-    const footerCopy = document.getElementById("footer-copy");
-    const prevBtn = document.getElementById("prev-btn");
-    const nextBtn = document.getElementById("next-btn");
+    const brandLink = document.getElementById("brand-link");
+    const returnTopBtn = document.getElementById("return-top-btn");
     const headerPrevBtn = document.getElementById("header-prev-btn");
     const headerNextBtn = document.getElementById("header-next-btn");
+    function hasAnyAnswer() { return Object.keys(answers).length > 0; }
+    function confirmReturnToTop() {
+      if (!hasAnyAnswer()) return true;
+      return window.confirm("トップページへ戻ると、ここまでの回答データはなくなります。戻りますか？");
+    }
+    function returnToTop() {
+      if (!confirmReturnToTop()) return;
+      window.location.href = "香りワークショップ_トップページ.html";
+    }
     function goToStep2() { window.location.href = "questionnaire_step2.html"; }
     function moveNext() { if (currentIndex < questions.length - 1) { currentIndex += 1; render(); return; } goToStep2(); }
     function movePrev() { if (currentIndex > 0) { currentIndex -= 1; render(); } }
@@ -304,9 +294,7 @@
     }
     function updateButtons() {
       const onLastQuestion = currentIndex === questions.length - 1;
-      prevBtn.disabled = currentIndex === 0;
       headerPrevBtn.disabled = currentIndex === 0;
-      nextBtn.textContent = onLastQuestion ? "STEP2 へ進む" : "次の質問へ";
       headerNextBtn.textContent = onLastQuestion ? "STEP2 へ進む" : "次の質問";
     }
     function render() {
@@ -324,14 +312,14 @@
       questionCaption.textContent = question.caption;
       noteTitle.textContent = question.noteTitle;
       noteBody.textContent = question.noteBody;
-      footerTitle.textContent = `${question.id}を進めています`;
-      footerCopy.textContent = question.footer;
-      answerPreview.textContent = answer ? `${question.id} の回答: ${answer}` : "まだ選択されていません。気になる選択肢をひとつ選ぶとここに表示されます。";
       updateButtons();
     }
-    prevBtn.addEventListener("click", movePrev);
+    brandLink.addEventListener("click", (event) => {
+      event.preventDefault();
+      returnToTop();
+    });
+    returnTopBtn.addEventListener("click", returnToTop);
     headerPrevBtn.addEventListener("click", movePrev);
-    nextBtn.addEventListener("click", moveNext);
     headerNextBtn.addEventListener("click", moveNext);
     render();
   </script>
