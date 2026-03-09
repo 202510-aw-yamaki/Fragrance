@@ -158,10 +158,12 @@
     .graph-card,
     .reassure-card,
     .cta-box {
-      background: rgba(255, 255, 255, .86);
+      background: rgba(255, 255, 255, .94);
       border: 1px solid rgba(230, 221, 210, .92);
       border-radius: var(--radius-lg);
-      box-shadow: var(--shadow);
+      box-shadow: 0 12px 24px rgba(80, 63, 48, .08);
+      overflow: hidden;
+      background-clip: padding-box;
     }
 
     .graph-layout,
@@ -396,14 +398,15 @@
         margin: 0 auto;
         height: min(calc(100vh - 124px), 900px);
         display: grid;
-        grid-template-rows: minmax(0, 1fr) 26%;
-        gap: 14px;
+        grid-template-rows: minmax(0, 73fr) minmax(0, 27fr);
+        gap: 18px;
         padding: 14px 0;
       }
 
       main section {
         padding: 0;
         min-height: 0;
+        overflow: hidden;
       }
 
       main>section>.section-inner {
@@ -427,7 +430,8 @@
       }
 
       .graph-layout {
-        grid-template-columns: minmax(300px, .86fr) minmax(380px, 1fr) minmax(220px, .62fr);
+        min-height: 0;
+        grid-template-columns: minmax(220px, .84fr) minmax(300px, 1fr) minmax(160px, .58fr);
         align-items: stretch;
         height: 100%;
         gap: 14px;
@@ -484,6 +488,7 @@
       }
 
       .graph-card {
+        grid-template-rows: auto minmax(0, 1fr) auto;
         gap: 12px;
       }
 
@@ -498,11 +503,13 @@
       }
 
       .slider-card {
+        grid-template-rows: auto minmax(0, 1fr) auto;
         gap: 10px;
       }
 
       #slider-list {
         display: grid;
+        min-height: 0;
         grid-template-rows: repeat(5, minmax(0, 1fr));
         gap: 6px;
       }
@@ -531,6 +538,15 @@
       .reassure-card {
         display: grid;
         align-content: start;
+      }
+
+      .helper-grid {
+        grid-template-rows: repeat(3, minmax(0, 1fr));
+        min-height: 0;
+      }
+
+      .helper-grid .reassure-card {
+        min-height: 0;
       }
 
       .reassure-card h3 {
@@ -656,7 +672,7 @@
             </div>
             <div id="slider-list"></div>
             <div class="slider-actions">
-              <button class="ghost-btn" type="button" id="reset-btn">初期値に戻す</button>
+              <button class="ghost-btn" type="button" id="reset-btn">初期値</button>
               <button class="ghost-btn" type="button" data-preset="light">軽やか</button>
               <button class="ghost-btn" type="button" data-preset="balanced">バランス</button>
               <button class="ghost-btn" type="button" data-preset="strong">印象強め</button>
