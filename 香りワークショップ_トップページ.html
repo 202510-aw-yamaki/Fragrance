@@ -783,8 +783,12 @@
     .cta-actions {
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
+      align-items: center;
       gap: 12px;
+    }
+
+    .cta-actions .section-cta {
+      margin-top: 0;
     }
 
     .helper-note {
@@ -797,6 +801,12 @@
       display: grid;
       gap: 12px;
       margin-top: 16px;
+    }
+
+    .reassure-grid>.card {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
     }
 
     .reassure-item {
@@ -823,6 +833,7 @@
       gap: 18px;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       margin-top: 18px;
+      align-content: start;
     }
 
     .faq-grid details {
@@ -850,8 +861,14 @@
       font-size: .94rem;
     }
 
+    .reassure-grid .section-cta {
+      margin-top: auto;
+      justify-content: center;
+    }
+
     .site-footer {
-      padding: 24px 0 72px;
+      padding: 24px 0 clamp(120px, 18svh, 200px);
+      min-height: clamp(140px, 20svh, 220px);
       color: var(--muted);
       font-size: .88rem;
     }
@@ -938,6 +955,7 @@
       .cta-box {
         grid-template-columns: minmax(0, 1.1fr) minmax(280px, .9fr);
       }
+
 
       .faq-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1208,8 +1226,6 @@
               <li>まるで科学の実験のように、香りが立ち上がる裏側まで楽しめる</li>
             </ul>
           </article>
-          <article class="value-visual value-visual-secondary" aria-label="調整画面のイメージ">
-          </article>
           <article class="card value-cta-card">
             <span class="overline">次のアクション</span>
             <h3>まずはアンケート、またはそのまま予約へ進めます</h3>
@@ -1217,6 +1233,8 @@
               <a class="btn btn-secondary" href="questionnaire.html">アンケートから始める</a>
               <a class="btn btn-primary" href="reservation.html">そのまま予約する</a>
             </div>
+          </article>
+          <article class="value-visual value-visual-secondary" aria-label="調整画面のイメージ">
           </article>
         </div>
       </div>
@@ -1248,6 +1266,7 @@
             </div>
             <div class="section-cta">
               <a class="btn btn-primary" href="questionnaire.html">8問からはじめる</a>
+              <a class="btn btn-secondary" href="reservation.html">そのまま予約する</a>
             </div>
           </article>
 
@@ -1256,19 +1275,19 @@
             <div class="faq-grid">
               <details open>
                 <summary>どんなことを聞かれますか？</summary>
-                <p>香り・色・気分・シーン・音楽など、直感で答えやすい内容。前半5問は共通で、後半2問を少しあなた向けに変わります。</p>
+                <p>香りや気分など、直感で選びやすい内容です。前半5問は共通、後半2問だけ少し分岐します。</p>
               </details>
               <details open>
                 <summary>本当に1分くらいで終わりますか？</summary>
-                <p>1問1答で進むので、読み物のように長くはなりません。迷いにくい選択肢、所要時間の感覚と実体験がずれにくいです。</p>
+                <p>1問1答でテンポよく進むので、長くなりません。迷いにくい選択肢で、短時間で終えやすい設計です。</p>
               </details>
               <details open>
                 <summary>結果はそのまま確定しますか？</summary>
-                <p>確定しません。最後に5軸の香りバランスを少し動かせて、店頭でもスタッフと一緒に仕上げていきます。</p>
+                <p>確定しません。最後に少し調整できて、店頭でもスタッフと一緒に仕上げます。</p>
               </details>
               <details open>
                 <summary>予約前にやる意味はありますか？</summary>
-                <p>あります。来店前に方向性が少し見えていると、当日の会話が始めやすくなり、スタッフ側も事前にあなたを理解して進めます。</p>
+                <p>あります。来店前に方向性が見えると、当日の会話が始めやすくなります。</p>
               </details>
             </div>
           </article>
@@ -1284,7 +1303,10 @@
             <h2 id="cta-heading">来店前の1分で、香りづくりをもっと話しやすく</h2>
             <p>診断で決め切るのではなく、当日の会話を始めやすくするための準備ページです。まずは8問から、自分に合いそうな方向を見つけてください。</p>
             <div class="cta-actions">
-              <a class="btn btn-primary" href="questionnaire.html">香りづくりをはじめる</a>
+              <div class="section-cta">
+                <a class="btn btn-primary" href="questionnaire.html">香りづくりをはじめる</a>
+                <a class="btn btn-secondary" href="reservation.html">予約する</a>
+              </div>
               <a class="btn btn-secondary" href="#top">上へ戻る</a>
               <p class="helper-note">8問・約1分・あとから調整OK</p>
             </div>
