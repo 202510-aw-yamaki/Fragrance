@@ -162,6 +162,16 @@
       padding-bottom: 66px;
     }
 
+    #reassurance {
+      padding-top: 20px;
+      padding-bottom: 66px;
+    }
+
+    #value {
+      padding-top: 20px;
+      padding-bottom: 66px;
+    }
+
     .section-header {
       display: grid;
       gap: 8px;
@@ -421,7 +431,7 @@
 
     #question-preview .preview-shell,
     #question-preview .preview-balance {
-      padding: 16px;
+      padding: 16px 16px 18px;
     }
 
     #question-preview .shell-head {
@@ -455,17 +465,18 @@
     }
 
     .preview-layout {
-      align-items: start;
+      align-items: stretch;
     }
 
     .preview-pc,
     .preview-balance {
-      height: auto;
+      height: 100%;
+      min-height: 0;
     }
 
     .preview-pc {
       display: grid;
-      grid-template-rows: auto auto;
+      grid-template-rows: auto minmax(0, 1fr);
       gap: 12px;
       min-height: 0;
       align-content: start;
@@ -473,8 +484,15 @@
 
     .preview-pc .section-cta {
       margin-top: 0;
-      justify-content: flex-start;
+      justify-content: center;
       gap: 10px;
+    }
+
+    .preview-balance {
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      gap: 12px;
+      align-content: start;
     }
 
     #question-preview .pc-nav,
@@ -650,6 +668,7 @@
       display: grid;
       gap: 14px;
       grid-template-columns: 1fr;
+      align-content: start;
     }
 
     .radar-wrap {
@@ -686,6 +705,7 @@
       flex-wrap: wrap;
       gap: 10px;
       align-items: center;
+      justify-content: center;
     }
 
     .section-cta small {
@@ -720,6 +740,24 @@
         url("img/TOP/加減圧機.png");
       background-size: cover;
       background-position: center;
+    }
+
+    .value-visual-secondary {
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, .32), rgba(245, 239, 232, .26)),
+        url("img/TOP/5軸調整プレビュー.png");
+      background-size: cover;
+      background-position: center;
+    }
+
+    .value-cta-card {
+      display: grid;
+      align-content: center;
+      gap: 14px;
+    }
+
+    .value-cta-card .section-cta {
+      margin-top: 0;
     }
 
     .value-visual strong,
@@ -1086,22 +1124,13 @@
 
           <article class="preview-shell preview-mobile" aria-label="スマホ版プレビュー">
             <div class="shell-head"><strong>スマホ版プレビュー</strong><span>1問1画面の集中UI</span></div>
-            <!-- 実際は各画面が完成した場合は画像に差し替える -->
             <div class="mobile-frame">
-              <div class="mobile-screen">
-                <div class="mobile-progress">3 / 8　残り5問です</div>
-                <div class="mobile-bar" aria-hidden="true"><span></span></div>
-                <h3 class="shell-title">どんな気分になりたいですか？</h3>
-                <div class="mobile-option">やさしく癒やされたい</div>
-                <div class="mobile-option">すっきり切り替えたい</div>
-                <div class="mobile-option">自分らしさを出したい</div>
-              </div>
+              <img class="pc-preview-image" src="img/TOP/スマホ用プレビュー.png" alt="スマホ版アンケート画面のプレビュー">
             </div>
           </article>
 
           <article class="preview-balance" aria-label="回答後プレビュー：レーダー風グラフとスライダー">
             <div class="shell-head"><strong>回答後プレビュー</strong><span>レーダーグラフとスライダー</span></div>
-            <!-- 実際は各画面が完成した場合は画像に差し替える -->
             <div class="balance-grid">
               <div class="radar-wrap">
                 <svg id="radar" viewBox="0 0 300 300" role="img" aria-label="香りバランスレーダー">
@@ -1146,32 +1175,50 @@
         <div class="section-header">
           <span class="eyebrow">Experience Value</span>
           <h2 id="value-heading">体験価値</h2>
-          <p>来店前に準備しておくことで、当日の体験がよりスムーズになります。</p>
+          <p>香りづくりはこの今、瞬間から</p>
         </div>
         <div class="benefits-grid">
           <article class="value-visual" aria-label="加減圧機のイメージ">
           </article>
           <article class="card">
             <span class="overline">ユーザーにとっての価値</span>
-            <h3>「もう半分、香りづくりが始まっている」感覚をつくる</h3>
+            <h3>もう、香りづくりは<br>始まっています</h3>
             <ul class="benefit-list">
-              <li>今の自分がどの方向に惹かれているか見えやすい</li>
-              <li>当日が少し楽しみになり、来店意欲が高まる</li>
-              <li>スタッフに希望を伝える最初の言葉を持てる</li>
+              <li>どの方向に惹かれているか</li>
+              <li>最初の一歩はあなたの手で</li>
+              <li>双方向のコミュニケーション</li>
             </ul>
           </article>
 
           <article class="card">
             <span class="overline">スタッフにとっての価値</span>
-            <h3>「無」から始めない接客につなげる</h3>
+            <h3>あなたの一声が<br>スタッフの喜びです</h3>
             <ul class="benefit-list">
-              <li>共通5問でベース傾向を読みやすくそろえられる</li>
-              <li>分岐2問で今日の提案方向をつかみやすい</li>
-              <li>最終的には会話の中で仕上げる前提を保てる</li>
+              <li>共通5問でベース傾向を理解します</li>
+              <li>分岐2問で提案方向をつかみます</li>
+              <li>最終的には店舗内の会話の中で仕上げます</li>
             </ul>
           </article>
+          <article class="card">
+            <span class="overline">当店ならではの体験価値</span>
+            <h3>香りの裏側まで楽しめる、<br>実験のような体験</h3>
+            <ul class="benefit-list">
+              <li>リキッドだけではなく、固形の原料から香りを抽出する工程に触れられる</li>
+              <li>どのタイミングで香らせるかまで含めて、香りの組み立てを体験できる</li>
+              <li>まるで科学の実験のように、香りが立ち上がる裏側まで楽しめる</li>
+            </ul>
+          </article>
+          <article class="value-visual value-visual-secondary" aria-label="調整画面のイメージ">
+          </article>
+          <article class="card value-cta-card">
+            <span class="overline">次のアクション</span>
+            <h3>まずはアンケート、またはそのまま予約へ進めます</h3>
+            <div class="section-cta">
+              <a class="btn btn-secondary" href="questionnaire.html">アンケートから始める</a>
+              <a class="btn btn-primary" href="reservation.html">そのまま予約する</a>
+            </div>
+          </article>
         </div>
-        <div class="section-cta"><a class="btn btn-primary" href="questionnaire.html">今の自分に合う香りを見てみる</a></div>
       </div>
     </section>
 
@@ -1184,7 +1231,6 @@
         </div>
         <div class="reassure-grid">
           <article class="card">
-            <span class="overline">安心情報</span>
             <h3>押しやすさを阻害しないためのルール</h3>
             <div class="reassure-list">
               <div class="reassure-item">
@@ -1206,16 +1252,15 @@
           </article>
 
           <article class="card">
-            <span class="overline">よくある不安</span>
             <h3>読むだけで進められる補足</h3>
             <div class="faq-grid">
               <details open>
                 <summary>どんなことを聞かれますか？</summary>
-                <p>香り・色・気分・使いたいシーン・音楽など、直感で答えやすい内容が中心です。前半5問は全員共通で、後半2問だけ少し自分向けに変わります。</p>
+                <p>香り・色・気分・シーン・音楽など、直感で答えやすい内容。前半5問は共通で、後半2問を少しあなた向けに変わります。</p>
               </details>
               <details open>
                 <summary>本当に1分くらいで終わりますか？</summary>
-                <p>1問1答で進む前提なので、読み物のように長くはなりません。迷いにくい選択肢を使い、所要時間の感覚と実体験がずれにくい構成です。</p>
+                <p>1問1答で進むので、読み物のように長くはなりません。迷いにくい選択肢、所要時間の感覚と実体験がずれにくいです。</p>
               </details>
               <details open>
                 <summary>結果はそのまま確定しますか？</summary>
@@ -1223,7 +1268,7 @@
               </details>
               <details open>
                 <summary>予約前にやる意味はありますか？</summary>
-                <p>あります。来店前に方向性が少し見えていると、当日の会話が始めやすくなり、スタッフ側もベースの提案を準備しやすくなります。</p>
+                <p>あります。来店前に方向性が少し見えていると、当日の会話が始めやすくなり、スタッフ側も事前にあなたを理解して進めます。</p>
               </details>
             </div>
           </article>
