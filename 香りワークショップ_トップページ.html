@@ -170,6 +170,10 @@
       margin-left: auto;
     }
 
+    .header-actions .mobile-only {
+      display: none;
+    }
+
     .header-actions .btn {
       min-height: 42px;
       padding: 0 16px;
@@ -235,6 +239,33 @@
       gap: 8px;
       margin-bottom: 24px;
       max-width: 1160px;
+    }
+
+    .flow-header-top {
+      display: block;
+    }
+
+    .flow-mobile-jump {
+      display: none;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .flow-mobile-jump a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 34px;
+      padding: 0 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(230, 221, 210, .92);
+      background: rgba(255, 255, 255, .88);
+      text-decoration: none;
+      font-size: .8rem;
+      font-weight: 700;
+      color: var(--text);
+      white-space: nowrap;
     }
 
     .section-header h2 {
@@ -1217,6 +1248,28 @@
         width: 100%;
       }
 
+      .header-actions .mobile-only {
+        display: inline-flex;
+      }
+
+      .flow-header-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .flow-mobile-jump {
+        display: flex;
+      }
+
+      .flow-mobile-jump a {
+        min-height: 30px;
+        padding: 0 8px;
+        font-size: .74rem;
+      }
+
       .hero-wrap {
         gap: 12px;
       }
@@ -1332,6 +1385,7 @@
         </ul>
       </nav>
       <div class="header-actions">
+        <a class="btn btn-secondary mobile-only" href="questionnaire.html">回答する</a>
         <a class="btn btn-primary" href="reservation.html">予約する</a>
       </div>
     </div>
@@ -1369,12 +1423,19 @@
     <section id="flow" aria-labelledby="flow-heading">
       <div class="flow-top">
         <div class="section-header">
-          <span class="eyebrow">3 Step Flow</span>
+          <div class="flow-header-top">
+            <span class="eyebrow">3 Step Flow</span>
+            <div class="flow-mobile-jump" aria-label="ステップ移動">
+              <a href="#flow-step-1">1 答える</a>
+              <a href="#flow-step-2">2 ベース</a>
+              <a href="#flow-step-3">3 店頭</a>
+            </div>
+          </div>
           <h2 id="flow-heading">3ステップで、来店前の準備が完了</h2>
           <p>結果を固定するのではなく、当日を始めやすくするための準備です。</p>
         </div>
         <div class="flow-grid">
-          <article class="card">
+          <article class="card" id="flow-step-1">
             <div class="flow-title-row">
               <div class="step-no" aria-hidden="true">1</div>
               <h3>答える</h3>
@@ -1387,7 +1448,7 @@
             </ul>
           </article>
 
-          <article class="card">
+          <article class="card" id="flow-step-2">
             <div class="flow-title-row">
               <div class="step-no" aria-hidden="true">2</div>
               <h3>ベースができる</h3>
@@ -1400,7 +1461,7 @@
             </ul>
           </article>
 
-          <article class="card">
+          <article class="card" id="flow-step-3">
             <div class="flow-title-row">
               <div class="step-no" aria-hidden="true">3</div>
               <h3>店頭で完成</h3>
