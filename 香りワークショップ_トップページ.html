@@ -152,6 +152,11 @@
       padding: 78px 0;
     }
 
+    #flow {
+      padding-top: 20px;
+      padding-bottom: 66px;
+    }
+
     .section-header {
       display: grid;
       gap: 8px;
@@ -179,7 +184,7 @@
     }
 
     .hero {
-      padding-top: 34px;
+      padding-top: 20px;
       padding-bottom: 66px;
     }
 
@@ -276,33 +281,86 @@
       border-radius: var(--radius-md);
       border: 1px dashed #ccb9a8;
       background: linear-gradient(145deg, rgba(255, 255, 255, .9), rgba(245, 239, 232, .75));
-      padding: 12px;
-      display: grid;
-      align-content: space-between;
-      gap: 10px;
+      padding: 0;
+      display: block;
+      overflow: hidden;
     }
 
     .hero-shot img {
       width: 100%;
-      height: 148px;
-      object-fit: contain;
+      height: 100%;
+      min-height: 100%;
+      object-fit: cover;
       object-position: center;
-      border-radius: 12px;
-      border: 1px solid rgba(230, 221, 210, .92);
+      border-radius: inherit;
       background: #fff;
     }
 
     .hero-shot strong {
       font-size: .88rem;
+      display: none;
     }
 
     .hero-shot span {
       color: var(--muted);
       font-size: .8rem;
+      display: none;
     }
 
     .flow-grid {
       gap: 18px;
+    }
+
+    .flow-title-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .flow-title-row h3 {
+      margin: 0;
+    }
+
+    .flow-top {
+      width: var(--container);
+      margin: 0 auto;
+      display: grid;
+      gap: 20px;
+    }
+
+    .flow-bottom {
+      width: var(--container);
+      margin: 20px auto 0;
+      display: grid;
+      gap: 18px;
+    }
+
+    .flow-visual-card {
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .flow-visual-card img {
+      width: 100%;
+      height: 100%;
+      aspect-ratio: 16 / 7;
+      min-height: 160px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .flow-action-card {
+      display: grid;
+      align-content: center;
+      gap: 14px;
+      min-height: 160px;
+    }
+
+    .flow-action-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
     }
 
     .card {
@@ -353,7 +411,7 @@
       background: rgba(241, 223, 207, .92);
       color: var(--accent-deep);
       font-weight: 800;
-      margin-bottom: 16px;
+      margin-bottom: 0;
     }
 
     #question-preview .preview-shell,
@@ -702,6 +760,11 @@
     /* PC layout when width >= 768px OR aspect ratio >= 16:9 */
     @media (min-width: 48em),
     (min-aspect-ratio: 16/9) {
+      #flow {
+        min-height: calc(100svh - 72px);
+        display: block;
+      }
+
       .hero {
         min-height: calc(100svh - 72px);
         display: flex;
@@ -720,7 +783,7 @@
       }
 
       .hero-gallery {
-        grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
+        grid-template-columns: minmax(0, 3fr) minmax(0, 1fr) minmax(0, 1fr);
         grid-auto-rows: 1fr;
         padding-top: 22px;
       }
@@ -731,15 +794,24 @@
       }
 
       .hero-shot {
-        min-height: 240px;
+        min-height: 270px;
       }
 
       .hero-shot img {
-        height: 168px;
+        height: 270px;
       }
 
       .flow-grid {
         grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .flow-bottom {
+        grid-template-columns: minmax(0, 1.15fr) minmax(320px, .85fr);
+        align-items: stretch;
+      }
+
+      .flow-action-card {
+        min-height: 160px;
       }
 
       .benefits-grid {
@@ -801,6 +873,10 @@
       .faq-grid {
         grid-template-columns: 1fr;
       }
+
+      .flow-action-buttons .btn {
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -855,7 +931,7 @@
     </section>
 
     <section id="flow" aria-labelledby="flow-heading">
-      <div class="section-inner">
+      <div class="flow-top">
         <div class="section-header">
           <span class="eyebrow">3 Step Flow</span>
           <h2 id="flow-heading">3ステップで、来店前の準備が完了</h2>
@@ -863,8 +939,10 @@
         </div>
         <div class="flow-grid">
           <article class="card">
-            <div class="step-no" aria-hidden="true">1</div>
-            <h3>答える</h3>
+            <div class="flow-title-row">
+              <div class="step-no" aria-hidden="true">1</div>
+              <h3>答える</h3>
+            </div>
             <p>前半は香り・色・気分・使いたいシーン・音楽など、答えやすい質問だけで進みます。</p>
             <ul class="flow-bullets">
               <li>1問1答で、迷わず直感で選べる</li>
@@ -874,8 +952,10 @@
           </article>
 
           <article class="card">
-            <div class="step-no" aria-hidden="true">2</div>
-            <h3>ベースができる</h3>
+            <div class="flow-title-row">
+              <div class="step-no" aria-hidden="true">2</div>
+              <h3>ベースができる</h3>
+            </div>
             <p>5問目までは共通、後半2問は回答傾向に応じて少しだけ分岐します。自分向けに聞かれている感触をつくるための設計です。</p>
             <ul class="flow-bullets">
               <li>固定5問で土台をそろえる</li>
@@ -885,8 +965,10 @@
           </article>
 
           <article class="card">
-            <div class="step-no" aria-hidden="true">3</div>
-            <h3>店頭で完成</h3>
+            <div class="flow-title-row">
+              <div class="step-no" aria-hidden="true">3</div>
+              <h3>店頭で完成</h3>
+            </div>
             <p>回答内容はそのまま確定結果になるのではなく、当日スタッフと会話を始めるための起点になります。</p>
             <ul class="flow-bullets">
               <li>今の傾向と方向性を持って来店できる</li>
@@ -895,7 +977,19 @@
             </ul>
           </article>
         </div>
-        <div class="section-cta"><a class="btn btn-primary" href="questionnaire.html">8問からはじめる</a></div>
+      </div>
+      <div class="flow-bottom">
+        <article class="card flow-visual-card">
+          <img src="img/TOP/質問ページＰＣプレビュー.png" alt="アンケート画面のPCプレビュー">
+        </article>
+        <article class="card flow-action-card">
+          <span class="overline">Quick Action</span>
+          <h3>初めての方はアンケートから、再来店の方はそのまま予約へ</h3>
+          <div class="flow-action-buttons">
+            <a class="btn btn-secondary" href="questionnaire.html">アンケートから始める</a>
+            <a class="btn btn-primary" href="reservation.html">そのまま予約する</a>
+          </div>
+        </article>
       </div>
     </section>
 
