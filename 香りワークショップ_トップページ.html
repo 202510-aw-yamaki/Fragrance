@@ -469,12 +469,14 @@
     }
 
     .preview-pc,
+    .preview-pad,
     .preview-balance {
       height: 100%;
       min-height: 0;
     }
 
-    .preview-pc {
+    .preview-pc,
+    .preview-pad {
       display: grid;
       grid-template-rows: auto minmax(0, 1fr);
       gap: 12px;
@@ -482,7 +484,8 @@
       align-content: start;
     }
 
-    .preview-pc .section-cta {
+    .preview-pc .section-cta,
+    .preview-pad .section-cta {
       margin-top: 0;
       justify-content: center;
       gap: 10px;
@@ -657,6 +660,10 @@
     }
 
     .preview-pc {
+      display: none;
+    }
+
+    .preview-pad {
       display: none;
     }
 
@@ -881,9 +888,95 @@
       padding-top: 18px;
     }
 
-    /* PC layout when width >= 768px OR aspect ratio >= 16:9 */
-    @media (min-width: 48em),
-    (min-aspect-ratio: 16/9) {
+    @media (min-width: 48em) and (max-width: 68.6875em) {
+      .hero {
+        min-height: auto;
+      }
+
+      .hero .section-inner {
+        min-height: auto;
+      }
+
+      .hero-wrap {
+        grid-template-columns: minmax(0, 1fr) minmax(320px, 420px);
+        align-items: stretch;
+      }
+
+      .hero-copy,
+      .hero-visual {
+        min-height: clamp(320px, 36vw, 420px);
+      }
+
+      .hero-gallery {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        padding-top: 20px;
+      }
+
+      .hero-shot {
+        min-height: 180px;
+      }
+
+      .hero-shot img {
+        height: 180px;
+      }
+
+      .flow-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .flow-grid> :last-child {
+        grid-column: 1 / -1;
+      }
+
+      .flow-bottom {
+        grid-template-columns: 1fr;
+      }
+
+      .flow-visual-card {
+        display: none;
+      }
+
+      .benefits-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .benefits-grid>.value-visual,
+      .benefits-grid>.card,
+      .benefits-grid>.value-cta-card {
+        min-height: auto;
+      }
+
+      .reassure-grid {
+        grid-template-columns: 1fr;
+      }
+
+      #question-preview .preview-layout {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      }
+
+      .cta-box {
+        grid-template-columns: 1fr;
+      }
+
+      .faq-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .preview-pc {
+        display: none;
+      }
+
+      .preview-pad {
+        display: block;
+      }
+
+      .preview-mobile {
+        display: none;
+      }
+    }
+
+    /* PC layout */
+    @media (min-width: 68.75em) {
       #flow {
         min-height: calc(100svh - 72px);
         display: block;
@@ -963,12 +1056,16 @@
         display: block;
       }
 
+      .preview-pad {
+        display: none;
+      }
+
       .preview-mobile {
         display: none;
       }
     }
 
-    @media (max-width: 48em) {
+    @media (max-width: 47.9375em) {
       .header-inner {
         min-height: auto;
         padding: 10px 0;
@@ -1131,6 +1228,17 @@
             <div class="shell-head"><strong>PC版プレビュー</strong><span>見渡せる段階構成</span></div>
             <div class="pc-preview">
               <img class="pc-preview-image" src="img/TOP/質問ページＰＣプレビュー.png" alt="アンケート画面のPCプレビュー">
+              <div class="section-cta">
+                <a class="btn btn-primary" href="questionnaire.html">香りづくりをはじめる</a>
+                <a class="btn btn-secondary" href="reservation.html">そのまま予約する</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="preview-shell preview-pad" aria-label="中間版プレビュー">
+            <div class="shell-head"><strong>中間版プレビュー</strong><span>横幅に合わせた中間イメージ</span></div>
+            <div class="pc-preview">
+              <img class="pc-preview-image" src="img/TOP/中間イメージ.png" alt="中間レイアウトのプレビュー">
               <div class="section-cta">
                 <a class="btn btn-primary" href="questionnaire.html">香りづくりをはじめる</a>
                 <a class="btn btn-secondary" href="reservation.html">そのまま予約する</a>
@@ -1413,6 +1521,28 @@
         img.src = imageDefs[index].src;
         img.alt = imageDefs[index].alt;
         shot.insertBefore(img, shot.firstChild);
+      });
+    })();
+
+    (function () {
+      var finalNav = document.querySelector('.main-nav a[href="#final-cta-heading"]');
+      var finalHeading = document.getElementById("final-cta-heading");
+      if (!finalNav || !finalHeading) return;
+
+      finalNav.addEventListener("click", function (event) {
+        var isMiddleViewport = window.matchMedia("(min-width: 48em) and (max-width: 68.6875em)").matches;
+        if (!isMiddleViewport) return;
+
+        event.preventDefault();
+        var top = finalHeading.getBoundingClientRect().top + window.scrollY - 112;
+        window.scrollTo({
+          top: Math.max(0, top),
+          behavior: "smooth"
+        });
+
+        if (window.history && window.history.replaceState) {
+          window.history.replaceState(null, "", "#final-cta-heading");
+        }
       });
     })();
   </script>
