@@ -105,6 +105,19 @@
       color: var(--text);
     }
 
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-left: auto;
+    }
+
+    .header-actions .btn {
+      min-height: 42px;
+      padding: 0 16px;
+      white-space: nowrap;
+    }
+
     .btn {
       display: inline-flex;
       align-items: center;
@@ -266,6 +279,16 @@
       padding: 12px;
       display: grid;
       align-content: space-between;
+      gap: 10px;
+    }
+
+    .hero-shot img {
+      width: 100%;
+      height: 148px;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 1px solid rgba(230, 221, 210, .92);
+      background: #fff;
     }
 
     .hero-shot strong {
@@ -738,6 +761,10 @@
         min-width: 100%;
       }
 
+      .header-actions {
+        width: 100%;
+      }
+
       #question-preview .pc-preview {
         grid-template-columns: 1fr;
       }
@@ -763,6 +790,9 @@
           <li><a href="#cta-heading">お願い</a></li>
         </ul>
       </nav>
+      <div class="header-actions">
+        <a class="btn btn-primary" href="reservation.html">予約する</a>
+      </div>
     </div>
   </header>
 
@@ -774,11 +804,10 @@
           </div>
           <div class="hero-copy">
             <span class="eyebrow">Fragrance Workshop</span>
-            <h1 id="hero-title">あなたに合う香りを知る、<br>来店前の準備をはじめる</h1>
+            <h1 id="hero-title">あなたに合う<br>香りを知る</h1>
             <p class="lead">8問・約1分で、今のあなたに合う香りバランスのベースをつくります。診断で決めきるのではなく、最後は当日スタッフと一緒に仕上げます。</p>
             <div class="cta-row">
               <a class="btn btn-primary" href="questionnaire.html">香りづくりをはじめる</a>
-              <a class="btn btn-secondary" href="#question-preview">質問ページを先に見る</a>
             </div>
             <ul class="hero-points" aria-label="安心情報">
               <li>約1分</li>
@@ -789,9 +818,9 @@
         </div>
 
         <div class="hero-gallery" aria-label="トップビュー手順画像プレースホルダー">
-          <div class="hero-shot"><strong>アンケート画面イメージ</strong><span>ここに画像を配置（PC/スマホUI）</span></div>
-          <div class="hero-shot"><strong>SVGグラフイメージ</strong><span>ここに画像を配置（5軸レーダー）</span></div>
-          <div class="hero-shot"><strong>スライダー調整画面イメージ</strong><span>ここに画像を配置（調整UI）</span></div>
+          <div class="hero-shot"><strong>アンケート画面イメージ</strong><span></span></div>
+          <div class="hero-shot"><strong>SVGグラフイメージ</strong><span></span></div>
+          <div class="hero-shot"><strong>スライダー調整画面イメージ</strong><span></span></div>
         </div>
       </div>
     </section>
@@ -1092,6 +1121,47 @@
         if (input) input.addEventListener("input", draw);
       });
       draw();
+    })();
+
+    (function () {
+      var reserveLabel = "\u4e88\u7d04\u3059\u308b";
+      var ctaRow = document.querySelector(".hero .cta-row");
+      if (ctaRow && !ctaRow.querySelector('a[href="reservation.html"]')) {
+        var reserveBtn = document.createElement("a");
+        reserveBtn.className = "btn btn-primary";
+        reserveBtn.href = "reservation.html";
+        reserveBtn.textContent = reserveLabel;
+        ctaRow.insertBefore(reserveBtn, ctaRow.firstChild);
+      }
+
+      var gallery = document.querySelector(".hero-gallery");
+      if (gallery) {
+        gallery.setAttribute("aria-label", "\u30c8\u30c3\u30d7\u30d3\u30e5\u30fc\u624b\u9806\u753b\u50cf\u30d7\u30ec\u30fc\u30b9\u30db\u30eb\u30c0\u30fc");
+      }
+
+      var imageDefs = [
+        {
+          src: "img/TOP/\u8cea\u554f\u30da\u30fc\u30b8\uff30\uff23\u30d7\u30ec\u30d3\u30e5\u30fc.png",
+          alt: "\u30a2\u30f3\u30b1\u30fc\u30c8\u753b\u9762\u306ePC\u30d7\u30ec\u30d3\u30e5\u30fc"
+        },
+        {
+          src: "img/TOP/\uff15\u8ef8\u30b0\u30e9\u30d5\u753b\u50cf.png",
+          alt: "5\u8ef8\u30b0\u30e9\u30d5\u306e\u30a4\u30e1\u30fc\u30b8"
+        },
+        {
+          src: "img/TOP/5\u8ef8\u753b\u50cf.png",
+          alt: "5\u8ef8\u30b9\u30e9\u30a4\u30c0\u30fc\u8abf\u6574\u306e\u30a4\u30e1\u30fc\u30b8"
+        }
+      ];
+
+      var shots = document.querySelectorAll(".hero-gallery .hero-shot");
+      shots.forEach(function (shot, index) {
+        if (!imageDefs[index] || shot.querySelector("img")) return;
+        var img = document.createElement("img");
+        img.src = imageDefs[index].src;
+        img.alt = imageDefs[index].alt;
+        shot.insertBefore(img, shot.firstChild);
+      });
     })();
   </script>
 </body>
