@@ -83,6 +83,64 @@
       white-space: nowrap;
     }
 
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .menu-toggle {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      border: 1px solid rgba(230, 221, 210, .92);
+      background: rgba(255, 255, 255, .9);
+      color: var(--text);
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .menu-toggle span,
+    .menu-toggle::before,
+    .menu-toggle::after {
+      content: "";
+      display: block;
+      width: 18px;
+      height: 2px;
+      border-radius: 999px;
+      background: currentColor;
+      transition: transform .2s ease, opacity .2s ease;
+    }
+
+    .menu-toggle span {
+      position: relative;
+    }
+
+    .menu-toggle::before {
+      transform: translateY(-6px);
+    }
+
+    .menu-toggle::after {
+      transform: translateY(6px);
+    }
+
+    .menu-toggle[aria-expanded="true"] span {
+      opacity: 0;
+    }
+
+    .menu-toggle[aria-expanded="true"]::before {
+      transform: translateY(2px) rotate(45deg);
+    }
+
+    .menu-toggle[aria-expanded="true"]::after {
+      transform: translateY(-2px) rotate(-45deg);
+    }
+
     .main-nav ul {
       list-style: none;
       margin: 0;
@@ -1066,38 +1124,189 @@
     }
 
     @media (max-width: 47.9375em) {
+      html {
+        scroll-padding-top: 132px;
+      }
+
+      main section {
+        padding: 56px 0;
+      }
+
+      #flow,
+      #question-preview,
+      #reassurance,
+      #value,
+      .hero {
+        padding-top: 16px;
+        padding-bottom: 56px;
+      }
+
       .header-inner {
         min-height: auto;
         padding: 10px 0;
         align-items: flex-start;
         flex-direction: column;
+        gap: 10px;
+        position: relative;
+      }
+
+      .header-top {
+        gap: 10px;
+      }
+
+      .brand {
+        font-size: .95rem;
+      }
+
+      .menu-toggle {
+        display: inline-flex;
+        flex: 0 0 auto;
       }
 
       .main-nav {
         width: 100%;
-        overflow-x: auto;
+        display: none;
+        overflow: visible;
+        position: absolute;
+        top: calc(100% - 2px);
+        left: 0;
+        right: 0;
+        z-index: 20;
+        padding: 10px 12px;
+        border: 1px solid rgba(230, 221, 210, .92);
+        border-radius: 18px;
+        background: rgba(252, 248, 243, .98);
+        box-shadow: 0 16px 34px rgba(80, 63, 48, .14);
+      }
+
+      .site-header.menu-open .main-nav {
+        display: block;
       }
 
       .main-nav ul {
         gap: 8px;
-        width: max-content;
-        min-width: 100%;
+        width: 100%;
+        min-width: 0;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+      }
+
+      .main-nav li {
+        flex: 1 1 0;
+      }
+
+      .main-nav a {
+        font-size: .84rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 38px;
+        width: 100%;
+        padding: 0 5px;
+        border: 1px solid rgba(230, 221, 210, .92);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, .88);
       }
 
       .header-actions {
         width: 100%;
       }
 
+      .header-actions .btn {
+        width: 100%;
+      }
+
+      .hero-wrap {
+        gap: 12px;
+      }
+
+      .hero-visual {
+        min-height: 160px;
+        background-position: center center;
+      }
+
+      .hero-copy {
+        padding: 22px;
+      }
+
+      .hero-copy h1 {
+        font-size: clamp(2.15rem, 11vw, 3rem);
+      }
+
+      .hero-gallery {
+        display: none;
+      }
+
+      .card {
+        padding: 18px;
+      }
+
+      .flow-bottom {
+        margin-top: 14px;
+      }
+
+      .flow-visual-card {
+        display: none;
+      }
+
+      .flow-action-card {
+        min-height: auto;
+      }
+
       #question-preview .pc-preview {
         grid-template-columns: 1fr;
+      }
+
+      #question-preview .preview-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .preview-mobile .mobile-frame {
+        width: min(320px, 100%);
+      }
+
+      .slider-row {
+        grid-template-columns: 72px 1fr 32px;
+        font-size: .8rem;
       }
 
       .faq-grid {
         grid-template-columns: 1fr;
       }
 
+      .value-visual,
+      .value-visual-secondary,
+      .cta-media {
+        min-height: 180px;
+      }
+
+      .reassure-grid .section-cta,
+      .value-cta-card .section-cta,
+      .cta-actions .section-cta {
+        width: 100%;
+      }
+
+      .reassure-grid .section-cta .btn,
+      .value-cta-card .section-cta .btn,
+      .cta-actions .section-cta .btn {
+        width: 100%;
+      }
+
       .flow-action-buttons .btn {
         width: 100%;
+      }
+
+      .cta-box {
+        padding: 22px;
+      }
+
+      .cta-actions {
+        align-items: stretch;
+      }
+
+      .cta-media {
+        min-height: 220px;
       }
     }
   </style>
@@ -1106,8 +1315,14 @@
 <body>
   <header class="site-header">
     <div class="header-inner">
-      <a class="brand" href="#top" aria-label="トップへ戻る">FRAGRANCE WORKSHOP</a>
-      <nav class="main-nav" aria-label="ページメニュー">
+      <div class="header-top">
+        <a class="brand" href="#top" aria-label="トップへ戻る">FRAGRANCE WORKSHOP</a>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-menu"
+          aria-label="メニューを開く">
+          <span></span>
+        </button>
+      </div>
+      <nav class="main-nav" id="site-menu" aria-label="ページメニュー">
         <ul>
           <li><a href="#top">TOP</a></li>
           <li><a href="#flow">流れ</a></li>
@@ -1542,6 +1757,45 @@
 
         if (window.history && window.history.replaceState) {
           window.history.replaceState(null, "", "#final-cta-heading");
+        }
+      });
+    })();
+
+    (function () {
+      var header = document.querySelector(".site-header");
+      var toggle = document.querySelector(".menu-toggle");
+      var menu = document.getElementById("site-menu");
+      if (!header || !toggle || !menu) return;
+
+      function closeMenu() {
+        header.classList.remove("menu-open");
+        toggle.setAttribute("aria-expanded", "false");
+        toggle.setAttribute("aria-label", "メニューを開く");
+      }
+
+      toggle.addEventListener("click", function () {
+        var isOpen = toggle.getAttribute("aria-expanded") === "true";
+        if (isOpen) {
+          closeMenu();
+          return;
+        }
+
+        header.classList.add("menu-open");
+        toggle.setAttribute("aria-expanded", "true");
+        toggle.setAttribute("aria-label", "メニューを閉じる");
+      });
+
+      menu.querySelectorAll("a").forEach(function (link) {
+        link.addEventListener("click", function () {
+          if (window.matchMedia("(max-width: 47.9375em)").matches) {
+            closeMenu();
+          }
+        });
+      });
+
+      window.addEventListener("resize", function () {
+        if (!window.matchMedia("(max-width: 47.9375em)").matches) {
+          closeMenu();
         }
       });
     })();
