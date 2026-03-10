@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>予約完了 | Fragrance Workshop</title>
+  <meta name="description" content="Fragrance Workshop の予約完了ページです。予約日時と人数を確認できます。">
+  <style>
+    :root {
+      --bg: #fbf6ef;
+      --panel: rgba(255, 255, 255, 0.86);
+      --line: #e6d9ca;
+      --text: #2f2925;
+      --muted: #6f665f;
+      --accent: #a86f4a;
+      --accent-deep: #825335;
+      --shadow: 0 20px 50px rgba(90, 65, 44, 0.14);
+      --radius-xl: 28px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --container: min(760px, calc(100% - 32px));
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(238, 221, 205, 0.72), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(220, 232, 223, 0.62), transparent 34%),
+        linear-gradient(180deg, #f8f1e8 0%, var(--bg) 45%, #fffdf9 100%);
+      display: grid;
+      place-items: center;
+      padding: 32px 0;
+    }
+
+    main {
+      width: var(--container);
+    }
+
+    .complete-card {
+      background: var(--panel);
+      border: 1px solid rgba(230, 217, 202, 0.9);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      padding: 36px;
+      backdrop-filter: blur(12px);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(168, 111, 74, 0.12);
+      color: var(--accent-deep);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 18px 0 10px;
+      font-size: clamp(30px, 4vw, 44px);
+      line-height: 1.15;
+    }
+
+    .lead {
+      margin: 0 0 28px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.8;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .detail-item {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    .detail-item.full {
+      grid-column: 1 / -1;
+    }
+
+    .detail-label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .detail-value {
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1.5;
+      word-break: break-word;
+    }
+
+    .countdown {
+      margin: 0 0 24px;
+      padding: 16px 18px;
+      border-radius: var(--radius-md);
+      background: rgba(168, 111, 74, 0.08);
+      color: var(--accent-deep);
+      font-weight: 700;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .btn {
+      appearance: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 20px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      text-decoration: none;
+      font-weight: 700;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-deep));
+      color: #fff;
+      box-shadow: 0 12px 24px rgba(130, 83, 53, 0.22);
+    }
+
+    .btn-secondary {
+      border-color: var(--line);
+      background: rgba(255, 255, 255, 0.84);
+      color: var(--text);
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 20px 0;
+      }
+
+      .complete-card {
+        padding: 24px 18px;
+      }
+
+      .detail-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .actions {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <section class="complete-card" aria-labelledby="complete-title">
+      <div class="eyebrow">Reservation Complete</div>
+      <h1 id="complete-title">予約が完了しました</h1>
+      <p class="lead">ご予約内容を以下の通り受け付けました。当日はこの内容をもとにご案内します。</p>
+
+      <div class="detail-grid">
+        <article class="detail-item">
+          <span class="detail-label">予約日時</span>
+          <div class="detail-value" id="reservation-slot">確認中</div>
+        </article>
+        <article class="detail-item">
+          <span class="detail-label">人数</span>
+          <div class="detail-value" id="reservation-guests">確認中</div>
+        </article>
+        <article class="detail-item">
+          <span class="detail-label">来店内容</span>
+          <div class="detail-value" id="reservation-visit-type">確認中</div>
+        </article>
+        <article class="detail-item full" id="memo-item" hidden>
+          <span class="detail-label">スタッフへのメモ</span>
+          <div class="detail-value" id="reservation-memo"></div>
+        </article>
+      </div>
+
+      <p class="countdown"><span id="countdown-seconds">30</span>秒後にトップページに遷移します。</p>
+
+      <div class="actions">
+        <a class="btn btn-primary" href="香りワークショップ_トップページ.html">今すぐトップページへ戻る</a>
+        <a class="btn btn-secondary" href="reservation.html">予約内容を確認する</a>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const STORAGE_KEY = "fragranceReservationConfirmation";
+    const TOP_PAGE_URL = "香りワークショップ_トップページ.html";
+    const countdownEl = document.getElementById("countdown-seconds");
+    const slotEl = document.getElementById("reservation-slot");
+    const guestsEl = document.getElementById("reservation-guests");
+    const visitTypeEl = document.getElementById("reservation-visit-type");
+    const memoEl = document.getElementById("reservation-memo");
+    const memoItem = document.getElementById("memo-item");
+
+    let reservation = null;
+
+    try {
+      reservation = JSON.parse(window.sessionStorage.getItem(STORAGE_KEY) || "null");
+    } catch (error) {
+      reservation = null;
+    }
+
+    if (!reservation || !reservation.slot || !reservation.guestCount) {
+      window.location.replace("reservation.html");
+    } else {
+      slotEl.textContent = reservation.slot;
+      guestsEl.textContent = reservation.guestCount;
+      visitTypeEl.textContent = reservation.visitType || "ご相談内容未設定";
+
+      if (reservation.memo) {
+        memoEl.textContent = reservation.memo;
+        memoItem.hidden = false;
+      }
+
+      let secondsLeft = 30;
+      const timerId = window.setInterval(() => {
+        secondsLeft -= 1;
+        countdownEl.textContent = String(secondsLeft);
+
+        if (secondsLeft <= 0) {
+          window.clearInterval(timerId);
+          window.location.replace(TOP_PAGE_URL);
+        }
+      }, 1000);
+    }
+  </script>
+</body>
+
+</html>

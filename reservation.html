@@ -1405,8 +1405,21 @@
       window.alert(message);
     }
 
+    function handleReservationComplete() {
+      if (!selectedSlot) return;
+      const payload = {
+        slot: selectedSlot,
+        visitType: visitType.value,
+        guestCount: guestCount.value,
+        memo: staffMemo.value.trim(),
+        submittedAt: new Date().toISOString()
+      };
+      window.sessionStorage.setItem("fragranceReservationConfirmation", JSON.stringify(payload));
+      window.location.href = "reservation-complete.html";
+    }
+
     guestCount.addEventListener("change", updateSelectionState);
-    confirmBtn.addEventListener("click", handleConfirm);
+    confirmBtn.addEventListener("click", handleReservationComplete);
     slotClose.addEventListener("click", closeSlotModal);
     slotModal.addEventListener("click", (event) => {
       if (event.target === slotModal) closeSlotModal();
