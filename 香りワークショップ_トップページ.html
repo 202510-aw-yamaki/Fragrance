@@ -157,6 +157,11 @@
       padding-bottom: 66px;
     }
 
+    #question-preview {
+      padding-top: 20px;
+      padding-bottom: 66px;
+    }
+
     .section-header {
       display: grid;
       gap: 8px;
@@ -430,9 +435,46 @@
 
     #question-preview .pc-preview {
       display: grid;
-      gap: 10px;
-      grid-template-columns: 128px minmax(0, 1fr) 156px;
+      grid-template-rows: auto auto;
+      gap: 4px;
+      padding: 8px;
+      border-radius: 18px;
+      border: 1px solid rgba(220, 206, 194, .82);
+      background: linear-gradient(180deg, rgba(246, 238, 231, .9), rgba(250, 246, 241, .86));
+      min-height: 0;
+      height: auto;
+      align-content: start;
+    }
+
+    #question-preview .pc-preview-image {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 14px;
+      object-fit: contain;
+    }
+
+    .preview-layout {
       align-items: start;
+    }
+
+    .preview-pc,
+    .preview-balance {
+      height: auto;
+    }
+
+    .preview-pc {
+      display: grid;
+      grid-template-rows: auto auto;
+      gap: 12px;
+      min-height: 0;
+      align-content: start;
+    }
+
+    .preview-pc .section-cta {
+      margin-top: 0;
+      justify-content: flex-start;
+      gap: 10px;
     }
 
     #question-preview .pc-nav,
@@ -441,44 +483,73 @@
     #question-preview .mobile-screen {
       border: 1px solid var(--line);
       background: rgba(255, 255, 255, .9);
-      border-radius: 12px;
-      padding: 10px;
+      border-radius: 18px;
+      padding: 14px;
+      min-height: 100%;
     }
 
     #question-preview .pc-nav ol {
       margin: 0;
-      padding-left: 18px;
+      padding: 0;
+      list-style: none;
       display: grid;
-      gap: 4px;
-      font-size: .78rem;
+      gap: 8px;
+      font-size: .8rem;
       color: var(--muted);
+    }
+
+    #question-preview .pc-nav li {
+      padding: 12px 10px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: #f8f3ee;
+    }
+
+    #question-preview .pc-nav li:nth-child(3) {
+      border-color: #ca9d8c;
+      background: linear-gradient(135deg, #f7e7de, #fffaf7);
+      color: var(--text);
+      box-shadow: 0 10px 24px rgba(177, 136, 115, .12);
+    }
+
+    #question-preview .pc-main {
+      display: grid;
+      gap: 10px;
+      align-content: start;
+    }
+
+    #question-preview .shell-title {
+      margin: 0;
+      font-size: 1rem;
+      line-height: 1.45;
     }
 
     #question-preview .pc-side {
       display: grid;
-      gap: 8px;
+      gap: 10px;
     }
 
     #question-preview .pc-store {
       min-height: 148px;
-      border-radius: 10px;
-      border: 1px dashed #ccb9a8;
+      border-radius: 14px;
+      border: 1px solid rgba(220, 206, 194, .82);
       background:
-        linear-gradient(145deg, rgba(255, 255, 255, .88), rgba(245, 239, 232, .76)),
-        radial-gradient(circle at 70% 30%, rgba(223, 233, 239, .7), transparent 40%);
-      padding: 10px;
+        linear-gradient(145deg, rgba(255, 255, 255, .92), rgba(245, 239, 232, .82)),
+        radial-gradient(circle at 70% 30%, rgba(223, 233, 239, .58), transparent 40%);
+      padding: 12px;
       display: grid;
-      align-content: end;
-      font-size: .74rem;
+      align-content: center;
+      text-align: center;
+      font-size: .76rem;
       color: var(--muted);
     }
 
     #question-preview .pc-note {
-      padding: 9px 10px;
-      border-radius: 10px;
+      padding: 12px;
+      border-radius: 14px;
       background: rgba(241, 223, 207, .45);
       border: 1px solid rgba(230, 221, 210, .92);
-      font-size: .74rem;
+      font-size: .76rem;
       color: var(--muted);
     }
 
@@ -504,9 +575,9 @@
       grid-template-columns: 56px 1fr;
       align-items: center;
       gap: 8px;
-      padding: 8px;
-      margin-bottom: 6px;
-      font-size: .78rem;
+      padding: 10px;
+      margin-bottom: 8px;
+      font-size: .8rem;
     }
 
     #question-preview .thumb {
@@ -1004,32 +1075,12 @@
         <div class="preview-layout">
           <article class="preview-shell preview-pc" aria-label="PC版プレビュー">
             <div class="shell-head"><strong>PC版プレビュー</strong><span>見渡せる段階構成</span></div>
-            <!-- 実際は各画面が完成した場合は画像に差し替える -->
             <div class="pc-preview">
-              <div class="pc-nav">
-                <ol>
-                  <li>Q1 惹かれる香り</li>
-                  <li>Q2 好きな色</li>
-                  <li>Q3 なりたい気分</li>
-                  <li>Q4 使いたい時</li>
-                  <li>Q5 好きな音楽</li>
-                </ol>
+              <img class="pc-preview-image" src="img/TOP/質問ページＰＣプレビュー.png" alt="アンケート画面のPCプレビュー">
+              <div class="section-cta">
+                <a class="btn btn-primary" href="questionnaire.html">香りづくりをはじめる</a>
+                <a class="btn btn-secondary" href="reservation.html">そのまま予約する</a>
               </div>
-              <div class="pc-main">
-                <h3 class="shell-title">Q3 どんな気分になりたいですか？</h3>
-                <div class="branch-note">5問すべて答えると、あなた向けの追加質問へ進みます</div>
-                <div class="option-row"><span class="thumb" aria-hidden="true"></span><span>A やさしく癒やされたい</span></div>
-                <div class="option-row"><span class="thumb" aria-hidden="true"></span><span>B すっきり切り替えたい</span></div>
-                <div class="option-row"><span class="thumb" aria-hidden="true"></span><span>C 自分らしさを出したい</span></div>
-                <div class="minor-options"><span>全部好き</span><span>この中にはない</span></div>
-              </div>
-              <div class="pc-side">
-                <div class="pc-store"><span>店舗画像予定</span></div>
-                <div class="pc-note">豆知識：トップノートは、つけた直後に感じる第一印象の香りです。</div>
-              </div>
-            </div>
-            <div class="section-cta">
-              <a class="btn btn-primary" href="questionnaire.html">香りづくりをはじめる</a>
             </div>
           </article>
 
@@ -1048,8 +1099,8 @@
             </div>
           </article>
 
-          <article class="preview-balance" aria-label="回答後プレビュー：レーダー風グラフと5スライダー">
-            <div class="shell-head"><strong>回答後プレビュー</strong><span>レーダー風グラフ + 5スライダー</span></div>
+          <article class="preview-balance" aria-label="回答後プレビュー：レーダー風グラフとスライダー">
+            <div class="shell-head"><strong>回答後プレビュー</strong><span>レーダーグラフとスライダー</span></div>
             <!-- 実際は各画面が完成した場合は画像に差し替える -->
             <div class="balance-grid">
               <div class="radar-wrap">
