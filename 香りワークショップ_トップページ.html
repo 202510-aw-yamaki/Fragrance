@@ -865,8 +865,8 @@
     }
 
     .site-footer {
-      padding: 24px 0 clamp(120px, 18svh, 200px);
-      min-height: clamp(140px, 20svh, 220px);
+      padding: 22px 0 clamp(84px, 13svh, 140px);
+      min-height: clamp(104px, 14svh, 160px);
       color: var(--muted);
       font-size: .88rem;
     }
@@ -1017,7 +1017,7 @@
           <li><a href="#question-preview">質問</a></li>
           <li><a href="#value">価値</a></li>
           <li><a href="#reassurance">安心</a></li>
-          <li><a href="#cta-heading">お願い</a></li>
+          <li><a href="#final-cta-heading">お願い</a></li>
         </ul>
       </nav>
       <div class="header-actions">
@@ -1293,12 +1293,14 @@
       </div>
     </section>
 
-    <section class="cta-section" aria-labelledby="cta-heading">
+    <section class="cta-section" id="final-cta" aria-labelledby="final-cta-heading">
       <div class="section-inner">
+        <div class="section-header">
+          <span class="eyebrow">Final Call To Action</span>
+          <h2 id="final-cta-heading">私たちからのお願い</h2>
+        </div>
         <div class="cta-box">
           <div>
-            <span class="eyebrow">Final Call To Action</span>
-            <h2 id="cta-heading">来店前の1分で、香りづくりをもっと話しやすく</h2>
             <p>
               このページは、診断結果だけで香りを決めるためのものではありません。<br>
               来店前に簡単なお好みアンケートに答えることで、<br>
@@ -1316,8 +1318,8 @@
               <div class="section-cta">
                 <a class="btn btn-primary" href="questionnaire.html">香りづくりをはじめる</a>
                 <a class="btn btn-secondary" href="reservation.html">予約する</a>
+                <a class="btn btn-secondary" href="#top">上へ戻る</a>
               </div>
-              <a class="btn btn-secondary" href="#top">上へ戻る</a>
             </div>
           </div>
           <div class="cta-media" aria-label="最終CTAエリアの画像プレースホルダー">
