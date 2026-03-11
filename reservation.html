@@ -970,13 +970,32 @@
         grid-template-columns: 1fr 1fr;
         grid-template-areas:
           "summary booking"
-          "memo memo"
-          "side side";
+          "memo memo";
+        align-items: start;
       }
 
       .side-panel {
-        grid-template-columns: 1.1fr 1fr 1fr;
-        grid-template-rows: auto;
+        display: none;
+      }
+
+      .summary-panel {
+        grid-area: summary;
+        align-self: stretch;
+        height: 100%;
+      }
+
+      .booking-panel {
+        grid-area: booking;
+        align-self: stretch;
+        height: 100%;
+      }
+
+      .memo-panel {
+        grid-area: memo;
+      }
+
+      .booking-intro h2 {
+        display: none;
       }
     }
 
