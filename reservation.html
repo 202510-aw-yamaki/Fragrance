@@ -1000,6 +1000,17 @@
     }
 
     @media (max-width: 47.9375em) {
+      .summary-panel {
+        display: none;
+      }
+
+      .side-panel {
+        display: none;
+      }
+
+      .booking-intro {
+        display: none;
+      }
 
       .header-inner,
       .step-strip,
@@ -1123,7 +1134,7 @@
         <div class="booking-grid">
           <article class="slot-card">
             <h3>予約枠選択</h3>
-            <p class="booking-note">都合のよい日時をひとつ選んでください。枠は仮表示です。</p>
+            <p class="booking-note">都合のよい日時をひとつ選んでください。</p>
             <div class="slot-list" id="slot-list"></div>
           </article>
 
@@ -1177,6 +1188,7 @@
 
       <section class="memo-panel">
         <article class="memo-card">
+          <div class="section-label">Message for Staff</div>
           <h3>スタッフに伝えたいこと（任意）</h3>
           <p class="memo-help">例: 甘さは控えめにしたい / 仕事用で使いたい / 最初は軽い方向から試したい / 4名以上の場合は人数を記入してください</p>
           <textarea id="staff-memo" placeholder="当日スタッフに伝えておきたいことがあれば入力してください。"></textarea>
