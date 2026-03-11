@@ -9,8 +9,9 @@
 - `questionnaire.html` は完成扱い
 - `questionnaire_step2.html` は完成扱い
 - `fragrance-graph.html` は仮完成扱い
-- 次の主作業対象は `reservation.html`
+- `reservation.html` は完成扱い
 - 現段階ではデモページとしての完成を優先し、Spring Boot + DB 連携は未実装のまま進める
+- 次の主作業対象は `reservation-complete.html` と全体導線整理
 
 ## 2. reservation.html の現状
 
@@ -18,16 +19,12 @@
 
 - ヘッダー
   - ブランドリンク
-  - `fragrance-graph.html` と `questionnaire.html` へのナビリンクあり
-- 上部に `step-strip`
-  - 現在は `予約確認` のみ表示
+  - 右側に `予約を確定する` ボタンあり
 - 本体は3カラム構成
   - 左: `summary-panel`
   - 中央: `booking-panel`
   - 右: `side-panel`
-- 下段に
-  - `memo-panel`
-  - `action-panel`
+- 下段に `memo-panel`
 - 予約枠選択はモーダル表示
 
 ### 表示内容
@@ -45,23 +42,51 @@
   - 安心事項
 - 下段
   - スタッフ向け任意メモ
-  - 予約確定ボタン
-  - グラフへ戻るボタン
+  - `Message for Staff` ラベル
+
+### ブレークポイント
+
+- PC: `min-width: 68.75em`
+- 中間帯: `min-width: 48em and max-width: 68.6875em`
+- SP: `max-width: 47.9375em`
+
+### レイアウトの現状
+
+- PC
+  - `summary-panel` と `booking-panel` を上段に配置
+  - その下に `memo-panel`
+  - 右列に `side-panel`
+  - ヘッダー右側に確定ボタン
+- 中間帯
+  - 左上に `summary-panel`
+  - 右上に `booking-panel`
+  - 下段全面に `memo-panel`
+  - `side-panel` は非表示
+- スマホ
+  - `summary-panel` は非表示
+  - `side-panel` は非表示
+  - `booking-intro` は非表示
+  - `memo-panel` は表示維持
+  - 人数選択後にメモ欄へスクロールする
 
 ### データの扱い
 
 - グラフページからの値は `sessionStorage` の `fragranceReservationDraft` を参照
 - 予約確定時は `fragranceReservationConfirmation` を `sessionStorage` に保存
 - 予約枠は固定配列と日付計算で仮生成している
+- 予約枠には仮の担当講師データを持たせている
+  - `原口`
+  - `清水`
+  - `大塚`
+- 講師データは `time` / `instructor` / `gender` を持つ仮構造にしてあり、後でバックエンド差し替えしやすい形にしてある
 - 実予約送信、DB保存、STEP間の本連携は未実装
 
 ## 3. 現時点の課題
 
 ### 導線面
 
-- ヘッダーに `fragrance-graph.html` と `questionnaire.html` への戻り導線が残っている
-- 下部アクションにも `グラフへ戻る` があり、予約確定導線が分散している
-- デモ用の仮導線と、本番想定の予約完了導線が混在している
+- `reservation.html` 自体の画面導線整理は完了
+- 次は `reservation-complete.html` 側の導線と、予約完了後の戻り先整理が必要
 
 ### 実装面
 
@@ -87,41 +112,49 @@
 
 ### PC
 
-- 3カラム + 下段2エリア構成
-- 要素数が多いため、縦方向の収まりと情報の優先順位確認が必要
+- 画面調整は完了扱い
+- 右列 `side-panel` は高さ・余白・カード間隔を調整済み
+- `memo-panel` は左2カラム下に配置済み
 
 ### 中間帯
 
-- 2カラム再配置が入っている
-- `summary / booking / side / memo / actions` の配置バランス確認が必要
+- `summary / booking` の2カラム + 下段全面 `memo`
+- `side-panel` は非表示
+- 上段2パネルの高さは揃える前提で調整済み
 
 ### スマホ
 
-- ヘッダー折返し
-- `main-nav` の横スクロール
-- `slot-modal` の表示位置
-- `time-grid` の1カラム化
-- 下段アクションの見え方
-  - このあたりが重点確認ポイント
+- `summary-panel` と `side-panel` を非表示
+- `booking-intro` を非表示
+- `memo-panel` を残し、人数選択後にメモ欄へ自動スクロール
+- モーダルはSP時に1カラム化
 
 ## 5. 次にやること
 
 ### 優先度高
 
-- `reservation.html` の実画面確認
-- `reservation.html` の導線整理
 - `reservation-complete.html` の表示と導線確認
+- `reservation-complete.html` のレイアウト整理
+- 完了ページを含めた全体導線確認
 
 ### 最初に見るとよい項目
 
-- ヘッダーの戻り導線をどう残すか
-- 予約確定ボタン以外の導線をどこまで整理するか
+- `reservation-complete.html` の戻り導線
+- 予約完了後にトップへ戻すか、別導線を置くか
 - モーダルの見え方と閉じ方
-- スマホ時の各パネルの優先順位
 - `reservation-complete.html` へ遷移した後の戻り導線
 
 ## 6. 補足メモ
 
-- `fragrance-graph.html` は仮完成扱いになったため、次の主戦場は `reservation.html`
+- `reservation.html` は完成扱いになったため、次の主戦場は `reservation-complete.html`
 - 現段階では「実データ連携」より「デモとして自然に見えること」を優先する
-- まずは画面整理と導線整理を先に進め、その後に必要ならアクセシビリティ改善を詰める流れでよい
+- `reservation.html` では以下を実施済み
+  - ヘッダー右上リンク削除
+  - `step-strip` 削除
+  - ヘッダー右側へ予約確定ボタン移設
+  - モーダルサイズ調整
+  - 日付ごとの予約枠を1行表示に変更
+  - 空き状況チップと担当講師チップ追加
+  - 講師性別ごとの仮カラー追加
+  - `guest-count` に `選択してください` と `4名以上` を追加
+  - スマホ帯で人数選択後にメモ欄へ誘導
