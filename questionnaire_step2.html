@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <style>
     :root {
       --panel: rgba(255, 251, 246, 0.92);
@@ -24,11 +25,13 @@
     }
 
     html {
+      min-width: 375px;
       scroll-padding-top: 88px;
     }
 
     body {
       margin: 0;
+      min-width: 375px;
       min-height: 100vh;
       font-family: "Noto Sans JP", sans-serif;
       color: var(--text);
@@ -118,6 +121,23 @@
       transform: none;
     }
 
+    .nav-icon {
+      display: none;
+      font-family: "Material Icons";
+      font-size: 20px;
+      line-height: 1;
+      font-style: normal;
+      font-weight: normal;
+      letter-spacing: normal;
+      text-transform: none;
+      white-space: nowrap;
+      word-wrap: normal;
+      direction: ltr;
+      -webkit-font-smoothing: antialiased;
+      -webkit-font-feature-settings: "liga";
+      font-feature-settings: "liga";
+    }
+
     .page-shell {
       padding: 18px 0 24px;
       display: grid;
@@ -194,6 +214,10 @@
       grid-template-columns: 240px minmax(0, 1fr) 320px;
       gap: 18px;
       min-height: 0;
+    }
+
+    .question-shell>* {
+      min-width: 0;
     }
 
     .panel {
@@ -479,6 +503,7 @@
       padding: 16px;
       background: #fffaf6;
       border: 1px solid rgba(216, 203, 192, 0.95);
+      min-width: 0;
     }
 
     .side-card {
@@ -507,6 +532,7 @@
       margin: 0;
       font-size: 14px;
       line-height: 1.7;
+      overflow-wrap: anywhere;
     }
 
     .side-card p {
@@ -524,6 +550,7 @@
 
     .action-btn {
       min-width: 168px;
+      max-width: 100%;
       min-height: 54px;
       padding: 0 20px;
       border-radius: 999px;
@@ -550,7 +577,17 @@
       pointer-events: none;
     }
 
-    @media (min-width: 841px) {
+    .mobile-return-panel {
+      display: none;
+    }
+
+    .mobile-return-card {
+      border-radius: 24px;
+      border: 1px solid rgba(220, 206, 194, 0.82);
+      background: rgba(255, 250, 245, 0.96);
+    }
+
+    @media (min-width: 68.75em) {
       .page-shell {
         height: min(calc(100vh - 72px), 900px);
         padding: 12px 0;
@@ -565,7 +602,7 @@
         height: 100%;
         padding: 14px;
         gap: 14px;
-        grid-template-columns: 19% 52% 29%;
+        grid-template-columns: minmax(190px, 220px) minmax(0, 1fr) minmax(260px, 292px);
       }
 
       .nav-panel,
@@ -657,15 +694,24 @@
         min-height: 0;
         height: 100%;
         padding: 14px;
+        min-width: 0;
       }
 
       .side-panel {
-        grid-template-rows: 56% 21% 23%;
+        grid-template-rows: minmax(0, 1fr) auto auto;
+        min-width: 0;
+        align-content: stretch;
       }
 
       .side-card,
       .return-card {
         padding: 12px;
+      }
+
+      .side-card,
+      .return-card,
+      .store-visual {
+        min-height: 0;
       }
 
       .return-card .action-btn {
@@ -687,24 +733,88 @@
       }
     }
 
-    @media (max-width: 1180px) {
+    @media (min-width: 48em) and (max-width: 68.6875em) {
+      .page-shell {
+        padding: 14px 0 20px;
+        gap: 12px;
+      }
+
+      .step-strip {
+        display: none;
+      }
+
       .question-shell {
-        grid-template-columns: 220px minmax(0, 1fr);
+        padding: 14px;
+        gap: 14px;
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .nav-panel {
+        display: none;
+      }
+
+      .main-panel {
+        grid-column: 1 / -1;
+        padding: 18px;
+        gap: 14px;
+      }
+
+      .question-title {
+        font-size: clamp(26px, 3.4vw, 40px);
+      }
+
+      .option-card {
+        min-height: 112px;
+        padding: 16px;
+      }
+
+      .option-copy {
+        max-width: min(78%, 440px);
       }
 
       .side-panel {
         grid-column: 1 / -1;
-        grid-template-columns: 1.2fr 1fr 1fr;
+        padding: 14px;
+        gap: 12px;
+        grid-template-columns: 1fr 1fr 1.2fr;
         grid-template-rows: auto;
+        align-items: stretch;
+      }
+
+      .store-visual {
+        min-height: 220px;
+        order: 3;
+      }
+
+      .store-visual span {
+        max-width: 100%;
+      }
+
+      .side-card {
+        order: 2;
+      }
+
+      .return-card {
+        order: 1;
       }
     }
 
-    @media (max-width: 840px) {
+    @media (max-width: 47.9375em) {
+      html {
+        scroll-padding-top: 96px;
+      }
+
+      .question-shell {
+        width: 100%;
+        margin: 0 auto;
+        grid-template-columns: 1fr;
+        padding: 14px;
+        gap: 12px;
+      }
 
       .header-inner,
-      .step-strip,
-      .question-shell {
-        width: min(1240px, calc(100vw - 16px));
+      .step-strip {
+        width: min(1240px, calc(100% - 16px));
       }
 
       .header-inner {
@@ -712,34 +822,9 @@
       }
 
       .step-strip {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .step-copy {
-        text-align: left;
-      }
-
-      .question-shell {
-        grid-template-columns: 1fr;
-      }
-
-      .nav-panel {
         display: none;
-        order: 2;
       }
 
-      .main-panel {
-        order: 1;
-      }
-
-      .side-panel {
-        order: 3;
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 640px) {
       .main-nav ul {
         gap: 8px;
       }
@@ -748,26 +833,79 @@
         min-height: 36px;
         padding: 0 12px;
         font-size: 13px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .nav-text {
+        display: none;
+      }
+
+      .nav-icon {
+        display: inline-block;
       }
 
       .page-shell {
         padding-top: 10px;
+        justify-items: center;
       }
 
-      .step-badge {
-        min-width: 92px;
-        padding: 8px 14px;
-        font-size: 12px;
-      }
-
-      .main-panel,
       .nav-panel,
+      .main-panel,
       .side-panel {
         padding: 16px;
       }
 
+      .nav-panel {
+        display: none;
+      }
+
+      .main-panel {
+        order: 1;
+      }
+
+      .side-panel {
+        display: none;
+      }
+
+      .mobile-return-panel {
+        display: block;
+        width: 100%;
+        margin: 12px 0 0;
+      }
+
+      .mobile-return-card {
+        padding: 16px;
+        border-radius: 22px;
+        box-shadow: 0 12px 28px rgba(81, 58, 42, 0.14);
+        display: grid;
+        gap: 10px;
+      }
+
+      .mobile-return-card p {
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.65;
+        color: #5e4f46;
+      }
+
+      .mobile-return-card .action-btn {
+        width: 100%;
+        min-height: 48px;
+        margin-top: 0;
+      }
+
       .question-title {
         font-size: 30px;
+      }
+
+      .question-caption {
+        display: none;
+      }
+
+      .helper-text {
+        display: none;
       }
 
       .progress-row {
@@ -775,7 +913,6 @@
       }
 
       .option-card {
-        grid-template-columns: 1fr;
         min-height: 0;
         gap: 12px;
         padding: 14px;
@@ -783,10 +920,27 @@
 
       .option-copy {
         max-width: 100%;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        align-items: center;
+        column-gap: 10px;
+        row-gap: 6px;
+      }
+
+      .option-label {
+        margin: 0;
       }
 
       .option-title {
-        font-size: 20px;
+        grid-column: 2;
+        font-size: clamp(15px, 4.1vw, 20px);
+        line-height: 1.2;
+        white-space: nowrap;
+      }
+
+      .option-desc {
+        grid-column: 1 / -1;
+        display: none;
       }
 
       .sub-options {
@@ -802,8 +956,8 @@
       <a class="brand" id="brand-link" href="香りワークショップ_トップページ.html" aria-label="トップへ戻る">FRAGRANCE WORKSHOP</a>
       <nav class="main-nav" aria-label="ページメニュー">
         <ul>
-          <li><button id="header-prev-btn" type="button">前の質問</button></li>
-          <li><button id="header-next-btn" type="button">次の質問</button></li>
+          <li><button id="header-prev-btn" type="button" aria-label="前の質問"><span class="nav-text">前の質問</span><span class="nav-icon" aria-hidden="true">arrow_back</span></button></li>
+          <li><button id="header-next-btn" type="button" aria-label="次の質問"><span class="nav-text">次の質問</span><span class="nav-icon" aria-hidden="true">arrow_forward</span></button></li>
         </ul>
       </nav>
     </div>
@@ -858,6 +1012,12 @@
         </div>
       </aside>
     </main>
+    <section class="mobile-return-panel" aria-label="トップへ戻る">
+      <div class="mobile-return-card">
+        <button class="action-btn" id="return-top-btn-mobile" type="button">トップページへ戻る</button>
+        <p>STEP2 の途中で戻ると、ここまでの深掘り回答は保存されません。</p>
+      </div>
+    </section>
   </div>
   <script>
     const questions = [
@@ -880,16 +1040,26 @@
     const noteBody = document.getElementById("note-body");
     const brandLink = document.getElementById("brand-link");
     const returnTopBtn = document.getElementById("return-top-btn");
+    const returnTopBtnMobile = document.getElementById("return-top-btn-mobile");
     const headerPrevBtn = document.getElementById("header-prev-btn");
     const headerNextBtn = document.getElementById("header-next-btn");
+    const headerPrevText = headerPrevBtn.querySelector(".nav-text");
+    const headerNextText = headerNextBtn.querySelector(".nav-text");
     function hasAnyAnswer() { return Object.keys(answers).length > 0; }
     function confirmReturnToTop() {
       if (!hasAnyAnswer()) return true;
       return window.confirm("トップページへ戻ると、ここまでの回答データはなくなります。戻りますか？");
     }
+    function confirmReturnToStep1() {
+      return window.confirm("STEP1は別ページのため、STEP2で選んだ内容は引き継がれません。STEP1に戻りますか？");
+    }
     function returnToTop() {
       if (!confirmReturnToTop()) return;
       window.location.href = "香りワークショップ_トップページ.html";
+    }
+    function returnToStep1() {
+      if (!confirmReturnToStep1()) return;
+      window.location.href = "questionnaire.html";
     }
     function showCompletion() { window.location.href = "fragrance-graph.html"; }
     function moveNext() { if (currentIndex < questions.length - 1) { currentIndex += 1; render(); return; } showCompletion(); }
@@ -934,9 +1104,13 @@
       });
     }
     function updateButtons() {
+      const onFirstQuestion = currentIndex === 0;
       const onLastQuestion = currentIndex === questions.length - 1;
-      headerPrevBtn.disabled = currentIndex === 0;
-      headerNextBtn.textContent = onLastQuestion ? "仕上がりを見る" : "次の質問";
+      headerPrevBtn.disabled = false;
+      headerPrevText.textContent = onFirstQuestion ? "STEP1に戻る" : "前の質問";
+      headerPrevBtn.setAttribute("aria-label", onFirstQuestion ? "STEP1に戻る" : "前の質問");
+      headerNextText.textContent = onLastQuestion ? "仕上がりを見る" : "次の質問";
+      headerNextBtn.setAttribute("aria-label", onLastQuestion ? "仕上がりを見る" : "次の質問");
     }
     function render() {
       const question = questions[currentIndex];
@@ -960,7 +1134,14 @@
       returnToTop();
     });
     returnTopBtn.addEventListener("click", returnToTop);
-    headerPrevBtn.addEventListener("click", movePrev);
+    returnTopBtnMobile.addEventListener("click", returnToTop);
+    headerPrevBtn.addEventListener("click", () => {
+      if (currentIndex === 0) {
+        returnToStep1();
+        return;
+      }
+      movePrev();
+    });
     headerNextBtn.addEventListener("click", moveNext);
     render();
   </script>
