@@ -30,11 +30,13 @@
     }
 
     html {
+      min-width: 375px;
       scroll-padding-top: 88px;
     }
 
     body {
       margin: 0;
+      min-width: 375px;
       min-height: 100vh;
       font-family: "Noto Sans JP", sans-serif;
       color: var(--text);
@@ -87,36 +89,12 @@
       color: var(--text);
     }
 
-    .main-nav ul {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      gap: 14px;
-      align-items: center;
-      justify-content: flex-end;
-      flex-wrap: nowrap;
-    }
-
-    .main-nav a {
-      min-height: 40px;
-      padding: 0 16px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: rgba(255, 251, 246, 0.92);
-      color: var(--muted);
-      text-decoration: none;
-      transition: border-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
-    }
-
-    .main-nav a:hover,
-    .main-nav a:focus-visible {
-      color: var(--text);
-      border-color: rgba(190, 154, 132, 0.95);
-      transform: translateY(-1px);
+    .header-cta {
+      min-width: 152px;
+      min-height: 44px;
+      width: auto;
+      padding: 0 18px;
+      flex: 0 0 auto;
     }
 
     .page-shell {
@@ -226,7 +204,8 @@
     }
 
     .side-panel {
-      grid-template-rows: minmax(0, 1fr) auto auto;
+      grid-template-rows: auto auto auto;
+      align-content: start;
       background: linear-gradient(180deg, rgba(250, 245, 239, 0.98), rgba(244, 239, 232, 0.98));
     }
 
@@ -751,11 +730,11 @@
     }
 
     .visual-card {
-      min-height: 260px;
-      padding: 18px;
+      min-height: 180px;
+      padding: 16px;
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
+      justify-content: flex-start;
       color: #fffaf6;
       background:
         linear-gradient(180deg, rgba(37, 45, 53, 0.14), rgba(56, 37, 20, 0.38)),
@@ -808,7 +787,7 @@
       font-size: 13px;
     }
 
-    @media (min-width: 841px) {
+    @media (min-width: 68.75em) {
       .page-shell {
         padding: 12px 0 24px;
       }
@@ -823,7 +802,7 @@
         grid-template-columns: 25% minmax(0, 1fr) 21%;
         grid-template-areas:
           "summary booking side"
-          "memo memo actions";
+          "memo memo side";
         align-items: start;
       }
 
@@ -831,6 +810,12 @@
       .side-panel {
         padding: 14px;
         gap: 12px;
+      }
+
+      .summary-panel,
+      .booking-panel,
+      .side-panel {
+        align-self: stretch;
       }
 
       .booking-panel {
@@ -852,10 +837,6 @@
 
       .memo-panel {
         grid-area: memo;
-      }
-
-      .action-panel {
-        grid-area: actions;
       }
 
       .lead-card h1 {
@@ -919,15 +900,19 @@
       .action-btn {
         width: 100%;
       }
+
+      .header-cta {
+        width: auto;
+      }
     }
 
-    @media (max-width: 1120px) {
+    @media (min-width: 48em) and (max-width: 68.6875em) {
       .reservation-shell {
         grid-template-columns: 1fr 1fr;
         grid-template-areas:
           "summary booking"
           "memo memo"
-          "side actions";
+          "side side";
       }
 
       .side-panel {
@@ -936,8 +921,7 @@
       }
     }
 
-    @media (max-width: 840px) {
-
+    @media (max-width: 47.9375em) {
       .header-inner,
       .step-strip,
       .reservation-shell {
@@ -946,6 +930,10 @@
 
       .header-inner {
         min-height: 64px;
+        align-items: center;
+        justify-content: space-between;
+        flex-direction: row;
+        padding: 10px 0;
       }
 
       .step-strip {
@@ -981,34 +969,12 @@
         padding: 0;
       }
 
-      .slot-modal {
-        padding: 16px;
-        align-items: flex-end;
-      }
-    }
-
-    @media (max-width: 640px) {
-      .header-inner {
-        align-items: flex-start;
-        flex-direction: column;
-        padding: 10px 0;
-      }
-
-      .main-nav {
-        width: 100%;
-        overflow-x: auto;
-      }
-
-      .main-nav ul {
-        gap: 8px;
-        width: max-content;
-        min-width: 100%;
-      }
-
-      .main-nav a {
+      .header-cta {
+        min-width: 132px;
         min-height: 36px;
         padding: 0 12px;
         font-size: 13px;
+        width: auto;
       }
 
       .page-shell {
@@ -1019,6 +985,11 @@
       .booking-panel,
       .side-panel {
         padding: 16px;
+      }
+
+      .slot-modal {
+        padding: 16px;
+        align-items: flex-end;
       }
 
       .time-grid {
@@ -1036,26 +1007,11 @@
   <header class="site-header">
     <div class="header-inner">
       <a class="brand" href="香りワークショップ_トップページ.html" aria-label="トップへ戻る">FRAGRANCE WORKSHOP</a>
-      <nav class="main-nav" aria-label="ページメニュー">
-        <ul>
-          <li><a href="fragrance-graph.html">グラフに戻る</a></li>
-          <li><a href="questionnaire.html">質問ページへ</a></li>
-        </ul>
-      </nav>
+      <button class="action-btn primary header-cta" id="confirm-btn" type="button" disabled>予約を確定する</button>
     </div>
   </header>
 
   <div class="page-shell">
-    <section class="step-strip" aria-label="進行状況">
-      <div class="step-group">
-        <div class="step-badge current">予約確認</div>
-      </div>
-      <div class="step-copy">
-        <strong>Fragrance Workshop</strong>
-        <span>ここまでの傾向を持ったまま、来店日時と共有メモだけ整えて予約へ進みます。</span>
-      </div>
-    </section>
-
     <main class="reservation-shell">
       <aside class="panel summary-panel">
         <div class="section-label">Current Tendency</div>
@@ -1140,12 +1096,6 @@
         </article>
       </section>
 
-      <aside class="action-panel">
-        <div class="booking-actions">
-          <button class="action-btn primary" id="confirm-btn" type="button" disabled>予約を確定する</button>
-          <a class="action-btn" href="fragrance-graph.html">グラフへ戻る</a>
-        </div>
-      </aside>
     </main>
   </div>
 
