@@ -787,6 +787,12 @@
       font-size: 13px;
     }
 
+    .field label.field-label-note {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--muted);
+    }
+
     @media (min-width: 68.75em) {
       .page-shell {
         padding: 12px 0 24px;
@@ -922,6 +928,7 @@
     }
 
     @media (max-width: 47.9375em) {
+
       .header-inner,
       .step-strip,
       .reservation-shell {
@@ -1044,9 +1051,10 @@
 
           <div class="select-group">
             <article class="slot-card">
+              <h3>来店情報選択</h3>
               <div class="field-row">
                 <div class="field">
-                  <label for="visit-type">来店内容</label>
+                  <label class="field-label-note" for="visit-type">来店内容</label>
                   <select id="visit-type">
                     <option value="初回ワークショップ">初回ワークショップ</option>
                     <option value="再来店の調整相談">再来店の調整相談</option>
@@ -1054,7 +1062,7 @@
                   </select>
                 </div>
                 <div class="field">
-                  <label for="guest-count">人数</label>
+                  <label class="field-label-note" for="guest-count">人数</label>
                   <select id="guest-count">
                     <option value="1名">1名</option>
                     <option value="2名">2名</option>
