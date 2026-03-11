@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <style>
     :root {
       --panel: rgba(255, 251, 246, 0.92);
@@ -118,6 +119,23 @@
       cursor: default;
       pointer-events: none;
       transform: none;
+    }
+
+    .nav-icon {
+      display: none;
+      font-family: "Material Icons";
+      font-size: 20px;
+      line-height: 1;
+      font-style: normal;
+      font-weight: normal;
+      letter-spacing: normal;
+      text-transform: none;
+      white-space: nowrap;
+      word-wrap: normal;
+      direction: ltr;
+      -webkit-font-smoothing: antialiased;
+      -webkit-font-feature-settings: "liga";
+      font-feature-settings: "liga";
     }
 
     .page-shell {
@@ -559,6 +577,16 @@
       pointer-events: none;
     }
 
+    .mobile-return-panel {
+      display: none;
+    }
+
+    .mobile-return-card {
+      border-radius: 24px;
+      border: 1px solid rgba(220, 206, 194, 0.82);
+      background: rgba(255, 250, 245, 0.96);
+    }
+
     @media (min-width: 68.75em) {
       .page-shell {
         height: min(calc(100vh - 72px), 900px);
@@ -670,13 +698,20 @@
       }
 
       .side-panel {
-        grid-template-rows: 56% 21% 23%;
+        grid-template-rows: minmax(0, 1fr) auto auto;
         min-width: 0;
+        align-content: stretch;
       }
 
       .side-card,
       .return-card {
         padding: 12px;
+      }
+
+      .side-card,
+      .return-card,
+      .store-visual {
+        min-height: 0;
       }
 
       .return-card .action-btn {
@@ -770,7 +805,8 @@
       }
 
       .question-shell {
-        width: min(1240px, calc(100% - 16px));
+        width: 100%;
+        margin: 0 auto;
         grid-template-columns: 1fr;
         padding: 14px;
         gap: 12px;
@@ -786,14 +822,7 @@
       }
 
       .step-strip {
-        padding: 14px;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 12px;
-      }
-
-      .step-copy {
-        text-align: left;
+        display: none;
       }
 
       .main-nav ul {
@@ -804,10 +833,22 @@
         min-height: 36px;
         padding: 0 12px;
         font-size: 13px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .nav-text {
+        display: none;
+      }
+
+      .nav-icon {
+        display: inline-block;
       }
 
       .page-shell {
         padding-top: 10px;
+        justify-items: center;
       }
 
       .step-badge {
@@ -823,26 +864,7 @@
       }
 
       .nav-panel {
-        order: 2;
-        gap: 10px;
-      }
-
-      .nav-list {
-        display: flex;
-        gap: 8px;
-        overflow-x: auto;
-        padding-bottom: 4px;
-        scrollbar-width: thin;
-      }
-
-      .nav-item {
-        flex: 0 0 112px;
-        min-width: 112px;
-        padding: 12px 10px;
-      }
-
-      .nav-note {
-        margin-top: 0;
+        display: none;
       }
 
       .main-panel {
@@ -850,13 +872,46 @@
       }
 
       .side-panel {
-        order: 3;
-        grid-template-columns: 1fr;
-        gap: 12px;
+        display: none;
+      }
+
+      .mobile-return-panel {
+        display: block;
+        width: 100%;
+        margin: 12px 0 0;
+      }
+
+      .mobile-return-card {
+        padding: 16px;
+        border-radius: 22px;
+        box-shadow: 0 12px 28px rgba(81, 58, 42, 0.14);
+        display: grid;
+        gap: 10px;
+      }
+
+      .mobile-return-card p {
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.65;
+        color: #5e4f46;
+      }
+
+      .mobile-return-card .action-btn {
+        width: 100%;
+        min-height: 48px;
+        margin-top: 0;
       }
 
       .question-title {
         font-size: 30px;
+      }
+
+      .question-caption {
+        display: none;
+      }
+
+      .helper-text {
+        display: none;
       }
 
       .progress-row {
@@ -871,10 +926,27 @@
 
       .option-copy {
         max-width: 100%;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        align-items: center;
+        column-gap: 10px;
+        row-gap: 6px;
+      }
+
+      .option-label {
+        margin: 0;
       }
 
       .option-title {
-        font-size: 20px;
+        grid-column: 2;
+        font-size: clamp(15px, 4.1vw, 20px);
+        line-height: 1.2;
+        white-space: nowrap;
+      }
+
+      .option-desc {
+        grid-column: 1 / -1;
+        display: none;
       }
 
       .sub-options {
@@ -890,8 +962,8 @@
       <a class="brand" id="brand-link" href="香りワークショップ_トップページ.html" aria-label="トップへ戻る">FRAGRANCE WORKSHOP</a>
       <nav class="main-nav" aria-label="ページメニュー">
         <ul>
-          <li><button id="header-prev-btn" type="button">前の質問</button></li>
-          <li><button id="header-next-btn" type="button">次の質問</button></li>
+          <li><button id="header-prev-btn" type="button" aria-label="前の質問"><span class="nav-text">前の質問</span><span class="nav-icon" aria-hidden="true">arrow_back</span></button></li>
+          <li><button id="header-next-btn" type="button" aria-label="次の質問"><span class="nav-text">次の質問</span><span class="nav-icon" aria-hidden="true">arrow_forward</span></button></li>
         </ul>
       </nav>
     </div>
@@ -942,10 +1014,16 @@
         </div>
         <div class="return-card">
           <p>回答の途中で戻ると、ここまでに選んだ内容は保存されません。</p>
-          <button class="action-btn" id="return-top-btn" type="button">トップページへ戻る</button>
+          <button class="action-btn" id="return-top-btn" type="button">トップページ</button>
         </div>
       </aside>
     </main>
+    <section class="mobile-return-panel" aria-label="トップへ戻る">
+      <div class="mobile-return-card">
+        <button class="action-btn" id="return-top-btn-mobile" type="button">トップページ</button>
+        <p>回答の途中で戻ると、ここまでに選んだ内容は保存されません。</p>
+      </div>
+    </section>
   </div>
   <script>
     const questions = [
@@ -970,8 +1048,10 @@
     const noteBody = document.getElementById("note-body");
     const brandLink = document.getElementById("brand-link");
     const returnTopBtn = document.getElementById("return-top-btn");
+    const returnTopBtnMobile = document.getElementById("return-top-btn-mobile");
     const headerPrevBtn = document.getElementById("header-prev-btn");
     const headerNextBtn = document.getElementById("header-next-btn");
+    const headerNextText = headerNextBtn.querySelector(".nav-text");
     function hasAnyAnswer() { return Object.keys(answers).length > 0; }
     function confirmReturnToTop() {
       if (!hasAnyAnswer()) return true;
@@ -1026,7 +1106,8 @@
     function updateButtons() {
       const onLastQuestion = currentIndex === questions.length - 1;
       headerPrevBtn.disabled = currentIndex === 0;
-      headerNextBtn.textContent = onLastQuestion ? "STEP2 へ進む" : "次の質問";
+      headerNextText.textContent = onLastQuestion ? "STEP2 へ進む" : "次の質問";
+      headerNextBtn.setAttribute("aria-label", onLastQuestion ? "STEP2 へ進む" : "次の質問");
     }
     function render() {
       const question = questions[currentIndex];
@@ -1050,6 +1131,7 @@
       returnToTop();
     });
     returnTopBtn.addEventListener("click", returnToTop);
+    returnTopBtnMobile.addEventListener("click", returnToTop);
     headerPrevBtn.addEventListener("click", movePrev);
     headerNextBtn.addEventListener("click", moveNext);
     render();
