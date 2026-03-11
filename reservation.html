@@ -1012,6 +1012,11 @@
         display: none;
       }
 
+      .booking-panel {
+        grid-template-rows: none;
+        align-content: start;
+      }
+
       .header-inner,
       .step-strip,
       .reservation-shell {
@@ -1153,6 +1158,7 @@
                 <div class="field">
                   <label class="field-label-note" for="guest-count">人数</label>
                   <select id="guest-count">
+                    <option value="" selected>選択してください</option>
                     <option value="1名">1名</option>
                     <option value="2名">2名</option>
                     <option value="3名">3名</option>
@@ -1441,13 +1447,20 @@
     }
 
     function updateSelectionState() {
-      if (selectedSlot) {
+      const hasGuestCount = guestCount.value !== "";
+      if (selectedSlot && hasGuestCount) {
         selectedStatus.textContent = `選択中: ${selectedSlot} / ${guestCount.value}`;
         confirmBtn.disabled = false;
       } else {
         selectedStatus.textContent = "未選択: 来店日時を選んでください";
         confirmBtn.disabled = true;
       }
+    }
+
+    function maybeScrollToMemo() {
+      const isMobile = window.matchMedia("(max-width: 47.9375em)").matches;
+      if (!isMobile || guestCount.value === "") return;
+      staffMemo.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
     function handleConfirm() {
@@ -1475,7 +1488,10 @@
       window.location.href = "reservation-complete.html";
     }
 
-    guestCount.addEventListener("change", updateSelectionState);
+    guestCount.addEventListener("change", () => {
+      updateSelectionState();
+      maybeScrollToMemo();
+    });
     confirmBtn.addEventListener("click", handleReservationComplete);
     slotClose.addEventListener("click", closeSlotModal);
     slotModal.addEventListener("click", (event) => {
