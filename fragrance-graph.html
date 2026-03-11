@@ -26,12 +26,14 @@
     }
 
     html {
+      min-width: 375px;
       scroll-behavior: smooth;
       scroll-padding-top: 88px;
     }
 
     body {
       margin: 0;
+      min-width: 375px;
       font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
       color: var(--text);
       background:
@@ -96,6 +98,7 @@
       align-items: center;
       justify-content: center;
       min-height: 48px;
+      max-width: 100%;
       border-radius: 999px;
       text-decoration: none;
       font-weight: 700;
@@ -139,6 +142,13 @@
       margin: 0;
       font-size: clamp(1.8rem, 3.2vw, 2.9rem);
       line-height: 1.2;
+    }
+
+    .graph-layout .section-header h2 {
+      font-size: clamp(1rem, 2.2vw, 1.8rem);
+      line-height: 1.15;
+      letter-spacing: -.02em;
+      white-space: nowrap;
     }
 
     .section-header p {
@@ -291,21 +301,24 @@
     }
 
     .slider-actions {
-      display: flex;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 10px;
       padding-top: 4px;
     }
 
     .ghost-btn {
       min-height: 42px;
+      width: 100%;
       border-radius: 999px;
       border: 1px solid var(--line);
       background: rgba(255, 255, 255, .72);
       color: var(--text);
-      padding: 0 16px;
+      padding: 0 8px;
       cursor: pointer;
       font: inherit;
+      font-size: clamp(.62rem, 1.7vw, .92rem);
+      white-space: nowrap;
     }
 
     .ghost-btn:hover,
@@ -347,12 +360,20 @@
     .cta-copy p {
       margin: 0 0 18px;
       color: var(--muted);
+      overflow-wrap: anywhere;
     }
 
     .cta-actions {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
+      align-items: stretch;
+    }
+
+    .cta-actions .btn {
+      width: fit-content;
+      min-width: clamp(220px, 24vw, 300px);
+      max-width: 100%;
     }
 
     .helper-note {
@@ -380,8 +401,7 @@
       margin: 0;
     }
 
-    @media (min-width: 48em),
-    (min-aspect-ratio: 16/9) {
+    @media (min-width: 68.75em) {
 
       html,
       body {
@@ -439,7 +459,7 @@
       }
 
       .cta-box {
-        grid-template-columns: 1.1fr .9fr;
+        grid-template-columns: 1fr 1fr;
         height: 100%;
         padding: 18px 22px;
         gap: 18px;
@@ -527,17 +547,13 @@
       }
 
       .slider-actions {
-        display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: 8px;
         padding-top: 0;
       }
 
       .ghost-btn {
         min-height: 38px;
-        width: 100%;
-        padding: 0 8px;
-        font-size: clamp(.72rem, .95vw, .92rem);
+        font-size: clamp(.62rem, .95vw, .88rem);
       }
 
       .reassure-card {
@@ -577,11 +593,15 @@
       }
 
       .cta-actions {
+        display: flex;
+        flex-wrap: wrap;
         gap: 8px;
       }
 
       .cta-actions .btn {
         min-height: 38px;
+        width: fit-content;
+        min-width: clamp(220px, 22vw, 280px);
       }
 
       .helper-note {
@@ -608,7 +628,67 @@
       }
     }
 
-    @media (max-width: 48em) {
+    @media (min-width: 48em) and (max-width: 68.6875em) {
+      main {
+        width: var(--container);
+        margin: 0 auto;
+        padding: 14px 0 20px;
+        display: grid;
+        gap: 14px;
+      }
+
+      main section {
+        padding: 0;
+      }
+
+      main>section>.section-inner {
+        width: 100%;
+        margin: 0;
+      }
+
+      .graph-layout {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        align-items: stretch;
+      }
+
+      .graph-card,
+      .slider-card {
+        height: 100%;
+      }
+
+      .helper-grid {
+        display: none;
+      }
+
+      .slider-head output {
+        display: none;
+      }
+
+      .cta-box {
+        grid-template-columns: minmax(0, 1fr);
+        align-items: stretch;
+      }
+
+      .cta-box > .reassure-card {
+        display: none;
+      }
+
+      .cta-actions {
+        display: flex;
+        flex-wrap: wrap;
+      }
+
+      .cta-actions .btn {
+        width: fit-content;
+        min-width: clamp(220px, 34vw, 300px);
+      }
+    }
+
+    @media (max-width: 47.9375em) {
+      html {
+        scroll-padding-top: 96px;
+      }
+
       .header-inner {
         min-height: 64px;
         align-items: flex-start;
@@ -621,11 +701,23 @@
         padding: 52px 0;
       }
 
+      .header-inner,
+      .section-inner,
+      .footer-inner {
+        width: min(1160px, calc(100% - 16px));
+      }
+
       .graph-card,
       .slider-card,
       .reassure-card,
       .cta-box {
         padding: 20px;
+      }
+
+      .graph-layout,
+      .helper-grid,
+      .cta-box {
+        grid-template-columns: 1fr;
       }
 
       .cta-actions {
@@ -634,6 +726,7 @@
 
       .cta-actions .btn {
         width: 100%;
+        min-width: 0;
       }
     }
   </style>
@@ -708,10 +801,9 @@
           <div class="cta-copy">
             <span class="overline">Next Step</span>
             <h2>このバランスを持って、次の確認へ進みます</h2>
-            <p>ここでの調整は仮の下書きです。店頭での微調整を前提にしつつ、<br>今のイメージを次のページへつなげられます。</p>
+            <p>ここでの調整は仮の下書きです。店頭での微調整を前提にしつつ、今のイメージを次のページへつなげられます。</p>
             <div class="cta-actions">
               <a class="btn btn-primary" id="reserve-link" href="reservation.html">この内容で予約へ進む</a>
-              <a class="btn btn-secondary" href="questionnaire.html">質問に戻る</a>
             </div>
           </div>
           <div class="reassure-card" aria-label="画像プレースホルダー">
