@@ -441,8 +441,8 @@
     }
 
     .slot-modal-card {
-      width: min(1240px, calc(100vw - 32px));
-      max-height: min(82vh, 860px);
+      width: min(920px, calc(100vw - 48px));
+      max-height: min(76vh, 780px);
       border-radius: 24px;
       border: 1px solid rgba(201, 174, 155, 0.72);
       background: rgba(255, 250, 245, 0.98);
@@ -507,7 +507,9 @@
 
     .slot-day-block {
       display: grid;
-      gap: 8px;
+      grid-template-columns: minmax(150px, 180px) minmax(0, 1fr);
+      gap: 12px;
+      align-items: center;
       padding: 12px 0;
       border-top: 1px solid rgba(216, 203, 192, 0.92);
     }
@@ -592,20 +594,48 @@
     }
 
     .slot-day-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      align-items: center;
-      flex-wrap: wrap;
+      display: grid;
+      gap: 4px;
+      align-content: center;
     }
 
     .slot-day-head strong {
       font-size: 15px;
     }
 
-    .slot-day-head span {
+    .slot-chip {
+      width: fit-content;
+      min-height: 28px;
+      padding: 0 10px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       font-size: 12px;
-      color: var(--muted);
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: #7f5b4b;
+      background: #f6ebe4;
+      border: 1px solid rgba(208, 176, 157, 0.92);
+    }
+
+    .slot-chip.is-recommended {
+      color: #58715b;
+      background: #edf4eb;
+      border-color: rgba(180, 201, 176, 0.95);
+    }
+
+    .slot-chip.is-instructor {
+      color: #4b5d7f;
+      background: #eef3fb;
+      border-color: rgba(180, 194, 221, 0.95);
+      margin-left: auto;
+    }
+
+    .slot-chip.is-instructor.is-female {
+      color: #8a5870;
+      background: #faedf3;
+      border-color: rgba(227, 187, 205, 0.95);
     }
 
     .time-grid {
@@ -616,13 +646,31 @@
 
     .time-slot {
       min-height: 48px;
-      padding: 0 12px;
+      padding: 8px 12px;
       border-radius: 14px;
       border: 1px solid var(--line);
       background: #fff;
       color: var(--text);
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: flex-start;
+      flex-wrap: wrap;
       cursor: pointer;
       transition: border-color 0.18s ease, background 0.18s ease, transform 0.18s ease;
+    }
+
+    .time-slot-time {
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    .time-slot .slot-chip {
+      min-height: 24px;
+      padding: 0 8px;
+      font-size: 11px;
     }
 
     .time-slot:hover,
@@ -814,14 +862,19 @@
 
       .summary-panel,
       .side-panel {
-        padding: 14px;
-        gap: 12px;
+        padding: 16px;
+        gap: 0;
       }
 
       .summary-panel,
       .booking-panel,
       .side-panel {
         align-self: stretch;
+        height: 100%;
+      }
+
+      .side-panel {
+        align-content: space-between;
       }
 
       .booking-panel {
@@ -1003,6 +1056,12 @@
         grid-template-columns: 1fr;
       }
 
+      .slot-day-block {
+        grid-template-columns: 1fr;
+        gap: 8px;
+        align-items: stretch;
+      }
+
       .slot-modal-card {
         width: 100%;
       }
@@ -1067,6 +1126,7 @@
                     <option value="1名">1名</option>
                     <option value="2名">2名</option>
                     <option value="3名">3名</option>
+                    <option value="4名以上">4名以上</option>
                   </select>
                 </div>
               </div>
@@ -1099,7 +1159,7 @@
       <section class="memo-panel">
         <article class="memo-card">
           <h3>スタッフに伝えたいこと（任意）</h3>
-          <p class="memo-help">例: 甘さは控えめにしたい / 仕事用で使いたい / 最初は軽い方向から試したい</p>
+          <p class="memo-help">例: 甘さは控えめにしたい / 仕事用で使いたい / 最初は軽い方向から試したい / 4名以上の場合は人数を記入してください</p>
           <textarea id="staff-memo" placeholder="当日スタッフに伝えておきたいことがあれば入力してください。"></textarea>
         </article>
       </section>
@@ -1215,7 +1275,12 @@
     }
 
     function renderSlots() {
-      const times = ["10:30", "13:00", "15:30"];
+      // Mock slot data. Replace instructor values with backend data later.
+      const times = [
+        { time: "10:30", instructor: "原口", gender: "male" },
+        { time: "13:00", instructor: "清水", gender: "male" },
+        { time: "15:30", instructor: "大塚", gender: "female" }
+      ];
       const today = new Date();
       slotList.innerHTML = "";
       const weekData = [];
@@ -1270,18 +1335,21 @@
           dayBlock.innerHTML = `
             <div class="slot-day-head">
               <strong>${day.label}</strong>
-              <span>${day.meta}</span>
             </div>
             <div class="time-grid"></div>
           `;
 
           const grid = dayBlock.querySelector(".time-grid");
-          day.times.forEach((time) => {
+          day.times.forEach((slot) => {
             const button = document.createElement("button");
             button.type = "button";
             button.className = "time-slot";
-            button.textContent = time;
-            button.dataset.slot = `${day.label} ${time}`;
+            button.innerHTML = `
+              <span class="time-slot-time">${slot.time}</span>
+              <span class="slot-chip${day.meta === "おすすめ" ? " is-recommended" : ""}">${day.meta}</span>
+              <span class="slot-chip is-instructor${slot.gender === "female" ? " is-female" : ""}">${slot.instructor}</span>
+            `;
+            button.dataset.slot = `${day.label} ${slot.time}`;
             button.addEventListener("click", () => {
               selectSlot(button.dataset.slot);
               closeSlotModal();
