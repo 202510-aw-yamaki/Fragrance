@@ -779,6 +779,57 @@
         display: none;
       }
     }
+
+    @media (min-width: 68.75em) and (max-height: 840px) {
+
+      html,
+      body {
+        height: auto;
+        overflow: auto;
+      }
+
+      body {
+        display: block;
+      }
+
+      main {
+        width: var(--container);
+        margin: 0 auto;
+        height: auto;
+        display: grid;
+        grid-template-rows: none;
+        gap: 18px;
+        padding: 14px 0 20px;
+      }
+
+      main section {
+        padding: 0;
+        overflow: visible;
+      }
+
+      main>section>.section-inner {
+        height: auto;
+      }
+
+      .graph-layout {
+        height: auto;
+      }
+
+      .graph-card,
+      .slider-card,
+      .reassure-card {
+        height: auto;
+        overflow: visible;
+      }
+
+      .slider-card {
+        grid-template-rows: auto auto auto;
+      }
+
+      #slider-list {
+        grid-template-rows: none;
+      }
+    }
   </style>
 </head>
 
