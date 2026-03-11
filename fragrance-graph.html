@@ -93,6 +93,12 @@
       white-space: nowrap;
     }
 
+    .header-cta {
+      min-height: 40px;
+      padding: 0 16px;
+      white-space: nowrap;
+    }
+
     .btn {
       display: inline-flex;
       align-items: center;
@@ -689,16 +695,38 @@
         scroll-padding-top: 96px;
       }
 
+      #graph-adjustment .section-header p {
+        display: none;
+      }
+
+      #graph-adjustment {
+        padding: 0;
+      }
+
+      .slider-head output {
+        display: none;
+      }
+
       .header-inner {
         min-height: 64px;
-        align-items: flex-start;
-        justify-content: flex-start;
-        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        flex-direction: row;
         padding: 12px 0;
+      }
+
+      .header-cta {
+        min-height: 36px;
+        padding: 0 12px;
+        font-size: .82rem;
       }
 
       main section {
         padding: 52px 0;
+      }
+
+      #cta {
+        padding-bottom: 10px;
       }
 
       .header-inner,
@@ -728,6 +756,10 @@
         width: 100%;
         min-width: 0;
       }
+
+      .cta-box > .reassure-card {
+        display: none;
+      }
     }
   </style>
 </head>
@@ -735,8 +767,8 @@
 <body>
   <header class="site-header">
     <div class="header-inner">
-      <a class="brand" href="questionnaire.html" aria-label="質問ページへ戻る">FRAGRANCE WORKSHOP</a>
-      <div class="header-note">Graph Page</div>
+      <a class="brand" id="brand-link" href="香りワークショップ_トップページ.html" aria-label="トップページへ戻る">FRAGRANCE WORKSHOP</a>
+      <a class="btn btn-primary header-cta" href="reservation.html">予約する</a>
     </div>
   </header>
 
@@ -846,6 +878,7 @@
     const sliderList = document.getElementById("slider-list");
     const summaryList = document.getElementById("summary-list");
     const resetBtn = document.getElementById("reset-btn");
+    const brandLink = document.getElementById("brand-link");
     const reserveLink = document.getElementById("reserve-link");
     const presetButtons = document.querySelectorAll("[data-preset]");
     const defaults = Object.fromEntries(axes.map((axis) => [axis.id, axis.value]));
@@ -856,6 +889,13 @@
         updatedAt: new Date().toISOString()
       };
       window.sessionStorage.setItem("fragranceReservationDraft", JSON.stringify(payload));
+    }
+
+    function returnToTop() {
+      const confirmed = window.confirm("トップページへ戻ると、現在の調整は保存されません。戻りますか？");
+      if (!confirmed) return;
+      window.sessionStorage.removeItem("fragranceReservationDraft");
+      window.location.href = "香りワークショップ_トップページ.html";
     }
 
     function polarToCartesian(centerX, centerY, radius, angle) {
@@ -992,6 +1032,10 @@
       button.addEventListener("click", () => setPreset(button.dataset.preset));
     });
 
+    brandLink.addEventListener("click", (event) => {
+      event.preventDefault();
+      returnToTop();
+    });
     reserveLink.addEventListener("click", persistReservationDraft);
 
     renderGrid();
