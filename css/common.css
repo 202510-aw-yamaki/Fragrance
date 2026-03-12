@@ -20,6 +20,7 @@
   position: sticky;
   top: 0;
   z-index: 50;
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
   backdrop-filter: blur(14px);
   background: rgba(252, 248, 243, 0.82);
   border-bottom: 1px solid rgba(230, 221, 210, 0.88);
@@ -49,6 +50,27 @@
   width: auto;
   flex: 0 0 auto;
   white-space: nowrap;
+}
+
+@media (max-width: 47.9375em) {
+  .page-header-inner {
+    min-height: auto;
+    padding: 10px 0;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+  }
+
+  .brand {
+    font-size: .95rem;
+  }
+
+  .page-header-inner > .main-nav,
+  .page-header-inner > .header-actions,
+  .page-header-inner > .header-cta {
+    width: 100%;
+  }
 }
 
 .page-body {
@@ -120,6 +142,26 @@
 
 .section-label {
   color: #9b7364;
+}
+
+.glass-panel {
+  border: 1px solid rgba(201, 174, 155, 0.65);
+  background: var(--panel);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(8px);
+  border-radius: var(--radius-lg);
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: #f6eee8;
+  color: #855644;
+  font-size: 14px;
+  font-weight: 700;
 }
 
 .btn {

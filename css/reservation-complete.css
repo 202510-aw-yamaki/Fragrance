@@ -7,7 +7,7 @@
   --accent-deep: #9f6a54;
   --soft-green: #e7efe6;
   --soft-blue: #eef4f7;
-  --container: min(1120px, calc(100vw - 24px));
+  --container: min(1160px, calc(100% - 32px));
   --shadow: 0 18px 44px rgba(81, 58, 42, 0.1);
   --radius-lg: 28px;
   --radius-md: 22px;
@@ -40,17 +40,6 @@ a {
   display: grid;
   gap: 18px;
   align-items: start;
-}
-
-.hero-card,
-.detail-card,
-.note-card,
-.action-card {
-  border: 1px solid rgba(201, 174, 155, 0.65);
-  background: var(--panel);
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(8px);
-  border-radius: var(--radius-lg);
 }
 
 .hero-card,
@@ -151,18 +140,6 @@ a {
   font-weight: 700;
   line-height: 1.45;
   word-break: break-word;
-}
-
-.status-strip {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 14px;
-  border-radius: 999px;
-  background: #f6eee8;
-  color: #855644;
-  font-size: 14px;
-  font-weight: 700;
 }
 
 .detail-summary {
@@ -275,17 +252,6 @@ a {
   .header-inner,
   .complete-shell {
     width: min(1120px, calc(100vw - 16px));
-  }
-
-  .header-inner {
-    min-height: 64px;
-    padding: 10px 0;
-    gap: 10px;
-  }
-
-  .brand {
-    font-size: 14px;
-    letter-spacing: 0.04em;
   }
 
   .complete-shell {

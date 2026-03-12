@@ -727,16 +727,21 @@
     width: min(1240px, calc(100% - 16px));
   }
 
-  .header-inner {
-    min-height: 64px;
-  }
-
   .step-strip {
     display: none;
   }
 
   .main-nav ul {
     gap: 8px;
+    width: 100%;
+    min-width: 0;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .main-nav li {
+    flex: 1 1 0;
   }
 
   .main-nav button {
@@ -746,6 +751,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
   }
 
   .nav-text {

@@ -112,10 +112,10 @@
     function hasAnyAnswer() { return Object.keys(answers).length > 0; }
     function confirmReturnToTop() {
       if (!hasAnyAnswer()) return true;
-      return window.confirm("トップページへ戻ると、ここまでの回答データはなくなります。戻りますか？");
+      return window.confirm("トップページへ戻ると、ここまでの回答は保存されません。戻りますか？");
     }
     function confirmReturnToStep1() {
-      return window.confirm("STEP1は別ページのため、STEP2で選んだ内容は引き継がれません。STEP1に戻りますか？");
+      return window.confirm("STEP1に戻ると、STEP2で選んだ内容は保存されません。戻りますか？");
     }
     function returnToTop() {
       if (!confirmReturnToTop()) return;

@@ -641,16 +641,8 @@ input[type="range"] {
     display: none;
   }
 
-  .header-inner {
-    min-height: 64px;
-    align-items: center;
-    justify-content: space-between;
-    flex-direction: row;
-    padding: 12px 0;
-  }
-
   .header-cta {
-    min-height: 36px;
+    min-height: 42px;
     padding: 0 12px;
     font-size: .82rem;
   }
