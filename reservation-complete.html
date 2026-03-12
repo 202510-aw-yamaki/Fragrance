@@ -324,6 +324,7 @@
     }
 
     @media (min-width: 48em) and (max-width: 68.6875em) {
+
       .detail-row,
       .note-row {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -336,6 +337,7 @@
     }
 
     @media (max-width: 47.9375em) {
+
       .header-inner,
       .complete-shell {
         width: min(1120px, calc(100vw - 16px));
@@ -415,12 +417,11 @@
         </article>
 
         <article class="action-card">
-          <h2>次の導線</h2>
           <p class="countdown"><span id="countdown-seconds">30</span>秒後にトップページへ自動で戻ります。</p>
-          <p>そのまま待つか、必要に応じて下の導線から移動してください。</p>
+          <p>必要に応じて下の導線から移動してください。</p>
           <div class="actions">
             <button class="btn btn-secondary" id="stay-here-btn" type="button">このページにとどまる</button>
-            <a class="btn btn-primary" href="香りワークショップ_トップページ.html">今すぐトップページへ戻る</a>
+            <a class="btn btn-primary" href="香りワークショップ_トップページ.html">トップページへ戻る</a>
             <a class="btn btn-secondary" href="reservation.html">予約内容を確認する</a>
           </div>
         </article>
@@ -465,7 +466,7 @@
         timerId = null;
       }
       countdownEl.textContent = "停止";
-      countdownEl.parentElement.textContent = "自動遷移を停止しました。このページにとどまっています。";
+      countdownEl.parentElement.textContent = "自動遷移を停止しました。";
     }
 
     try {
