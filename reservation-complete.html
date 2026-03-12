@@ -5,61 +5,141 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>予約完了 | Fragrance Workshop</title>
-  <meta name="description" content="Fragrance Workshop の予約完了ページです。予約日時と人数を確認できます。">
+  <meta name="description" content="Fragrance Workshop の予約完了ページです。予約日時や来店情報を確認できます。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #fbf6ef;
-      --panel: rgba(255, 255, 255, 0.86);
-      --line: #e6d9ca;
-      --text: #2f2925;
-      --muted: #6f665f;
-      --accent: #a86f4a;
-      --accent-deep: #825335;
-      --shadow: 0 20px 50px rgba(90, 65, 44, 0.14);
-      --radius-xl: 28px;
-      --radius-lg: 22px;
-      --radius-md: 16px;
-      --container: min(760px, calc(100% - 32px));
+      --panel: rgba(255, 251, 246, 0.94);
+      --line: rgba(211, 195, 182, 0.9);
+      --text: #1e3448;
+      --muted: #715f54;
+      --accent: #c88972;
+      --accent-deep: #9f6a54;
+      --soft-green: #e7efe6;
+      --soft-blue: #eef4f7;
+      --container: min(1120px, calc(100vw - 24px));
+      --shadow: 0 18px 44px rgba(81, 58, 42, 0.1);
+      --radius-lg: 28px;
+      --radius-md: 22px;
+      --radius-sm: 18px;
     }
 
     * {
       box-sizing: border-box;
     }
 
+    html,
+    body {
+      min-width: 375px;
+    }
+
     body {
       margin: 0;
       min-height: 100vh;
-      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+      font-family: "Noto Sans JP", sans-serif;
       color: var(--text);
       background:
-        radial-gradient(circle at top left, rgba(238, 221, 205, 0.72), transparent 30%),
-        radial-gradient(circle at bottom right, rgba(220, 232, 223, 0.62), transparent 34%),
-        linear-gradient(180deg, #f8f1e8 0%, var(--bg) 45%, #fffdf9 100%);
-      display: grid;
-      place-items: center;
-      padding: 32px 0;
+        radial-gradient(circle at top left, rgba(232, 216, 204, 0.78), transparent 32%),
+        linear-gradient(180deg, #f8f4ef 0%, #f1ebe4 100%);
+      line-height: 1.7;
+      letter-spacing: 0.02em;
     }
 
-    main {
+    a {
+      color: inherit;
+    }
+
+    .header-inner,
+    .complete-shell {
       width: var(--container);
+      margin: 0 auto;
     }
 
-    .complete-card {
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(14px);
+      background: rgba(252, 248, 243, 0.82);
+      border-bottom: 1px solid rgba(230, 221, 210, 0.88);
+    }
+
+    .header-inner {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      text-decoration: none;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+      color: var(--text);
+    }
+
+    .header-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 0 16px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.84);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .complete-shell {
+      padding: 18px 0 28px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .complete-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .panel,
+    .hero-card,
+    .detail-card,
+    .note-card,
+    .action-card {
+      border: 1px solid rgba(201, 174, 155, 0.65);
       background: var(--panel);
-      border: 1px solid rgba(230, 217, 202, 0.9);
-      border-radius: var(--radius-xl);
       box-shadow: var(--shadow);
-      padding: 36px;
-      backdrop-filter: blur(12px);
+      backdrop-filter: blur(8px);
+      border-radius: var(--radius-lg);
+    }
+
+    .hero-card,
+    .detail-card,
+    .note-card,
+    .action-card {
+      padding: 22px;
+    }
+
+    .main-column,
+    .side-column {
+      display: grid;
+      gap: 14px;
     }
 
     .eyebrow {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 8px 14px;
+      min-height: 32px;
+      padding: 0 12px;
       border-radius: 999px;
-      background: rgba(168, 111, 74, 0.12);
+      background: rgba(200, 137, 114, 0.14);
       color: var(--accent-deep);
       font-size: 13px;
       font-weight: 700;
@@ -67,31 +147,34 @@
       text-transform: uppercase;
     }
 
-    h1 {
-      margin: 18px 0 10px;
-      font-size: clamp(30px, 4vw, 44px);
+    .hero-card h1 {
+      margin: 14px 0 10px;
+      font-size: clamp(28px, 3.2vw, 44px);
       line-height: 1.15;
+      letter-spacing: -0.03em;
     }
 
-    .lead {
-      margin: 0 0 28px;
+    .hero-card p,
+    .note-card p,
+    .detail-note,
+    .countdown {
+      margin: 0;
       color: var(--muted);
-      font-size: 16px;
-      line-height: 1.8;
     }
 
     .detail-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 14px;
-      margin-bottom: 24px;
     }
 
     .detail-item {
+      display: grid;
+      gap: 8px;
       padding: 18px;
+      border-radius: var(--radius-sm);
       border: 1px solid var(--line);
-      border-radius: var(--radius-md);
-      background: rgba(255, 255, 255, 0.72);
+      background: #fffdfa;
     }
 
     .detail-item.full {
@@ -99,33 +182,77 @@
     }
 
     .detail-label {
-      display: block;
-      margin-bottom: 8px;
-      color: var(--muted);
       font-size: 13px;
       font-weight: 700;
+      color: #7a5d52;
+      letter-spacing: 0.04em;
     }
 
     .detail-value {
-      font-size: 20px;
+      font-size: clamp(18px, 2vw, 24px);
       font-weight: 700;
-      line-height: 1.5;
+      line-height: 1.45;
       word-break: break-word;
     }
 
-    .countdown {
-      margin: 0 0 24px;
-      padding: 16px 18px;
-      border-radius: var(--radius-md);
-      background: rgba(168, 111, 74, 0.08);
-      color: var(--accent-deep);
+    .detail-note {
+      margin-top: 14px;
+      font-size: 14px;
+    }
+
+    .status-strip {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: #f6eee8;
+      color: #855644;
+      font-size: 14px;
       font-weight: 700;
     }
 
+    .note-card {
+      background: linear-gradient(180deg, var(--soft-blue), #fbfdfe);
+      border-color: rgba(188, 207, 220, 0.95);
+    }
+
+    .note-card h2,
+    .action-card h2,
+    .detail-card h2 {
+      margin: 0 0 12px;
+      font-size: 1.08rem;
+    }
+
+    .info-list {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .countdown {
+      padding: 16px 18px;
+      border-radius: var(--radius-sm);
+      background: rgba(200, 137, 114, 0.08);
+      font-weight: 700;
+      color: var(--accent-deep);
+    }
+
+    .action-card {
+      background: linear-gradient(180deg, rgba(246, 238, 231, 0.98), rgba(250, 246, 241, 0.96));
+    }
+
+    .action-card p {
+      margin: 0 0 14px;
+      color: var(--muted);
+    }
+
     .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
+      display: grid;
+      gap: 10px;
     }
 
     .btn {
@@ -134,22 +261,27 @@
       align-items: center;
       justify-content: center;
       min-height: 48px;
-      padding: 0 20px;
+      width: 100%;
+      padding: 0 18px;
       border-radius: 999px;
       border: 1px solid transparent;
       text-decoration: none;
       font-weight: 700;
-      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+      transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
     }
 
-    .btn:hover {
+    .btn:hover,
+    .btn:focus-visible,
+    .header-link:hover,
+    .header-link:focus-visible {
       transform: translateY(-1px);
     }
 
     .btn-primary {
-      background: linear-gradient(135deg, var(--accent), var(--accent-deep));
-      color: #fff;
-      box-shadow: 0 12px 24px rgba(130, 83, 53, 0.22);
+      background: linear-gradient(135deg, var(--accent), #dfb8a6);
+      border-color: #c58975;
+      color: #fffdfb;
+      box-shadow: 0 12px 24px rgba(130, 83, 53, 0.16);
     }
 
     .btn-secondary {
@@ -158,63 +290,123 @@
       color: var(--text);
     }
 
-    @media (max-width: 640px) {
-      body {
-        padding: 20px 0;
+    @media (min-width: 48em) and (max-width: 68.6875em) {
+      .complete-layout {
+        grid-template-columns: 1fr;
       }
 
-      .complete-card {
-        padding: 24px 18px;
+      .side-column {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: start;
+      }
+    }
+
+    @media (max-width: 47.9375em) {
+      .header-inner,
+      .complete-shell {
+        width: min(1120px, calc(100vw - 16px));
       }
 
+      .header-inner {
+        min-height: 64px;
+        padding: 10px 0;
+      }
+
+      .header-link {
+        min-height: 36px;
+        padding: 0 12px;
+        font-size: 13px;
+      }
+
+      .complete-shell {
+        padding-top: 12px;
+      }
+
+      .complete-layout,
+      .side-column,
       .detail-grid {
         grid-template-columns: 1fr;
       }
 
-      .actions {
-        flex-direction: column;
-      }
-
-      .btn {
-        width: 100%;
+      .hero-card,
+      .detail-card,
+      .note-card,
+      .action-card {
+        padding: 18px;
       }
     }
   </style>
 </head>
 
 <body>
-  <main>
-    <section class="complete-card" aria-labelledby="complete-title">
-      <div class="eyebrow">Reservation Complete</div>
-      <h1 id="complete-title">予約が完了しました</h1>
-      <p class="lead">ご予約内容を以下の通り受け付けました。当日はこの内容をもとにご案内します。</p>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="香りワークショップ_トップページ.html" aria-label="トップへ戻る">FRAGRANCE WORKSHOP</a>
+      <a class="header-link" href="reservation.html">予約内容を確認する</a>
+    </div>
+  </header>
 
-      <div class="detail-grid">
-        <article class="detail-item">
-          <span class="detail-label">予約日時</span>
-          <div class="detail-value" id="reservation-slot">確認中</div>
+  <main class="complete-shell">
+    <div class="complete-layout">
+      <section class="main-column" aria-labelledby="complete-title">
+        <article class="hero-card">
+          <div class="eyebrow">Reservation Complete</div>
+          <h1 id="complete-title">予約が完了しました</h1>
+          <p>ご予約内容を受け付けました。当日はこの内容をもとにスタッフがご案内します。香りの細かな調整は店頭で一緒に進められます。</p>
         </article>
-        <article class="detail-item">
-          <span class="detail-label">人数</span>
-          <div class="detail-value" id="reservation-guests">確認中</div>
-        </article>
-        <article class="detail-item">
-          <span class="detail-label">来店内容</span>
-          <div class="detail-value" id="reservation-visit-type">確認中</div>
-        </article>
-        <article class="detail-item full" id="memo-item" hidden>
-          <span class="detail-label">スタッフへのメモ</span>
-          <div class="detail-value" id="reservation-memo"></div>
-        </article>
-      </div>
 
-      <p class="countdown"><span id="countdown-seconds">30</span>秒後にトップページに遷移します。</p>
+        <article class="detail-card" aria-labelledby="detail-heading">
+          <div class="status-strip">現在の予約内容</div>
+          <h2 id="detail-heading">予約情報</h2>
+          <div class="detail-grid">
+            <section class="detail-item">
+              <span class="detail-label">予約日時</span>
+              <div class="detail-value" id="reservation-slot">確認中</div>
+            </section>
+            <section class="detail-item">
+              <span class="detail-label">人数</span>
+              <div class="detail-value" id="reservation-guests">確認中</div>
+            </section>
+            <section class="detail-item">
+              <span class="detail-label">来店内容</span>
+              <div class="detail-value" id="reservation-visit-type">確認中</div>
+            </section>
+            <section class="detail-item full" id="memo-item" hidden>
+              <span class="detail-label">スタッフへのメモ</span>
+              <div class="detail-value" id="reservation-memo"></div>
+            </section>
+          </div>
+          <p class="detail-note">将来的な本実装では、この予約情報を Spring Boot 側の予約登録処理に送る前提です。現段階ではフロント確認用の完了表示として扱います。</p>
+        </article>
+      </section>
 
-      <div class="actions">
-        <a class="btn btn-primary" href="香りワークショップ_トップページ.html">今すぐトップページへ戻る</a>
-        <a class="btn btn-secondary" href="reservation.html">予約内容を確認する</a>
-      </div>
-    </section>
+      <aside class="side-column">
+        <article class="note-card">
+          <h2>来店前メモ</h2>
+          <p>時間や人数の変更が必要になった場合は、再度予約ページで内容を確認できます。メモが未入力でも当日の案内には支障ありません。</p>
+        </article>
+
+        <article class="action-card">
+          <h2>次の導線</h2>
+          <p class="countdown"><span id="countdown-seconds">30</span>秒後にトップページへ自動で戻ります。</p>
+          <p>そのまま待つか、必要に応じて下の導線から移動してください。</p>
+          <div class="actions">
+            <button class="btn btn-secondary" id="stay-here-btn" type="button">このページにとどまる</button>
+            <a class="btn btn-primary" href="香りワークショップ_トップページ.html">今すぐトップページへ戻る</a>
+            <a class="btn btn-secondary" href="reservation.html">予約内容を確認する</a>
+          </div>
+        </article>
+
+        <article class="note-card">
+          <h2>当日の流れ</h2>
+          <ul class="info-list">
+            <li>予約内容を起点にスタッフが候補を絞って案内します</li>
+            <li>店頭で香りの強さや余韻を微調整できます</li>
+            <li>メモ欄の内容は当日の会話の参考として扱います</li>
+          </ul>
+        </article>
+      </aside>
+    </div>
   </main>
 
   <script>
@@ -226,8 +418,20 @@
     const visitTypeEl = document.getElementById("reservation-visit-type");
     const memoEl = document.getElementById("reservation-memo");
     const memoItem = document.getElementById("memo-item");
+    const stayHereBtn = document.getElementById("stay-here-btn");
 
     let reservation = null;
+    let timerId = null;
+    let secondsLeft = 30;
+
+    function stopCountdown() {
+      if (timerId !== null) {
+        window.clearInterval(timerId);
+        timerId = null;
+      }
+      countdownEl.textContent = "停止";
+      countdownEl.parentElement.textContent = "自動遷移を停止しました。このページにとどまっています。";
+    }
 
     try {
       reservation = JSON.parse(window.sessionStorage.getItem(STORAGE_KEY) || "null");
@@ -247,13 +451,15 @@
         memoItem.hidden = false;
       }
 
-      let secondsLeft = 30;
-      const timerId = window.setInterval(() => {
+      stayHereBtn.addEventListener("click", stopCountdown);
+
+      timerId = window.setInterval(() => {
         secondsLeft -= 1;
         countdownEl.textContent = String(secondsLeft);
 
         if (secondsLeft <= 0) {
           window.clearInterval(timerId);
+          timerId = null;
           window.location.replace(TOP_PAGE_URL);
         }
       }, 1000);
