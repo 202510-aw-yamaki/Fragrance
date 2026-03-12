@@ -1205,7 +1205,7 @@
   </div>
 
   <div class="slot-modal" id="slot-modal" aria-hidden="true">
-    <div class="slot-modal-card" role="dialog" aria-modal="true" aria-labelledby="slot-modal-title">
+    <div class="slot-modal-card" id="slot-modal-card" role="dialog" aria-modal="true" aria-labelledby="slot-modal-title" aria-describedby="slot-modal-copy" tabindex="-1">
       <div class="slot-modal-head">
         <div>
           <h3 id="slot-modal-title">時間帯を選択</h3>
@@ -1234,6 +1234,8 @@
       sweet: 50
     };
 
+    const siteHeader = document.querySelector(".site-header");
+    const pageShell = document.querySelector(".page-shell");
     const summaryHeadline = document.getElementById("summary-headline");
     const summaryBody = document.getElementById("summary-body");
     const axisList = document.getElementById("axis-list");
@@ -1244,6 +1246,7 @@
     const guestCount = document.getElementById("guest-count");
     const staffMemo = document.getElementById("staff-memo");
     const slotModal = document.getElementById("slot-modal");
+    const slotModalCard = document.getElementById("slot-modal-card");
     const slotModalPanels = document.getElementById("slot-modal-panels");
     const slotModalTitle = document.getElementById("slot-modal-title");
     const slotModalCopy = document.getElementById("slot-modal-copy");
@@ -1251,6 +1254,26 @@
 
     let selectedSlot = "";
     let activeWeekKey = "";
+    let lastModalTrigger = null;
+
+    function getFocusableElements(container) {
+      return [...container.querySelectorAll(
+        'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      )].filter((element) => !element.hidden && element.offsetParent !== null);
+    }
+
+    function setBackgroundInert(isInert) {
+      [siteHeader, pageShell].forEach((element) => {
+        if (!element) return;
+        if (isInert) {
+          element.setAttribute("inert", "");
+          element.setAttribute("aria-hidden", "true");
+        } else {
+          element.removeAttribute("inert");
+          element.removeAttribute("aria-hidden");
+        }
+      });
+    }
 
     function loadAxes() {
       try {
@@ -1352,8 +1375,11 @@
         tab.type = "button";
         tab.className = "slot-tab";
         tab.dataset.weekKey = week.key;
+        tab.setAttribute("aria-haspopup", "dialog");
+        tab.setAttribute("aria-controls", "slot-modal");
+        tab.setAttribute("aria-expanded", "false");
         tab.innerHTML = `<strong>${week.title}</strong><span>${week.range}</span>`;
-        tab.addEventListener("click", () => selectWeek(week.key));
+        tab.addEventListener("click", () => selectWeek(week.key, tab));
         tabs.appendChild(tab);
 
         const panel = document.createElement("section");
@@ -1381,6 +1407,7 @@
             const button = document.createElement("button");
             button.type = "button";
             button.className = "time-slot";
+            button.setAttribute("aria-pressed", "false");
             button.innerHTML = `
               <span class="time-slot-time">${slot.time}</span>
               <span class="slot-chip${day.meta === "おすすめ" ? " is-recommended" : ""}">${day.meta}</span>
@@ -1403,15 +1430,19 @@
       slotList.appendChild(tabs);
     }
 
-    function selectWeek(weekKey) {
+    function selectWeek(weekKey, triggerButton = null) {
       activeWeekKey = weekKey;
       document.querySelectorAll(".slot-tab").forEach((button) => {
         button.classList.toggle("active", button.dataset.weekKey === weekKey);
+        button.setAttribute("aria-expanded", button.dataset.weekKey === weekKey ? "true" : "false");
       });
       document.querySelectorAll(".slot-panel").forEach((panel) => {
         panel.classList.toggle("active", panel.dataset.weekKey === weekKey);
       });
       const activeTab = document.querySelector(`.slot-tab[data-week-key="${weekKey}"]`);
+      if (triggerButton) {
+        lastModalTrigger = triggerButton;
+      }
       if (activeTab) {
         slotModalTitle.textContent = `${activeTab.querySelector("strong").textContent} の予約枠`;
         slotModalCopy.textContent = "この週の7日分を表示しています。ご希望の日時をひとつ選んでください。";
@@ -1421,13 +1452,30 @@
 
     function openSlotModal() {
       updateSlotModalDensity();
+      setBackgroundInert(true);
       slotModal.classList.add("open");
       slotModal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+      window.requestAnimationFrame(() => {
+        const activePanel = slotModalPanels.querySelector(`.slot-panel[data-week-key="${activeWeekKey}"]`);
+        const selectedButton = activePanel?.querySelector('.time-slot.selected');
+        const firstButton = activePanel?.querySelector(".time-slot");
+        const focusTarget = selectedButton || firstButton || slotClose || slotModalCard;
+        focusTarget.focus();
+      });
     }
 
-    function closeSlotModal() {
+    function closeSlotModal({ restoreFocus = true } = {}) {
       slotModal.classList.remove("open");
       slotModal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+      setBackgroundInert(false);
+      document.querySelectorAll(".slot-tab").forEach((button) => {
+        button.setAttribute("aria-expanded", "false");
+      });
+      if (restoreFocus && lastModalTrigger) {
+        lastModalTrigger.focus();
+      }
     }
 
     function updateSlotModalDensity() {
@@ -1442,6 +1490,7 @@
       selectedSlot = slot;
       document.querySelectorAll(".time-slot").forEach((button) => {
         button.classList.toggle("selected", button.dataset.slot === slot);
+        button.setAttribute("aria-pressed", button.dataset.slot === slot ? "true" : "false");
       });
       updateSelectionState();
     }
@@ -1463,20 +1512,9 @@
       staffMemo.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
-    function handleConfirm() {
-      if (!selectedSlot) return;
-      const message = [
-        "予約内容を仮確定しました。",
-        `日時: ${selectedSlot}`,
-        `来店内容: ${visitType.value}`,
-        `人数: ${guestCount.value}`,
-        staffMemo.value ? `メモ: ${staffMemo.value}` : "メモ: なし"
-      ].join("\n");
-      window.alert(message);
-    }
-
     function handleReservationComplete() {
       if (!selectedSlot) return;
+      // Spring Boot 側の予約登録 API 実装後はここで送信処理を接続する。
       const payload = {
         slot: selectedSlot,
         visitType: visitType.value,
@@ -1497,9 +1535,31 @@
     slotModal.addEventListener("click", (event) => {
       if (event.target === slotModal) closeSlotModal();
     });
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape" && slotModal.classList.contains("open")) {
+    slotModal.addEventListener("keydown", (event) => {
+      if (!slotModal.classList.contains("open")) return;
+      if (event.key === "Escape") {
+        event.preventDefault();
         closeSlotModal();
+        return;
+      }
+      if (event.key !== "Tab") return;
+
+      const focusableElements = getFocusableElements(slotModalCard);
+      if (focusableElements.length === 0) {
+        event.preventDefault();
+        slotModalCard.focus();
+        return;
+      }
+
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+
+      if (event.shiftKey && document.activeElement === firstElement) {
+        event.preventDefault();
+        lastElement.focus();
+      } else if (!event.shiftKey && document.activeElement === lastElement) {
+        event.preventDefault();
+        firstElement.focus();
       }
     });
     window.addEventListener("resize", updateSlotModalDensity);
