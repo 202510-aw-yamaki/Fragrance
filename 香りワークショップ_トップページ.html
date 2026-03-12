@@ -4,6 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/common.css">
   <title>香りワークショップ | 来店前の香りづくり準備</title>
   <meta name="description" content="8問・約1分。診断ではなく来店前から始める香りづくりの準備ページです。">
   <style>
@@ -32,16 +33,11 @@
     }
 
     body {
-      margin: 0;
-      min-width: 375px;
       font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
-      color: var(--text);
       background:
         radial-gradient(circle at top left, rgba(239, 219, 199, .58), transparent 28%),
         radial-gradient(circle at top right, rgba(222, 233, 222, .58), transparent 30%),
         linear-gradient(180deg, #f9f4ed 0%, #fcf8f3 34%, #fffdf9 100%);
-      line-height: 1.7;
-      letter-spacing: .02em;
     }
 
     a {
@@ -52,37 +48,6 @@
     svg {
       display: block;
       max-width: 100%;
-    }
-
-    .header-inner,
-    .section-inner,
-    .footer-inner {
-      width: var(--container);
-      margin: 0 auto;
-    }
-
-    .site-header {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      backdrop-filter: blur(14px);
-      background: rgba(252, 248, 243, .82);
-      border-bottom: 1px solid rgba(230, 221, 210, .88);
-    }
-
-    .header-inner {
-      min-height: 72px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-    }
-
-    .brand {
-      text-decoration: none;
-      font-weight: 800;
-      letter-spacing: .05em;
-      white-space: nowrap;
     }
 
     .header-top {
@@ -180,18 +145,6 @@
       min-height: 42px;
       padding: 0 16px;
       white-space: nowrap;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 48px;
-      border-radius: 999px;
-      text-decoration: none;
-      font-weight: 700;
-      border: 1px solid transparent;
-      padding: 0 18px;
     }
 
     .btn-primary {
@@ -1375,9 +1328,9 @@
   </style>
 </head>
 
-<body>
+<body class="page-canvas">
   <header class="site-header">
-    <div class="header-inner">
+    <div class="header-inner page-header-inner site-container">
       <div class="header-top">
         <a class="brand" href="#top" aria-label="トップへ戻る">FRAGRANCE WORKSHOP</a>
         <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="メニューを開く">
@@ -1403,7 +1356,7 @@
 
   <main id="main">
     <section class="hero" id="top" aria-labelledby="hero-title">
-      <div class="section-inner">
+      <div class="section-inner site-container">
         <div class="hero-wrap">
           <div class="hero-visual" aria-hidden="true">
           </div>
@@ -1501,7 +1454,7 @@
     </section>
 
     <section id="question-preview" aria-labelledby="preview-heading">
-      <div class="section-inner">
+      <div class="section-inner site-container">
         <div class="section-header">
           <span class="eyebrow">Question Page Preview</span>
           <h2 id="preview-heading">次ページで始まる体験を先に確認</h2>
@@ -1580,7 +1533,7 @@
     </section>
 
     <section id="value" aria-labelledby="value-heading">
-      <div class="section-inner">
+      <div class="section-inner site-container">
         <div class="section-header">
           <span class="eyebrow">Experience Value</span>
           <h2 id="value-heading">体験価値</h2>
@@ -1632,7 +1585,7 @@
     </section>
 
     <section id="reassurance" aria-labelledby="reassurance-heading">
-      <div class="section-inner">
+      <div class="section-inner site-container">
         <div class="section-header">
           <span class="eyebrow">Reassurance</span>
           <h2 id="reassurance-heading">安心して進める理由</h2>
@@ -1683,7 +1636,7 @@
     </section>
 
     <section class="cta-section" id="final-cta" aria-labelledby="final-cta-heading">
-      <div class="section-inner">
+      <div class="section-inner site-container">
         <div class="section-header">
           <span class="eyebrow">Final Call To Action</span>
           <h2 id="final-cta-heading">私たちからのお願い</h2>
@@ -1720,7 +1673,7 @@
   </main>
 
   <footer class="site-footer">
-    <div class="footer-inner">
+    <div class="footer-inner site-container">
       <p>Fragrance Workshop Landing Page</p>
     </div>
   </footer>

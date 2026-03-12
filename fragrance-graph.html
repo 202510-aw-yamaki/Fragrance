@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>香りグラフ | 香りバランスの微調整</title>
   <meta name="description" content="アンケート回答後の香りバランス確認ページです。5軸グラフとスライダーで微調整し、店頭での香りづくり準備につなげます。">
+  <link rel="stylesheet" href="css/common.css">
   <style>
     :root {
       --bg: #fcf8f3;
@@ -21,10 +22,6 @@
       --container: min(1160px, calc(100% - 32px));
     }
 
-    * {
-      box-sizing: border-box;
-    }
-
     html {
       min-width: 375px;
       scroll-behavior: smooth;
@@ -32,16 +29,11 @@
     }
 
     body {
-      margin: 0;
-      min-width: 375px;
       font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
-      color: var(--text);
       background:
         radial-gradient(circle at top left, rgba(239, 219, 199, .58), transparent 28%),
         radial-gradient(circle at top right, rgba(222, 233, 222, .58), transparent 30%),
         linear-gradient(180deg, #f9f4ed 0%, #fcf8f3 34%, #fffdf9 100%);
-      line-height: 1.7;
-      letter-spacing: .02em;
     }
 
     a {
@@ -54,35 +46,8 @@
       max-width: 100%;
     }
 
-    .header-inner,
-    .section-inner,
-    .footer-inner {
-      width: var(--container);
-      margin: 0 auto;
-    }
-
-    .site-header {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      backdrop-filter: blur(14px);
-      background: rgba(252, 248, 243, .82);
-      border-bottom: 1px solid rgba(230, 221, 210, .88);
-    }
-
     .header-inner {
-      min-height: 72px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-    }
-
-    .brand {
-      text-decoration: none;
-      font-weight: 800;
-      letter-spacing: .05em;
-      white-space: nowrap;
+      color: var(--text);
     }
 
     .header-note {
@@ -100,18 +65,7 @@
     }
 
     .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 48px;
       max-width: 100%;
-      border-radius: 999px;
-      text-decoration: none;
-      font-weight: 700;
-      border: 1px solid transparent;
-      padding: 0 18px;
-      cursor: pointer;
-      font: inherit;
     }
 
     .btn-primary {
@@ -124,12 +78,6 @@
       background: rgba(255, 255, 255, .8);
       border-color: var(--line);
       color: var(--text);
-    }
-
-    .btn:hover,
-    .btn:focus-visible {
-      transform: translateY(-1px);
-      box-shadow: 0 16px 34px rgba(80, 63, 48, .14);
     }
 
     main section {
@@ -833,17 +781,18 @@
   </style>
 </head>
 
-<body>
+<body class="page-canvas">
   <header class="site-header">
-    <div class="header-inner">
-      <a class="brand" id="brand-link" href="香りワークショップ_トップページ.html" aria-label="トップページへ戻る">FRAGRANCE WORKSHOP</a>
+    <div class="header-inner page-header-inner site-container">
+      <a class="brand" id="brand-link" href="香りワークショップ_トップページ.html" aria-label="トップへ戻る">FRAGRANCE WORKSHOP</a>
       <a class="btn btn-primary header-cta" href="reservation.html">予約する</a>
     </div>
   </header>
 
-  <main>
-    <section id="graph-adjustment">
-      <div class="section-inner">
+  <main class="page-main">
+    <section id="graph-adjustment" class="page-section">
+      <div class="section-inner page-section-inner site-container">
+        <h1 class="visually-hidden">香りバランスの確認と微調整</h1>
         <div class="graph-layout">
           <article class="graph-card">
             <div class="section-header">
@@ -895,8 +844,8 @@
       </div>
     </section>
 
-    <section id="cta">
-      <div class="section-inner">
+    <section id="cta" class="page-section">
+      <div class="section-inner page-section-inner site-container">
         <div class="cta-box">
           <div class="cta-copy">
             <span class="overline">Next Step</span>
@@ -916,7 +865,7 @@
   </main>
 
   <footer class="site-footer">
-    <div class="footer-inner">
+    <div class="footer-inner site-container">
       <p>Fragrance Workshop Graph Page</p>
       <p>最終的な香りは店頭でスタッフと一緒に仕上げます。</p>
     </div>

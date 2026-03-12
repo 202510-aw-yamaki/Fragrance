@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/common.css">
   <style>
     :root {
       --panel: rgba(255, 251, 246, 0.94);
@@ -25,26 +26,16 @@
       --radius-sm: 18px;
     }
 
-    * {
-      box-sizing: border-box;
-    }
-
     html {
       min-width: 375px;
       scroll-padding-top: 88px;
     }
 
     body {
-      margin: 0;
-      min-width: 375px;
-      min-height: 100vh;
       font-family: "Noto Sans JP", sans-serif;
-      color: var(--text);
       background:
         radial-gradient(circle at top left, rgba(232, 216, 204, 0.78), transparent 32%),
         linear-gradient(180deg, #f8f4ef 0%, #f1ebe4 100%);
-      line-height: 1.7;
-      letter-spacing: 0.02em;
     }
 
     a,
@@ -58,34 +49,7 @@
       border: 0;
     }
 
-    .header-inner,
-    .page-shell {
-      width: var(--container);
-      margin: 0 auto;
-    }
-
-    .site-header {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      backdrop-filter: blur(14px);
-      background: rgba(252, 248, 243, 0.82);
-      border-bottom: 1px solid rgba(230, 221, 210, 0.88);
-    }
-
     .header-inner {
-      min-height: 72px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-    }
-
-    .brand {
-      text-decoration: none;
-      font-weight: 800;
-      letter-spacing: 0.05em;
-      white-space: nowrap;
       color: var(--text);
     }
 
@@ -99,8 +63,6 @@
 
     .page-shell {
       padding: 18px 0 24px;
-      display: grid;
-      gap: 14px;
     }
 
     .step-strip,
@@ -1104,17 +1066,17 @@
   </style>
 </head>
 
-<body>
+<body class="page-canvas">
   <header class="site-header">
-    <div class="header-inner">
+    <div class="header-inner page-header-inner site-container">
       <a class="brand" href="香りワークショップ_トップページ.html" aria-label="トップへ戻る">FRAGRANCE WORKSHOP</a>
       <button class="action-btn primary header-cta" id="confirm-btn" type="button" disabled>予約を確定する</button>
     </div>
   </header>
 
-  <div class="page-shell">
-    <main class="reservation-shell">
-      <aside class="panel summary-panel">
+  <div class="page-shell page-body site-container">
+    <main class="reservation-shell page-main">
+      <aside class="panel summary-panel page-panel">
         <div class="section-label">Current Tendency</div>
         <article class="lead-card">
           <small>あなたの今の傾向</small>
@@ -1128,7 +1090,7 @@
         </article>
       </aside>
 
-      <section class="panel booking-panel" aria-live="polite">
+      <section class="panel booking-panel page-panel" aria-live="polite">
         <div class="section-label">Reservation</div>
         <div class="status-line" id="selected-status">未選択: 来店日時を選んでください</div>
         <div class="booking-intro">
@@ -1171,7 +1133,7 @@
         </div>
       </section>
 
-      <aside class="panel side-panel">
+      <aside class="panel side-panel page-panel">
         <div class="visual-card">
           <strong>提案カウンターの空気感</strong>
           <p>当日は、ここまでの傾向をもとにベース候補を絞った状態から始めます。静かな器具や無地ボトルのある落ち着いた空気感を想定しています。</p>
