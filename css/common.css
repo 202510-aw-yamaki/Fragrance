@@ -126,6 +126,7 @@
 .section-label {
   display: inline-flex;
   align-items: center;
+  justify-self: start;
   min-height: 32px;
   padding: 0 12px;
   border-radius: 999px;
