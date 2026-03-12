@@ -82,19 +82,6 @@
       color: var(--text);
     }
 
-    .header-link {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 42px;
-      padding: 0 16px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: rgba(255, 255, 255, 0.84);
-      text-decoration: none;
-      font-weight: 700;
-    }
-
     .complete-shell {
       padding: 18px 0 28px;
       display: grid;
@@ -244,6 +231,34 @@
       font-weight: 700;
     }
 
+    .detail-summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .detail-toggle {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      min-width: 42px;
+      min-height: 42px;
+      padding: 0 14px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.84);
+      color: var(--text);
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      flex: 0 0 auto;
+    }
+
+    .detail-body {
+      display: grid;
+    }
+
     .note-card {
       background: linear-gradient(180deg, var(--soft-blue), #fbfdfe);
       border-color: rgba(188, 207, 220, 0.95);
@@ -303,9 +318,7 @@
     }
 
     .btn:hover,
-    .btn:focus-visible,
-    .header-link:hover,
-    .header-link:focus-visible {
+    .btn:focus-visible {
       transform: translateY(-1px);
     }
 
@@ -364,22 +377,28 @@
       .header-inner {
         min-height: 64px;
         padding: 10px 0;
+        gap: 10px;
       }
 
-      .header-link {
-        min-height: 36px;
-        padding: 0 12px;
-        font-size: 13px;
+      .brand {
+        font-size: 14px;
+        letter-spacing: 0.04em;
       }
 
       .complete-shell {
         padding-top: 12px;
+        gap: 12px;
+      }
+
+      .complete-layout {
+        gap: 12px;
       }
 
       .detail-row,
       .note-row,
       .detail-grid {
         grid-template-columns: 1fr;
+        gap: 12px;
       }
 
       .hero-card,
@@ -387,6 +406,82 @@
       .note-card,
       .action-card {
         padding: 18px;
+      }
+
+      .eyebrow {
+        min-height: 28px;
+        padding: 0 10px;
+        font-size: 11px;
+      }
+
+      .hero-card h1 {
+        margin: 10px 0 8px;
+        font-size: clamp(24px, 8vw, 32px);
+      }
+
+      .hero-card p,
+      .note-card p,
+      .action-card p,
+      .info-list {
+        font-size: 14px;
+      }
+
+      .hero-card p {
+        display: none;
+      }
+
+      .status-strip {
+        min-height: 36px;
+        padding: 8px 12px;
+        font-size: 13px;
+      }
+
+      .detail-toggle {
+        display: inline-flex;
+        min-width: 36px;
+        min-height: 36px;
+        padding: 0 12px;
+        font-size: 13px;
+      }
+
+      .detail-card.is-collapsed .detail-body {
+        display: none;
+      }
+
+      .detail-grid {
+        margin-top: 12px;
+      }
+
+      .detail-item {
+        padding: 14px 16px;
+      }
+
+      .detail-label-row {
+        gap: 8px;
+      }
+
+      .detail-meta {
+        font-size: clamp(18px, 5.4vw, 24px);
+      }
+
+      .detail-grid.memo-grid {
+        margin-top: 12px;
+      }
+
+      .detail-grid.memo-grid .detail-item {
+        min-height: 120px;
+      }
+
+      .countdown {
+        padding: 14px 16px;
+      }
+
+      .actions {
+        gap: 8px;
+      }
+
+      .btn {
+        min-height: 44px;
       }
     }
   </style>
@@ -396,7 +491,6 @@
   <header class="site-header">
     <div class="header-inner">
       <a class="brand" href="香りワークショップ_トップページ.html" aria-label="トップへ戻る">FRAGRANCE WORKSHOP</a>
-      <a class="header-link" href="reservation.html">予約内容を確認する</a>
     </div>
   </header>
 
@@ -410,32 +504,37 @@
 
       <section class="detail-row" aria-label="予約情報と次の導線">
         <article class="detail-card" aria-labelledby="detail-heading">
-          <div class="status-strip">現在の予約内容</div>
-          <div class="detail-grid">
-            <section class="detail-item">
-              <div class="detail-label-row">
-                <span class="detail-label">日時</span>
-                <span class="detail-meta" id="reservation-slot">確認中</span>
-              </div>
-            </section>
-            <section class="detail-item">
-              <div class="detail-label-row">
-                <span class="detail-label">内容</span>
-                <span class="detail-meta" id="reservation-visit-type">確認中</span>
-              </div>
-            </section>
-            <section class="detail-item">
-              <div class="detail-label-row">
-                <span class="detail-label">人数</span>
-                <span class="detail-meta" id="reservation-guests">確認中</span>
-              </div>
-            </section>
+          <div class="detail-summary">
+            <div class="status-strip" id="detail-status-label">現在の予約内容</div>
+            <button class="detail-toggle" id="detail-toggle" type="button" aria-expanded="true" aria-controls="detail-body" aria-label="予約内容を開閉する">開く</button>
           </div>
-          <div class="detail-grid memo-grid">
-            <section class="detail-item full" id="memo-item" hidden>
-              <span class="detail-label">スタッフへのメモ</span>
-              <div class="detail-value" id="reservation-memo"></div>
-            </section>
+          <div class="detail-body" id="detail-body">
+            <div class="detail-grid">
+              <section class="detail-item">
+                <div class="detail-label-row">
+                  <span class="detail-label">日時</span>
+                  <span class="detail-meta" id="reservation-slot">確認中</span>
+                </div>
+              </section>
+              <section class="detail-item">
+                <div class="detail-label-row">
+                  <span class="detail-label">内容</span>
+                  <span class="detail-meta" id="reservation-visit-type">確認中</span>
+                </div>
+              </section>
+              <section class="detail-item">
+                <div class="detail-label-row">
+                  <span class="detail-label">人数</span>
+                  <span class="detail-meta" id="reservation-guests">確認中</span>
+                </div>
+              </section>
+            </div>
+            <div class="detail-grid memo-grid">
+              <section class="detail-item full" id="memo-item" hidden>
+                <span class="detail-label">スタッフへのメモ</span>
+                <div class="detail-value" id="reservation-memo"></div>
+              </section>
+            </div>
           </div>
         </article>
 
@@ -443,9 +542,8 @@
           <p class="countdown"><span id="countdown-seconds">30</span>秒後にトップへ自動で戻ります。</p>
           <p>必要に応じて下から移動してください。</p>
           <div class="actions">
-            <button class="btn btn-secondary" id="stay-here-btn" type="button">ページにとどまる</button>
             <a class="btn btn-primary" href="香りワークショップ_トップページ.html">トップへ</a>
-            <a class="btn btn-secondary" href="reservation.html">予約内容確認</a>
+            <button class="btn btn-secondary" id="stay-here-btn" type="button">ページにとどまる</button>
           </div>
         </article>
       </section>
@@ -478,10 +576,45 @@
     const memoEl = document.getElementById("reservation-memo");
     const memoItem = document.getElementById("memo-item");
     const stayHereBtn = document.getElementById("stay-here-btn");
+    const detailCard = document.querySelector(".detail-card");
+    const detailStatusLabel = document.getElementById("detail-status-label");
+    const detailToggle = document.getElementById("detail-toggle");
 
     let reservation = null;
     let timerId = null;
     let secondsLeft = 30;
+
+    function syncDetailAccordion() {
+      const isMobile = window.matchMedia("(max-width: 47.9375em)").matches;
+      if (!isMobile) {
+        detailCard.classList.remove("is-collapsed");
+        detailStatusLabel.textContent = "現在の予約内容";
+        detailToggle.setAttribute("aria-expanded", "true");
+        detailToggle.textContent = "閉じる";
+        return;
+      }
+
+      detailStatusLabel.textContent = "予約内容を確認する";
+      if (!detailCard.dataset.mobileInitialized) {
+        detailCard.classList.add("is-collapsed");
+        detailToggle.setAttribute("aria-expanded", "false");
+        detailToggle.textContent = "開く";
+        detailCard.dataset.mobileInitialized = "true";
+        return;
+      }
+
+      const isExpanded = !detailCard.classList.contains("is-collapsed");
+      detailToggle.setAttribute("aria-expanded", isExpanded ? "true" : "false");
+      detailToggle.textContent = isExpanded ? "閉じる" : "開く";
+    }
+
+    function toggleDetailAccordion() {
+      if (!window.matchMedia("(max-width: 47.9375em)").matches) return;
+      detailCard.classList.toggle("is-collapsed");
+      const isExpanded = !detailCard.classList.contains("is-collapsed");
+      detailToggle.setAttribute("aria-expanded", isExpanded ? "true" : "false");
+      detailToggle.textContent = isExpanded ? "閉じる" : "開く";
+    }
 
     function stopCountdown() {
       if (timerId !== null) {
@@ -511,6 +644,9 @@
       }
 
       stayHereBtn.addEventListener("click", stopCountdown);
+      detailToggle.addEventListener("click", toggleDetailAccordion);
+      window.addEventListener("resize", syncDetailAccordion);
+      syncDetailAccordion();
 
       timerId = window.setInterval(() => {
         secondsLeft -= 1;
