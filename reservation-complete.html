@@ -632,7 +632,7 @@
     }
 
     if (!reservation || !reservation.slot || !reservation.guestCount) {
-      window.location.replace("reservation.html");
+      window.location.replace(TOP_PAGE_URL);
     } else {
       slotEl.textContent = reservation.slot;
       guestsEl.textContent = reservation.guestCount;
