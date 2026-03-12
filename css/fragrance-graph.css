@@ -36,10 +36,6 @@ svg {
   max-width: 100%;
 }
 
-.header-inner {
-  color: var(--text);
-}
-
 .header-note {
   color: var(--muted);
   font-size: .92rem;
@@ -51,7 +47,6 @@ svg {
 .header-cta {
   min-height: 40px;
   padding: 0 16px;
-  white-space: nowrap;
 }
 
 .btn {

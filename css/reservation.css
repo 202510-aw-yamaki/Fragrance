@@ -37,16 +37,10 @@ button {
   border: 0;
 }
 
-.header-inner {
-  color: var(--text);
-}
-
 .header-cta {
   min-width: 152px;
   min-height: 44px;
-  width: auto;
   padding: 0 18px;
-  flex: 0 0 auto;
 }
 
 .page-shell {
@@ -174,13 +168,6 @@ button {
   background: transparent;
   backdrop-filter: none;
   align-content: end;
-}
-
-.section-label {
-  font-size: 13px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #9b7364;
 }
 
 .lead-card,
