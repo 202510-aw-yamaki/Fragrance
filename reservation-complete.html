@@ -207,6 +207,23 @@
       letter-spacing: 0.04em;
     }
 
+    .detail-label-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .detail-meta {
+      color: var(--muted);
+      font-size: clamp(18px, 2vw, 24px);
+      font-weight: 700;
+      letter-spacing: 0;
+      white-space: nowrap;
+      line-height: 1.45;
+    }
+
     .detail-value {
       font-size: clamp(18px, 2vw, 24px);
       font-weight: 700;
@@ -393,19 +410,24 @@
       <section class="detail-row" aria-label="予約情報と次の導線">
         <article class="detail-card" aria-labelledby="detail-heading">
           <div class="status-strip">現在の予約内容</div>
-          <h2 id="detail-heading">予約情報</h2>
           <div class="detail-grid">
             <section class="detail-item">
-              <span class="detail-label">予約日時</span>
-              <div class="detail-value" id="reservation-slot">確認中</div>
+              <div class="detail-label-row">
+                <span class="detail-label">日時</span>
+                <span class="detail-meta" id="reservation-slot">確認中</span>
+              </div>
             </section>
             <section class="detail-item">
-              <span class="detail-label">来店内容</span>
-              <div class="detail-value" id="reservation-visit-type">確認中</div>
+              <div class="detail-label-row">
+                <span class="detail-label">内容</span>
+                <span class="detail-meta" id="reservation-visit-type">確認中</span>
+              </div>
             </section>
             <section class="detail-item">
-              <span class="detail-label">人数</span>
-              <div class="detail-value" id="reservation-guests">確認中</div>
+              <div class="detail-label-row">
+                <span class="detail-label">人数</span>
+                <span class="detail-meta" id="reservation-guests">確認中</span>
+              </div>
             </section>
           </div>
           <div class="detail-grid memo-grid">
@@ -466,7 +488,7 @@
         timerId = null;
       }
       countdownEl.textContent = "停止";
-      countdownEl.parentElement.textContent = "自動遷移を停止しました。";
+      countdownEl.parentElement.innerHTML = "自動遷移を<br>停止しました。";
     }
 
     try {
