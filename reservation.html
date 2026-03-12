@@ -1530,6 +1530,12 @@
       updateSelectionState();
       maybeScrollToMemo();
     });
+    staffMemo.addEventListener("keydown", (event) => {
+      if (event.key === "Tab" && !event.shiftKey) {
+        event.preventDefault();
+        confirmBtn.focus();
+      }
+    });
     confirmBtn.addEventListener("click", handleReservationComplete);
     slotClose.addEventListener("click", closeSlotModal);
     slotModal.addEventListener("click", (event) => {

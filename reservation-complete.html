@@ -103,12 +103,10 @@
 
     .complete-layout {
       display: grid;
-      grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
       gap: 18px;
       align-items: start;
     }
 
-    .panel,
     .hero-card,
     .detail-card,
     .note-card,
@@ -127,10 +125,15 @@
       padding: 22px;
     }
 
-    .main-column,
-    .side-column {
+    .detail-row,
+    .note-row {
       display: grid;
-      gap: 14px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .detail-row {
+      grid-template-columns: minmax(0, 3fr) minmax(0, 1fr);
     }
 
     .eyebrow {
@@ -156,7 +159,6 @@
 
     .hero-card p,
     .note-card p,
-    .detail-note,
     .countdown {
       margin: 0;
       color: var(--muted);
@@ -164,8 +166,14 @@
 
     .detail-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: minmax(0, 2fr) minmax(0, 2fr) minmax(0, 1fr);
       gap: 14px;
+    }
+
+    .detail-card {
+      display: grid;
+      grid-template-rows: auto auto minmax(0, 1fr);
+      align-items: start;
     }
 
     .detail-item {
@@ -179,6 +187,17 @@
 
     .detail-item.full {
       grid-column: 1 / -1;
+      min-height: 100%;
+      align-content: start;
+    }
+
+    .detail-grid.memo-grid {
+      min-height: 0;
+      margin-top: 14px;
+    }
+
+    .detail-grid.memo-grid .detail-item {
+      min-height: clamp(140px, 22vh, 240px);
     }
 
     .detail-label {
@@ -193,11 +212,6 @@
       font-weight: 700;
       line-height: 1.45;
       word-break: break-word;
-    }
-
-    .detail-note {
-      margin-top: 14px;
-      font-size: 14px;
     }
 
     .status-strip {
@@ -290,14 +304,34 @@
       color: var(--text);
     }
 
-    @media (min-width: 48em) and (max-width: 68.6875em) {
-      .complete-layout {
-        grid-template-columns: 1fr;
+    @media (min-width: 68.75em) {
+      .complete-shell {
+        padding: 18px 0 28px;
       }
 
-      .side-column {
+      .complete-layout {
+        gap: 18px;
+      }
+
+      .detail-row,
+      .note-row {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .detail-row {
+        grid-template-columns: minmax(0, 3fr) minmax(0, 1fr);
+      }
+    }
+
+    @media (min-width: 48em) and (max-width: 68.6875em) {
+      .detail-row,
+      .note-row {
         grid-template-columns: repeat(2, minmax(0, 1fr));
         align-items: start;
+      }
+
+      .detail-row {
+        grid-template-columns: minmax(0, 3fr) minmax(0, 1fr);
       }
     }
 
@@ -322,8 +356,8 @@
         padding-top: 12px;
       }
 
-      .complete-layout,
-      .side-column,
+      .detail-row,
+      .note-row,
       .detail-grid {
         grid-template-columns: 1fr;
       }
@@ -348,13 +382,13 @@
 
   <main class="complete-shell">
     <div class="complete-layout">
-      <section class="main-column" aria-labelledby="complete-title">
-        <article class="hero-card">
-          <div class="eyebrow">Reservation Complete</div>
-          <h1 id="complete-title">予約が完了しました</h1>
-          <p>ご予約内容を受け付けました。当日はこの内容をもとにスタッフがご案内します。香りの細かな調整は店頭で一緒に進められます。</p>
-        </article>
+      <article class="hero-card" aria-labelledby="complete-title">
+        <div class="eyebrow">Reservation Complete</div>
+        <h1 id="complete-title">予約が完了しました</h1>
+        <p>ご予約内容を受け付けました。当日はこの内容をもとにスタッフがご案内します。香りの細かな調整は店頭で一緒に進められます。</p>
+      </article>
 
+      <section class="detail-row" aria-label="予約情報と次の導線">
         <article class="detail-card" aria-labelledby="detail-heading">
           <div class="status-strip">現在の予約内容</div>
           <h2 id="detail-heading">予約情報</h2>
@@ -364,26 +398,20 @@
               <div class="detail-value" id="reservation-slot">確認中</div>
             </section>
             <section class="detail-item">
-              <span class="detail-label">人数</span>
-              <div class="detail-value" id="reservation-guests">確認中</div>
-            </section>
-            <section class="detail-item">
               <span class="detail-label">来店内容</span>
               <div class="detail-value" id="reservation-visit-type">確認中</div>
             </section>
+            <section class="detail-item">
+              <span class="detail-label">人数</span>
+              <div class="detail-value" id="reservation-guests">確認中</div>
+            </section>
+          </div>
+          <div class="detail-grid memo-grid">
             <section class="detail-item full" id="memo-item" hidden>
               <span class="detail-label">スタッフへのメモ</span>
               <div class="detail-value" id="reservation-memo"></div>
             </section>
           </div>
-          <p class="detail-note">将来的な本実装では、この予約情報を Spring Boot 側の予約登録処理に送る前提です。現段階ではフロント確認用の完了表示として扱います。</p>
-        </article>
-      </section>
-
-      <aside class="side-column">
-        <article class="note-card">
-          <h2>来店前メモ</h2>
-          <p>時間や人数の変更が必要になった場合は、再度予約ページで内容を確認できます。メモが未入力でも当日の案内には支障ありません。</p>
         </article>
 
         <article class="action-card">
@@ -396,6 +424,13 @@
             <a class="btn btn-secondary" href="reservation.html">予約内容を確認する</a>
           </div>
         </article>
+      </section>
+
+      <section class="note-row" aria-label="補足情報">
+        <article class="note-card">
+          <h2>来店前メモ</h2>
+          <p>時間や人数の変更が必要になった場合は、再度予約ページで内容を確認できます。メモが未入力でも当日の案内には支障ありません。</p>
+        </article>
 
         <article class="note-card">
           <h2>当日の流れ</h2>
@@ -405,7 +440,7 @@
             <li>メモ欄の内容は当日の会話の参考として扱います</li>
           </ul>
         </article>
-      </aside>
+      </section>
     </div>
   </main>
 
