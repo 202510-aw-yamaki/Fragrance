@@ -110,6 +110,9 @@
     const headerPrevBtn = document.getElementById("header-prev-btn");
     const headerNextBtn = document.getElementById("header-next-btn");
     const headerNextText = headerNextBtn.querySelector(".nav-text");
+    function persistStep1Answers() {
+      sessionStorage.setItem("fragranceStep1Answers", JSON.stringify(answers));
+    }
     function hasAnyAnswer() { return Object.keys(answers).length > 0; }
     function confirmReturnToTop() {
       if (!hasAnyAnswer()) return true;
@@ -119,10 +122,19 @@
       if (!confirmReturnToTop()) return;
       window.location.href = "index.html";
     }
-    function goToStep2() { window.location.href = "questionnaire_step2.html"; }
+    function goToStep2() {
+      persistStep1Answers();
+      window.location.href = "questionnaire_step2.html";
+    }
     function moveNext() { if (currentIndex < questions.length - 1) { currentIndex += 1; render(); return; } goToStep2(); }
     function movePrev() { if (currentIndex > 0) { currentIndex -= 1; render(); } }
-    function selectAnswer(value) { const question = questions[currentIndex]; answers[question.id] = value; render(); window.setTimeout(() => { moveNext(); }, 140); }
+    function selectAnswer(value) {
+      const question = questions[currentIndex];
+      answers[question.id] = value;
+      persistStep1Answers();
+      render();
+      window.setTimeout(() => { moveNext(); }, 140);
+    }
     function renderNav() {
       navList.innerHTML = "";
       questions.forEach((question, index) => {
