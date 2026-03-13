@@ -285,6 +285,17 @@ input[type="range"] {
   color: var(--muted);
 }
 
+.graph-placeholder-image {
+  width: 100%;
+  height: auto;
+  border-radius: 0;
+  object-fit: cover;
+}
+
+.cta-box > .reassure-card {
+  padding: 0;
+}
+
 .cta-box {
   padding: 28px;
   align-items: center;
@@ -550,7 +561,7 @@ input[type="range"] {
 
   .cta-box > .reassure-card {
     min-height: 0;
-    padding: 16px;
+    padding: 0;
     align-content: start;
   }
 
