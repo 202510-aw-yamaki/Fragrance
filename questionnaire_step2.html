@@ -148,8 +148,10 @@
         const button = document.createElement("button");
         button.type = "button";
         button.className = "option-card";
+        if (option.cardClass) button.classList.add(option.cardClass);
         if (answers[question.id] === option.title) button.classList.add("selected");
         button.style.backgroundImage = option.visual;
+        button.style.backgroundColor = option.color || "#fffdfa";
         button.innerHTML = `<div class="option-copy"><span class="option-label">${option.key}</span><span class="option-title">${option.title}</span><span class="option-desc">${option.desc}</span></div>`;
         button.addEventListener("click", () => selectAnswer(option.title));
         optionList.appendChild(button);
