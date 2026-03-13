@@ -13,7 +13,7 @@
 <body class="page-canvas">
   <header class="site-header">
     <div class="header-inner page-header-inner site-container">
-      <a class="brand" id="brand-link" href="top-page.html" aria-label="トップへ戻る">FRAGRANCE WORKSHOP</a>
+      <a class="brand" id="brand-link" href="index.html" aria-label="トップへ戻る">FRAGRANCE WORKSHOP</a>
       <a class="btn btn-primary header-cta" href="reservation.html">そのまま予約する</a>
     </div>
   </header>
@@ -140,7 +140,7 @@
       const confirmed = window.confirm("トップページへ戻ると、現在の調整は保存されません。戻りますか？");
       if (!confirmed) return;
       window.sessionStorage.removeItem("fragranceReservationDraft");
-      window.location.href = "top-page.html";
+      window.location.href = "index.html";
     }
 
     function polarToCartesian(centerX, centerY, radius, angle) {
