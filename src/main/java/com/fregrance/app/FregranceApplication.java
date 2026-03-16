@@ -1,1 +1,12 @@
-package com.fregrance.app;  import org.springframework.boot.SpringApplication; import org.springframework.boot.autoconfigure.SpringBootApplication;  @SpringBootApplication public class FregranceApplication {      public static void main(String[] args) {         SpringApplication.run(FregranceApplication.class, args);     } }
+﻿package com.fregrance.app;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class FregranceApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(FregranceApplication.class, args);
+    }
+}

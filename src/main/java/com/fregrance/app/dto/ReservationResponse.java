@@ -1,1 +1,12 @@
-package com.fregrance.app.dto;  public record ReservationResponse(     String reservationCode,     String slotId,     String slotLabel,     String visitType,     String guestCount,     String staffMemo,     String status ) { }
+﻿package com.fregrance.app.dto;
+
+public record ReservationResponse(
+    String reservationCode,
+    String slotId,
+    String slotLabel,
+    String visitType,
+    String guestCount,
+    String staffMemo,
+    String status
+) {
+}
