@@ -23,7 +23,7 @@
       </header>
       <div class="doc-body">
 <div class="info-box info"><strong>運用注記</strong> 本資料は Spring Boot 実装前提で整理した作業用ドキュメントです。内容は今後の作業進行に応じて追記・更新する前提であり、この時点では未記入項目や今後の実装検討事項を含みます。着手前には対象画面、関連Markdown、最新の引継ぎメモを確認したうえで反映してください。</div>
-        <div class="toc"><div class="toc-title">目次</div><ol class="toc-list"><li><a href="#sec1">Controller メソッド一覧</a></li><li><a href="#sec2">Service メソッド一覧</a></li><li><a href="#sec3">Repository メソッド一覧</a></li><li><a href="#sec4">共通処理・ユーティリティ</a></li></ol></div>
+        <div class="toc"><div class="toc-title">目次</div><ol class="toc-list"><li><a href="#sec1">Controller メソッド一覧</a></li><li><a href="#sec2">Service メソッド一覧</a></li><li><a href="#sec3">Mapper メソッド一覧</a></li><li><a href="#sec4">共通処理・ユーティリティ</a></li></ol></div>
 
         <section class="section" id="sec1">
           <h2 class="section-title"><span class="section-icon">1</span> Controller メソッド一覧</h2>
@@ -32,12 +32,12 @@
 
         <section class="section" id="sec2">
           <h2 class="section-title"><span class="section-icon">2</span> Service メソッド一覧</h2>
-          <div class="fill-block"><div class="fill-label">TaskService <span class="required">必須</span></div><div class="fill-content"><table class="doc-table"><thead><tr><th>クラス</th><th>メソッド</th><th>戻り値</th><th>役割</th></tr></thead><tbody><tr><td>QuestionnaireResultService</td><td>normalizeAnswers(form)</td><td>List&lt;QuestionnaireAnswer&gt;</td><td>画面入力を保存可能な回答群へ変換する</td></tr><tr><td>FragranceProfileService</td><td>calculateRoute(answers)</td><td>String</td><td>Bloom / Air / Deep / Exploratory を決定する</td></tr><tr><td>FragranceProfileService</td><td>calculateAxisScores(answers)</td><td>FragranceProfile</td><td>5軸の数値を算出する</td></tr><tr><td>ReservationService</td><td>createReservation(form)</td><td>Reservation</td><td>予約登録処理を実行する</td></tr><tr><td>ReservationService</td><td>buildCompletionView(code)</td><td>ReservationView</td><td>完了画面表示用に整形する</td></tr><tr><td>ReservationSlotService</td><td>findAvailableSlots(date)</td><td>List&lt;ReservationSlot&gt;</td><td>空き枠一覧を返す</td></tr><tr><td>ReservationSlotService</td><td>reserveSlot(slotId)</td><td>void</td><td>枠を確保状態に更新する</td></tr></tbody></table></div></div>
+          <div class="fill-block"><div class="fill-label">TaskService <span class="required">必須</span></div><div class="fill-content"><table class="doc-table"><thead><tr><th>クラス</th><th>メソッド</th><th>戻り値</th><th>役割</th></tr></thead><tbody><tr><td>QuestionnaireResultService</td><td>normalizeAnswers(form)</td><td>List&lt;QuestionnaireAnswerModel&gt;</td><td>画面入力を保存可能な回答群へ変換する</td></tr><tr><td>FragranceProfileService</td><td>calculateRoute(answers)</td><td>String</td><td>Bloom / Air / Deep / Exploratory を決定する</td></tr><tr><td>FragranceProfileService</td><td>calculateAxisScores(answers)</td><td>FragranceProfileModel</td><td>5軸の数値を算出する</td></tr><tr><td>ReservationService</td><td>createReservation(form)</td><td>ReservationModel</td><td>予約登録処理を実行する</td></tr><tr><td>ReservationService</td><td>buildCompletionView(code)</td><td>ReservationView</td><td>完了画面表示用に整形する</td></tr><tr><td>ReservationSlotService</td><td>findAvailableSlots(date)</td><td>List&lt;ReservationSlotResponse&gt;</td><td>空き枠一覧を返す</td></tr><tr><td>ReservationSlotService</td><td>reserveSlot(slotId)</td><td>void</td><td>枠を確保状態に更新する</td></tr></tbody></table></div></div>
         </section>
 
         <section class="section" id="sec3">
-          <h2 class="section-title"><span class="section-icon">3</span> Repository メソッド一覧</h2>
-          <div class="fill-block"><div class="fill-label">TaskMapper <span class="required">必須</span></div><div class="fill-content"><table class="doc-table"><thead><tr><th>クラス</th><th>メソッド</th><th>概要</th></tr></thead><tbody><tr><td>QuestionnaireAnswerRepository</td><td>saveAll(List&lt;QuestionnaireAnswer&gt; answers)</td><td>回答群を一括保存する</td></tr><tr><td>QuestionnaireAnswerRepository</td><td>findByReservationId(Long reservationId)</td><td>予約に紐づく回答群を取得する</td></tr><tr><td>FragranceProfileRepository</td><td>save(FragranceProfile profile)</td><td>5軸プロフィールを保存する</td></tr><tr><td>FragranceProfileRepository</td><td>findByReservationId(Long reservationId)</td><td>予約に紐づくプロフィールを取得する</td></tr><tr><td>ReservationRepository</td><td>save(Reservation reservation)</td><td>予約本体を保存する</td></tr><tr><td>ReservationRepository</td><td>findByReservationCode(String code)</td><td>確認番号で予約を取得する</td></tr><tr><td>ReservationSlotRepository</td><td>findAvailableByDate(LocalDate date)</td><td>空き枠を取得する</td></tr><tr><td>ReservationSlotRepository</td><td>updateStatus(Long slotId, String status)</td><td>枠の状態を更新する</td></tr><tr><td>StaffUserRepository</td><td>findByLoginId(String loginId)</td><td>ログインIDでスタッフを取得する</td></tr></tbody></table></div></div>
+          <h2 class="section-title"><span class="section-icon">3</span> Mapper メソッド一覧</h2>
+          <div class="fill-block"><div class="fill-label">TaskMapper <span class="required">必須</span></div><div class="fill-content"><table class="doc-table"><thead><tr><th>クラス</th><th>メソッド</th><th>概要</th></tr></thead><tbody><tr><td>QuestionnaireAnswerMapper</td><td>insertAnswers(List&lt;QuestionnaireAnswerModel&gt; answers)</td><td>回答群を一括保存する</td></tr><tr><td>QuestionnaireAnswerMapper</td><td>selectByReservationId(Long reservationId)</td><td>予約に紐づく回答群を取得する</td></tr><tr><td>FragranceProfileMapper</td><td>insertProfile(FragranceProfileModel profile)</td><td>5軸プロフィールを保存する</td></tr><tr><td>FragranceProfileMapper</td><td>selectByReservationId(Long reservationId)</td><td>予約に紐づくプロフィールを取得する</td></tr><tr><td>ReservationMapper</td><td>insertReservation(ReservationModel reservation)</td><td>予約本体を保存する</td></tr><tr><td>ReservationMapper</td><td>selectByReservationCode(String code)</td><td>確認番号で予約を取得する</td></tr><tr><td>ReservationSlotMapper</td><td>selectAvailableByDate(LocalDate date)</td><td>空き枠を取得する</td></tr><tr><td>ReservationSlotMapper</td><td>updateStatus(Long slotId, String status)</td><td>枠の状態を更新する</td></tr><tr><td>StaffUserMapper</td><td>selectByLoginId(String loginId)</td><td>ログインIDでスタッフを取得する</td></tr></tbody></table></div></div>
         </section>
 
         <section class="section" id="sec4">
@@ -51,5 +51,6 @@
   <script src="../js/main.js"></script>
 </body>
 </html>
+
 
 

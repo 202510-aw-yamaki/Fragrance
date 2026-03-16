@@ -18,12 +18,12 @@
         <div class="doc-meta">
           <span><span class="material-symbols-outlined icon-sm">calendar_today</span> 作成日: 2026-03-16</span>
           <span><span class="material-symbols-outlined icon-sm">person</span> 作成者: Codex</span>
-          <span><span class="material-symbols-outlined icon-sm">push_pin</span> Ver 1.1</span>
+          <span><span class="material-symbols-outlined icon-sm">push_pin</span> Ver 1.2</span>
         </div>
       </header>
       <div class="doc-body">
 <div class="info-box info"><strong>運用注記</strong> 本資料は Spring Boot 実装前提で整理した作業用ドキュメントです。内容は今後の作業進行に応じて追記・更新する前提であり、この時点では未記入項目や今後の実装検討事項を含みます。着手前には対象画面、関連Markdown、最新の引継ぎメモを確認したうえで反映してください。</div>
-        <div class="toc"><div class="toc-title">目次</div><ol class="toc-list"><li><a href="#sec1">パッケージ構成</a></li><li><a href="#sec2">Entity</a></li><li><a href="#sec3">Repository</a></li><li><a href="#sec4">Service</a></li><li><a href="#sec5">Controller</a></li><li><a href="#sec6">クラス間の依存関係</a></li></ol></div>
+        <div class="toc"><div class="toc-title">目次</div><ol class="toc-list"><li><a href="#sec1">パッケージ構成</a></li><li><a href="#sec2">Model / DTO</a></li><li><a href="#sec3">Mapper</a></li><li><a href="#sec4">Service</a></li><li><a href="#sec5">Controller</a></li><li><a href="#sec6">クラス間の依存関係</a></li></ol></div>
 
         <section class="section" id="sec1">
           <h2 class="section-title"><span class="section-icon">1</span> パッケージ構成</h2>
@@ -38,37 +38,38 @@
   |   |- FragranceProfileService.java
   |   |- ReservationService.java
   |   `- ReservationSlotService.java
-  |- repository/
-  |   |- QuestionnaireAnswerRepository.java
-  |   |- FragranceProfileRepository.java
-  |   |- ReservationRepository.java
-  |   |- ReservationSlotRepository.java
-  |   `- StaffUserRepository.java
-  |- entity/
-  |   |- QuestionnaireAnswer.java
-  |   |- FragranceProfile.java
-  |   |- Reservation.java
-  |   |- ReservationSlot.java
-  |   `- StaffUser.java
+  |- mapper/
+  |   |- QuestionnaireAnswerMapper.java
+  |   |- FragranceProfileMapper.java
+  |   |- ReservationMapper.java
+  |   |- ReservationSlotMapper.java
+  |   `- StaffUserMapper.java
+  |- model/
+  |   |- QuestionnaireAnswerModel.java
+  |   |- FragranceProfileModel.java
+  |   |- ReservationModel.java
+  |   |- ReservationSlotModel.java
+  |   `- StaffUserModel.java
   |- form/
   |   |- QuestionnaireForm.java
   |   `- ReservationForm.java
   |- dto/
-  |   |- ReservationView.java
+  |   |- ReservationResponse.java
   |   |- ReservationSlotResponse.java
-  |   `- StaffReservationDetailView.java
+  |   |- ErrorResponse.java
+  |   `- StaffReservationDetailResponse.java
   |- security/
   |   |- SecurityConfig.java
   |   `- StaffUserDetailsService.java
   `- validation/
       |- QuestionnaireValidator.java
       `- ReservationValidator.java</pre></div></div>
-          <div class="fill-block"><div class="fill-label">パッケージの役割 <span class="required">必須</span></div><div class="fill-content"><p>Spring Boot 実装時は、画面返却、API、業務ロジック、永続化、認証、バリデーションを分離する。既存の静的HTMLにあるインライン処理を責務別に移し替えることで、予約保存やスタッフ閲覧を安全に追加できる構成にする。</p></div></div>
+          <div class="fill-block"><div class="fill-label">パッケージの役割 <span class="required">必須</span></div><div class="fill-content"><p>Spring Boot 実装では、画面返却、REST API、業務ロジック、MyBatis Mapper、認証、バリデーションを分離する。既存の静的HTMLの責務を安全に移し替えるため、Service に業務処理、Mapper に SQL、DTO / Form に入出力定義を寄せる。</p></div></div>
         </section>
 
         <section class="section" id="sec2">
-          <h2 class="section-title"><span class="section-icon">2</span> Entity（エンティティ）</h2>
-          <div class="fill-block"><div class="fill-label">Task.java <span class="required">必須</span></div><div class="fill-content"><p>`Task.java` 相当は予約本体を表す `Reservation.java` とする。</p><pre class="code-block">Reservation
+          <h2 class="section-title"><span class="section-icon">2</span> Model / DTO</h2>
+          <div class="fill-block"><div class="fill-label">Task.java <span class="required">必須</span></div><div class="fill-content"><p>`Task.java` 相当は、MyBatis で扱う予約モデル `ReservationModel.java` とする。</p><pre class="code-block">ReservationModel
 - Long id
 - String reservationCode
 - LocalDateTime reservedAt
@@ -80,21 +81,21 @@
 - Long slotId
 - LocalDateTime createdAt
 - LocalDateTime updatedAt</pre></div></div>
-          <div class="fill-block"><div class="fill-label">User.java <span class="required">必須</span></div><div class="fill-content"><p>`User.java` 相当は管理画面利用者を表す `StaffUser.java` とし、公開側ユーザーは匿名利用のため保持しない。香りに関する来店前情報は `QuestionnaireAnswer` と `FragranceProfile` に保持する。</p><pre class="code-block">StaffUser
+          <div class="fill-block"><div class="fill-label">User.java <span class="required">必須</span></div><div class="fill-content"><p>`User.java` 相当は管理画面利用者を表す `StaffUserModel.java` とし、公開側ユーザーは匿名利用のため保持しない。来店前情報は `QuestionnaireAnswerModel` と `FragranceProfileModel` に保持する。</p><pre class="code-block">StaffUserModel
 - Long id
 - String loginId
 - String passwordHash
 - String displayName
 - String role
 
-QuestionnaireAnswer
+QuestionnaireAnswerModel
 - Long id
 - Long reservationId
 - String questionCode
 - String answerCode
 - Integer answerOrder
 
-FragranceProfile
+FragranceProfileModel
 - Long id
 - Long reservationId
 - Integer floralScore
@@ -105,26 +106,26 @@ FragranceProfile
         </section>
 
         <section class="section" id="sec3">
-          <h2 class="section-title"><span class="section-icon">3</span> Repository（リポジトリ）</h2>
-          <div class="fill-block"><div class="fill-label">TaskMapper.java <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">ReservationRepository
-+ save(Reservation reservation)
-+ findByReservationCode(String code)
-+ findById(Long id)
+          <h2 class="section-title"><span class="section-icon">3</span> Mapper</h2>
+          <div class="fill-block"><div class="fill-label">TaskMapper.java <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">ReservationMapper
++ insertReservation(ReservationModel reservation)
++ selectByReservationCode(String code)
++ selectById(Long id)
 
-QuestionnaireAnswerRepository
-+ saveAll(List&lt;QuestionnaireAnswer&gt; answers)
-+ findByReservationId(Long reservationId)
+QuestionnaireAnswerMapper
++ insertAnswers(List&lt;QuestionnaireAnswerModel&gt; answers)
++ selectByReservationId(Long reservationId)
 
-FragranceProfileRepository
-+ save(FragranceProfile profile)
-+ findByReservationId(Long reservationId)
+FragranceProfileMapper
++ insertProfile(FragranceProfileModel profile)
++ selectByReservationId(Long reservationId)
 
-ReservationSlotRepository
-+ findAvailableByDate(LocalDate date)
+ReservationSlotMapper
++ selectAvailableByDate(LocalDate date)
 + updateStatus(Long slotId, String status)
 
-StaffUserRepository
-+ findByLoginId(String loginId)</pre></div></div>
+StaffUserMapper
++ selectByLoginId(String loginId)</pre></div></div>
         </section>
 
         <section class="section" id="sec4">
@@ -133,8 +134,8 @@ StaffUserRepository
 + normalizeAnswers(QuestionnaireForm form)
 
 FragranceProfileService
-+ calculateRoute(List&lt;QuestionnaireAnswer&gt; answers)
-+ calculateAxisScores(List&lt;QuestionnaireAnswer&gt; answers)
++ calculateRoute(List&lt;QuestionnaireAnswerModel&gt; answers)
++ calculateAxisScores(List&lt;QuestionnaireAnswerModel&gt; answers)
 
 ReservationService
 + createReservation(ReservationForm form)
@@ -175,18 +176,18 @@ StaffReservationController
 QuestionnaireApiController --> QuestionnaireResultService --> FragranceProfileService
                                                         |
                                                         v
-                                           FragranceProfileRepository
+                                              FragranceProfileMapper
 
-ReservationController --> ReservationService --> ReservationRepository
+ReservationController --> ReservationService --> ReservationMapper
                               |                    |
-                              |                    +--> QuestionnaireAnswerRepository
-                              |                    `--> FragranceProfileRepository
+                              |                    +--> QuestionnaireAnswerMapper
+                              |                    `--> FragranceProfileMapper
                               |
-                              `--> ReservationSlotService --> ReservationSlotRepository
+                              `--> ReservationSlotService --> ReservationSlotMapper
 
 StaffReservationController --> ReservationService
-StaffUserDetailsService -----> StaffUserRepository</pre></div></div>
-          <div class="fill-block"><div class="fill-label">DI（依存性注入）の仕組み <span class="optional">任意</span></div><div class="fill-content"><p>各 Controller は必要な Service のみを、各 Service は必要な Repository のみをコンストラクタインジェクションで受け取る。依存の向きを固定することでテストしやすくし、静的プロトタイプから業務アプリへ移行しやすい構成にする。</p></div></div>
+StaffUserDetailsService -----> StaffUserMapper</pre></div></div>
+          <div class="fill-block"><div class="fill-label">DI（依存性注入）の仕組み <span class="optional">任意</span></div><div class="fill-content"><p>各 Controller は必要な Service のみを、各 Service は必要な Mapper のみをコンストラクタインジェクションで受け取る。依存の向きを固定することでテストしやすくし、MyBatis ベースの業務アプリへ移行しやすい構成にする。</p></div></div>
         </section>
       </div>
     </main>
@@ -194,5 +195,3 @@ StaffUserDetailsService -----> StaffUserRepository</pre></div></div>
   <script src="../js/main.js"></script>
 </body>
 </html>
-
-
