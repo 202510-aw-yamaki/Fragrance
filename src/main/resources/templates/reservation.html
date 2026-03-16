@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="ja">
 
 <head>
@@ -125,7 +125,7 @@
     </div>
   </div>
 
-  <script>
+    <script>
     const AXIS_META = [
       { id: "floral", label: "フローラル" },
       { id: "fresh", label: "フレッシュ" },
@@ -141,6 +141,9 @@
       spicy: 34,
       sweet: 50
     };
+
+    const RESERVATION_SLOT_API = "/api/reservation-slots";
+    const RESERVATION_API = "/api/reservations";
 
     const siteHeader = document.querySelector(".site-header");
     const pageShell = document.querySelector(".page-shell");
@@ -160,9 +163,10 @@
     const slotModalCopy = document.getElementById("slot-modal-copy");
     const slotClose = document.getElementById("slot-close");
 
-    let selectedSlot = "";
+    let selectedSlot = null;
     let activeWeekKey = "";
     let lastModalTrigger = null;
+    let weekData = [];
 
     function getFocusableElements(container) {
       return [...container.querySelectorAll(
@@ -220,7 +224,7 @@
       return { headline, body, sorted };
     }
 
-    function renderAxes(axes, sorted) {
+    function renderAxes(axes) {
       axisList.innerHTML = "";
 
       AXIS_META.forEach((axis) => {
@@ -242,29 +246,37 @@
       return `${month}/${day}（${weekdays[date.getDay()]}）`;
     }
 
-    function renderSlots() {
-      // Mock slot data. Replace instructor values with backend data later.
-      const times = [
-        { time: "10:30", instructor: "原口", gender: "male" },
-        { time: "13:00", instructor: "清水", gender: "male" },
-        { time: "15:30", instructor: "大塚", gender: "female" }
-      ];
+    function formatApiDateLabel(dateText) {
+      const date = new Date(`${dateText}T00:00:00`);
+      return formatDate(date);
+    }
+
+    function buildWeekData(slotResponses) {
       const today = new Date();
-      slotList.innerHTML = "";
-      const weekData = [];
+      const weeks = [];
 
       for (let weekIndex = 0; weekIndex < 2; weekIndex += 1) {
         const days = [];
         for (let dayIndex = 0; dayIndex < 7; dayIndex += 1) {
           const date = new Date(today);
           date.setDate(today.getDate() + (weekIndex * 7) + dayIndex + 1);
+          const dateKey = date.toISOString().slice(0, 10);
+          const daySlots = slotResponses
+            .filter((slot) => slot.date === dateKey)
+            .map((slot) => ({
+              slotId: slot.slotId,
+              slotLabel: slot.label,
+              time: slot.time,
+              instructor: slot.instructorName,
+              status: slot.status
+            }));
           days.push({
             label: formatDate(date),
-            meta: weekIndex === 0 && dayIndex === 0 ? "おすすめ" : "空きあり",
-            times
+            dateKey,
+            slots: daySlots
           });
         }
-        weekData.push({
+        weeks.push({
           key: `week-${weekIndex + 1}`,
           title: weekIndex === 0 ? "今週" : "来週",
           range: `${days[0].label} - ${days[6].label}`,
@@ -272,6 +284,11 @@
         });
       }
 
+      return weeks;
+    }
+
+    function renderSlots() {
+      slotList.innerHTML = "";
       activeWeekKey = "";
 
       const tabs = document.createElement("div");
@@ -311,19 +328,31 @@
           `;
 
           const grid = dayBlock.querySelector(".time-grid");
-          day.times.forEach((slot) => {
+          if (day.slots.length === 0) {
+            const empty = document.createElement("p");
+            empty.className = "booking-note";
+            empty.textContent = "この日は現在予約枠がありません。";
+            grid.appendChild(empty);
+          }
+
+          day.slots.forEach((slot) => {
             const button = document.createElement("button");
             button.type = "button";
             button.className = "time-slot";
             button.setAttribute("aria-pressed", "false");
+            const chipLabel = slot.status === "recommended" ? "おすすめ" : "空きあり";
             button.innerHTML = `
               <span class="time-slot-time">${slot.time}</span>
-              <span class="slot-chip${day.meta === "おすすめ" ? " is-recommended" : ""}">${day.meta}</span>
-              <span class="slot-chip is-instructor${slot.gender === "female" ? " is-female" : ""}">${slot.instructor}</span>
+              <span class="slot-chip${slot.status === "recommended" ? " is-recommended" : ""}">${chipLabel}</span>
+              <span class="slot-chip is-instructor">${slot.instructor}</span>
             `;
-            button.dataset.slot = `${day.label} ${slot.time}`;
+            button.dataset.slotId = slot.slotId;
+            button.dataset.slotLabel = slot.slotLabel || `${day.label} ${slot.time}`;
             button.addEventListener("click", () => {
-              selectSlot(button.dataset.slot);
+              selectSlot({
+                slotId: button.dataset.slotId,
+                slotLabel: button.dataset.slotLabel
+              });
               closeSlotModal();
             });
             grid.appendChild(button);
@@ -336,6 +365,43 @@
       });
 
       slotList.appendChild(tabs);
+    }
+
+    async function loadReservationSlots() {
+      selectedStatus.textContent = "予約枠を読み込み中です...";
+      confirmBtn.disabled = true;
+
+      try {
+        const today = new Date();
+        const requests = [];
+        for (let dayOffset = 1; dayOffset <= 14; dayOffset += 1) {
+          const date = new Date(today);
+          date.setDate(today.getDate() + dayOffset);
+          const dateText = date.toISOString().slice(0, 10);
+          requests.push(fetch(`${RESERVATION_SLOT_API}?date=${dateText}`));
+        }
+
+        const responses = await Promise.all(requests);
+        const payloads = await Promise.all(responses.map(async (response) => {
+          if (!response.ok) {
+            throw new Error("failed to load reservation slots");
+          }
+          return response.json();
+        }));
+
+        const flattened = payloads.flat().map((slot) => ({
+          ...slot,
+          label: slot.label || `${formatApiDateLabel(slot.date)} ${slot.time}`
+        }));
+
+        weekData = buildWeekData(flattened);
+        renderSlots();
+        selectedStatus.textContent = "未選択: 来店日時を選んでください";
+        updateSelectionState();
+      } catch (error) {
+        slotList.innerHTML = '<p class="booking-note">予約枠の取得に失敗しました。時間をおいて再読み込みしてください。</p>';
+        selectedStatus.textContent = "予約枠を取得できませんでした";
+      }
     }
 
     function selectWeek(weekKey, triggerButton = null) {
@@ -397,8 +463,9 @@
     function selectSlot(slot) {
       selectedSlot = slot;
       document.querySelectorAll(".time-slot").forEach((button) => {
-        button.classList.toggle("selected", button.dataset.slot === slot);
-        button.setAttribute("aria-pressed", button.dataset.slot === slot ? "true" : "false");
+        const isSelected = button.dataset.slotId === slot.slotId;
+        button.classList.toggle("selected", isSelected);
+        button.setAttribute("aria-pressed", isSelected ? "true" : "false");
       });
       updateSelectionState();
     }
@@ -406,7 +473,7 @@
     function updateSelectionState() {
       const hasGuestCount = guestCount.value !== "";
       if (selectedSlot && hasGuestCount) {
-        selectedStatus.textContent = `選択中: ${selectedSlot} / ${guestCount.value}`;
+        selectedStatus.textContent = `選択中: ${selectedSlot.slotLabel} / ${guestCount.value}`;
         confirmBtn.disabled = false;
       } else {
         selectedStatus.textContent = "未選択: 来店日時を選んでください";
@@ -420,18 +487,48 @@
       staffMemo.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
-    function handleReservationComplete() {
+    async function handleReservationComplete() {
       if (!selectedSlot) return;
-      // Spring Boot 側の予約登録 API 実装後はここで送信処理を接続する。
-      const payload = {
-        slot: selectedSlot,
+
+      confirmBtn.disabled = true;
+      selectedStatus.textContent = "予約を登録中です...";
+
+      const requestPayload = {
+        slotId: selectedSlot.slotId,
+        slotLabel: selectedSlot.slotLabel,
         visitType: visitType.value,
         guestCount: guestCount.value,
-        memo: staffMemo.value.trim(),
-        submittedAt: new Date().toISOString()
+        staffMemo: staffMemo.value.trim(),
+        summaryHeadline: summaryHeadline.textContent
       };
-      window.sessionStorage.setItem("fragranceReservationConfirmation", JSON.stringify(payload));
-      window.location.href = "reservation-complete.html";
+
+      try {
+        const response = await fetch(RESERVATION_API, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(requestPayload)
+        });
+
+        if (!response.ok) {
+          throw new Error("failed to create reservation");
+        }
+
+        const reservation = await response.json();
+        const payload = {
+          reservationCode: reservation.reservationCode,
+          slot: reservation.slotLabel,
+          visitType: reservation.visitType,
+          guestCount: reservation.guestCount,
+          memo: reservation.staffMemo || ""
+        };
+        window.sessionStorage.setItem("fragranceReservationConfirmation", JSON.stringify(payload));
+        window.location.href = `reservation-complete.html?reservationCode=${encodeURIComponent(reservation.reservationCode)}`;
+      } catch (error) {
+        selectedStatus.textContent = "予約登録に失敗しました。内容を確認して再度お試しください。";
+        updateSelectionState();
+      }
     }
 
     guestCount.addEventListener("change", () => {
@@ -482,11 +579,11 @@
     const summary = buildSummary(axes);
     summaryHeadline.textContent = summary.headline;
     summaryBody.textContent = summary.body;
-    renderAxes(axes, summary.sorted);
-    renderSlots();
-    updateSelectionState();
+    renderAxes(axes);
+    loadReservationSlots();
     updateSlotModalDensity();
   </script>
 </body>
 
 </html>
+
