@@ -1,0 +1,354 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>香りワークショップ - 仕様書</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body data-course="generaltraining" data-type="section" data-page="07-specification-answer">
+  <style>
+    #lms-topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 99999;
+      height: 40px;
+      background: #1a1a2e;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 13px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, .15);
+    }
+
+    body {
+      padding-top: 100px !important;
+    }
+
+    .spec-note-list {
+      margin: 0;
+      padding-left: 1.2rem;
+    }
+
+    .spec-note-list li + li {
+      margin-top: 6px;
+    }
+  </style>
+
+  <div id="lms-topbar">
+    <div style="display:flex;align-items:center;gap:10px">
+      <span style="color:#fff;font-weight:700;font-size:12px;letter-spacing:.5px">Proclimb LMS</span>
+      <span style="color:#8bb4e0;font-size:12px;padding:4px 10px;border:1px solid rgba(139,180,224,.3);border-radius:6px">DOCUMENT VIEW</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <div style="width:24px;height:24px;border-radius:50%;background:#4a5568;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff">FR</div>
+      <span style="color:#ccc;font-size:12px">Fragrance Workshop</span>
+    </div>
+  </div>
+
+  <button class="hamburger" aria-label="メニュー">
+    <span></span><span></span><span></span>
+  </button>
+
+  <div class="page-wrapper">
+    <aside class="sidebar" data-nav-level="docs"></aside>
+
+    <main class="main-content">
+      <header class="doc-header">
+        <div class="doc-category">DOCUMENT 07</div>
+        <h1 class="doc-title">香りワークショップ 仕様書</h1>
+        <div class="doc-meta">
+          <span><span class="material-symbols-outlined icon-sm">calendar_today</span> 作成日: 2026-03-16</span>
+          <span><span class="material-symbols-outlined icon-sm">person</span> 作成者: Codex</span>
+          <span><span class="material-symbols-outlined icon-sm">push_pin</span> Ver 1.0</span>
+        </div>
+      </header>
+
+      <div class="doc-body">
+        <div class="external-link-box">
+          <div class="external-link-box-title">
+            <span class="material-symbols-outlined">link</span>
+            関連ドキュメント
+          </div>
+          <div class="external-link-box-desc">
+            現行のフレグランスページ実装をもとに、必須項目を記入した説明用の仕様書です。
+          </div>
+          <div class="external-link-input">
+            <input type="text" value="index.html / questionnaire.html / questionnaire_step2.html / fragrance-graph.html / reservation.html" readonly>
+          </div>
+        </div>
+
+        <div class="toc">
+          <div class="toc-title">目次</div>
+          <ol class="toc-list">
+            <li><a href="#sec1">システム概要</a></li>
+            <li><a href="#sec2">機能一覧</a></li>
+            <li><a href="#sec3">画面遷移</a></li>
+            <li><a href="#sec4">詳細仕様</a></li>
+            <li><a href="#sec5">セキュリティ・非機能</a></li>
+          </ol>
+        </div>
+
+        <section class="section" id="sec1">
+          <h2 class="section-title"><span class="section-icon">1</span> システム概要</h2>
+
+          <div class="fill-block">
+            <div class="fill-label">システムの目的 <span class="required">必須</span></div>
+            <div class="fill-hint">このページ全体が何を実現する仕組みかを簡潔に記載</div>
+            <div class="fill-content">
+              <p>本システムは、来店前のユーザーに対して「診断」ではなく「香りづくりの準備体験」を提供するフレグランスワークショップ導線です。トップページで体験価値を伝え、アンケートで好みの傾向を取得し、5軸グラフで微調整したうえで予約へ接続することで、来店前から香りづくりを始められる状態をつくります。最終的な香りは店頭でスタッフと一緒に仕上げる前提を保ちつつ、スタッフが事前に把握できる情報を整理することも目的としています。</p>
+            </div>
+          </div>
+
+          <div class="fill-block">
+            <div class="fill-label">システム構成 <span class="required">必須</span></div>
+            <div class="fill-hint">画面構成、利用技術、データ保持方法を記載</div>
+            <div class="fill-content">
+              <ul class="spec-note-list">
+                <li>フロントエンドは HTML / CSS / JavaScript で構成</li>
+                <li>画面は `index.html`、`questionnaire.html`、`questionnaire_step2.html`、`fragrance-graph.html`、`reservation.html`、`reservation-complete.html` で構成</li>
+                <li>回答データと予約前情報は `sessionStorage` に保持</li>
+                <li>予約画面には Spring Boot API 連携を想定したコメントがあるが、現状はフロントエンド完結</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="sec2">
+          <h2 class="section-title"><span class="section-icon">2</span> 機能一覧</h2>
+
+          <div class="fill-block">
+            <div class="fill-label">機能一覧 <span class="required">必須</span></div>
+            <table class="doc-table">
+              <thead>
+                <tr>
+                  <th>No.</th>
+                  <th>機能名</th>
+                  <th>目的</th>
+                  <th>対象画面</th>
+                  <th>優先度</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>F-001</td>
+                  <td>トップページ表示</td>
+                  <td>ワークショップの価値と流れを伝え、アンケート開始または予約へ誘導する</td>
+                  <td>トップページ</td>
+                  <td><span class="badge badge-must">Must</span></td>
+                </tr>
+                <tr>
+                  <td>F-002</td>
+                  <td>STEP1アンケート</td>
+                  <td>共通5問で香りのベース傾向を取得する</td>
+                  <td>アンケートSTEP1</td>
+                  <td><span class="badge badge-must">Must</span></td>
+                </tr>
+                <tr>
+                  <td>F-003</td>
+                  <td>STEP2分岐アンケート</td>
+                  <td>回答傾向に応じた追加質問で好みの輪郭を補強する</td>
+                  <td>アンケートSTEP2</td>
+                  <td><span class="badge badge-must">Must</span></td>
+                </tr>
+                <tr>
+                  <td>F-004</td>
+                  <td>香りグラフ表示</td>
+                  <td>回答結果を5軸で可視化し、全体像を見せる</td>
+                  <td>香りグラフ</td>
+                  <td><span class="badge badge-must">Must</span></td>
+                </tr>
+                <tr>
+                  <td>F-005</td>
+                  <td>グラフ微調整</td>
+                  <td>スライダーとプリセットで香りバランスを調整する</td>
+                  <td>香りグラフ</td>
+                  <td><span class="badge badge-must">Must</span></td>
+                </tr>
+                <tr>
+                  <td>F-006</td>
+                  <td>予約情報入力</td>
+                  <td>日時、来店種別、人数、スタッフ向けメモを入力させる</td>
+                  <td>予約ページ</td>
+                  <td><span class="badge badge-must">Must</span></td>
+                </tr>
+                <tr>
+                  <td>F-007</td>
+                  <td>予約完了表示</td>
+                  <td>予約内容を確認させ、完了状態を明示する</td>
+                  <td>予約完了ページ</td>
+                  <td><span class="badge badge-must">Must</span></td>
+                </tr>
+                <tr>
+                  <td>F-008</td>
+                  <td>事前情報引き継ぎ</td>
+                  <td>アンケート結果と微調整結果を予約画面へ渡す</td>
+                  <td>香りグラフ以降</td>
+                  <td><span class="badge badge-should">Should</span></td>
+                </tr>
+                <tr>
+                  <td>F-009</td>
+                  <td>トップへ戻る導線</td>
+                  <td>やり直し希望時に安全にトップへ戻せるようにする</td>
+                  <td>各主要画面</td>
+                  <td><span class="badge badge-should">Should</span></td>
+                </tr>
+                <tr>
+                  <td>F-010</td>
+                  <td>バックエンド保存連携</td>
+                  <td>予約情報を永続保存し、店舗へ共有可能にする</td>
+                  <td>未実装</td>
+                  <td><span class="badge badge-could">Could</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="section" id="sec3">
+          <h2 class="section-title"><span class="section-icon">3</span> 画面遷移</h2>
+
+          <div class="fill-block">
+            <div class="fill-label">画面遷移一覧 <span class="required">必須</span></div>
+            <div class="fill-hint">各画面がどこへ遷移し、何の役割を持つかを整理</div>
+            <div class="fill-content">
+              <table class="doc-table">
+                <thead>
+                  <tr>
+                    <th>画面</th>
+                    <th>遷移先</th>
+                    <th>目的</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>`index.html`</td>
+                    <td>`questionnaire.html` / `reservation.html`</td>
+                    <td>体験価値を伝え、アンケート開始または直接予約へ誘導する</td>
+                  </tr>
+                  <tr>
+                    <td>`questionnaire.html`</td>
+                    <td>`questionnaire_step2.html` / `index.html`</td>
+                    <td>共通5問でベース傾向を取得し、深掘り前の土台をつくる</td>
+                  </tr>
+                  <tr>
+                    <td>`questionnaire_step2.html`</td>
+                    <td>`fragrance-graph.html` / `questionnaire.html` / `index.html`</td>
+                    <td>ルート別追加質問と最終質問で好みの精度を上げる</td>
+                  </tr>
+                  <tr>
+                    <td>`fragrance-graph.html`</td>
+                    <td>`reservation.html` / `index.html`</td>
+                    <td>5軸グラフで見える化し、ユーザー自身で微調整させる</td>
+                  </tr>
+                  <tr>
+                    <td>`reservation.html`</td>
+                    <td>`reservation-complete.html`</td>
+                    <td>予約日時と補足情報を確定する</td>
+                  </tr>
+                  <tr>
+                    <td>`reservation-complete.html`</td>
+                    <td>`index.html`</td>
+                    <td>予約完了を伝え、来店前案内を表示する</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="sec4">
+          <h2 class="section-title"><span class="section-icon">4</span> 詳細仕様</h2>
+
+          <div class="subsection">
+            <h3 class="subsection-title">トップページ</h3>
+            <div class="fill-block">
+              <div class="fill-label">画面の目的 <span class="required">必須</span></div>
+              <div class="fill-content">
+                <p>来店前体験の入口として、香りワークショップの概要、流れ、安心材料、体験価値を伝え、アンケートまたは予約へ進ませる。</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="subsection">
+            <h3 class="subsection-title">STEP1アンケート</h3>
+            <div class="fill-block">
+              <div class="fill-label">画面の目的 <span class="required">必須</span></div>
+              <div class="fill-content">
+                <p>回答負荷を抑えながら共通5問でベース傾向を取得し、ユーザーに自分向け感を持たせる。回答は `fragranceStep1Answers` として保存される。</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="subsection">
+            <h3 class="subsection-title">STEP2アンケート</h3>
+            <div class="fill-block">
+              <div class="fill-label">画面の目的 <span class="required">必須</span></div>
+              <div class="fill-content">
+                <p>STEP1 の回答傾向に応じて Bloom、Air、Deep、Exploratory の各ルートへ分岐し、香りの印象、残り方、深み、甘さの方向性を補強する。</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="subsection">
+            <h3 class="subsection-title">香りグラフページ</h3>
+            <div class="fill-block">
+              <div class="fill-label">画面の目的 <span class="required">必須</span></div>
+              <div class="fill-content">
+                <p>回答結果を floral、fresh、woody、spicy、sweet の5軸で可視化し、ユーザーが気になる項目だけスライダーやプリセットで微調整できるようにする。</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="subsection">
+            <h3 class="subsection-title">予約ページ</h3>
+            <div class="fill-block">
+              <div class="fill-label">画面の目的 <span class="required">必須</span></div>
+              <div class="fill-content">
+                <p>香り傾向を見ながら予約枠、来店種別、人数、スタッフ向けメモを入力させ、来店前の情報を整えた状態で予約を確定する。</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="subsection">
+            <h3 class="subsection-title">予約完了ページ</h3>
+            <div class="fill-block">
+              <div class="fill-label">画面の目的 <span class="required">必須</span></div>
+              <div class="fill-content">
+                <p>予約完了を明示し、予約日時、来店種別、人数、メモを再確認させるとともに、来店前の案内とトップページへの戻り導線を提供する。</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="sec5">
+          <h2 class="section-title"><span class="section-icon">5</span> セキュリティ・非機能</h2>
+
+          <div class="fill-block">
+            <div class="fill-label">セキュリティ観点 <span class="required">必須</span></div>
+            <div class="fill-content">
+              <ul class="spec-note-list">
+                <li>現状はフロントエンド完結で、入力内容は `sessionStorage` に保存される</li>
+                <li>サーバー保存や認証は未実装のため、本番運用時は API 側で入力値検証、CSRF 対策、認可設計が必要</li>
+                <li>自由記述メモをバックエンド連携する際は XSS 対策、サニタイズ、ログ出力制御が必要</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="fill-block">
+            <div class="fill-label">対応環境 <span class="required">必須</span></div>
+            <div class="fill-content">
+              <p>PC / スマートフォン向けレスポンシブ対応を前提とし、Chrome / Edge / Safari / Firefox の最新版系ブラウザを想定する。</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
