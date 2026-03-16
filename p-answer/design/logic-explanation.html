@@ -1,0 +1,164 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ロジック説明 - 香りワークショップ</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <button class="hamburger" aria-label="メニュー"><span></span><span></span><span></span></button>
+  <div class="page-wrapper">
+    <aside class="sidebar" data-nav-level="design"></aside>
+    <main class="main-content">
+      <header class="doc-header">
+        <div class="doc-category">DESIGN 03</div>
+        <h1 class="doc-title">ロジック説明</h1>
+        <div class="doc-meta">
+          <span><span class="material-symbols-outlined icon-sm">calendar_today</span> 作成日: 2026-03-16</span>
+          <span><span class="material-symbols-outlined icon-sm">person</span> 作成者: Codex</span>
+          <span><span class="material-symbols-outlined icon-sm">push_pin</span> Ver 1.1</span>
+        </div>
+      </header>
+      <div class="doc-body">
+        <div class="toc"><div class="toc-title">目次</div><ol class="toc-list"><li><a href="#sec1">ログイン処理のロジック</a></li><li><a href="#sec2">バリデーション処理のロジック</a></li><li><a href="#sec3">検索処理のロジック</a></li><li><a href="#sec4">権限チェックのロジック</a></li><li><a href="#sec5">ステータス遷移のロジック</a></li></ol></div>
+
+        <section class="section" id="sec1">
+          <h2 class="section-title"><span class="section-icon">1</span> ログイン処理のロジック</h2>
+          <div class="fill-block"><div class="fill-label">フローチャート <span class="required">必須</span></div><div class="fill-content"><p>公開向けページは匿名アクセスのまま実装し、ここでは Spring Boot 導入時に必要なスタッフ管理画面の認証ロジックを定義する。</p><pre class="code-block">[スタッフが /staff/login にアクセス]
+  -> loginId / password 入力
+  -> AuthenticationManager で認証
+     -> 失敗: login画面にエラー表示
+     -> 成功: SecurityContext へ保存
+  -> /staff/reservations にリダイレクト
+  -> 予約一覧表示</pre></div></div>
+          <div class="fill-block"><div class="fill-label">疑似コード <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">if path == "/staff/login" then
+    show login form
+else if path startsWith "/staff" then
+    authResult = authenticate(loginId, password)
+    if authResult.failed then
+        return loginView(errorMessage)
+    end if
+    setSecurityContext(authResult.user)
+    return redirect("/staff/reservations")
+else
+    allowPublicAccess()
+end if</pre></div></div>
+        </section>
+
+        <section class="section" id="sec2">
+          <h2 class="section-title"><span class="section-icon">2</span> バリデーション処理のロジック</h2>
+          <div class="fill-block"><div class="fill-label">バリデーションの判定フロー <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">[フォーム送信]
+  -> 質問回答の必須チェック
+  -> 分岐ルートに必要なQ6/Q7の存在確認
+  -> Q8 の存在確認
+  -> 予約日時の存在確認
+  -> 人数範囲の確認
+  -> メモ文字数確認
+     -> エラーあり: 項目別メッセージを返却
+     -> エラーなし: Serviceへ進む</pre></div></div>
+          <div class="fill-block"><div class="fill-label">疑似コード <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">errors = []
+
+if step1Answers.count < 5 then
+    errors.add("STEP1 の回答が不足しています")
+end if
+if routeAnswers.invalidFor(routeType) then
+    errors.add("分岐質問の回答が不足しています")
+end if
+if q8 is empty then
+    errors.add("最後の質問に回答してください")
+end if
+if reservationDateTime is empty then
+    errors.add("予約日時を選択してください")
+end if
+if guestCount < 1 or guestCount > 4 then
+    errors.add("人数を正しく選択してください")
+end if
+if note.length > 200 then
+    errors.add("メモは200文字以内で入力してください")
+end if
+
+return errors</pre></div></div>
+        </section>
+
+        <section class="section" id="sec3">
+          <h2 class="section-title"><span class="section-icon">3</span> 検索処理のロジック</h2>
+          <div class="fill-block"><div class="fill-label">動的SQLの条件分岐 <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">SELECT *
+FROM reservation_slots
+WHERE slot_date = :date
+  AND status = 'OPEN'
+  AND deleted = false
+
+if menuType != null then
+  AND menu_type = :menuType
+end if
+
+if staffId != null then
+  AND staff_id = :staffId
+end if
+
+ORDER BY start_time ASC</pre></div></div>
+          <div class="fill-block"><div class="fill-label">複合検索のロジック <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">スタッフ用予約一覧検索
+
+条件:
+- 予約日
+- 予約状態
+- ルート種別
+- 担当者
+- キーワード(確認番号 / メモ)
+
+処理:
+1. 必須の日付または期間条件を受け取る
+2. 任意条件があれば WHERE に追加する
+3. キーワードは reservation_code または customer_memo に対して LIKE 検索
+4. 一覧は reserved_at ASC を基本にする
+5. 管理用途では updated_at DESC に切り替え可能にする</pre></div></div>
+        </section>
+
+        <section class="section" id="sec4">
+          <h2 class="section-title"><span class="section-icon">4</span> 権限チェックのロジック</h2>
+          <div class="fill-block"><div class="fill-label">ロール判定のフロー <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">if requestPath in publicPaths then
+    permitAll
+else if requestPath startsWith "/staff" then
+    require STAFF or ADMIN
+else if requestPath startsWith "/admin" then
+    require ADMIN
+else
+    deny
+end if</pre></div></div>
+          <div class="fill-block"><div class="fill-label">データアクセス制御のロジック <span class="required">必須</span></div><div class="fill-content"><p>公開APIでは予約枠の空き情報と完了表示用の最小情報だけを返す。個別予約の回答詳細やメモはスタッフ画面経由でのみ参照可能とし、削除・枠閉鎖・スタッフ管理は `ADMIN` のみに限定する。これにより、来店前情報を扱うシステムとして必要な最小限の保護を確保する。</p></div></div>
+        </section>
+
+        <section class="section" id="sec5">
+          <h2 class="section-title"><span class="section-icon">5</span> ステータス遷移のロジック</h2>
+          <div class="fill-block"><div class="fill-label">状態遷移図 <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">INPUTTING
+  -> PENDING
+  -> CONFIRMED
+  -> COMPLETED
+  -> CANCELED
+
+意味
+- INPUTTING: 入力中またはプレビュー段階
+- PENDING: API受領済み、枠確保前
+- CONFIRMED: 予約確定済み
+- COMPLETED: 来店完了
+- CANCELED: 取消済み</pre></div></div>
+          <div class="fill-block"><div class="fill-label">遷移可否の判定ロジック <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">if status == INPUTTING and validationPassed then
+    status = PENDING
+else if status == PENDING and slotAvailable then
+    status = CONFIRMED
+else if status == CONFIRMED and visited then
+    status = COMPLETED
+else if status in [PENDING, CONFIRMED] and cancelRequested then
+    status = CANCELED
+else
+    throw InvalidStatusTransitionException
+end if</pre></div></div>
+        </section>
+      </div>
+    </main>
+  </div>
+  <script src="../js/main.js"></script>
+</body>
+</html>
