@@ -1,0 +1,34 @@
+﻿package com.fregrance.app.advice;
+
+import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.fregrance.app.dto.ErrorResponse;
+
+@RestControllerAdvice
+public class ApiExceptionHandler {
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleValidation(MethodArgumentNotValidException exception) {
+        Map<String, String> fieldErrors = new LinkedHashMap<>();
+        for (FieldError error : exception.getBindingResult().getFieldErrors()) {
+            fieldErrors.put(error.getField(), error.getDefaultMessage());
+        }
+
+        ErrorResponse response = new ErrorResponse(
+            "VALIDATION_ERROR",
+            "Request validation failed",
+            LocalDateTime.now(),
+            fieldErrors
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+}

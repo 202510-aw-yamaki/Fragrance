@@ -1,0 +1,11 @@
+﻿package com.fregrance.app.dto;
+
+public record ReservationSlotResponse(
+    String slotId,
+    String date,
+    String time,
+    String label,
+    String status,
+    String instructorName
+) {
+}

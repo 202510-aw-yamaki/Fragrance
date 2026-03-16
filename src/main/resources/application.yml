@@ -1,0 +1,12 @@
+﻿spring:
+  application:
+    name: fregrance
+  thymeleaf:
+    cache: false
+
+server:
+  port: 8080
+
+logging:
+  level:
+    root: INFO
