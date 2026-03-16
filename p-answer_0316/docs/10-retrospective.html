@@ -1,0 +1,158 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>振り返り・評価記録 - 香りワークショップ</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <button class="hamburger" aria-label="メニュー">
+    <span></span><span></span><span></span>
+  </button>
+
+  <div class="page-wrapper">
+    <aside class="sidebar" data-nav-level="docs"></aside>
+
+    <main class="main-content">
+      <header class="doc-header">
+        <div class="doc-category">DOCUMENT 10</div>
+        <h1 class="doc-title">振り返り・評価記録</h1>
+        <div class="doc-meta">
+          <span><span class="material-symbols-outlined icon-sm">calendar_today</span> 作成日: 2026-03-16</span>
+          <span><span class="material-symbols-outlined icon-sm">person</span> 作成者: Codex</span>
+          <span><span class="material-symbols-outlined icon-sm">push_pin</span> Ver 1.0</span>
+        </div>
+      </header>
+
+      <div class="doc-body">
+        <div class="external-link-box">
+          <div class="external-link-box-title">
+            <span class="material-symbols-outlined">link</span>
+            対象プロジェクト
+          </div>
+          <div class="external-link-box-desc">
+            トップページ、アンケート、香りグラフ、予約導線を含む香りワークショップ全体の制作を対象にした振り返りです。
+          </div>
+          <div class="external-link-input">
+            <input type="text" value="Fragrance Workshop front-end flow" readonly>
+          </div>
+        </div>
+
+        <div class="toc">
+          <div class="toc-title">目次</div>
+          <ol class="toc-list">
+            <li><a href="#sec1">プロジェクト振り返り</a></li>
+            <li><a href="#sec2">評価記録</a></li>
+            <li><a href="#sec3">自己学習</a></li>
+            <li><a href="#sec4">今後の学習計画</a></li>
+          </ol>
+        </div>
+
+        <section class="section" id="sec1">
+          <h2 class="section-title"><span class="section-icon">1</span> プロジェクト振り返り</h2>
+
+          <div class="fill-block">
+            <div class="fill-label">要件・設計面の振り返り <span class="required">必須</span></div>
+            <div class="fill-hint">うまくいったこと、難しかったこと、次回改善点を記載</div>
+            <div class="fill-content">
+              <p>要件面では、「診断」ではなく「来店前の香りづくり準備」として体験全体を設計できた点が良かったです。トップページで期待値を上げ、アンケートで負荷を抑え、グラフで納得感を作り、予約ページで来店意思を固める流れは、各画面の役割分担が明確でした。一方で、質問分岐、グラフ調整、予約導線をすべて連動させる設計は複雑で、仕様整理を先に固めないと実装判断がぶれやすい課題がありました。次回は、画面遷移図とデータの受け渡し仕様を初期段階でより明文化し、バックエンド保存前提の設計まで同時に用意しておくと効率が上がります。</p>
+            </div>
+          </div>
+
+          <div class="fill-block">
+            <div class="fill-label">デザイン面の振り返り <span class="required">必須</span></div>
+            <div class="fill-hint">UI、ワイヤー、見せ方の観点で整理</div>
+            <div class="fill-content">
+              <p>デザイン面では、静かな高級感と親しみやすさを両立する方向性を各ページで維持できた点が成果でした。アンケートの選択肢画像や香りグラフの見せ方により、抽象的な香りの好みを直感的に扱いやすくできています。改善点としては、予約ページの情報量がやや多く、初見ユーザーには優先順位が分かりづらくなる可能性があります。次回は、重要CTA、入力欄、補足説明の視線誘導をさらに絞り、スマートフォンでの読みやすさも含めて情報整理を強めたいです。</p>
+            </div>
+          </div>
+
+          <div class="fill-block">
+            <div class="fill-label">フロントエンド実装面の振り返り <span class="required">必須</span></div>
+            <div class="fill-hint">HTML/CSS/JavaScript 実装の学びと反省</div>
+            <div class="fill-content">
+              <p>フロントエンド実装では、`sessionStorage` を使って複数画面のデータをつなぎ、状態を引き継ぐ構成をシンプルにまとめられた点が良かったです。特にアンケートから予約までをサーバー無しで成立させたことで、導線確認を素早く回せました。一方で、ロジックが各HTML内のインラインスクリプトに分散しており、今後の拡張や保守では見通しが悪くなる懸念があります。次回は、状態管理の責務を整理し、共通処理の分割やモジュール化を早い段階で進めたいです。</p>
+            </div>
+          </div>
+
+          <div class="fill-block">
+            <div class="fill-label">バックエンド実装面の振り返り <span class="required">必須</span></div>
+            <div class="fill-hint">Java / Spring Boot 前提での反省と改善</div>
+            <div class="fill-content">
+              <p>バックエンド実装面では、Spring Boot 導入前に必要な API 単位、DB 項目、状態遷移を先に文書化できた点は前進です。一方で、実装着手前の段階では Controller / Service / Repository の責務分割、バリデーション方式、トランザクション設計をさらに具体化する必要があります。次工程では、予約保存 API、予約枠取得 API、スタッフ閲覧画面の順に実装し、画面とデータの責務を段階的に接続していきます。</p>
+            </div>
+          </div>
+
+          <div class="fill-block">
+            <div class="fill-label">全体を通しての学び <span class="required">必須</span></div>
+            <div class="fill-hint">今回の制作で得た知見を簡潔に整理</div>
+            <div class="fill-content">
+              <p>今回の制作を通して、体験設計と画面実装は切り離せず、特に「どこで期待を上げ、どこで迷わせず、どこで納得させるか」を先に決めることが重要だと学びました。また、フロントだけで素早く体験を組み立てる有効性と、その一方でバックエンド連携を後回しにすると設計負債が生まれやすいことも実感しました。</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="sec2">
+          <h2 class="section-title"><span class="section-icon">2</span> 評価記録</h2>
+
+          <div class="fill-block">
+            <div class="fill-label">評価タイトル <span class="required">必須</span></div>
+            <div class="fill-content"><p>香りワークショップ制作におけるフロント主導の体験設計評価</p></div>
+          </div>
+
+          <div class="fill-block">
+            <div class="fill-label">評価コメント <span class="required">必須</span></div>
+            <div class="fill-hint">第三者評価を想定した総評</div>
+            <div class="fill-content">
+              <p>来店前体験を複数画面で一貫したコンセプトのもとに構成し、ユーザーの完走率と予約導線を意識した設計ができている点は高く評価できます。特に、アンケートを単なる質問一覧ではなく、香り体験の準備として見せている点に企画的な強みがあります。一方で、データ永続化や自動テスト、運用時の予約管理など、実務運用に移るための基盤整備は今後の課題です。総じて、体験設計力とフロント表現力に強みがあり、次段階では実装基盤の強化が求められます。</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="sec3">
+          <h2 class="section-title"><span class="section-icon">3</span> 自己学習</h2>
+
+          <div class="fill-block">
+            <div class="fill-label">スキル自己評価 <span class="required">必須</span></div>
+            <div class="fill-hint">今回の制作を通した自己評価と理由</div>
+            <table class="doc-table">
+              <thead><tr><th>スキル項目</th><th>自己評価</th><th>コメント</th></tr></thead>
+              <tbody>
+                <tr><td>HTML/CSS</td><td>4/5</td><td>複数画面で一貫したUIを整えられたが、共通化の余地がある</td></tr>
+                <tr><td>JavaScript</td><td>4/5</td><td>`sessionStorage` を使った画面間連携を実装できた</td></tr>
+                <tr><td>Java</td><td>3/5</td><td>Spring Boot 実装を前提に責務整理と設計準備を進められている</td></tr>
+                <tr><td>Spring Boot</td><td>3/5</td><td>API、DB、認証の実装方針を整理し、着手準備が整っている</td></tr>
+                <tr><td>データベース</td><td>2/5</td><td>設計は可能だが、実装と接続確認が未実施</td></tr>
+                <tr><td>UI/UXデザイン</td><td>4/5</td><td>導線設計と視覚的トーンの統一を意識できた</td></tr>
+                <tr><td>Figma</td><td>3/5</td><td>ワイヤーの意図理解はできるが、運用強化余地がある</td></tr>
+                <tr><td>Git/GitHub</td><td>3/5</td><td>変更管理は可能だが、レビュー前提の整理をさらに強化したい</td></tr>
+                <tr><td>AI活用</td><td>4/5</td><td>仕様整理や文書生成の補助として有効に使えた</td></tr>
+                <tr><td>マーケティング</td><td>3/5</td><td>体験価値訴求を意識したが、CV観点の検証は今後必要</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="section" id="sec4">
+          <h2 class="section-title"><span class="section-icon">4</span> 今後の学習計画</h2>
+
+          <div class="fill-block">
+            <div class="fill-label">今後学びたい課題・スキル <span class="required">必須</span></div>
+            <div class="fill-hint">次の制作に向けた具体的な学習計画</div>
+            <div class="fill-content">
+              <p>今後は、予約保存 API の実装、DB 設計の実装反映、入力バリデーション、自動テスト整備を優先して学びます。フロント面では、状態管理の整理、共通コンポーネント化、モバイルでの情報設計改善に取り組みます。あわせて、予約率や離脱率といった運用指標をもとに改善判断できるよう、簡易的な計測設計や分析視点も強化したいです。</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
+
+
+

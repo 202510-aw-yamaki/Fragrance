@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>メソッド一覧 - 香りワークショップ</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <button class="hamburger" aria-label="メニュー"><span></span><span></span><span></span></button>
+  <div class="page-wrapper">
+    <aside class="sidebar" data-nav-level="design"></aside>
+    <main class="main-content">
+      <header class="doc-header">
+        <div class="doc-category">DESIGN 02</div>
+        <h1 class="doc-title">メソッド一覧</h1>
+        <div class="doc-meta">
+          <span><span class="material-symbols-outlined icon-sm">calendar_today</span> 作成日: 2026-03-16</span>
+          <span><span class="material-symbols-outlined icon-sm">person</span> 作成者: Codex</span>
+          <span><span class="material-symbols-outlined icon-sm">push_pin</span> Ver 1.1</span>
+        </div>
+      </header>
+      <div class="doc-body">
+        <div class="toc"><div class="toc-title">目次</div><ol class="toc-list"><li><a href="#sec1">Controller メソッド一覧</a></li><li><a href="#sec2">Service メソッド一覧</a></li><li><a href="#sec3">Repository メソッド一覧</a></li><li><a href="#sec4">共通処理・ユーティリティ</a></li></ol></div>
+
+        <section class="section" id="sec1">
+          <h2 class="section-title"><span class="section-icon">1</span> Controller メソッド一覧</h2>
+          <div class="fill-block"><div class="fill-label">TaskController <span class="required">必須</span></div><div class="fill-content"><p>実装時は `TaskController` 相当を、公開画面系と予約API系で分ける。</p><table class="doc-table"><thead><tr><th>クラス</th><th>メソッド</th><th>HTTP</th><th>役割</th></tr></thead><tbody><tr><td>FragrancePageController</td><td>showTop()</td><td>GET</td><td>トップページを返す</td></tr><tr><td>FragrancePageController</td><td>showQuestionnaireStep1()</td><td>GET</td><td>STEP1画面を返す</td></tr><tr><td>FragrancePageController</td><td>showQuestionnaireStep2(routeType)</td><td>GET</td><td>分岐ルート別のSTEP2を返す</td></tr><tr><td>FragrancePageController</td><td>showGraph()</td><td>GET</td><td>香りグラフ画面を返す</td></tr><tr><td>FragrancePageController</td><td>showReservation()</td><td>GET</td><td>予約画面を返す</td></tr><tr><td>QuestionnaireApiController</td><td>previewProfile(QuestionnaireForm form)</td><td>POST</td><td>回答からルートと5軸プレビューを返す</td></tr><tr><td>ReservationController</td><td>getAvailableSlots(date)</td><td>GET</td><td>予約可能枠一覧を返す</td></tr><tr><td>ReservationController</td><td>createReservation(ReservationForm form)</td><td>POST</td><td>予約を登録する</td></tr><tr><td>ReservationController</td><td>showCompletion(code)</td><td>GET</td><td>完了画面用データを返す</td></tr><tr><td>StaffReservationController</td><td>listReservations(condition)</td><td>GET</td><td>スタッフ用予約一覧を返す</td></tr><tr><td>StaffReservationController</td><td>showReservationDetail(id)</td><td>GET</td><td>予約詳細を返す</td></tr></tbody></table></div></div>
+        </section>
+
+        <section class="section" id="sec2">
+          <h2 class="section-title"><span class="section-icon">2</span> Service メソッド一覧</h2>
+          <div class="fill-block"><div class="fill-label">TaskService <span class="required">必須</span></div><div class="fill-content"><table class="doc-table"><thead><tr><th>クラス</th><th>メソッド</th><th>戻り値</th><th>役割</th></tr></thead><tbody><tr><td>QuestionnaireResultService</td><td>normalizeAnswers(form)</td><td>List&lt;QuestionnaireAnswer&gt;</td><td>画面入力を保存可能な回答群へ変換する</td></tr><tr><td>FragranceProfileService</td><td>calculateRoute(answers)</td><td>String</td><td>Bloom / Air / Deep / Exploratory を決定する</td></tr><tr><td>FragranceProfileService</td><td>calculateAxisScores(answers)</td><td>FragranceProfile</td><td>5軸の数値を算出する</td></tr><tr><td>ReservationService</td><td>createReservation(form)</td><td>Reservation</td><td>予約登録処理を実行する</td></tr><tr><td>ReservationService</td><td>buildCompletionView(code)</td><td>ReservationView</td><td>完了画面表示用に整形する</td></tr><tr><td>ReservationSlotService</td><td>findAvailableSlots(date)</td><td>List&lt;ReservationSlot&gt;</td><td>空き枠一覧を返す</td></tr><tr><td>ReservationSlotService</td><td>reserveSlot(slotId)</td><td>void</td><td>枠を確保状態に更新する</td></tr></tbody></table></div></div>
+        </section>
+
+        <section class="section" id="sec3">
+          <h2 class="section-title"><span class="section-icon">3</span> Repository メソッド一覧</h2>
+          <div class="fill-block"><div class="fill-label">TaskMapper <span class="required">必須</span></div><div class="fill-content"><table class="doc-table"><thead><tr><th>クラス</th><th>メソッド</th><th>概要</th></tr></thead><tbody><tr><td>QuestionnaireAnswerRepository</td><td>saveAll(List&lt;QuestionnaireAnswer&gt; answers)</td><td>回答群を一括保存する</td></tr><tr><td>QuestionnaireAnswerRepository</td><td>findByReservationId(Long reservationId)</td><td>予約に紐づく回答群を取得する</td></tr><tr><td>FragranceProfileRepository</td><td>save(FragranceProfile profile)</td><td>5軸プロフィールを保存する</td></tr><tr><td>FragranceProfileRepository</td><td>findByReservationId(Long reservationId)</td><td>予約に紐づくプロフィールを取得する</td></tr><tr><td>ReservationRepository</td><td>save(Reservation reservation)</td><td>予約本体を保存する</td></tr><tr><td>ReservationRepository</td><td>findByReservationCode(String code)</td><td>確認番号で予約を取得する</td></tr><tr><td>ReservationSlotRepository</td><td>findAvailableByDate(LocalDate date)</td><td>空き枠を取得する</td></tr><tr><td>ReservationSlotRepository</td><td>updateStatus(Long slotId, String status)</td><td>枠の状態を更新する</td></tr><tr><td>StaffUserRepository</td><td>findByLoginId(String loginId)</td><td>ログインIDでスタッフを取得する</td></tr></tbody></table></div></div>
+        </section>
+
+        <section class="section" id="sec4">
+          <h2 class="section-title"><span class="section-icon">4</span> 共通処理・ユーティリティ</h2>
+          <div class="fill-block"><div class="fill-label">日付変換・フォーマット <span class="optional">任意</span></div><div class="fill-content"><table class="doc-table"><thead><tr><th>クラス/関数</th><th>役割</th></tr></thead><tbody><tr><td>DateTimeFormatterUtil</td><td>予約日時の表示用整形</td></tr><tr><td>ReservationCodeGenerator</td><td>予約確認番号を採番</td></tr><tr><td>AxisScoreMapper</td><td>回答値から5軸値へ変換</td></tr><tr><td>RouteResolver</td><td>回答傾向から分岐ルートを決定</td></tr></tbody></table></div></div>
+          <div class="fill-block"><div class="fill-label">バリデーション関連 <span class="optional">任意</span></div><div class="fill-content"><table class="doc-table"><thead><tr><th>対象</th><th>検証内容</th><th>メッセージ例</th></tr></thead><tbody><tr><td>質問回答</td><td>必須設問の未回答確認</td><td>すべての質問に回答してください</td></tr><tr><td>予約日時</td><td>空欄・過去日時・満席確認</td><td>予約可能な日時を選択してください</td></tr><tr><td>人数</td><td>1名以上かつ上限以内</td><td>人数を正しく選択してください</td></tr><tr><td>メモ</td><td>文字数上限</td><td>メモは200文字以内で入力してください</td></tr></tbody></table></div></div>
+        </section>
+      </div>
+    </main>
+  </div>
+  <script src="../js/main.js"></script>
+</body>
+</html>

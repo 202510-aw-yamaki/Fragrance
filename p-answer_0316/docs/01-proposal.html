@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>企画提案書 - 香りワークショップ</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <button class="hamburger" aria-label="メニュー"><span></span><span></span><span></span></button>
+  <div class="page-wrapper">
+    <aside class="sidebar" data-nav-level="docs"></aside>
+    <main class="main-content">
+      <header class="doc-header">
+        <div class="doc-category">DOCUMENT 01</div>
+        <h1 class="doc-title">企画提案書</h1>
+        <div class="doc-meta">
+          <span><span class="material-symbols-outlined icon-sm">calendar_today</span> 作成日: 2026-03-16</span>
+          <span><span class="material-symbols-outlined icon-sm">person</span> 作成者: Codex</span>
+          <span><span class="material-symbols-outlined icon-sm">push_pin</span> Ver 1.0</span>
+        </div>
+      </header>
+      <div class="doc-body">
+        <div class="external-link-box">
+          <div class="external-link-box-title"><span class="material-symbols-outlined">link</span> 参照資料</div>
+          <div class="external-link-box-desc">`md/香りワークショップ企画提案_全文.md` と `md/香りワークショップページの設計_全文.md` をもとに整理しています。</div>
+          <div class="external-link-input"><input type="text" value="香りワークショップ企画提案 / ページ設計 / 実装HTML" readonly></div>
+        </div>
+        <div class="toc"><div class="toc-title">目次</div><ol class="toc-list"><li><a href="#sec1">プロジェクト概要</a></li><li><a href="#sec2">背景と課題</a></li><li><a href="#sec3">提案するソリューション</a></li><li><a href="#sec4">制作範囲</a></li><li><a href="#sec5">使用技術</a></li><li><a href="#sec6">スケジュール</a></li></ol></div>
+        <section class="section" id="sec1">
+          <h2 class="section-title"><span class="section-icon">1</span> プロジェクト概要</h2>
+          <div class="fill-block"><div class="fill-label">サービス名 <span class="required">必須</span></div><div class="fill-content"><p>香りワークショップ 来店前の香りづくり準備ページ</p></div></div>
+          <div class="fill-block"><div class="fill-label">コンセプト <span class="required">必須</span></div><div class="fill-content"><p>オンラインで好みを可視化し、オフラインで仕上げる二段階体験をつくる。単なる診断コンテンツではなく、来店前から香りづくりが始まっている感覚を提供し、回答完了から予約完了までを一気通貫でつなぐことをコンセプトとする。</p></div></div>
+          <div class="fill-block"><div class="fill-label">ターゲットユーザー <span class="required">必須</span></div><div class="fill-content"><p>20代後半から40代前半を中心とした、香水や香り体験に興味はあるが、専門知識がなく選び方に迷いやすいユーザー。ギフト需要、初回体験需要、再来店による微調整需要のいずれにも対応できる設計を想定する。</p></div></div>
+        </section>
+        <section class="section" id="sec2">
+          <h2 class="section-title"><span class="section-icon">2</span> 背景と課題</h2>
+          <div class="fill-block"><div class="fill-label">市場の現状 <span class="required">必須</span></div><div class="fill-content"><p>香りに対する関心は高い一方で、オンライン上では商品比較や診断コンテンツが中心になりやすく、実店舗体験へ自然につながる導線は弱い。ユーザーは香りに興味があっても、自分に合う選び方や当日の体験イメージを持てず、予約前に迷いやすい状態にある。</p></div></div>
+          <div class="fill-block"><div class="fill-label">解決すべき課題 <span class="required">必須</span></div><div class="fill-content"><p>来店前に期待値を上げながらも回答負荷を上げすぎず、予約まで迷わず進める導線が必要である。加えて、店舗側が当日の提案を始めやすいよう、ユーザーの好みを簡潔に共有できる状態を事前に整える必要がある。</p></div></div>
+        </section>
+        <section class="section" id="sec3">
+          <h2 class="section-title"><span class="section-icon">3</span> 提案するソリューション</h2>
+          <div class="fill-block"><div class="fill-label">サービスの特長 <span class="required">必須</span></div><div class="fill-content"><p>トップページで体験価値を提示し、共通5問と分岐質問で香りの好みを取得し、5軸グラフで可視化・微調整させ、そのまま予約へ接続する構成を採用する。最終判断は店頭で行う前提を保つことで、診断の押しつけ感を避けつつ、ユーザーには納得感、店舗には提案の起点を提供できる。</p></div></div>
+        </section>
+        <section class="section" id="sec4">
+          <h2 class="section-title"><span class="section-icon">4</span> 制作範囲</h2>
+          <div class="fill-block"><div class="fill-label">Webサイト（フロントエンド）の範囲 <span class="required">必須</span></div><div class="fill-content"><p>トップページ、アンケートSTEP1、アンケートSTEP2、香りグラフ、予約ページ、予約完了ページの制作。レスポンシブ対応、ページ遷移、アンケート回答の保持、グラフ表示、予約導線までを含む。</p></div></div>
+          <div class="fill-block"><div class="fill-label">Webアプリケーション（サーバーサイド）の範囲 <span class="required">必須</span></div><div class="fill-content"><p>Spring Boot 実装では、予約保存API、予約枠管理、アンケート結果保存、店舗向け閲覧機能、入力値検証を含む構成を対象範囲とする。</p></div></div>
+        </section>
+        <section class="section" id="sec5">
+          <h2 class="section-title"><span class="section-icon">5</span> 使用技術</h2>
+          <table class="doc-table"><thead><tr><th>区分</th><th>技術</th><th>用途</th></tr></thead><tbody><tr><td>フロントエンド</td><td>HTML / CSS / JavaScript</td><td>画面実装とページ遷移</td></tr><tr><td>データ保持</td><td>sessionStorage</td><td>回答結果と予約前情報の一時保存</td></tr><tr><td>サーバーサイド</td><td>Java 21 / Spring Boot 3.5.11</td><td>予約保存、管理画面、入力検証</td></tr><tr><td>設計資料</td><td>Markdown / Figma / PPT由来資料</td><td>企画整理と画面設計</td></tr></tbody></table>
+        </section>
+        <section class="section" id="sec6">
+          <h2 class="section-title"><span class="section-icon">6</span> スケジュール</h2>
+          <table class="doc-table"><thead><tr><th>フェーズ</th><th>内容</th><th>目安</th></tr></thead><tbody><tr><td>Phase 1</td><td>企画整理、導線設計、質問設計</td><td>初期</td></tr><tr><td>Phase 2</td><td>トップページ、アンケート、グラフ画面の実装</td><td>中盤</td></tr><tr><td>Phase 3</td><td>予約画面、完了画面、レスポンシブ調整</td><td>中盤から後半</td></tr><tr><td>Phase 4</td><td>仕様書・テスト・振り返り資料の整備</td><td>終盤</td></tr></tbody></table>
+        </section>
+      </div>
+    </main>
+  </div>
+  <script src="../js/main.js"></script>
+</body>
+</html>
+
+

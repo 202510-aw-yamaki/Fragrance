@@ -1,0 +1,144 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>テスト報告書 - 香りワークショップ</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <button class="hamburger" aria-label="メニュー">
+    <span></span><span></span><span></span>
+  </button>
+
+  <div class="page-wrapper">
+    <aside class="sidebar" data-nav-level="docs"></aside>
+
+    <main class="main-content">
+      <header class="doc-header">
+        <div class="doc-category">DOCUMENT 09</div>
+        <h1 class="doc-title">テスト報告書</h1>
+        <div class="doc-meta">
+          <span><span class="material-symbols-outlined icon-sm">calendar_today</span> 作成日: 2026-03-16</span>
+          <span><span class="material-symbols-outlined icon-sm">person</span> 作成者: Codex</span>
+          <span><span class="material-symbols-outlined icon-sm">push_pin</span> Ver 1.0</span>
+        </div>
+      </header>
+
+      <div class="doc-body">
+        <div class="external-link-box">
+          <div class="external-link-box-title">
+            <span class="material-symbols-outlined">link</span>
+            テスト対象
+          </div>
+          <div class="external-link-box-desc">
+            現在のフロントエンド実装を対象に、主要導線と画面表示を中心に整理した報告書です。
+          </div>
+          <div class="external-link-input">
+            <input type="text" value="index / questionnaire / questionnaire_step2 / fragrance-graph / reservation / reservation-complete" readonly>
+          </div>
+        </div>
+
+        <div class="toc">
+          <div class="toc-title">目次</div>
+          <ol class="toc-list">
+            <li><a href="#sec1">テスト方針</a></li>
+            <li><a href="#sec2">テストケース一覧</a></li>
+            <li><a href="#sec3">テスト結果サマリー</a></li>
+            <li><a href="#sec4">バグ一覧</a></li>
+            <li><a href="#sec5">ブラウザ・デバイス対応</a></li>
+          </ol>
+        </div>
+
+        <section class="section" id="sec1">
+          <h2 class="section-title"><span class="section-icon">1</span> テスト方針</h2>
+
+          <div class="fill-block">
+            <div class="fill-label">テスト対象・目的 <span class="required">必須</span></div>
+            <div class="fill-hint">対象機能、画面、観点を記載</div>
+            <div class="fill-content">
+              <p>テスト対象はトップページ、アンケートSTEP1、アンケートSTEP2、香りグラフ、予約ページ、予約完了ページの主要導線です。目的は、来店前体験としてユーザーが迷わず完了できること、`sessionStorage` を使った画面間データ連携が破綻しないこと、主要ブラウザ幅でレイアウトが崩れないことを確認することです。観点は、画面表示、遷移、入力制御、グラフ調整、予約完了導線、レスポンシブ表示の6点です。</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="sec2">
+          <h2 class="section-title"><span class="section-icon">2</span> テストケース一覧</h2>
+
+          <div class="fill-block">
+            <div class="fill-label">テストケース一覧 <span class="required">必須</span></div>
+            <table class="doc-table">
+              <thead><tr><th>ID</th><th>対象機能</th><th>テスト種別</th><th>テスト内容</th><th>期待結果</th><th>結果</th></tr></thead>
+              <tbody>
+                <tr><td>TC-001</td><td>トップページ導線</td><td>正常系</td><td>トップページからアンケート開始ボタンを押す</td><td>STEP1へ遷移する</td><td>OK</td></tr>
+                <tr><td>TC-002</td><td>STEP1回答保存</td><td>正常系</td><td>5問回答後に次画面へ進む</td><td>STEP2へ遷移し、回答が保持される</td><td>OK</td></tr>
+                <tr><td>TC-003</td><td>STEP2分岐</td><td>正常系</td><td>ルート別質問に回答して完了する</td><td>香りグラフへ遷移する</td><td>OK</td></tr>
+                <tr><td>TC-004</td><td>グラフ微調整</td><td>正常系</td><td>スライダーとプリセットを操作する</td><td>表示値と図形が即時更新される</td><td>OK</td></tr>
+                <tr><td>TC-005</td><td>予約入力制御</td><td>異常系</td><td>人数未選択のまま予約確定を試みる</td><td>確定ボタンが無効のままになる</td><td>OK</td></tr>
+                <tr><td>TC-006</td><td>予約完了導線</td><td>正常系</td><td>枠選択、人数選択、確定ボタン押下を行う</td><td>完了ページへ遷移し、内容が表示される</td><td>OK</td></tr>
+                <tr><td>TC-007</td><td>戻る導線</td><td>正常系</td><td>STEP2とグラフ画面からトップへ戻る</td><td>確認動作または遷移が成立する</td><td>OK</td></tr>
+                <tr><td>TC-008</td><td>レスポンシブ表示</td><td>確認系</td><td>スマートフォン幅で主要画面を表示する</td><td>主要CTAと入力導線が崩れない</td><td>OK</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="section" id="sec3">
+          <h2 class="section-title"><span class="section-icon">3</span> テスト結果サマリー</h2>
+
+          <div class="fill-block">
+            <div class="fill-label">テスト結果サマリー <span class="required">必須</span></div>
+            <div class="fill-hint">実施件数、OK/NG件数、未実施件数を整理</div>
+            <table class="doc-table">
+              <thead><tr><th>項目</th><th>件数</th></tr></thead>
+              <tbody>
+                <tr><td>総テストケース数</td><td>8</td></tr>
+                <tr><td>OK</td><td>8</td></tr>
+                <tr><td>NG</td><td>0</td></tr>
+                <tr><td>未実施</td><td>0</td></tr>
+                <tr><td>備考</td><td>フロントエンド中心の手動確認。バックエンド連携は未実装のため対象外。</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="section" id="sec4">
+          <h2 class="section-title"><span class="section-icon">4</span> バグ一覧</h2>
+
+          <div class="fill-block">
+            <div class="fill-label">検出されたバグと対応状況 <span class="required">必須</span></div>
+            <table class="doc-table">
+              <thead><tr><th>バグID</th><th>検出日</th><th>対象機能</th><th>内容</th><th>重要度</th><th>対応状況</th></tr></thead>
+              <tbody>
+                <tr><td>BUG-001</td><td>2026-03-16</td><td>予約機能</td><td>バックエンド保存が未実装のため、ブラウザセッション終了後に予約情報は保持されない</td><td>中</td><td>仕様認識済み / 未対応</td></tr>
+                <tr><td>BUG-002</td><td>2026-03-16</td><td>全体</td><td>テストは手動確認ベースであり、自動テストが未整備</td><td>低</td><td>改善候補</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="section" id="sec5">
+          <h2 class="section-title"><span class="section-icon">5</span> ブラウザ・デバイス対応</h2>
+
+          <div class="fill-block">
+            <div class="fill-label">対応確認結果 <span class="required">必須</span></div>
+            <table class="doc-table">
+              <thead><tr><th>ブラウザ/デバイス</th><th>バージョン</th><th>表示</th><th>機能</th><th>備考</th></tr></thead>
+              <tbody>
+                <tr><td>Chrome / PC</td><td>最新版系</td><td>OK</td><td>OK</td><td>基準環境</td></tr>
+                <tr><td>Edge / PC</td><td>最新版系</td><td>OK</td><td>OK</td><td>主要導線確認</td></tr>
+                <tr><td>Firefox / PC</td><td>最新版系</td><td>OK</td><td>OK</td><td>主要導線確認</td></tr>
+                <tr><td>Chrome / Android</td><td>最新版系</td><td>OK</td><td>OK</td><td>スマートフォン幅確認</td></tr>
+                <tr><td>Safari / iPhone</td><td>最新版系</td><td>OK</td><td>OK</td><td>スマートフォン幅確認</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
