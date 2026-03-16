@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>仕様書（機能仕様書） - プロジェクトアーカイブ</title>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+  <link rel="stylesheet" href="../css/style.css">
+  <script>window.__LMS = { "apiBase": "https:\/\/proclimblms.jp\/api\/tutorial-progress", "csrfToken": "G2o2ob0ZLN1brldu4OhaSf876w5aYHTxC06d8DiJ", "userId": 106, "userName": "\u5c71\u6728 \u79c0\u6cbb" };</script>
+</head>
+
+<body data-course="generaltraining" data-type="section" data-page="07-specification">
+  <style>
+    #lms-topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 99999;
+      height: 40px;
+      background: #1a1a2e;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 13px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, .15)
+    }
+
+    .global-nav {
+      top: 40px !important
+    }
+
+    .apple-gnav,
+    .mobile-menu {
+      display: none !important
+    }
+
+    .nav-category-bar {
+      top: 100px !important
+    }
+
+    body {
+      padding-top: 100px !important
+    }
+
+    body.apple-layout {
+      padding-top: 70px !important
+    }
+
+    .apple-subnav {
+      position: fixed;
+      top: 40px !important
+    }
+  </style>
+  <div id="lms-topbar">
+    <div style="display:flex;align-items:center;gap:10px">
+      <span style="color:#fff;font-weight:700;font-size:12px;letter-spacing:.5px">Proclimb LMS</span>
+      <a href="https://proclimblms.jp/student/dashboard"
+        style="color:#8bb4e0;text-decoration:none;font-size:12px;padding:4px 10px;border:1px solid rgba(139,180,224,.3);border-radius:6px;transition:all .2s"
+        onmouseover="this.style.background='rgba(139,180,224,.1)'" onmouseout="this.style.background='transparent'">←
+        LMSに戻る</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <div
+        style="width:24px;height:24px;border-radius:50%;background:#4a5568;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff">
+        山</div>
+      <span style="color:#ccc;font-size:12px">山木 秀治</span>
+    </div>
+  </div>
+  <button class="hamburger" aria-label="メニュー">
+    <span></span><span></span><span></span>
+  </button>
+
+  <div class="page-wrapper">
+    <aside class="sidebar" data-nav-level="docs"></aside>
+
+    <main class="main-content">
+      <header class="doc-header">
+        <div class="doc-category">DOCUMENT 07</div>
+        <h1 class="doc-title">仕様書（機能仕様書）</h1>
+        <div class="doc-meta">
+          <span><span class="material-symbols-outlined icon-sm">calendar_today</span> 作成日：2026-XX-XX</span>
+          <span><span class="material-symbols-outlined icon-sm">person</span> 作成者：（氏名を入力）</span>
+          <span><span class="material-symbols-outlined icon-sm">push_pin</span> Ver 1.0</span>
+        </div>
+      </header>
+
+      <div class="doc-body">
+
+        <div class="external-link-box">
+          <div class="external-link-box-title">
+            <span class="material-symbols-outlined">link</span>
+            詳細ドキュメント（Google スプレッドシート）
+          </div>
+          <div class="external-link-box-desc">
+            このページは概要のみを記載しています。詳細な仕様書は以下のリンクからご確認ください。
+          </div>
+          <div class="external-link-input">
+            <input type="text" placeholder="https://docs.google.com/spreadsheets/d/xxxxx" id="external-link-07">
+            <a href="#" class="link-btn"
+              onclick="window.open(document.getElementById('external-link-07').value || 'https://docs.google.com', '_blank'); return false;">
+              <span class="material-symbols-outlined">open_in_new</span>
+              開く
+            </a>
+          </div>
+        </div>
+
+        <div class="toc">
+          <div class="toc-title">目次</div>
+          <ol class="toc-list">
+            <li><a href="#sec1">システム概要</a></li>
+            <li><a href="#sec2">機能一覧</a></li>
+            <li><a href="#sec3">画面遷移図</a></li>
+            <li><a href="#sec4">機能詳細仕様</a></li>
+            <li><a href="#sec5">非機能要件</a></li>
+          </ol>
+        </div>
+
+        <section class="section" id="sec1">
+          <h2 class="section-title"><span class="section-icon">1</span> システム概要</h2>
+
+          <div class="fill-block">
+            <div class="fill-label">システムの目的 <span class="required">必須</span></div>
+            <div class="fill-hint">このシステムが解決する課題と提供する価値</div>
+            <div class="fill-content">
+              <p>（システムの目的を記載）</p>
+            </div>
+            <div class="prompt-box">
+              <div class="prompt-title"><span class="material-symbols-outlined icon-sm">smart_toy</span> AIプロンプト例</div>
+              <div class="prompt-text">（サービス名）の管理システムの目的を100字程度で記述してください。
+
+                以下の情報を含めてください。
+                ・誰が使うシステムか
+                ・何ができるシステムか
+                ・どのような価値を提供するか</div>
+            </div>
+          </div>
+          <div class="fill-block">
+            <div class="fill-label">システム構成図 <span class="required">必須</span></div>
+            <div class="fill-hint">フロントエンド ↔ バックエンド ↔ データベースの関係を図示</div>
+            <div class="fill-content">
+              <p>（システム構成図を記載）</p>
+            </div>
+            <div class="prompt-box">
+              <div class="prompt-title"><span class="material-symbols-outlined icon-sm">smart_toy</span> AIプロンプト例</div>
+              <div class="prompt-text">以下のシステム構成をテキストベースの図で表現してください。
+
+                ・フロントエンド：HTML/CSS/JavaScript（Thymeleaf）
+                ・バックエンド：Spring Boot（Controller → Service → Repository）
+                ・データベース：（MySQL / H2）
+
+                ブラウザからDBまでのデータの流れがわかる図にしてください。</div>
+            </div>
+          </div>
+
+        </section>
+
+        <section class="section" id="sec2">
+          <h2 class="section-title"><span class="section-icon">2</span> 機能一覧</h2>
+
+          <div class="fill-block">
+            <div class="fill-label">機能一覧表 <span class="required">必須</span></div>
+            <table class="doc-table">
+              <thead>
+                <tr>
+                  <th>No.</th>
+                  <th>機能名</th>
+                  <th>概要</th>
+                  <th>対応画面</th>
+                  <th>優先度</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="template-row">
+                  <td>F-001</td>
+                  <td>（ログイン）</td>
+                  <td>（メール/パスワードで認証）</td>
+                  <td>（ログイン画面）</td>
+                  <td><span class="badge badge-must">Must</span></td>
+                </tr>
+                <tr class="template-row">
+                  <td>F-002</td>
+                  <td>（一覧表示）</td>
+                  <td>（データの一覧表示・ページネーション）</td>
+                  <td>（一覧画面）</td>
+                  <td><span class="badge badge-must">Must</span></td>
+                </tr>
+                <tr class="template-row">
+                  <td>F-003</td>
+                  <td>（新規登録）</td>
+                  <td>（フォームから新規データ登録）</td>
+                  <td>（登録画面）</td>
+                  <td><span class="badge badge-must">Must</span></td>
+                </tr>
+                <tr class="template-row">
+                  <td>F-004</td>
+                  <td>（詳細表示）</td>
+                  <td>（データの詳細情報表示）</td>
+                  <td>（詳細画面）</td>
+                  <td><span class="badge badge-must">Must</span></td>
+                </tr>
+                <tr class="template-row">
+                  <td>F-005</td>
+                  <td>（編集）</td>
+                  <td>（既存データの更新）</td>
+                  <td>（編集画面）</td>
+                  <td><span class="badge badge-must">Must</span></td>
+                </tr>
+                <tr class="template-row">
+                  <td>F-006</td>
+                  <td>（削除）</td>
+                  <td>（データの削除・確認ダイアログ）</td>
+                  <td>（一覧画面）</td>
+                  <td><span class="badge badge-must">Must</span></td>
+                </tr>
+                <tr class="template-row">
+                  <td>F-007</td>
+                  <td>（検索）</td>
+                  <td>（キーワード・条件検索）</td>
+                  <td>（一覧画面）</td>
+                  <td><span class="badge badge-should">Should</span></td>
+                </tr>
+                <tr class="template-row">
+                  <td>F-008</td>
+                  <td>（ソート）</td>
+                  <td>（カラムクリックでの並び替え）</td>
+                  <td>（一覧画面）</td>
+                  <td><span class="badge badge-should">Should</span></td>
+                </tr>
+                <tr class="template-row">
+                  <td>F-009</td>
+                  <td>（CSV出力）</td>
+                  <td>（データのCSVエクスポート）</td>
+                  <td>（一覧画面）</td>
+                  <td><span class="badge badge-could">Could</span></td>
+                </tr>
+                <tr class="template-row">
+                  <td>…</td>
+                  <td>…</td>
+                  <td>…</td>
+                  <td>…</td>
+                  <td>…</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="prompt-box">
+              <div class="prompt-title"><span class="material-symbols-outlined icon-sm">smart_toy</span> AIプロンプト例</div>
+              <div class="prompt-text">（サービス名）の管理システムの機能一覧を作成してください。
+
+                システム概要：（概要を記載）
+                ユーザー種別：管理者、一般ユーザー
+
+                以下の形式で、MoSCoW法で優先度をつけてリストアップしてください。
+                | No. | 機能名 | 概要 | 対応画面 | 優先度(Must/Should/Could) |
+
+                Must: CRUD基本操作、ログイン、バリデーション
+                Should: 検索、ソート、ページネーション
+                Could: CSV出力、ファイルアップロード、メール通知</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="sec3">
+          <h2 class="section-title"><span class="section-icon">3</span> 画面遷移図</h2>
+
+          <div class="fill-block">
+            <div class="fill-label">画面遷移図 <span class="required">必須</span></div>
+            <div class="fill-hint">各画面間の遷移関係を図示</div>
+            <div class="fill-content">
+              <p>（画面遷移図を記載）</p>
+            </div>
+            <div class="prompt-box">
+              <div class="prompt-title"><span class="material-symbols-outlined icon-sm">smart_toy</span> AIプロンプト例</div>
+              <div class="prompt-text">（サービス名）の管理システムの画面遷移図をテキストベースで作成してください。
+
+                画面一覧：
+                （上記の機能一覧で定義した画面を列挙）
+
+                各画面間の遷移を矢印で表現し、遷移のトリガー（ボタン名やアクション）も記載してください。</div>
+            </div>
+          </div>
+
+        </section>
+
+        <section class="section" id="sec4">
+          <h2 class="section-title"><span class="section-icon">4</span> 機能詳細仕様</h2>
+
+          <div class="info-box warning">
+            <strong>機能ごとに詳細仕様を記載してください</strong>
+            以下のテンプレートを機能の数だけコピーして使用してください。<br>
+            最低でもCRUD（登録・一覧・更新・削除）とログイン機能の仕様は記載してください。
+          </div>
+
+          <div class="subsection">
+            <h3 class="subsection-title">機能仕様テンプレート（コピーして使用）</h3>
+
+            <div class="fill-block">
+              <div class="fill-label">機能名：（機能名を入力） <span class="required">必須</span></div>
+              <div class="fill-hint">機能ID：F-XXX</div>
+              <div class="fill-content">
+                <p>（機能の詳細仕様を記載）</p>
+              </div>
+              <div class="prompt-box">
+                <div class="prompt-title"><span class="material-symbols-outlined icon-sm">smart_toy</span> AIプロンプト例
+                </div>
+                <div class="prompt-text">（サービス名）の（機能名）機能の詳細仕様を作成してください。
+
+                  以下の項目を含めてください。
+                  1. 画面レイアウト（どの要素がどこに配置されるか）
+                  2. 入力項目一覧（項目名・データ型・必須/任意・バリデーションルール）
+                  3. 処理フロー（ユーザー操作 → システム処理 → 結果表示）
+                  4. 正常時の動作
+                  5. エラー時の動作（バリデーションエラー、システムエラー）
+                  6. 画面遷移先</div>
+              </div>
+            </div>
+
+            <div class="fill-block">
+              <div class="fill-label">入力項目一覧 <span class="required">必須</span></div>
+              <table class="doc-table">
+                <thead>
+                  <tr>
+                    <th>項目名</th>
+                    <th>データ型</th>
+                    <th>必須</th>
+                    <th>バリデーション</th>
+                    <th>備考</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="template-row">
+                    <td>（項目名）</td>
+                    <td>（String / Integer / Date 等）</td>
+                    <td>（○ / —）</td>
+                    <td>（必須チェック / 文字数制限 等）</td>
+                    <td>（備考）</td>
+                  </tr>
+                  <tr class="template-row">
+                    <td>…</td>
+                    <td>…</td>
+                    <td>…</td>
+                    <td>…</td>
+                    <td>…</td>
+                  </tr>
+                </tbody>
+              </table>
+
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="sec5">
+          <h2 class="section-title"><span class="section-icon">5</span> 非機能要件</h2>
+
+          <div class="fill-block">
+            <div class="fill-label">セキュリティ要件 <span class="required">必須</span></div>
+            <div class="fill-hint">認証・認可・データ保護に関する要件</div>
+            <div class="fill-content">
+              <p>（セキュリティ要件を記載）</p>
+            </div>
+            <div class="prompt-box">
+              <div class="prompt-title"><span class="material-symbols-outlined icon-sm">smart_toy</span> AIプロンプト例</div>
+              <div class="prompt-text">Spring Bootアプリケーションのセキュリティ要件を一覧にしてください。
+
+                以下を含めてください。
+                ・認証方式（Spring Security）
+                ・パスワードの暗号化方式
+                ・CSRF対策
+                ・XSS対策
+                ・SQLインジェクション対策
+                ・セッション管理</div>
+            </div>
+          </div>
+          <div class="fill-block">
+            <div class="fill-label">対応環境 <span class="required">必須</span></div>
+            <div class="fill-hint">対応ブラウザ・デバイス</div>
+            <div class="fill-content">
+              <p>・対応ブラウザ：Chrome（最新版）/ Firefox（最新版）/ Edge（最新版）
+                ・対応デバイス：PC / タブレット / スマートフォン
+                （自分の実際の対応範囲に合わせて編集してください）</p>
+            </div>
+            <div class="prompt-box">
+              <div class="prompt-title"><span class="material-symbols-outlined icon-sm">smart_toy</span> AIプロンプト例</div>
+              <div class="prompt-text">不要（以下を参考に自分で記載してください）</div>
+            </div>
+          </div>
+
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/main.js"></script>
+  <script src="../../../../shared/js/progress.js"></script>
+</body>
+
+</html>
