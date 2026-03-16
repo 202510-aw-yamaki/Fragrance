@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>サイトマップ - プロジェクトアーカイブ</title>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+  <button class="hamburger" aria-label="メニュー">
+    <span></span><span></span><span></span>
+  </button>
+
+  <div class="page-wrapper">
+    <aside class="sidebar" data-nav-level="docs"></aside>
+
+    <main class="main-content">
+      <header class="doc-header">
+        <div class="doc-category">DOCUMENT 04</div>
+        <h1 class="doc-title">サイトマップ</h1>
+        <div class="doc-meta">
+          <span><span class="material-symbols-outlined icon-sm">calendar_today</span> 作成日：2026-XX-XX</span>
+          <span><span class="material-symbols-outlined icon-sm">person</span> 作成者：（氏名を入力）</span>
+          <span><span class="material-symbols-outlined icon-sm">push_pin</span> Ver 1.0</span>
+        </div>
+      </header>
+
+      <div class="doc-body">
+
+        <div class="toc">
+          <div class="toc-title">目次</div>
+          <ol class="toc-list">
+            <li><a href="#sec1">サイト構造図</a></li>
+            <li><a href="#sec2">ページ一覧</a></li>
+            <li><a href="#sec3">ユーザーフロー</a></li>
+            <li><a href="#sec4">URL設計</a></li>
+          </ol>
+        </div>
+
+        <section class="section" id="sec1">
+          <h2 class="section-title"><span class="section-icon">1</span> サイト構造図</h2>
+
+          <div class="fill-block">
+            <div class="fill-label">Webサイト構造図 <span class="required">必須</span></div>
+            <div class="fill-content">
+              <p>
+                ┌─ index.html（トップページ）<br>
+                ├─ assets/<br>
+                │ ├─ script.js<br>
+                │ └─ styles.css<br>
+                ├─ image/（画像フォルダ）<br>
+                ├─ hokkaido/（北海道地方）<br>
+                │ └─ index.html<br>
+                ├─ tohoku/（東北地方）<br>
+                │ └─ index.html<br>
+                ├─ kanto/（関東地方）<br>
+                │ └─ index.html<br>
+                ├─ chubu/（中部地方）<br>
+                │ └─ index.html<br>
+                ├─ kinki/（近畿地方）<br>
+                │ └─ index.html<br>
+                ├─ shikoku/（四国地方）<br>
+                │ └─ index.html<br>
+                ├─ chugoku/（中国地方）<br>
+                │ └─ index.html<br>
+                ├─ kyushu/（九州地方）<br>
+                │ └─ index.html<br>
+                └─ legal/（会社情報など）<br>
+                　 ├─ privacy.html<br>
+                　 └─ terms.html</p>
+            </div>
+          </div>
+          <div class="fill-block">
+            <div class="fill-label">Webアプリケーション構造図 <span class="required">必須</span></div>
+            <div class="fill-content">
+              <p>管理システム（Spring Boot）<br>
+                <br>
+                ├─ ログイン前<br>
+                │ ├─ /login（ログイン画面）<br>
+                │ │ ├─ ID/メール入力<br>
+                │ │ ├─ パスワード入力<br>
+                │ │ └─ ログイン実行<br>
+                │ └─ /logout-complete（ログアウト後画面）※任意<br>
+                │<br>
+                └─ ログイン後<br>
+                ├─ /admin（管理トップ）<br>
+                │<br>
+                ├─ 地点管理（各地方）<br>
+                │ ├─ /admin/locations（一覧・検索）<br>
+                │ ├─ /admin/locations/new（追加）<br>
+                │ ├─ /admin/locations/{id}/edit（編集）<br>
+                │ └─ /admin/locations/{id}/delete（削除）<br>
+                │<br>
+                ├─ 画像管理<br>
+                │ ├─ /admin/images（一覧）<br>
+                │ ├─ /admin/images/upload（追加）<br>
+                │ └─ /admin/images/{id}/delete（削除）<br>
+                │<br>
+                ├─ 公開設定<br>
+                │ ├─ /admin/publish（公開/非公開）<br>
+                │ └─ /admin/publish/order（表示順）<br>
+                │<br>
+                ├─ 監査ログ<br>
+                │ └─ /admin/audit-logs（操作履歴一覧・検索）<br>
+                │<br>
+                └─ 共通機能（全管理画面）<br>
+                ├─ ヘッダー（ユーザー情報、ログアウト、主要メニュー）<br>
+                ├─ ページネーション（一覧画面）<br>
+                ├─ バリデーション（入力チェック・エラー表示）<br>
+                └─ 権限（Admin/Editor などのアクセス制御）<br>
+                <br>
+                [ログイン前]<br>
+                開始<br>
+                ↓<br>
+                ログイン画面(/login)<br>
+                ├─ 認証成功 → 管理トップ(/admin)<br>
+                └─ 認証失敗 → ログイン画面(/login)［エラー表示］<br>
+                <br>
+                <br>
+                [ログイン後]<br>
+                管理トップ(/admin)<br>
+                ├→ 地点管理 一覧・検索(/admin/locations)<br>
+                │ ├→ 追加(/admin/locations/new) → 保存 → 一覧(/admin/locations)<br>
+                │ ├→ 編集(/admin/locations/{id}/edit) → 保存 → 一覧(/admin/locations)<br>
+                │ └→ 削除(/admin/locations/{id}/delete) → 実行 → 一覧(/admin/locations)<br>
+                │<br>
+                ├→ 画像管理 一覧(/admin/images)<br>
+                │ ├→ 追加(/admin/images/upload) → 保存 → 一覧(/admin/images)<br>
+                │ └→ 削除(/admin/images/{id}/delete) → 実行 → 一覧(/admin/images)<br>
+                │<br>
+                ├→ 公開設定(/admin/publish)<br>
+                │ ├→ 公開/非公開 切替 → 公開設定(/admin/publish)<br>
+                │ └→ 表示順設定(/admin/publish/order) → 保存 → 公開設定(/admin/publish)<br>
+                │<br>
+                ├→ 監査ログ(/admin/audit-logs)<br>
+                │ └→ 検索/絞り込み → 監査ログ(/admin/audit-logs)<br>
+                │<br>
+                └→ ログアウト(/logout) → ログイン画面(/login)<br>
+                <br>
+                <br>
+                [共通機能の適用範囲]<br>
+                ヘッダー（全管理画面）<br>
+                ページネーション（/admin/locations, /admin/images, /admin/audit-logs）<br>
+                バリデーション（追加/編集/公開設定の保存時）<br>
+                権限制御（未認証: /loginへ、権限不足: 403）
+              </p>
+            </div>
+
+          </div>
+
+        </section>
+
+        <section class="section" id="sec2">
+          <h2 class="section-title"><span class="section-icon">2</span> ページ一覧</h2>
+
+          <div class="fill-block">
+            <div class="fill-label">Webサイト ページ一覧 <span class="required">必須</span></div>
+            <table class="doc-table">
+              <thead>
+                <tr>
+                  <th>No.</th>
+                  <th>ページ名</th>
+                  <th>ページの目的</th>
+                  <th>主要コンテンツ</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>Home（/index.html）</td>
+                  <td>サイト入口。予約導線と地方ページへの分岐</td>
+                  <td>ヒーロー（浅草 inimu 予約CTA）、日本地図、地方リンク（北海道〜九州）、法的情報リンク</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>北海道（/hokkaido/index.html）</td>
+                  <td>北海道の地点情報案内</td>
+                  <td>地方名画像、地点アイコン（中川町: 和薄荷）、詳細外部リンク</td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>東北（/tohoku/index.html）</td>
+                  <td>東北の地点情報案内</td>
+                  <td>地方名画像、地点アイコン（葛尾村: 紫蘇）、退避先リンク</td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>関東（/kanto/index.html）</td>
+                  <td>関東の地点情報案内</td>
+                  <td>地方名画像、地点アイコン（浅草: inimu店舗）、外部リンク</td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td>中部（/chubu/index.html）</td>
+                  <td>中部の地点情報案内</td>
+                  <td>地方名画像、地点アイコン（加子母ひのき／能登ひば／国造ゆず）、各外部リンク</td>
+                </tr>
+                <tr>
+                  <td>6</td>
+                  <td>近畿（/kinki/index.html）</td>
+                  <td>近畿の地点情報案内</td>
+                  <td>地方名画像、地点アイコン（和束茶／大和橘）、各外部リンク</td>
+                </tr>
+                <tr>
+                  <td>7</td>
+                  <td>中国（/chugoku/index.html）</td>
+                  <td>中国地方ページの枠提供（今後拡張）</td>
+                  <td>地方名画像、地点アイコン（未定）</td>
+                </tr>
+                <tr>
+                  <td>8</td>
+                  <td>四国（/shikoku/index.html）</td>
+                  <td>四国の地点情報案内</td>
+                  <td>地方名画像、地点アイコン（土佐文旦）、外部リンク</td>
+                </tr>
+                <tr>
+                  <td>9</td>
+                  <td>九州（/kyushu/index.html）</td>
+                  <td>九州地方ページの枠提供（今後拡張）</td>
+                  <td>地方名画像、地点アイコン（未定）</td>
+                </tr>
+                <tr>
+                  <td>10</td>
+                  <td>プライバシーポリシー（/legal/privacy.html）</td>
+                  <td>個人情報保護方針の提示</td>
+                  <td>パンくず、ポリシー本文（ワイヤー）</td>
+                </tr>
+                <tr>
+                  <td>11</td>
+                  <td>利用規約（/legal/terms.html）</td>
+                  <td>利用条件の提示</td>
+                  <td>パンくず、規約本文（ワイヤー）</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="fill-block">
+            <div class="fill-label">Webアプリ 画面一覧 <span class="required">必須</span></div>
+            <table class="doc-table">
+              <thead>
+                <tr>
+                  <th>No.</th>
+                  <th>画面名</th>
+                  <th>画面の目的</th>
+                  <th>主要機能</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>ログイン画面</td>
+                  <td>管理者/編集者の認証</td>
+                  <td>ID・パスワード入力、ログイン、エラー表示</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>管理トップ（ダッシュボード）</td>
+                  <td>全体状況の把握と各機能への導線</td>
+                  <td>メニュー遷移、サマリー表示、お知らせ表示</td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>地点管理一覧画面</td>
+                  <td>各地方の地点データを一覧管理</td>
+                  <td>一覧表示、検索、ページネーション、詳細/編集/削除導線</td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>地点追加画面</td>
+                  <td>新規地点データの登録</td>
+                  <td>入力フォーム、バリデーション、保存、一覧へ戻る</td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td>地点編集画面</td>
+                  <td>既存地点データの更新</td>
+                  <td>入力フォーム、バリデーション、更新保存、一覧へ戻る</td>
+                </tr>
+                <tr>
+                  <td>6</td>
+                  <td>画像管理一覧画面</td>
+                  <td>登録画像の管理</td>
+                  <td>一覧表示、画像追加導線、削除、ページネーション</td>
+                </tr>
+                <tr>
+                  <td>7</td>
+                  <td>画像追加画面</td>
+                  <td>新規画像の登録</td>
+                  <td>ファイルアップロード、バリデーション、保存</td>
+                </tr>
+                <tr>
+                  <td>8</td>
+                  <td>公開設定画面</td>
+                  <td>サイト公開状態と表示順の制御</td>
+                  <td>公開/非公開切替、表示順設定、保存</td>
+                </tr>
+                <tr>
+                  <td>9</td>
+                  <td>監査ログ一覧画面</td>
+                  <td>操作履歴の確認</td>
+                  <td>ログ一覧、条件検索（期間/ユーザー/操作種別）、ページネーション</td>
+                </tr>
+                <tr>
+                  <td>10</td>
+                  <td>権限エラー画面（403）</td>
+                  <td>権限不足時の通知</td>
+                  <td>エラーメッセージ表示、戻る/再ログイン導線</td>
+                </tr>
+                <tr>
+                  <td>11</td>
+                  <td>ログアウト完了画面（任意）</td>
+                  <td>セッション終了通知</td>
+                  <td>ログアウト完了表示、ログイン画面への導線</td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+        </section>
+
+        <section class="section" id="sec3">
+          <h2 class="section-title"><span class="section-icon">3</span> ユーザーフロー</h2>
+
+          <div class="fill-block">
+            <div class="fill-label">メインシナリオ <span class="required">必須</span></div>
+            <table class="doc-table">
+              <thead>
+                <tr>
+                  <th>ステップ</th>
+                  <th>行動</th>
+                  <th>表示ページ</th>
+                  <th>次のアクション</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>「香り 地方 特産 香水」などで検索し、サイトを発見</td>
+                  <td>Home（/index.html）</td>
+                  <td>ヒーローと地図を見てサイトの目的を把握する</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>予約CTAと日本地図を確認し、地方から探せることを理解</td>
+                  <td>Home（/index.html）</td>
+                  <td>興味のある地方（例：中部）をクリック</td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>地方ページで香り素材の候補を一覧で確認</td>
+                  <td>中部（/chubu/index.html）</td>
+                  <td>気になる素材（例：能登ひば）を選択</td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>素材の詳細情報を外部ページで確認し、会話ネタを収集</td>
+                  <td>外部詳細ページ（WANOWA等）</td>
+                  <td>他の素材も比較するため戻る</td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td>別地方の素材も見て、地域ごとの特徴を比較</td>
+                  <td>近畿/四国など各地方ページ</td>
+                  <td>サロンの客層に合う香りテーマを絞る</td>
+                </tr>
+                <tr>
+                  <td>6</td>
+                  <td>店舗系の導線も確認し、体験先として妥当か判断</td>
+                  <td>関東（/kanto/index.html）</td>
+                  <td>inimu店舗ページへ遷移</td>
+                </tr>
+                <tr>
+                  <td>7</td>
+                  <td>店舗情報・導線を確認し、実際に利用する意思決定</td>
+                  <td>外部店舗ページ（https://inimu.jp/）</td>
+                  <td>予約手続きへ進む</td>
+                </tr>
+                <tr>
+                  <td>8</td>
+                  <td>予約完了後、接客トークに使う「香り×地方」案を整理</td>
+                  <td>（外部予約完了後）</td>
+                  <td>来店前メモとして素材エピソードを準備</td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+          <div class="fill-block">
+            <div class="fill-label">サブシナリオ <span class="optional">任意</span></div>
+            <table class="doc-table">
+              <thead>
+                <tr>
+                  <th>ステップ</th>
+                  <th>行動</th>
+                  <th>表示ページ</th>
+                  <th>次のアクション</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>SNSで「能登ひば」の投稿を見て、香りの背景を調べる</td>
+                  <td>検索結果→Home（/index.html）</td>
+                  <td>サイト内で「中部」エリアを探す</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>地図から中部を選び、地域ごとの香り素材を確認</td>
+                  <td>中部（/chubu/index.html）</td>
+                  <td>能登ひばの詳細リンクを開く</td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>外部詳細を読み、香りのストーリー性を把握</td>
+                  <td>WANOWA詳細ページ（外部）</td>
+                  <td>接客用に使える説明をメモする</td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>比較のため別素材（国造ゆず・加子母ひのき）も確認</td>
+                  <td>中部（/chubu/index.html）</td>
+                  <td>季節提案に使えそうな素材を選ぶ</td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td>他地方の素材も見て会話の幅を広げる</td>
+                  <td>四国/近畿ページ</td>
+                  <td>「地域別おすすめトーク」を整理する</td>
+                </tr>
+                <tr>
+                  <td>6</td>
+                  <td>香り体験先として店舗情報を確認</td>
+                  <td>関東（/kanto/index.html）→inimu（外部）</td>
+                  <td>来店・予約の可否を確認する</td>
+                </tr>
+                <tr>
+                  <td>7</td>
+                  <td>予約を実施し、実体験を接客に活用する準備</td>
+                  <td>inimu予約導線（外部）</td>
+                  <td>次回来店客向けの提案メニューを作成する</td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+
+        </section>
+
+        <section class="section" id="sec4">
+          <h2 class="section-title"><span class="section-icon">4</span> URL設計</h2>
+
+          <div class="fill-block">
+            <div class="fill-label">URL一覧 <span class="required">必須</span></div>
+            <table class="doc-table">
+              <thead>
+                <tr>
+                  <th>URL</th>
+                  <th>HTTPメソッド</th>
+                  <th>画面/機能</th>
+                  <th>説明</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>/</td>
+                  <td>GET</td>
+                  <td>Home</td>
+                  <td>トップページ（予約CTA＋全国地図）</td>
+                </tr>
+                <tr>
+                  <td>/regions</td>
+                  <td>GET</td>
+                  <td>地方一覧</td>
+                  <td>地方の一覧（北海道〜九州）</td>
+                </tr>
+                <tr>
+                  <td>/regions/{region}</td>
+                  <td>GET</td>
+                  <td>地方ページ</td>
+                  <td>各地方の拡大地図ページ（hokkaido など）</td>
+                </tr>
+                <tr>
+                  <td>/spots</td>
+                  <td>GET</td>
+                  <td>特産・地点一覧</td>
+                  <td>全地方の地点/特産の一覧</td>
+                </tr>
+                <tr>
+                  <td>/spots/{spot}</td>
+                  <td>GET</td>
+                  <td>特産・地点詳細</td>
+                  <td>各特産/地点の詳細（外部WANOWA等への遷移導線含む）</td>
+                </tr>
+                <tr>
+                  <td>/brands</td>
+                  <td>GET</td>
+                  <td>ブランド一覧</td>
+                  <td>ヘッダー導線用のブランド一覧</td>
+                </tr>
+                <tr>
+                  <td>/brands/{brand}</td>
+                  <td>GET</td>
+                  <td>ブランドページ</td>
+                  <td>各ブランドの遷移先ページ（内部/外部）</td>
+                </tr>
+                <tr>
+                  <td>/legal/privacy</td>
+                  <td>GET</td>
+                  <td>プライバシー</td>
+                  <td>プライバシーポリシー</td>
+                </tr>
+                <tr>
+                  <td>/legal/terms</td>
+                  <td>GET</td>
+                  <td>利用規約</td>
+                  <td>利用規約</td>
+                </tr>
+              </tbody>
+            </table>
+            <h3>Spring Bootアプリ部分（管理システム）</h3>
+            <table class="doc-table">
+              <thead>
+                <tr>
+                  <th>URL</th>
+                  <th>HTTPメソッド</th>
+                  <th>画面/機能</th>
+                  <th>説明</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>/login</td>
+                  <td>GET</td>
+                  <td>ログイン画面</td>
+                  <td>認証フォーム表示</td>
+                </tr>
+                <tr>
+                  <td>/session</td>
+                  <td>POST</td>
+                  <td>ログイン実行</td>
+                  <td>認証してセッション作成</td>
+                </tr>
+                <tr>
+                  <td>/session</td>
+                  <td>DELETE</td>
+                  <td>ログアウト</td>
+                  <td>セッション破棄</td>
+                </tr>
+                <tr>
+                  <td>/logout-complete</td>
+                  <td>GET</td>
+                  <td>ログアウト完了</td>
+                  <td>ログアウト後画面（任意）</td>
+                </tr>
+                <tr>
+                  <td>/admin</td>
+                  <td>GET</td>
+                  <td>ダッシュボード</td>
+                  <td>管理トップ</td>
+                </tr>
+                <tr>
+                  <td>/admin/locations</td>
+                  <td>GET</td>
+                  <td>地点一覧・検索</td>
+                  <td>地点リソース一覧</td>
+                </tr>
+                <tr>
+                  <td>/admin/locations/new</td>
+                  <td>GET</td>
+                  <td>地点追加画面</td>
+                  <td>新規登録フォーム</td>
+                </tr>
+                <tr>
+                  <td>/admin/locations</td>
+                  <td>POST</td>
+                  <td>地点追加実行</td>
+                  <td>新規地点を作成</td>
+                </tr>
+                <tr>
+                  <td>/admin/locations/{id}</td>
+                  <td>GET</td>
+                  <td>地点詳細</td>
+                  <td>地点詳細表示</td>
+                </tr>
+                <tr>
+                  <td>/admin/locations/{id}/edit</td>
+                  <td>GET</td>
+                  <td>地点編集画面</td>
+                  <td>編集フォーム</td>
+                </tr>
+                <tr>
+                  <td>/admin/locations/{id}</td>
+                  <td>PATCH</td>
+                  <td>地点更新</td>
+                  <td>地点情報を更新</td>
+                </tr>
+                <tr>
+                  <td>/admin/locations/{id}</td>
+                  <td>DELETE</td>
+                  <td>地点削除</td>
+                  <td>地点を削除</td>
+                </tr>
+                <tr>
+                  <td>/admin/images</td>
+                  <td>GET</td>
+                  <td>画像一覧</td>
+                  <td>画像リソース一覧</td>
+                </tr>
+                <tr>
+                  <td>/admin/images/new</td>
+                  <td>GET</td>
+                  <td>画像アップロード画面</td>
+                  <td>画像登録フォーム</td>
+                </tr>
+                <tr>
+                  <td>/admin/images</td>
+                  <td>POST</td>
+                  <td>画像アップロード実行</td>
+                  <td>画像作成</td>
+                </tr>
+                <tr>
+                  <td>/admin/images/{id}</td>
+                  <td>GET</td>
+                  <td>画像詳細</td>
+                  <td>画像メタ情報表示</td>
+                </tr>
+                <tr>
+                  <td>/admin/images/{id}</td>
+                  <td>DELETE</td>
+                  <td>画像削除</td>
+                  <td>画像削除</td>
+                </tr>
+                <tr>
+                  <td>/admin/publish-settings</td>
+                  <td>GET</td>
+                  <td>公開設定画面</td>
+                  <td>公開/非公開・表示順設定</td>
+                </tr>
+                <tr>
+                  <td>/admin/publish-settings</td>
+                  <td>PATCH</td>
+                  <td>公開設定更新</td>
+                  <td>公開状態や表示順を更新</td>
+                </tr>
+                <tr>
+                  <td>/admin/audit-logs</td>
+                  <td>GET</td>
+                  <td>監査ログ一覧・検索</td>
+                  <td>操作履歴の参照（読み取り専用）</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+
+</html>
