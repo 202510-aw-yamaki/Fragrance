@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fregrance.app.mapper.ReservationSlotMapper">
+  <resultMap id="ReservationSlotResultMap" type="com.fregrance.app.model.ReservationSlot">
+    <id property="id" column="id" />
+    <result property="slotDate" column="slot_date" />
+    <result property="slotTime" column="slot_time" />
+    <result property="status" column="status" />
+    <result property="instructorName" column="instructor_name" />
+    <result property="createdAt" column="created_at" />
+    <result property="updatedAt" column="updated_at" />
+  </resultMap>
+  <select id="findAvailableByDate" resultMap="ReservationSlotResultMap">
+    SELECT id, slot_date, slot_time, status, instructor_name, created_at, updated_at
+    FROM reservation_slots
+    WHERE slot_date = #{slotDate}
+      AND status IN ('open', 'recommended')
+    ORDER BY slot_time ASC
+  </select>
+  <select id="findByDateAndTime" resultMap="ReservationSlotResultMap">
+    SELECT id, slot_date, slot_time, status, instructor_name, created_at, updated_at
+    FROM reservation_slots
+    WHERE slot_date = #{slotDate}
+      AND slot_time = #{slotTime}
+  </select>
+  <select id="findById" resultMap="ReservationSlotResultMap">
+    SELECT id, slot_date, slot_time, status, instructor_name, created_at, updated_at
+    FROM reservation_slots
+    WHERE id = #{id}
+  </select>
+</mapper>

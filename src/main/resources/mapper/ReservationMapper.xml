@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fregrance.app.mapper.ReservationMapper">
+  <resultMap id="ReservationResultMap" type="com.fregrance.app.model.Reservation">
+    <id property="id" column="id" />
+    <result property="reservationCode" column="reservation_code" />
+    <result property="reservationSlotId" column="reservation_slot_id" />
+    <result property="visitTypeId" column="visit_type_id" />
+    <result property="visitTypeLabel" column="visit_type_label" />
+    <result property="guestCount" column="guest_count" />
+    <result property="staffMemo" column="staff_memo" />
+    <result property="summaryHeadline" column="summary_headline" />
+    <result property="slotLabel" column="slot_label" />
+    <result property="createdAt" column="created_at" />
+    <result property="updatedAt" column="updated_at" />
+  </resultMap>
+  <insert id="insert" parameterType="com.fregrance.app.model.Reservation" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO reservations (
+      reservation_code,
+      reservation_slot_id,
+      visit_type_id,
+      visit_type_label,
+      guest_count,
+      staff_memo,
+      summary_headline,
+      slot_label,
+      created_at,
+      updated_at
+    ) VALUES (
+      #{reservationCode},
+      #{reservationSlotId},
+      #{visitTypeId},
+      #{visitTypeLabel},
+      #{guestCount},
+      #{staffMemo},
+      #{summaryHeadline},
+      #{slotLabel},
+      CURRENT_TIMESTAMP,
+      CURRENT_TIMESTAMP
+    )
+  </insert>
+  <select id="findByReservationCode" resultMap="ReservationResultMap">
+    SELECT id, reservation_code, reservation_slot_id, visit_type_id, visit_type_label,
+           guest_count, staff_memo, summary_headline, slot_label, created_at, updated_at
+    FROM reservations
+    WHERE reservation_code = #{reservationCode}
+  </select>
+</mapper>
