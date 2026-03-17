@@ -28,6 +28,11 @@
         <p>ご予約内容を受け付けました。当日はこの内容をもとにスタッフがご案内します。香りの細かな調整は店頭で一緒に進められます。</p>
       </article>
 
+
+      <article class="note-card glass-panel" id="demo-notice" hidden>
+        <h2>デモ表示について</h2>
+        <p>これはデモでの予約確定画面です。実際の予約登録はまだ完了していません。</p>
+      </article>
       <section class="detail-row" aria-label="予約情報と次の導線">
         <article class="detail-card glass-panel" aria-labelledby="detail-heading">
           <h2 class="visually-hidden" id="detail-heading">予約情報</h2>
@@ -107,12 +112,14 @@
     const detailCard = document.querySelector(".detail-card");
     const detailStatusLabel = document.getElementById("detail-status-label");
     const detailToggle = document.getElementById("detail-toggle");
+    const demoNotice = document.getElementById("demo-notice");
 
     let reservation = null;
     let timerId = null;
     let secondsLeft = 30;
     const searchParams = new URLSearchParams(window.location.search);
     const reservationCode = searchParams.get("reservationCode");
+    const isDemoReservation = searchParams.get("demo") === "1";
 
     function syncDetailAccordion() {
       const isMobile = window.matchMedia("(max-width: 47.9375em)").matches;
@@ -156,6 +163,10 @@
     }
 
     function renderReservationDetail() {
+      if (reservation.demoMode || isDemoReservation) {
+        demoNotice.hidden = false;
+      }
+
       slotEl.textContent = reservation.slot;
       guestsEl.textContent = reservation.guestCount;
       visitTypeEl.textContent = reservation.visitType || "ご相談内容未設定";

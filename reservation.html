@@ -167,8 +167,9 @@
     let activeWeekKey = "";
     let lastModalTrigger = null;
     let weekData = [];
+    let isDemoMode = false;
 
-    function getFocusableElements(container) {
+function getFocusableElements(container) {
       return [...container.querySelectorAll(
         'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
       )].filter((element) => !element.hidden && element.offsetParent !== null);
@@ -433,11 +434,13 @@
           label: slot.label || `${formatApiDateLabel(slot.date)} ${slot.time}`
         }));
 
+        isDemoMode = false;
         weekData = buildWeekData(flattened);
         renderSlots();
         selectedStatus.textContent = "未選択: 来店日時を選んでください";
         updateSelectionState();
       } catch (error) {
+        isDemoMode = true;
         const demoSlots = buildDemoReservationSlots();
         weekData = buildWeekData(demoSlots);
         renderSlots();
@@ -529,6 +532,18 @@
       staffMemo.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
+    function buildDemoReservationPayload(requestPayload) {
+      const reservationCode = `DEMO-${Date.now().toString().slice(-6)}`;
+      return {
+        reservationCode,
+        slot: requestPayload.slotLabel,
+        visitType: requestPayload.visitType,
+        guestCount: requestPayload.guestCount,
+        memo: requestPayload.staffMemo || "",
+        demoMode: true
+      };
+    }
+
     async function handleReservationComplete() {
       if (!selectedSlot) return;
 
@@ -543,6 +558,13 @@
         staffMemo: staffMemo.value.trim(),
         summaryHeadline: summaryHeadline.textContent
       };
+
+      if (isDemoMode) {
+        const demoReservation = buildDemoReservationPayload(requestPayload);
+        window.sessionStorage.setItem("fragranceReservationConfirmation", JSON.stringify(demoReservation));
+        window.location.href = `reservation-complete.html?reservationCode=${encodeURIComponent(demoReservation.reservationCode)}&demo=1`;
+        return;
+      }
 
       try {
         const response = await fetch(RESERVATION_API, {
