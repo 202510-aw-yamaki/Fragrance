@@ -1,4 +1,4 @@
-﻿package com.fregrance.app.controller;
+package com.fregrance.app.controller;
 
 import java.time.LocalDate;
 import java.util.List;

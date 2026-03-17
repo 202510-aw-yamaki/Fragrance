@@ -1,4 +1,4 @@
-﻿package com.fregrance.app.model;
+package com.fregrance.app.model;
 import java.time.LocalDateTime;
 public class VisitType {
     private Long id;

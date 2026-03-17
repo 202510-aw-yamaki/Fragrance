@@ -1,4 +1,4 @@
-﻿package com.fregrance.app.form;
+package com.fregrance.app.form;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

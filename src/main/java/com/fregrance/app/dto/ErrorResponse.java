@@ -1,4 +1,4 @@
-﻿package com.fregrance.app.dto;
+package com.fregrance.app.dto;
 
 import java.time.LocalDateTime;
 import java.util.Map;

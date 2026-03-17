@@ -1,4 +1,4 @@
-﻿package com.fregrance.app.dto;
+package com.fregrance.app.dto;
 
 public record ReservationResponse(
     String reservationCode,

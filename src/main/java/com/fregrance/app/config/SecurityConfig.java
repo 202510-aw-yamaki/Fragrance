@@ -1,4 +1,4 @@
-﻿package com.fregrance.app.config;
+package com.fregrance.app.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-﻿package com.fregrance.app.model;
+package com.fregrance.app.model;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;

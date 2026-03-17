@@ -1,4 +1,4 @@
-﻿package com.fregrance.app;
+package com.fregrance.app;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
