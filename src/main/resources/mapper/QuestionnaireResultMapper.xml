@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fregrance.app.mapper.QuestionnaireResultMapper">
+  <resultMap id="QuestionnaireResultResultMap" type="com.fregrance.app.model.QuestionnaireResult">
+    <id property="id" column="id" />
+    <result property="resultCode" column="result_code" />
+    <result property="routeCode" column="route_code" />
+    <result property="step1AnswersJson" column="step1_answers_json" />
+    <result property="step2AnswersJson" column="step2_answers_json" />
+    <result property="graphAxesJson" column="graph_axes_json" />
+    <result property="createdAt" column="created_at" />
+    <result property="updatedAt" column="updated_at" />
+  </resultMap>
+
+  <insert id="insert" parameterType="com.fregrance.app.model.QuestionnaireResult" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO questionnaire_results (
+      result_code,
+      route_code,
+      step1_answers_json,
+      step2_answers_json,
+      graph_axes_json,
+      created_at,
+      updated_at
+    ) VALUES (
+      #{resultCode},
+      #{routeCode},
+      #{step1AnswersJson},
+      #{step2AnswersJson},
+      #{graphAxesJson},
+      CURRENT_TIMESTAMP,
+      CURRENT_TIMESTAMP
+    )
+  </insert>
+
+  <select id="findByResultCode" resultMap="QuestionnaireResultResultMap">
+    SELECT id, result_code, route_code, step1_answers_json, step2_answers_json, graph_axes_json, created_at, updated_at
+    FROM questionnaire_results
+    WHERE result_code = #{resultCode}
+  </select>
+</mapper>
