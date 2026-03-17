@@ -287,6 +287,45 @@
       return weeks;
     }
 
+    function buildDemoReservationSlots() {
+      const today = new Date();
+      const demoSlots = [];
+      const demoPatterns = [
+        [
+          { time: "10:30", status: "recommended", instructorName: "原口" },
+          { time: "13:00", status: "open", instructorName: "清水" },
+          { time: "15:30", status: "open", instructorName: "大塚" }
+        ],
+        [
+          { time: "11:00", status: "open", instructorName: "清水" },
+          { time: "14:30", status: "recommended", instructorName: "原口" }
+        ],
+        [
+          { time: "12:00", status: "open", instructorName: "大塚" },
+          { time: "16:00", status: "open", instructorName: "清水" }
+        ]
+      ];
+
+      for (let dayOffset = 1; dayOffset <= 14; dayOffset += 1) {
+        const date = new Date(today);
+        date.setDate(today.getDate() + dayOffset);
+        const dateText = date.toISOString().slice(0, 10);
+        const pattern = demoPatterns[(dayOffset - 1) % demoPatterns.length];
+
+        pattern.forEach((slot) => {
+          demoSlots.push({
+            slotId: `${dateText}_${slot.time.replace(":", "")}`,
+            date: dateText,
+            time: slot.time,
+            label: `${formatApiDateLabel(dateText)} ${slot.time}`,
+            status: slot.status,
+            instructorName: slot.instructorName
+          });
+        });
+      }
+
+      return demoSlots;
+    }
     function renderSlots() {
       slotList.innerHTML = "";
       activeWeekKey = "";
@@ -399,8 +438,11 @@
         selectedStatus.textContent = "未選択: 来店日時を選んでください";
         updateSelectionState();
       } catch (error) {
-        slotList.innerHTML = '<p class="booking-note">予約枠の取得に失敗しました。時間をおいて再読み込みしてください。</p>';
-        selectedStatus.textContent = "予約枠を取得できませんでした";
+        const demoSlots = buildDemoReservationSlots();
+        weekData = buildWeekData(demoSlots);
+        renderSlots();
+        selectedStatus.textContent = "デモ表示中: 仮の予約枠を表示しています";
+        updateSelectionState();
       }
     }
 
