@@ -1,4 +1,4 @@
-spring:
+﻿spring:
   application:
     name: fregrance
   thymeleaf:
@@ -6,6 +6,11 @@ spring:
   sql:
     init:
       mode: always
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/fregrance?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Tokyo&characterEncoding=UTF-8}
+    username: ${SPRING_DATASOURCE_USERNAME:fregrance_user}
+    password: ${SPRING_DATASOURCE_PASSWORD:proclimb}
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
@@ -13,7 +18,7 @@ mybatis:
     map-underscore-to-camel-case: true
 
 server:
-  port: 8080
+  port: ${PORT:8080}
 
 logging:
   level:
