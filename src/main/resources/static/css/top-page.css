@@ -17,7 +17,7 @@
 }
 
 html {
-  min-width: 375px;
+  min-width: 360px;
   scroll-behavior: smooth;
   scroll-padding-top: 88px;
 }
