@@ -1142,6 +1142,11 @@ input[type="range"] {
     font-size: .95rem;
   }
 
+  .brand img {
+    height: 28px;
+    max-width: min(220px, 64vw);
+  }
+
   .menu-toggle {
     display: inline-flex;
     flex: 0 0 auto;
