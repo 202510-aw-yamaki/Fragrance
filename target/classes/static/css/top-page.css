@@ -1258,6 +1258,14 @@ input[type="range"] {
     grid-template-columns: 1fr;
   }
 
+  .info-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .info-signboard {
+    display: none;
+  }
+
   .value-visual,
   .value-visual-secondary,
   .cta-media {
