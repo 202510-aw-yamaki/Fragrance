@@ -892,17 +892,40 @@ input[type="range"] {
   padding: 22px 0 clamp(84px, 13svh, 140px);
   min-height: clamp(104px, 14svh, 160px);
   color: var(--muted);
-  font-size: .88rem;
+  font-size: .94rem;
 }
 
 .footer-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
   border-top: 1px solid rgba(230, 221, 210, .92);
   padding-top: 18px;
+}
+
+.footer-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px 32px;
+  align-items: start;
+}
+
+.footer-info-col {
+  display: grid;
+  gap: 10px;
+}
+
+.footer-info-col p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+
+
+.footer-address {
+  line-height: 1.8;
+}
+
+.footer-mail-mobile {
+  display: none;
 }
 
 @media (min-width: 48em) and (max-width: 68.6875em) {
