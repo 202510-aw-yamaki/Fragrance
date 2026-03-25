@@ -1324,8 +1324,8 @@ input[type="range"] {
   }
 
   .brand img {
-    height: 28px;
-    max-width: min(220px, 64vw);
+    height: 8px;
+    max-width: min(66px, 19.2vw);
   }
 
   .menu-toggle {
