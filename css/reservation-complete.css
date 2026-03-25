@@ -117,12 +117,15 @@ a {
   grid-template-columns: auto minmax(220px, 1fr);
   gap: 18px;
   align-items: start;
+  width: 100%;
 }
 
 .hero-map-links {
   display: grid;
   gap: 10px;
   align-content: start;
+  width: 100%;
+  justify-self: stretch;
 }
 
 .hero-map-link {
@@ -394,6 +397,17 @@ a {
 
   .hero-map-address {
     font-size: 14px;
+  }
+
+  .hero-map-actions {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .hero-map-links {
+    gap: 8px;
+    width: 100%;
   }
 
   .hero-map-link {
