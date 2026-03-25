@@ -908,7 +908,6 @@ input[type="range"] {
 
 .info-middle,
 .info-right {
-  display: grid;
   gap: 10px;
 }
 
