@@ -29,7 +29,7 @@
     <div class="complete-layout">
       <article class="hero-card glass-panel" aria-labelledby="complete-title">
         <div class="eyebrow">Reservation Complete</div>
-        <h1 id="complete-title">予約が完了しました</h1>
+        <h1 id="complete-title">予約が完了しました。<br>当日は店舗へ直接ご来店ください。</h1>
         <p>ご予約内容を受け付けました。当日はこの内容をもとにスタッフがご案内します。香りの細かな調整は店頭で一緒に進められます。</p>
       </article>
 
@@ -43,7 +43,8 @@
           <h2 class="visually-hidden" id="detail-heading">予約情報</h2>
           <div class="detail-summary">
             <div class="status-strip status-pill" id="detail-status-label">現在の予約内容</div>
-            <button class="detail-toggle" id="detail-toggle" type="button" aria-expanded="true" aria-controls="detail-body" aria-label="予約内容を開閉する">開く</button>
+            <button class="detail-toggle" id="detail-toggle" type="button" aria-expanded="true"
+              aria-controls="detail-body" aria-label="予約内容を開閉する">開く</button>
           </div>
           <div class="detail-body" id="detail-body">
             <div class="detail-grid">
@@ -104,7 +105,7 @@
     </div>
   </main>
 
-    <script>
+  <script>
     const STORAGE_KEY = "fragranceReservationConfirmation";
     const TOP_PAGE_URL = "index.html";
     const countdownEl = document.getElementById("countdown-seconds");
@@ -237,4 +238,3 @@
 </body>
 
 </html>
-
