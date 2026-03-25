@@ -249,7 +249,11 @@ a {
 }
 
 @media (max-width: 47.9375em) {
-  .header-inner,
+  .header-inner {
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
   .complete-shell {
     width: min(1120px, calc(100vw - 16px));
   }

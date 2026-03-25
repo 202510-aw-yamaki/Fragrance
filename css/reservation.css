@@ -915,6 +915,11 @@ button {
 }
 
 @media (max-width: 47.9375em) {
+  .header-inner {
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
   .summary-panel {
     display: none;
   }
@@ -931,8 +936,6 @@ button {
     grid-template-rows: none;
     align-content: start;
   }
-
-  .header-inner,
   .step-strip,
   .reservation-shell {
     width: min(1240px, calc(100vw - 16px));

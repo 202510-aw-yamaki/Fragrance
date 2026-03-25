@@ -680,8 +680,6 @@ input[type="range"] {
   #cta {
     padding-bottom: 10px;
   }
-
-  .header-inner,
   .section-inner,
   .footer-inner {
     width: min(1160px, calc(100% - 16px));

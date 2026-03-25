@@ -35,11 +35,17 @@
 }
 
 .brand {
+  display: inline-flex;
+  align-items: center;
   text-decoration: none;
   font-weight: 800;
   letter-spacing: 0.05em;
   white-space: nowrap;
   color: inherit;
+}
+
+.brand picture {
+  display: block;
 }
 
 .brand img {

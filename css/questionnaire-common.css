@@ -1,4 +1,4 @@
-﻿.main-nav ul {
+.main-nav ul {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -731,8 +731,6 @@
     padding: 14px;
     gap: 12px;
   }
-
-  .header-inner,
   .step-strip {
     width: min(1240px, calc(100% - 16px));
   }
