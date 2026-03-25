@@ -1340,8 +1340,8 @@ input[type="range"] {
   .brand img {
     width: auto;
     height: auto;
-    max-height: 24px;
-    max-width: min(104px, 28vw);
+    max-height: 48px;
+    max-width: 100%;
   }
 
   .menu-toggle {

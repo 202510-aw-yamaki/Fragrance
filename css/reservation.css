@@ -971,11 +971,26 @@ button {
     padding: 0;
   }
 
-  .header-cta {
+  .header-inner {
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .brand {
     min-width: 0;
-    min-height: 42px;
-    padding: 0 12px;
-    font-size: 13px;
+  }
+
+  .header-cta {
+    width: auto;
+    max-width: calc(100% - 88px);
+    min-width: 0;
+    min-height: 38px;
+    padding: 0 10px;
+    font-size: .76rem;
+    white-space: nowrap;
+    flex: 0 1 auto;
+    margin-left: auto;
   }
 
   .page-shell {
