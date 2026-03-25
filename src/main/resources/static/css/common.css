@@ -63,37 +63,34 @@
   .page-header-inner {
     min-height: auto;
     padding: 10px 0;
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
+    display: flex;
     align-items: center;
     gap: 8px;
     position: relative;
   }
 
   .header-top {
-    display: contents;
+    flex: 0 0 auto;
+    min-width: 0;
   }
 
   .brand {
     font-size: .95rem;
-    grid-column: 1;
     min-width: 0;
   }
 
   .page-header-inner > .main-nav {
     width: 100%;
-    grid-column: 1 / -1;
   }
 
   .page-header-inner > .header-actions {
     width: auto;
-    grid-column: 2;
     min-width: 0;
+    margin-left: auto;
   }
 
   .page-header-inner > .header-cta {
     width: 100%;
-    grid-column: 1 / -1;
   }
 }
 
