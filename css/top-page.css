@@ -916,7 +916,8 @@ input[type="range"] {
 }
 
 .info-right {
-  grid-template-rows: 1fr 2fr;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
 }
 
 .info-copy-card {
