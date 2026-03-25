@@ -137,6 +137,14 @@ svg {
   white-space: nowrap;
 }
 
+.mobile-label-btn .label-default {
+  display: inline;
+}
+
+.mobile-label-btn .label-short {
+  display: none;
+}
+
 .btn-primary {
   background: linear-gradient(180deg, var(--accent), var(--accent-deep));
   color: #fff;
@@ -1324,13 +1332,18 @@ input[type="range"] {
   }
 
   .brand img {
-    height: 8px;
-    max-width: min(66px, 19.2vw);
+    width: auto;
+    height: auto;
+    max-height: 24px;
+    max-width: min(104px, 28vw);
   }
 
   .menu-toggle {
     display: inline-flex;
+    grid-column: 3;
     flex: 0 0 auto;
+    width: 42px;
+    height: 42px;
   }
 
   .main-nav {
@@ -1380,15 +1393,33 @@ input[type="range"] {
   }
 
   .header-actions {
-    width: 100%;
+    width: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 0;
   }
 
   .header-actions .btn {
-    width: 100%;
+    min-width: 0;
+    min-height: 38px;
+    padding: 0 10px;
+    font-size: .72rem;
+    letter-spacing: 0;
+    white-space: nowrap;
   }
 
   .header-actions .mobile-only {
     display: inline-flex;
+  }
+
+  .mobile-label-btn {
+    justify-content: center;
+  }
+
+  .mobile-label-btn .label-short {
+    display: none;
   }
 
   .flow-header-top {
@@ -1536,5 +1567,24 @@ input[type="range"] {
 
   .cta-media {
     min-height: 220px;
+  }
+}
+
+@media (max-width: 24.375em) {
+  .header-actions {
+    gap: 4px;
+  }
+
+  .header-actions .btn {
+    padding: 0 8px;
+    font-size: .68rem;
+  }
+
+  .mobile-label-btn .label-default {
+    display: none;
+  }
+
+  .mobile-label-btn .label-short {
+    display: inline;
   }
 }
