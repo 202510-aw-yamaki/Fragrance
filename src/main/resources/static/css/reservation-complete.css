@@ -1,4 +1,4 @@
-:root {
+﻿:root {
   --panel: rgba(255, 251, 246, 0.94);
   --line: rgba(211, 195, 182, 0.9);
   --text: #1e3448;
@@ -72,6 +72,72 @@ a {
 .countdown {
   margin: 0;
   color: var(--muted);
+}
+
+.hero-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.9fr) minmax(260px, 0.95fr);
+  gap: 24px;
+  align-items: center;
+}
+
+.hero-copy {
+  display: grid;
+  gap: 0;
+}
+
+.hero-map-card {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+  padding: 18px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(211, 195, 182, 0.72);
+}
+
+.hero-map-label {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #7a5d52;
+}
+
+.hero-map-address {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text);
+  font-weight: 700;
+}
+
+.hero-map-link {
+  width: 100%;
+}
+
+.hero-map-qr-wrap {
+  margin: 0;
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+}
+
+.hero-map-qr {
+  display: block;
+  width: 180px;
+  height: 180px;
+  max-width: 100%;
+  border-radius: 18px;
+  border: 1px solid rgba(211, 195, 182, 0.9);
+  background: #fff;
+}
+
+.hero-map-qr-wrap figcaption {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--muted);
+  text-align: center;
 }
 
 .detail-grid {
@@ -299,7 +365,29 @@ a {
     font-size: 14px;
   }
 
+  .hero-layout {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
   .hero-card p {
+    display: none;
+  }
+
+  .hero-map-card {
+    padding: 14px 16px;
+    gap: 10px;
+  }
+
+  .hero-map-address {
+    font-size: 14px;
+  }
+
+  .hero-map-link {
+    min-height: 44px;
+  }
+
+  .hero-map-qr-wrap {
     display: none;
   }
 
