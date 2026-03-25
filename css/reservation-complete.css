@@ -57,7 +57,7 @@ a {
 }
 
 .detail-row {
-  grid-template-columns: minmax(0, 3fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 4fr) minmax(280px, 1fr);
 }
 
 .hero-card h1 {
@@ -76,7 +76,7 @@ a {
 
 .hero-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.9fr) minmax(260px, 0.95fr);
+  grid-template-columns: minmax(0, 1.65fr) minmax(420px, 1.05fr);
   gap: 24px;
   align-items: center;
 }
@@ -110,6 +110,19 @@ a {
   line-height: 1.6;
   color: var(--text);
   font-weight: 700;
+}
+
+.hero-map-actions {
+  display: grid;
+  grid-template-columns: auto minmax(220px, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.hero-map-links {
+  display: grid;
+  gap: 10px;
+  align-content: start;
 }
 
 .hero-map-link {
@@ -298,7 +311,7 @@ a {
   }
 
   .detail-row {
-    grid-template-columns: minmax(0, 3fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 4fr) minmax(280px, 1fr);
   }
 }
 
@@ -310,7 +323,7 @@ a {
   }
 
   .detail-row {
-    grid-template-columns: minmax(0, 3fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 4fr) minmax(280px, 1fr);
   }
 }
 
