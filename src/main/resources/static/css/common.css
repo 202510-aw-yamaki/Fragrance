@@ -43,8 +43,10 @@
 }
 
 .brand img {
-  width: 30%;
+  width: auto;
   height: auto;
+  max-height: 48px;
+  max-width: 100%;
 }
 
 .header-inner {
