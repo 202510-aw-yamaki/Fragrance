@@ -63,6 +63,38 @@ class ReservationApiTests {
             RESERVATION_TEST_DATE
         );
 
+        String reservationCode = createReservationAndExtractCode();
+        Integer count = jdbcTemplate.queryForObject(
+            "SELECT COUNT(*) FROM reservations WHERE reservation_code = ?",
+            Integer.class,
+            reservationCode
+        );
+
+        assertThat(count).isEqualTo(1);
+    }
+
+    @Test
+    void getReservationReturnsPersistedReservationForCompletePageReload() {
+        jdbcTemplate.update("DELETE FROM reservation_slots WHERE slot_date = ?", RESERVATION_TEST_DATE);
+        jdbcTemplate.update(
+            "INSERT INTO reservation_slots (slot_date, slot_time, status, instructor_name, created_at, updated_at) VALUES (?, '10:30:00', 'open', 'DbReload', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)",
+            RESERVATION_TEST_DATE
+        );
+
+        String reservationCode = createReservationAndExtractCode();
+        ResponseEntity<String> response = restTemplate.getForEntity(
+            "/api/reservations/" + reservationCode,
+            String.class
+        );
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).contains(reservationCode);
+        assertThat(response.getBody()).contains("12/30 10:30");
+        assertThat(response.getBody()).contains("初回ワークショップ");
+        assertThat(response.getBody()).contains("1名");
+    }
+
+    private String createReservationAndExtractCode() {
         Map<String, String> request = Map.of(
             "slotId", "2099-12-30_1030",
             "slotLabel", "12/30 10:30",
@@ -74,13 +106,7 @@ class ReservationApiTests {
         ResponseEntity<String> response = restTemplate.postForEntity("/api/reservations", request, String.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-        String reservationCode = extractReservationCode(response.getBody());
-        Integer count = jdbcTemplate.queryForObject(
-            "SELECT COUNT(*) FROM reservations WHERE reservation_code = ?",
-            Integer.class,
-            reservationCode
-        );
-        assertThat(count).isEqualTo(1);
+        return extractReservationCode(response.getBody());
     }
 
     private String extractReservationCode(String responseBody) {
