@@ -8,8 +8,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fregrance.app.dto.ReservationResponse;
+import com.fregrance.app.exception.InvalidRequestException;
+import com.fregrance.app.exception.ReservationConflictException;
+import com.fregrance.app.exception.ResourceNotFoundException;
 import com.fregrance.app.form.ReservationForm;
 import com.fregrance.app.mapper.ReservationMapper;
 import com.fregrance.app.mapper.ReservationSlotMapper;
@@ -75,13 +79,23 @@ public class ReservationService {
         return response;
     }
 
+    @Transactional
     private ReservationResponse createReservationWithDatabase(ReservationForm form) {
         ParsedSlot parsedSlot = parseSlotId(form.getSlotId());
         ReservationSlot slot = reservationSlotMapper.findByDateAndTime(parsedSlot.date(), parsedSlot.time());
         VisitType visitType = visitTypeMapper.findByCode(toVisitTypeCode(form.getVisitType()));
 
-        if (slot == null || visitType == null) {
-            return buildResponse(generateReservationCode(), form);
+        if (slot == null) {
+            throw new ResourceNotFoundException("Selected reservation slot was not found");
+        }
+        if (visitType == null) {
+            throw new InvalidRequestException("Selected visit type is not supported");
+        }
+        if (!isReservableStatus(slot.getStatus())) {
+            throw new ReservationConflictException("Selected reservation slot is no longer available");
+        }
+        if (reservationSlotMapper.updateStatusIfAvailable(slot.getId(), "reserved") == 0) {
+            throw new ReservationConflictException("Selected reservation slot is no longer available");
         }
 
         Reservation reservation = new Reservation();
@@ -137,6 +151,10 @@ public class ReservationService {
             case "ギフト相談あり" -> "gift";
             default -> "workshop";
         };
+    }
+
+    private boolean isReservableStatus(String status) {
+        return "open".equals(status) || "recommended".equals(status);
     }
 
     private record ParsedSlot(LocalDate date, LocalTime time) {

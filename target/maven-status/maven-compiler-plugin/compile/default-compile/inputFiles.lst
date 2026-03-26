@@ -8,6 +8,9 @@ C:\academia\src\Fregrance\src\main\java\com\fregrance\app\dto\ErrorResponse.java
 C:\academia\src\Fregrance\src\main\java\com\fregrance\app\dto\QuestionnaireResultResponse.java
 C:\academia\src\Fregrance\src\main\java\com\fregrance\app\dto\ReservationResponse.java
 C:\academia\src\Fregrance\src\main\java\com\fregrance\app\dto\ReservationSlotResponse.java
+C:\academia\src\Fregrance\src\main\java\com\fregrance\app\exception\InvalidRequestException.java
+C:\academia\src\Fregrance\src\main\java\com\fregrance\app\exception\ReservationConflictException.java
+C:\academia\src\Fregrance\src\main\java\com\fregrance\app\exception\ResourceNotFoundException.java
 C:\academia\src\Fregrance\src\main\java\com\fregrance\app\form\QuestionnaireResultForm.java
 C:\academia\src\Fregrance\src\main\java\com\fregrance\app\form\ReservationForm.java
 C:\academia\src\Fregrance\src\main\java\com\fregrance\app\FregranceApplication.java

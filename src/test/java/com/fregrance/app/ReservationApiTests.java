@@ -94,6 +94,47 @@ class ReservationApiTests {
         assertThat(response.getBody()).contains("1名");
     }
 
+    @Test
+    void createReservationReturnsNotFoundWhenSlotDoesNotExist() {
+        Map<String, String> request = Map.of(
+            "slotId", "2099-12-28_1030",
+            "slotLabel", "12/28 10:30",
+            "visitType", "初回ワークショップ",
+            "guestCount", "1名",
+            "staffMemo", "存在しない枠"
+        );
+
+        ResponseEntity<String> response = restTemplate.postForEntity("/api/reservations", request, String.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        assertThat(response.getBody()).contains("NOT_FOUND");
+    }
+
+    @Test
+    void createReservationReturnsConflictWhenSameSlotIsReservedTwice() {
+        jdbcTemplate.update("DELETE FROM reservation_slots WHERE slot_date = ?", RESERVATION_TEST_DATE);
+        jdbcTemplate.update(
+            "INSERT INTO reservation_slots (slot_date, slot_time, status, instructor_name, created_at, updated_at) VALUES (?, '10:30:00', 'open', 'DbConflict', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)",
+            RESERVATION_TEST_DATE
+        );
+
+        String reservationCode = createReservationAndExtractCode();
+        assertThat(reservationCode).isNotBlank();
+
+        Map<String, String> secondRequest = Map.of(
+            "slotId", "2099-12-30_1030",
+            "slotLabel", "12/30 10:30",
+            "visitType", "初回ワークショップ",
+            "guestCount", "1名",
+            "staffMemo", "重複予約"
+        );
+
+        ResponseEntity<String> secondResponse = restTemplate.postForEntity("/api/reservations", secondRequest, String.class);
+
+        assertThat(secondResponse.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
+        assertThat(secondResponse.getBody()).contains("RESERVATION_CONFLICT");
+    }
+
     private String createReservationAndExtractCode() {
         Map<String, String> request = Map.of(
             "slotId", "2099-12-30_1030",

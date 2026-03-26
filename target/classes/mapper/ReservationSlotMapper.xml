@@ -30,4 +30,11 @@
     FROM reservation_slots
     WHERE id = #{id}
   </select>
+  <update id="updateStatusIfAvailable">
+    UPDATE reservation_slots
+    SET status = #{status},
+        updated_at = CURRENT_TIMESTAMP
+    WHERE id = #{id}
+      AND status IN ('open', 'recommended')
+  </update>
 </mapper>
