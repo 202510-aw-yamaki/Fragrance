@@ -25,16 +25,12 @@ public class ReservationSlotService {
     public List<ReservationSlotResponse> findAvailableSlots(LocalDate date) {
         if (reservationSlotMapper != null) {
             List<ReservationSlot> slots = reservationSlotMapper.findAvailableByDate(date);
-            if (slots != null && !slots.isEmpty()) {
+            if (slots != null) {
                 return slots.stream().map(this::toResponse).toList();
             }
         }
 
-        return List.of(
-            buildMockSlot(date, "10:30", "recommended", "Haraguchi"),
-            buildMockSlot(date, "13:00", "open", "Shimizu"),
-            buildMockSlot(date, "15:30", "open", "Otsuka")
-        );
+        return List.of();
     }
 
     private ReservationSlotResponse toResponse(ReservationSlot slot) {
@@ -48,11 +44,5 @@ public class ReservationSlotService {
             slot.getStatus(),
             slot.getInstructorName()
         );
-    }
-
-    private ReservationSlotResponse buildMockSlot(LocalDate date, String time, String status, String instructorName) {
-        String slotId = date + "_" + time.replace(":", "");
-        String label = date.getMonthValue() + "/" + date.getDayOfMonth() + " " + time;
-        return new ReservationSlotResponse(slotId, date.toString(), time, label, status, instructorName);
     }
 }

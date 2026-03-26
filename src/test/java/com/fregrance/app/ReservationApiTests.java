@@ -24,7 +24,8 @@ class ReservationApiTests {
 
     private static final LocalDate SLOT_API_TEST_DATE = LocalDate.of(2099, 12, 31);
     private static final LocalDate RESERVATION_TEST_DATE = LocalDate.of(2099, 12, 30);
-    private static final Pattern RESERVATION_CODE_PATTERN = Pattern.compile("\"reservationCode\"\s*:\s*\"([^\"]+)\"");
+    private static final LocalDate EMPTY_SLOT_TEST_DATE = LocalDate.of(2099, 12, 29);
+    private static final Pattern RESERVATION_CODE_PATTERN = Pattern.compile("\\\"reservationCode\\\"\\s*:\\s*\\\"([^\\\"]+)\\\"");
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -34,9 +35,9 @@ class ReservationApiTests {
 
     @AfterEach
     void tearDown() {
-        jdbcTemplate.update("DELETE FROM reservations WHERE reservation_slot_id IN (SELECT id FROM reservation_slots WHERE slot_date IN (?, ?))",
-            RESERVATION_TEST_DATE, SLOT_API_TEST_DATE);
-        jdbcTemplate.update("DELETE FROM reservation_slots WHERE slot_date IN (?, ?)", RESERVATION_TEST_DATE, SLOT_API_TEST_DATE);
+        jdbcTemplate.update("DELETE FROM reservations WHERE reservation_slot_id IN (SELECT id FROM reservation_slots WHERE slot_date IN (?, ?, ?))",
+            RESERVATION_TEST_DATE, SLOT_API_TEST_DATE, EMPTY_SLOT_TEST_DATE);
+        jdbcTemplate.update("DELETE FROM reservation_slots WHERE slot_date IN (?, ?, ?)", RESERVATION_TEST_DATE, SLOT_API_TEST_DATE, EMPTY_SLOT_TEST_DATE);
         jdbcTemplate.update("DELETE FROM questionnaire_results WHERE route_code = ?", "reservation-test");
     }
 
@@ -57,6 +58,19 @@ class ReservationApiTests {
         assertThat(response.getBody()).contains("2099-12-31_1800");
         assertThat(response.getBody()).contains("DbVerifier");
         assertThat(response.getBody()).doesNotContain("2099-12-31_1030");
+    }
+
+    @Test
+    void reservationSlotsEndpointReturnsEmptyArrayWhenNoSlotsExist() {
+        jdbcTemplate.update("DELETE FROM reservation_slots WHERE slot_date = ?", EMPTY_SLOT_TEST_DATE);
+
+        ResponseEntity<String> response = restTemplate.getForEntity(
+            "/api/reservation-slots?date=" + EMPTY_SLOT_TEST_DATE,
+            String.class
+        );
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isEqualTo("[]");
     }
 
     @Test
@@ -110,6 +124,42 @@ class ReservationApiTests {
         assertThat(response.getBody()).contains("12/30 10:30");
         assertThat(response.getBody()).contains("初回ワークショップ");
         assertThat(response.getBody()).contains("1名");
+    }
+
+    @Test
+    void createReservationReturnsBadRequestWhenRequiredFieldsAreMissing() {
+        Map<String, String> request = Map.of(
+            "slotId", "",
+            "slotLabel", "",
+            "visitType", "初回ワークショップ",
+            "guestCount", ""
+        );
+
+        ResponseEntity<String> response = restTemplate.postForEntity("/api/reservations", jsonRequest(request), String.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(response.getBody()).contains("VALIDATION_ERROR");
+        assertThat(response.getBody()).contains("slotId");
+        assertThat(response.getBody()).contains("slotLabel");
+        assertThat(response.getBody()).contains("guestCount");
+    }
+
+    @Test
+    void createReservationReturnsBadRequestWhenStaffMemoExceedsLimit() {
+        Map<String, String> request = Map.of(
+            "slotId", "2099-12-30_1030",
+            "slotLabel", "12/30 10:30",
+            "visitType", "初回ワークショップ",
+            "guestCount", "1名",
+            "staffMemo", "a".repeat(501)
+        );
+
+        ResponseEntity<String> response = restTemplate.postForEntity("/api/reservations", jsonRequest(request), String.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(response.getBody()).contains("VALIDATION_ERROR");
+        assertThat(response.getBody()).contains("staffMemo");
+        assertThat(response.getBody()).contains("500 characters or less");
     }
 
     @Test
