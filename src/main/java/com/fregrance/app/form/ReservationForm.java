@@ -22,6 +22,8 @@ public class ReservationForm {
 
     private String summaryHeadline;
 
+    private String questionnaireResultCode;
+
     public String getSlotId() {
         return slotId;
     }
@@ -68,5 +70,13 @@ public class ReservationForm {
 
     public void setSummaryHeadline(String summaryHeadline) {
         this.summaryHeadline = summaryHeadline;
+    }
+
+    public String getQuestionnaireResultCode() {
+        return questionnaireResultCode;
+    }
+
+    public void setQuestionnaireResultCode(String questionnaireResultCode) {
+        this.questionnaireResultCode = questionnaireResultCode;
     }
 }

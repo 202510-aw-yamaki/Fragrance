@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="ja">
 
 <head>
@@ -149,6 +149,8 @@
 
     const RESERVATION_SLOT_API = "/api/reservation-slots";
     const RESERVATION_API = "/api/reservations";
+    const QUESTIONNAIRE_RESULT_API = "/api/questionnaire-results";
+    const RESULT_CODE_STORAGE_KEY = "fragranceQuestionnaireResultCode";
 
     const siteHeader = document.querySelector(".site-header");
     const pageShell = document.querySelector(".page-shell");
@@ -193,14 +195,50 @@ function getFocusableElements(container) {
       });
     }
 
-    function loadAxes() {
+    function getQueryParam(name) {
+      const params = new URLSearchParams(window.location.search);
+      return params.get(name) || "";
+    }
+
+    function loadReservationDraft() {
       try {
         const raw = window.sessionStorage.getItem("fragranceReservationDraft");
-        if (!raw) return { ...DEFAULT_AXES };
-        const parsed = JSON.parse(raw);
-        return { ...DEFAULT_AXES, ...(parsed.axes || {}) };
+        return raw ? JSON.parse(raw) : null;
       } catch (error) {
-        return { ...DEFAULT_AXES };
+        return null;
+      }
+    }
+
+    function loadAxes() {
+      const draft = loadReservationDraft();
+      return { ...DEFAULT_AXES, ...((draft && draft.axes) || {}) };
+    }
+
+    async function fetchQuestionnaireResult(resultCode) {
+      if (!resultCode) {
+        return null;
+      }
+
+      try {
+        const response = await fetch(`${QUESTIONNAIRE_RESULT_API}/${encodeURIComponent(resultCode)}`);
+        if (!response.ok) {
+          return null;
+        }
+        return await response.json();
+      } catch (error) {
+        return null;
+      }
+    }
+
+    function persistQuestionnaireDraft(result) {
+      const payload = {
+        axes: { ...DEFAULT_AXES, ...((result && result.graphAxes) || {}) },
+        resultCode: result?.resultCode || "",
+        updatedAt: new Date().toISOString()
+      };
+      window.sessionStorage.setItem("fragranceReservationDraft", JSON.stringify(payload));
+      if (payload.resultCode) {
+        window.sessionStorage.setItem(RESULT_CODE_STORAGE_KEY, payload.resultCode);
       }
     }
 
@@ -570,7 +608,8 @@ function getFocusableElements(container) {
         visitType: visitType.value,
         guestCount: guestCount.value,
         staffMemo: staffMemo.value.trim(),
-        summaryHeadline: summaryHeadline.textContent
+        summaryHeadline: summaryHeadline.textContent,
+        questionnaireResultCode: currentQuestionnaireResultCode
       };
 
       if (isDemoMode) {
@@ -653,13 +692,28 @@ function getFocusableElements(container) {
     });
     window.addEventListener("resize", updateSlotModalDensity);
 
-    const axes = loadAxes();
-    const summary = buildSummary(axes);
-    summaryHeadline.textContent = summary.headline;
-    summaryBody.textContent = summary.body;
-    renderAxes(axes);
-    loadReservationSlots();
-    updateSlotModalDensity();
+    async function initializePage() {
+      let axes = loadAxes();
+      const draft = loadReservationDraft();
+      const resultCode = getQueryParam("resultCode") || draft?.resultCode || window.sessionStorage.getItem(RESULT_CODE_STORAGE_KEY) || "";
+      currentQuestionnaireResultCode = resultCode;
+      const questionnaireResult = await fetchQuestionnaireResult(resultCode);
+
+      if (questionnaireResult) {
+        axes = { ...DEFAULT_AXES, ...((questionnaireResult.graphAxes) || {}) };
+        currentQuestionnaireResultCode = questionnaireResult.resultCode || currentQuestionnaireResultCode;
+        persistQuestionnaireDraft(questionnaireResult);
+      }
+
+      const summary = buildSummary(axes);
+      summaryHeadline.textContent = summary.headline;
+      summaryBody.textContent = summary.body;
+      renderAxes(axes);
+      await loadReservationSlots();
+      updateSlotModalDensity();
+    }
+
+    initializePage();
   </script>
 </body>
 

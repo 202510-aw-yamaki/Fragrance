@@ -106,6 +106,7 @@ public class ReservationService {
         reservation.setGuestCount(parseGuestCount(form.getGuestCount()));
         reservation.setStaffMemo(form.getStaffMemo());
         reservation.setSummaryHeadline(form.getSummaryHeadline());
+        reservation.setQuestionnaireResultCode(form.getQuestionnaireResultCode());
         reservation.setSlotLabel(form.getSlotLabel());
         reservationMapper.insert(reservation);
 

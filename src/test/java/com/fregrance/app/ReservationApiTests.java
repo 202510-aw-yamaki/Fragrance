@@ -12,7 +12,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -34,6 +37,7 @@ class ReservationApiTests {
         jdbcTemplate.update("DELETE FROM reservations WHERE reservation_slot_id IN (SELECT id FROM reservation_slots WHERE slot_date IN (?, ?))",
             RESERVATION_TEST_DATE, SLOT_API_TEST_DATE);
         jdbcTemplate.update("DELETE FROM reservation_slots WHERE slot_date IN (?, ?)", RESERVATION_TEST_DATE, SLOT_API_TEST_DATE);
+        jdbcTemplate.update("DELETE FROM questionnaire_results WHERE route_code = ?", "reservation-test");
     }
 
     @Test
@@ -57,13 +61,9 @@ class ReservationApiTests {
 
     @Test
     void createReservationPersistsToDatabaseWhenSlotExists() {
-        jdbcTemplate.update("DELETE FROM reservation_slots WHERE slot_date = ?", RESERVATION_TEST_DATE);
-        jdbcTemplate.update(
-            "INSERT INTO reservation_slots (slot_date, slot_time, status, instructor_name, created_at, updated_at) VALUES (?, '10:30:00', 'open', 'DbPersist', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)",
-            RESERVATION_TEST_DATE
-        );
+        prepareReservationSlot("DbPersist");
 
-        String reservationCode = createReservationAndExtractCode();
+        String reservationCode = createReservationAndExtractCode(null);
         Integer count = jdbcTemplate.queryForObject(
             "SELECT COUNT(*) FROM reservations WHERE reservation_code = ?",
             Integer.class,
@@ -74,14 +74,32 @@ class ReservationApiTests {
     }
 
     @Test
-    void getReservationReturnsPersistedReservationForCompletePageReload() {
-        jdbcTemplate.update("DELETE FROM reservation_slots WHERE slot_date = ?", RESERVATION_TEST_DATE);
+    void createReservationPersistsQuestionnaireResultCodeWhenProvided() {
+        prepareReservationSlot("DbQuestionnaire");
         jdbcTemplate.update(
-            "INSERT INTO reservation_slots (slot_date, slot_time, status, instructor_name, created_at, updated_at) VALUES (?, '10:30:00', 'open', 'DbReload', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)",
-            RESERVATION_TEST_DATE
+            "INSERT INTO questionnaire_results (result_code, route_code, step1_answers_json, step2_answers_json, graph_axes_json, created_at, updated_at) VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)",
+            "QR-LINKED1",
+            "reservation-test",
+            "{\"Q1\":\"alpha\"}",
+            "{\"Q6\":\"beta\"}",
+            "{\"floral\":70}"
         );
 
-        String reservationCode = createReservationAndExtractCode();
+        String reservationCode = createReservationAndExtractCode("QR-LINKED1");
+        String linkedCode = jdbcTemplate.queryForObject(
+            "SELECT questionnaire_result_code FROM reservations WHERE reservation_code = ?",
+            String.class,
+            reservationCode
+        );
+
+        assertThat(linkedCode).isEqualTo("QR-LINKED1");
+    }
+
+    @Test
+    void getReservationReturnsPersistedReservationForCompletePageReload() {
+        prepareReservationSlot("DbReload");
+
+        String reservationCode = createReservationAndExtractCode(null);
         ResponseEntity<String> response = restTemplate.getForEntity(
             "/api/reservations/" + reservationCode,
             String.class
@@ -104,7 +122,7 @@ class ReservationApiTests {
             "staffMemo", "存在しない枠"
         );
 
-        ResponseEntity<String> response = restTemplate.postForEntity("/api/reservations", request, String.class);
+        ResponseEntity<String> response = restTemplate.postForEntity("/api/reservations", jsonRequest(request), String.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
         assertThat(response.getBody()).contains("NOT_FOUND");
@@ -112,13 +130,9 @@ class ReservationApiTests {
 
     @Test
     void createReservationReturnsConflictWhenSameSlotIsReservedTwice() {
-        jdbcTemplate.update("DELETE FROM reservation_slots WHERE slot_date = ?", RESERVATION_TEST_DATE);
-        jdbcTemplate.update(
-            "INSERT INTO reservation_slots (slot_date, slot_time, status, instructor_name, created_at, updated_at) VALUES (?, '10:30:00', 'open', 'DbConflict', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)",
-            RESERVATION_TEST_DATE
-        );
+        prepareReservationSlot("DbConflict");
 
-        String reservationCode = createReservationAndExtractCode();
+        String reservationCode = createReservationAndExtractCode(null);
         assertThat(reservationCode).isNotBlank();
 
         Map<String, String> secondRequest = Map.of(
@@ -129,25 +143,42 @@ class ReservationApiTests {
             "staffMemo", "重複予約"
         );
 
-        ResponseEntity<String> secondResponse = restTemplate.postForEntity("/api/reservations", secondRequest, String.class);
+        ResponseEntity<String> secondResponse = restTemplate.postForEntity("/api/reservations", jsonRequest(secondRequest), String.class);
 
         assertThat(secondResponse.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
         assertThat(secondResponse.getBody()).contains("RESERVATION_CONFLICT");
     }
 
-    private String createReservationAndExtractCode() {
-        Map<String, String> request = Map.of(
-            "slotId", "2099-12-30_1030",
-            "slotLabel", "12/30 10:30",
-            "visitType", "初回ワークショップ",
-            "guestCount", "1名",
-            "staffMemo", "テスト予約"
+    private void prepareReservationSlot(String instructorName) {
+        jdbcTemplate.update("DELETE FROM reservation_slots WHERE slot_date = ?", RESERVATION_TEST_DATE);
+        jdbcTemplate.update(
+            "INSERT INTO reservation_slots (slot_date, slot_time, status, instructor_name, created_at, updated_at) VALUES (?, '10:30:00', 'open', ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)",
+            RESERVATION_TEST_DATE,
+            instructorName
         );
+    }
 
-        ResponseEntity<String> response = restTemplate.postForEntity("/api/reservations", request, String.class);
+    private String createReservationAndExtractCode(String questionnaireResultCode) {
+        Map<String, Object> request = new java.util.LinkedHashMap<>();
+        request.put("slotId", "2099-12-30_1030");
+        request.put("slotLabel", "12/30 10:30");
+        request.put("visitType", "初回ワークショップ");
+        request.put("guestCount", "1名");
+        request.put("staffMemo", "テスト予約");
+        if (questionnaireResultCode != null) {
+            request.put("questionnaireResultCode", questionnaireResultCode);
+        }
+
+        ResponseEntity<String> response = restTemplate.postForEntity("/api/reservations", jsonRequest(request), String.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         return extractReservationCode(response.getBody());
+    }
+
+    private HttpEntity<Map<String, ?>> jsonRequest(Map<String, ?> body) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return new HttpEntity<>(body, headers);
     }
 
     private String extractReservationCode(String responseBody) {

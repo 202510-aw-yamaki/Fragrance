@@ -27,6 +27,7 @@ CREATE TABLE IF NOT EXISTS reservations (
   guest_count INT NOT NULL,
   staff_memo TEXT,
   summary_headline VARCHAR(255),
+  questionnaire_result_code VARCHAR(32),
   slot_label VARCHAR(255),
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,

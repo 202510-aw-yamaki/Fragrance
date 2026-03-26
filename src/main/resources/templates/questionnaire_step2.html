@@ -137,6 +137,21 @@
       ]
     };
     const answers = {};
+    function loadPersistedStep2Answers() {
+      try {
+        const raw = sessionStorage.getItem("fragranceStep2Answers") || "{}";
+        const parsed = JSON.parse(raw);
+        if (parsed && typeof parsed === "object") {
+          Object.assign(answers, parsed);
+        }
+      } catch (error) {
+        // Ignore storage parse errors and continue with empty answers.
+      }
+    }
+    function persistStep2Answers() {
+      sessionStorage.setItem("fragranceStep2Answers", JSON.stringify(answers));
+      sessionStorage.setItem("fragranceRouteCode", activeBranchKey);
+    }
     let currentIndex = 0;
     let activeBranchKey = "floral";
     const navList = document.getElementById("nav-list");
@@ -208,7 +223,10 @@
       if (!confirmReturnToStep1()) return;
       window.location.href = "questionnaire.html";
     }
-    function showCompletion() { window.location.href = "fragrance-graph.html"; }
+    function showCompletion() {
+      persistStep2Answers();
+      window.location.href = "fragrance-graph.html";
+    }
     function moveNext() {
       const questions = getStep2Questions();
       if (currentIndex < questions.length - 1) {

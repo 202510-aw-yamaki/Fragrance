@@ -9,6 +9,7 @@ public class Reservation {
     private Integer guestCount;
     private String staffMemo;
     private String summaryHeadline;
+    private String questionnaireResultCode;
     private String slotLabel;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -28,6 +29,8 @@ public class Reservation {
     public void setStaffMemo(String staffMemo) { this.staffMemo = staffMemo; }
     public String getSummaryHeadline() { return summaryHeadline; }
     public void setSummaryHeadline(String summaryHeadline) { this.summaryHeadline = summaryHeadline; }
+    public String getQuestionnaireResultCode() { return questionnaireResultCode; }
+    public void setQuestionnaireResultCode(String questionnaireResultCode) { this.questionnaireResultCode = questionnaireResultCode; }
     public String getSlotLabel() { return slotLabel; }
     public void setSlotLabel(String slotLabel) { this.slotLabel = slotLabel; }
     public LocalDateTime getCreatedAt() { return createdAt; }

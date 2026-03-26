@@ -132,19 +132,95 @@
     const reserveLink = document.getElementById("reserve-link");
     const presetButtons = document.querySelectorAll("[data-preset]");
     const defaults = Object.fromEntries(axes.map((axis) => [axis.id, axis.value]));
+    const QUESTIONNAIRE_RESULT_API = "/api/questionnaire-results";
+    const RESULT_CODE_STORAGE_KEY = "fragranceQuestionnaireResultCode";
+    let currentResultCode = "";
 
-    function persistReservationDraft() {
+    function readStoredJson(key) {
+      try {
+        const raw = window.sessionStorage.getItem(key);
+        return raw ? JSON.parse(raw) : null;
+      } catch (error) {
+        return null;
+      }
+    }
+
+    function getCurrentAxesPayload() {
+      return Object.fromEntries(axes.map((axis) => [axis.id, axis.value]));
+    }
+
+    function getStoredAnswers(key) {
+      const parsed = readStoredJson(key);
+      if (parsed && typeof parsed === "object") {
+        return parsed;
+      }
+      return {};
+    }
+
+    function hydrateAxesFromDraft() {
+      const draft = readStoredJson("fragranceReservationDraft");
+      const storedAxes = draft?.axes;
+      if (storedAxes && typeof storedAxes === "object") {
+        axes.forEach((axis) => {
+          const nextValue = storedAxes[axis.id];
+          if (typeof nextValue === "number") {
+            axis.value = nextValue;
+          }
+        });
+      }
+
+      currentResultCode = draft?.resultCode || window.sessionStorage.getItem(RESULT_CODE_STORAGE_KEY) || "";
+      if (currentResultCode) {
+        window.sessionStorage.setItem(RESULT_CODE_STORAGE_KEY, currentResultCode);
+      }
+    }
+
+    function persistReservationDraft(resultCode = currentResultCode) {
       const payload = {
-        axes: Object.fromEntries(axes.map((axis) => [axis.id, axis.value])),
+        axes: getCurrentAxesPayload(),
+        resultCode: resultCode || "",
         updatedAt: new Date().toISOString()
       };
+      currentResultCode = resultCode || "";
       window.sessionStorage.setItem("fragranceReservationDraft", JSON.stringify(payload));
+      if (currentResultCode) {
+        window.sessionStorage.setItem(RESULT_CODE_STORAGE_KEY, currentResultCode);
+      }
+    }
+
+    function buildQuestionnairePayload() {
+      return {
+        routeCode: window.sessionStorage.getItem("fragranceRouteCode") || "floral",
+        step1Answers: getStoredAnswers("fragranceStep1Answers"),
+        step2Answers: getStoredAnswers("fragranceStep2Answers"),
+        graphAxes: getCurrentAxesPayload()
+      };
+    }
+
+    async function saveQuestionnaireResult() {
+      const response = await fetch(QUESTIONNAIRE_RESULT_API, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(buildQuestionnairePayload())
+      });
+
+      if (!response.ok) {
+        throw new Error("failed to save questionnaire result");
+      }
+
+      const result = await response.json();
+      currentResultCode = result.resultCode || "";
+      persistReservationDraft(currentResultCode);
+      return result;
     }
 
     function returnToTop() {
       const confirmed = window.confirm("トップページへ戻ると、現在の調整は保存されません。戻りますか？");
       if (!confirmed) return;
       window.sessionStorage.removeItem("fragranceReservationDraft");
+      window.sessionStorage.removeItem(RESULT_CODE_STORAGE_KEY);
       window.location.href = "index.html";
     }
 
@@ -282,12 +358,29 @@
       button.addEventListener("click", () => setPreset(button.dataset.preset));
     });
 
+    async function moveToReservation(event) {
+      event.preventDefault();
+      persistReservationDraft();
+
+      try {
+        await saveQuestionnaireResult();
+      } catch (error) {
+        // Keep the existing sessionStorage fallback path when the API is unavailable.
+      }
+
+      const nextUrl = currentResultCode
+        ? `reservation.html?resultCode=${encodeURIComponent(currentResultCode)}`
+        : "reservation.html";
+      window.location.href = nextUrl;
+    }
+
     brandLink.addEventListener("click", (event) => {
       event.preventDefault();
       returnToTop();
     });
-    reserveLink.addEventListener("click", persistReservationDraft);
+    reserveLink.addEventListener("click", moveToReservation);
 
+    hydrateAxesFromDraft();
     renderGrid();
     renderSliders();
     renderShape();

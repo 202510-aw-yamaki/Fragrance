@@ -12,6 +12,7 @@
     <result property="guestCount" column="guest_count" />
     <result property="staffMemo" column="staff_memo" />
     <result property="summaryHeadline" column="summary_headline" />
+    <result property="questionnaireResultCode" column="questionnaire_result_code" />
     <result property="slotLabel" column="slot_label" />
     <result property="createdAt" column="created_at" />
     <result property="updatedAt" column="updated_at" />
@@ -25,6 +26,7 @@
       guest_count,
       staff_memo,
       summary_headline,
+      questionnaire_result_code,
       slot_label,
       created_at,
       updated_at
@@ -36,6 +38,7 @@
       #{guestCount},
       #{staffMemo},
       #{summaryHeadline},
+      #{questionnaireResultCode},
       #{slotLabel},
       CURRENT_TIMESTAMP,
       CURRENT_TIMESTAMP
@@ -43,7 +46,7 @@
   </insert>
   <select id="findByReservationCode" resultMap="ReservationResultMap">
     SELECT id, reservation_code, reservation_slot_id, visit_type_id, visit_type_label,
-           guest_count, staff_memo, summary_headline, slot_label, created_at, updated_at
+           guest_count, staff_memo, summary_headline, questionnaire_result_code, slot_label, created_at, updated_at
     FROM reservations
     WHERE reservation_code = #{reservationCode}
   </select>
