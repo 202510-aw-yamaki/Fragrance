@@ -20,24 +20,24 @@
         <div class="doc-category">DOCUMENT 09</div>
         <h1 class="doc-title">テスト報告書</h1>
         <div class="doc-meta">
-          <span><span class="material-symbols-outlined icon-sm">calendar_today</span> 作成日: 2026-03-16</span>
+          <span><span class="material-symbols-outlined icon-sm">calendar_today</span> 作成日: 2026-03-27</span>
           <span><span class="material-symbols-outlined icon-sm">person</span> 作成者: Codex</span>
-          <span><span class="material-symbols-outlined icon-sm">push_pin</span> Ver 1.0</span>
+          <span><span class="material-symbols-outlined icon-sm">push_pin</span> Ver 1.1</span>
         </div>
       </header>
 
       <div class="doc-body">
-<div class="info-box info"><strong>運用注記</strong> 本資料は Spring Boot 実装前提で整理した作業用ドキュメントです。内容は今後の作業進行に応じて追記・更新する前提であり、この時点では未記入項目や今後の実装検討事項を含みます。着手前には対象画面、関連Markdown、最新の引継ぎメモを確認したうえで反映してください。</div>
+        <div class="info-box info"><strong>運用注記</strong> 本資料は 2026-03-26 時点の自動テスト結果と、その時点で残っている未実施確認項目をまとめた報告書です。</div>
         <div class="external-link-box">
           <div class="external-link-box-title">
             <span class="material-symbols-outlined">link</span>
             テスト対象
           </div>
           <div class="external-link-box-desc">
-            現在のフロントエンド実装を対象に、主要導線と画面表示を中心に整理した報告書です。
+            Spring Boot 側の公開 API と完了画面再取得前提を中心に、自動テスト結果を整理した報告書です。
           </div>
           <div class="external-link-input">
-            <input type="text" value="index / questionnaire / questionnaire_step2 / fragrance-graph / reservation / reservation-complete" readonly>
+            <input type="text" value="FregranceApplicationTests / ReservationApiTests / QuestionnaireApiTests" readonly>
           </div>
         </div>
 
@@ -47,39 +47,40 @@
             <li><a href="#sec1">テスト方針</a></li>
             <li><a href="#sec2">テストケース一覧</a></li>
             <li><a href="#sec3">テスト結果サマリー</a></li>
-            <li><a href="#sec4">バグ一覧</a></li>
+            <li><a href="#sec4">残課題・リスク</a></li>
             <li><a href="#sec5">ブラウザ・デバイス対応</a></li>
           </ol>
         </div>
 
         <section class="section" id="sec1">
           <h2 class="section-title"><span class="section-icon">1</span> テスト方針</h2>
-
           <div class="fill-block">
             <div class="fill-label">テスト対象・目的 <span class="required">必須</span></div>
-            <div class="fill-hint">対象機能、画面、観点を記載</div>
             <div class="fill-content">
-              <p>テスト対象はトップページ、アンケートSTEP1、アンケートSTEP2、香りグラフ、予約ページ、予約完了ページの主要導線です。目的は、来店前体験としてユーザーが迷わず完了できること、`sessionStorage` を使った画面間データ連携が破綻しないこと、主要ブラウザ幅でレイアウトが崩れないことを確認することです。観点は、画面表示、遷移、入力制御、グラフ調整、予約完了導線、レスポンシブ表示の6点です。</p>
+              <p>テスト対象はヘルスチェック API、予約枠取得 API、予約登録 API、予約完了画面再取得 API、アンケート結果保存 API、アンケート結果再取得 API です。目的は、DB を正とした予約導線が成立すること、完了画面の再取得前提が API レベルで成立すること、主要な異常系を統合テストで担保することです。自動テストは `SpringBootTest` + `TestRestTemplate` + `JdbcTemplate` による統合テスト構成です。</p>
             </div>
           </div>
         </section>
 
         <section class="section" id="sec2">
           <h2 class="section-title"><span class="section-icon">2</span> テストケース一覧</h2>
-
           <div class="fill-block">
             <div class="fill-label">テストケース一覧 <span class="required">必須</span></div>
             <table class="doc-table">
-              <thead><tr><th>ID</th><th>対象機能</th><th>テスト種別</th><th>テスト内容</th><th>期待結果</th><th>結果</th></tr></thead>
+              <thead><tr><th>ID</th><th>対象</th><th>種別</th><th>内容</th><th>期待結果</th><th>結果</th></tr></thead>
               <tbody>
-                <tr><td>TC-001</td><td>トップページ導線</td><td>正常系</td><td>トップページからアンケート開始ボタンを押す</td><td>STEP1へ遷移する</td><td>OK</td></tr>
-                <tr><td>TC-002</td><td>STEP1回答保存</td><td>正常系</td><td>5問回答後に次画面へ進む</td><td>STEP2へ遷移し、回答が保持される</td><td>OK</td></tr>
-                <tr><td>TC-003</td><td>STEP2分岐</td><td>正常系</td><td>ルート別質問に回答して完了する</td><td>香りグラフへ遷移する</td><td>OK</td></tr>
-                <tr><td>TC-004</td><td>グラフ微調整</td><td>正常系</td><td>スライダーとプリセットを操作する</td><td>表示値と図形が即時更新される</td><td>OK</td></tr>
-                <tr><td>TC-005</td><td>予約入力制御</td><td>異常系</td><td>人数未選択のまま予約確定を試みる</td><td>確定ボタンが無効のままになる</td><td>OK</td></tr>
-                <tr><td>TC-006</td><td>予約完了導線</td><td>正常系</td><td>枠選択、人数選択、確定ボタン押下を行う</td><td>完了ページへ遷移し、内容が表示される</td><td>OK</td></tr>
-                <tr><td>TC-007</td><td>戻る導線</td><td>正常系</td><td>STEP2とグラフ画面からトップへ戻る</td><td>確認動作または遷移が成立する</td><td>OK</td></tr>
-                <tr><td>TC-008</td><td>レスポンシブ表示</td><td>確認系</td><td>スマートフォン幅で主要画面を表示する</td><td>主要CTAと入力導線が崩れない</td><td>OK</td></tr>
+                <tr><td>TC-001</td><td>health</td><td>正常系</td><td>`GET /api/health`</td><td>200 と `ok` を返す</td><td>OK</td></tr>
+                <tr><td>TC-002</td><td>予約枠取得</td><td>正常系</td><td>DB に存在する日時の `GET /api/reservation-slots`</td><td>DB 実データと担当者名を返す</td><td>OK</td></tr>
+                <tr><td>TC-003</td><td>予約枠取得</td><td>正常系</td><td>枠が存在しない日の `GET /api/reservation-slots`</td><td>空配列 `[]` を返す</td><td>OK</td></tr>
+                <tr><td>TC-004</td><td>予約登録</td><td>正常系</td><td>存在する枠への `POST /api/reservations`</td><td>201 と予約レコード作成</td><td>OK</td></tr>
+                <tr><td>TC-005</td><td>予約登録</td><td>正常系</td><td>`questionnaireResultCode` 付きで予約登録</td><td>予約にアンケート結果コードが保存される</td><td>OK</td></tr>
+                <tr><td>TC-006</td><td>予約再取得</td><td>正常系</td><td>`GET /api/reservations/{reservationCode}`</td><td>200 と完了画面用データを返す</td><td>OK</td></tr>
+                <tr><td>TC-007</td><td>予約登録</td><td>異常系</td><td>必須項目欠落で `POST /api/reservations`</td><td>400 `VALIDATION_ERROR` を返す</td><td>OK</td></tr>
+                <tr><td>TC-008</td><td>予約登録</td><td>異常系</td><td>`staffMemo` 文字数超過で `POST /api/reservations`</td><td>400 `VALIDATION_ERROR` を返す</td><td>OK</td></tr>
+                <tr><td>TC-009</td><td>予約登録</td><td>異常系</td><td>存在しない枠で `POST /api/reservations`</td><td>404 `NOT_FOUND` を返す</td><td>OK</td></tr>
+                <tr><td>TC-010</td><td>予約登録</td><td>異常系</td><td>同一枠へ 2 回予約登録</td><td>2 回目は 409 `RESERVATION_CONFLICT` を返す</td><td>OK</td></tr>
+                <tr><td>TC-011</td><td>アンケート結果保存</td><td>正常系</td><td>`POST /api/questionnaire-results`</td><td>201 と DB への保存を確認できる</td><td>OK</td></tr>
+                <tr><td>TC-012</td><td>アンケート結果再取得</td><td>正常系</td><td>`GET /api/questionnaire-results/{resultCode}`</td><td>200 と保存済み payload を返す</td><td>OK</td></tr>
               </tbody>
             </table>
           </div>
@@ -87,33 +88,33 @@
 
         <section class="section" id="sec3">
           <h2 class="section-title"><span class="section-icon">3</span> テスト結果サマリー</h2>
-
           <div class="fill-block">
             <div class="fill-label">テスト結果サマリー <span class="required">必須</span></div>
-            <div class="fill-hint">実施件数、OK/NG件数、未実施件数を整理</div>
             <table class="doc-table">
               <thead><tr><th>項目</th><th>件数</th></tr></thead>
               <tbody>
-                <tr><td>総テストケース数</td><td>8</td></tr>
-                <tr><td>OK</td><td>8</td></tr>
+                <tr><td>総テストケース数</td><td>12</td></tr>
+                <tr><td>OK</td><td>12</td></tr>
                 <tr><td>NG</td><td>0</td></tr>
                 <tr><td>未実施</td><td>0</td></tr>
-                <tr><td>備考</td><td>フロントエンド中心の手動確認。バックエンド連携は未実装のため対象外。</td></tr>
+                <tr><td>実行コマンド</td><td>`./mvnw.cmd test`</td></tr>
+                <tr><td>備考</td><td>2026-03-26 時点の自動統合テスト結果。手動ブラウザ総点検と Service / Security テストは別途未実施。</td></tr>
               </tbody>
             </table>
           </div>
         </section>
 
         <section class="section" id="sec4">
-          <h2 class="section-title"><span class="section-icon">4</span> バグ一覧</h2>
-
+          <h2 class="section-title"><span class="section-icon">4</span> 残課題・リスク</h2>
           <div class="fill-block">
-            <div class="fill-label">検出されたバグと対応状況 <span class="required">必須</span></div>
+            <div class="fill-label">残課題・リスク <span class="required">必須</span></div>
             <table class="doc-table">
-              <thead><tr><th>バグID</th><th>検出日</th><th>対象機能</th><th>内容</th><th>重要度</th><th>対応状況</th></tr></thead>
+              <thead><tr><th>ID</th><th>対象</th><th>内容</th><th>重要度</th><th>状況</th></tr></thead>
               <tbody>
-                <tr><td>BUG-001</td><td>2026-03-16</td><td>予約機能</td><td>バックエンド保存が未実装のため、ブラウザセッション終了後に予約情報は保持されない</td><td>中</td><td>仕様認識済み / 未対応</td></tr>
-                <tr><td>BUG-002</td><td>2026-03-16</td><td>全体</td><td>テストは手動確認ベースであり、自動テストが未整備</td><td>低</td><td>改善候補</td></tr>
+                <tr><td>RISK-001</td><td>スタッフ導線</td><td>スタッフログイン、予約一覧、予約詳細は未実装</td><td>中</td><td>未対応</td></tr>
+                <tr><td>RISK-002</td><td>テスト範囲</td><td>Service テスト、Security テスト、手動ブラウザ総点検が未実施</td><td>中</td><td>未対応</td></tr>
+                <tr><td>RISK-003</td><td>完了画面</td><td>アンケート要約表示は見送りであり、内部保存と予約紐付けまでの実装に留まる</td><td>低</td><td>仕様見送り</td></tr>
+                <tr><td>RISK-004</td><td>テンプレート同期</td><td>`reservation-complete.html` はルート直下版と Spring Boot 側で整形差分が残る</td><td>低</td><td>要否判断待ち</td></tr>
               </tbody>
             </table>
           </div>
@@ -121,17 +122,15 @@
 
         <section class="section" id="sec5">
           <h2 class="section-title"><span class="section-icon">5</span> ブラウザ・デバイス対応</h2>
-
           <div class="fill-block">
             <div class="fill-label">対応確認結果 <span class="required">必須</span></div>
             <table class="doc-table">
-              <thead><tr><th>ブラウザ/デバイス</th><th>バージョン</th><th>表示</th><th>機能</th><th>備考</th></tr></thead>
+              <thead><tr><th>項目</th><th>状況</th><th>備考</th></tr></thead>
               <tbody>
-                <tr><td>Chrome / PC</td><td>最新版系</td><td>OK</td><td>OK</td><td>基準環境</td></tr>
-                <tr><td>Edge / PC</td><td>最新版系</td><td>OK</td><td>OK</td><td>主要導線確認</td></tr>
-                <tr><td>Firefox / PC</td><td>最新版系</td><td>OK</td><td>OK</td><td>主要導線確認</td></tr>
-                <tr><td>Chrome / Android</td><td>最新版系</td><td>OK</td><td>OK</td><td>スマートフォン幅確認</td></tr>
-                <tr><td>Safari / iPhone</td><td>最新版系</td><td>OK</td><td>OK</td><td>スマートフォン幅確認</td></tr>
+                <tr><td>自動テスト実行環境</td><td>OK</td><td>Spring Boot ランダムポート起動で実行</td></tr>
+                <tr><td>主要ブラウザ手動確認</td><td>未完了</td><td>Chrome / Edge / Safari / Firefox の総点検は今後の作業</td></tr>
+                <tr><td>360px / 390px / 中間幅確認</td><td>未完了</td><td>3/25 のヘッダー調整記録に再確認項目あり</td></tr>
+                <tr><td>完了画面の再取得前提</td><td>OK</td><td>API 統合テストで `reservationCode` 再取得成立を確認</td></tr>
               </tbody>
             </table>
           </div>
@@ -143,5 +142,3 @@
   <script src="../js/main.js"></script>
 </body>
 </html>
-
-

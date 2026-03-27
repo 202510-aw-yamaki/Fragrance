@@ -20,24 +20,24 @@
         <div class="doc-category">DOCUMENT 08</div>
         <h1 class="doc-title">DB設計書</h1>
         <div class="doc-meta">
-          <span><span class="material-symbols-outlined icon-sm">calendar_today</span> 作成日: 2026-03-16</span>
+          <span><span class="material-symbols-outlined icon-sm">calendar_today</span> 作成日: 2026-03-27</span>
           <span><span class="material-symbols-outlined icon-sm">person</span> 作成者: Codex</span>
-          <span><span class="material-symbols-outlined icon-sm">push_pin</span> Ver 1.0</span>
+          <span><span class="material-symbols-outlined icon-sm">push_pin</span> Ver 1.1</span>
         </div>
       </header>
 
       <div class="doc-body">
-<div class="info-box info"><strong>運用注記</strong> 本資料は Spring Boot 実装前提で整理した作業用ドキュメントです。内容は今後の作業進行に応じて追記・更新する前提であり、この時点では未記入項目や今後の実装検討事項を含みます。着手前には対象画面、関連Markdown、最新の引継ぎメモを確認したうえで反映してください。</div>
+        <div class="info-box info"><strong>運用注記</strong> 本資料は 2026-03-27 時点の `schema.sql` と `data.sql` をもとに更新した DB 設計書です。アプリ実装上の業務制約も併記しています。</div>
         <div class="external-link-box">
           <div class="external-link-box-title">
             <span class="material-symbols-outlined">link</span>
             関連メモ
           </div>
           <div class="external-link-box-desc">
-            本資料は、予約保存と店舗共有を Spring Boot で実装するためのDB設計です。
+            予約保存、アンケート結果保存、完了画面再取得のための現行スキーマです。
           </div>
           <div class="external-link-input">
-            <input type="text" value="sessionStorage プロトタイプ -> Spring Boot + DB 実装" readonly>
+            <input type="text" value="schema.sql / data.sql / ReservationService / QuestionnaireResultService" readonly>
           </div>
         </div>
 
@@ -53,32 +53,36 @@
 
         <section class="section" id="sec1">
           <h2 class="section-title"><span class="section-icon">1</span> ER図</h2>
-
           <div class="fill-block">
             <div class="fill-label">ER図 <span class="required">必須</span></div>
-            <div class="fill-hint">主なテーブルと関係性をテキストで整理</div>
             <div class="fill-content">
-              <pre>[reservation_slots] 1 ----- * [reservations] * ----- 1 [visit_types]
-        id (PK)                    id (PK)                  id (PK)
-        slot_date                  reservation_slot_id FK   code
-        slot_time                  visit_type_id FK         name
-        status                     guest_count              description
-        instructor_name            staff_memo
-        created_at                 summary_headline
-        updated_at                 summary_body
-                                     axes_json
-                                     answers_json
-                                     created_at
-                                     updated_at
+<pre>[visit_types] 1 ----- * [reservations] * ----- 1 [reservation_slots]
+ id (PK)                 id (PK)                 id (PK)
+ code (UNIQUE)           reservation_code        slot_date
+ name                    reservation_slot_id FK  slot_time
+ description             visit_type_id FK        status
+                         visit_type_label        instructor_name
+                         guest_count             created_at
+                         staff_memo              updated_at
+                         summary_headline
+                         questionnaire_result_code
+                         slot_label
+                         created_at
+                         updated_at
 
-[questionnaire_results] 1 ----- 1 [reservations]
-        id (PK)
-        route_code
-        step1_answers_json
-        step2_answers_json
-        graph_axes_json
-        created_at
-        updated_at</pre>
+[questionnaire_results]
+ id (PK)
+ result_code (UNIQUE)
+ route_code
+ step1_answers_json
+ step2_answers_json
+ graph_axes_json
+ created_at
+ updated_at
+
+論理関係:
+questionnaire_results.result_code ---- reservations.questionnaire_result_code
+※ 現行は外部キー制約ではなく、アプリケーション側で紐付ける。</pre>
             </div>
           </div>
         </section>
@@ -87,56 +91,70 @@
           <h2 class="section-title"><span class="section-icon">2</span> テーブル詳細</h2>
 
           <div class="fill-block">
-            <div class="fill-label">reservations テーブル <span class="required">必須</span></div>
-            <div class="fill-hint">予約確定時に保存する主テーブル</div>
+            <div class="fill-label">visit_types テーブル <span class="required">必須</span></div>
             <table class="doc-table">
-              <thead><tr><th>カラム名</th><th>データ型</th><th>NULL</th><th>デフォルト</th><th>制約</th><th>説明</th></tr></thead>
+              <thead><tr><th>カラム名</th><th>データ型</th><th>NULL</th><th>制約</th><th>説明</th></tr></thead>
               <tbody>
-                <tr><td>id</td><td>BIGINT</td><td>NO</td><td>AUTO_INCREMENT</td><td>PK</td><td>予約ID</td></tr>
-                <tr><td>reservation_slot_id</td><td>BIGINT</td><td>NO</td><td>-</td><td>FK</td><td>予約枠ID</td></tr>
-                <tr><td>visit_type_id</td><td>BIGINT</td><td>NO</td><td>-</td><td>FK</td><td>来店種別ID</td></tr>
-                <tr><td>guest_count</td><td>INT</td><td>NO</td><td>1</td><td>NOT NULL</td><td>来店人数</td></tr>
-                <tr><td>staff_memo</td><td>TEXT</td><td>YES</td><td>NULL</td><td>-</td><td>スタッフ向けメモ</td></tr>
-                <tr><td>summary_headline</td><td>VARCHAR(255)</td><td>YES</td><td>NULL</td><td>-</td><td>予約ページ見出し</td></tr>
-                <tr><td>summary_body</td><td>TEXT</td><td>YES</td><td>NULL</td><td>-</td><td>予約ページ説明文</td></tr>
-                <tr><td>axes_json</td><td>JSON</td><td>YES</td><td>NULL</td><td>-</td><td>5軸グラフ値</td></tr>
-                <tr><td>answers_json</td><td>JSON</td><td>YES</td><td>NULL</td><td>-</td><td>アンケート回答要約</td></tr>
-                <tr><td>created_at</td><td>DATETIME</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td>NOT NULL</td><td>作成日時</td></tr>
-                <tr><td>updated_at</td><td>DATETIME</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td>NOT NULL</td><td>更新日時</td></tr>
+                <tr><td>id</td><td>BIGINT</td><td>NO</td><td>PK</td><td>来店種別ID</td></tr>
+                <tr><td>code</td><td>VARCHAR(32)</td><td>NO</td><td>UNIQUE</td><td>内部コード</td></tr>
+                <tr><td>name</td><td>VARCHAR(100)</td><td>NO</td><td>-</td><td>表示名</td></tr>
+                <tr><td>description</td><td>VARCHAR(255)</td><td>YES</td><td>-</td><td>説明</td></tr>
+                <tr><td>created_at</td><td>DATETIME</td><td>NO</td><td>-</td><td>作成日時</td></tr>
+                <tr><td>updated_at</td><td>DATETIME</td><td>NO</td><td>-</td><td>更新日時</td></tr>
               </tbody>
             </table>
           </div>
 
           <div class="fill-block">
             <div class="fill-label">reservation_slots テーブル <span class="required">必須</span></div>
-            <div class="fill-hint">予約候補日時を管理するテーブル</div>
             <table class="doc-table">
-              <thead><tr><th>カラム名</th><th>データ型</th><th>NULL</th><th>デフォルト</th><th>制約</th><th>説明</th></tr></thead>
+              <thead><tr><th>カラム名</th><th>データ型</th><th>NULL</th><th>制約</th><th>説明</th></tr></thead>
               <tbody>
-                <tr><td>id</td><td>BIGINT</td><td>NO</td><td>AUTO_INCREMENT</td><td>PK</td><td>予約枠ID</td></tr>
-                <tr><td>slot_date</td><td>DATE</td><td>NO</td><td>-</td><td>NOT NULL</td><td>営業日</td></tr>
-                <tr><td>slot_time</td><td>TIME</td><td>NO</td><td>-</td><td>NOT NULL</td><td>開始時刻</td></tr>
-                <tr><td>status</td><td>VARCHAR(32)</td><td>NO</td><td>'open'</td><td>NOT NULL</td><td>open / closed / recommended</td></tr>
-                <tr><td>instructor_name</td><td>VARCHAR(100)</td><td>YES</td><td>NULL</td><td>-</td><td>担当者名</td></tr>
-                <tr><td>created_at</td><td>DATETIME</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td>NOT NULL</td><td>作成日時</td></tr>
-                <tr><td>updated_at</td><td>DATETIME</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td>NOT NULL</td><td>更新日時</td></tr>
+                <tr><td>id</td><td>BIGINT</td><td>NO</td><td>PK</td><td>予約枠ID</td></tr>
+                <tr><td>slot_date</td><td>DATE</td><td>NO</td><td>UNIQUE構成要素</td><td>営業日</td></tr>
+                <tr><td>slot_time</td><td>TIME</td><td>NO</td><td>UNIQUE構成要素</td><td>開始時刻</td></tr>
+                <tr><td>status</td><td>VARCHAR(32)</td><td>NO</td><td>-</td><td>`recommended` / `open` / `reserved` を想定</td></tr>
+                <tr><td>instructor_name</td><td>VARCHAR(100)</td><td>YES</td><td>-</td><td>担当者名</td></tr>
+                <tr><td>created_at</td><td>DATETIME</td><td>NO</td><td>-</td><td>作成日時</td></tr>
+                <tr><td>updated_at</td><td>DATETIME</td><td>NO</td><td>-</td><td>更新日時</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="fill-block">
+            <div class="fill-label">reservations テーブル <span class="required">必須</span></div>
+            <table class="doc-table">
+              <thead><tr><th>カラム名</th><th>データ型</th><th>NULL</th><th>制約</th><th>説明</th></tr></thead>
+              <tbody>
+                <tr><td>id</td><td>BIGINT</td><td>NO</td><td>PK</td><td>予約ID</td></tr>
+                <tr><td>reservation_code</td><td>VARCHAR(32)</td><td>NO</td><td>UNIQUE</td><td>完了画面再取得に使う予約コード</td></tr>
+                <tr><td>reservation_slot_id</td><td>BIGINT</td><td>NO</td><td>FK</td><td>予約枠ID</td></tr>
+                <tr><td>visit_type_id</td><td>BIGINT</td><td>NO</td><td>FK</td><td>来店種別ID</td></tr>
+                <tr><td>visit_type_label</td><td>VARCHAR(100)</td><td>NO</td><td>-</td><td>完了画面表示用ラベル</td></tr>
+                <tr><td>guest_count</td><td>INT</td><td>NO</td><td>-</td><td>来店人数</td></tr>
+                <tr><td>staff_memo</td><td>TEXT</td><td>YES</td><td>-</td><td>スタッフ向けメモ</td></tr>
+                <tr><td>summary_headline</td><td>VARCHAR(255)</td><td>YES</td><td>-</td><td>予約画面の要約見出し</td></tr>
+                <tr><td>questionnaire_result_code</td><td>VARCHAR(32)</td><td>YES</td><td>論理参照</td><td>アンケート結果コード</td></tr>
+                <tr><td>slot_label</td><td>VARCHAR(255)</td><td>YES</td><td>-</td><td>画面表示用予約枠ラベル</td></tr>
+                <tr><td>created_at</td><td>DATETIME</td><td>NO</td><td>-</td><td>作成日時</td></tr>
+                <tr><td>updated_at</td><td>DATETIME</td><td>NO</td><td>-</td><td>更新日時</td></tr>
               </tbody>
             </table>
           </div>
 
           <div class="fill-block">
             <div class="fill-label">questionnaire_results テーブル <span class="required">必須</span></div>
-            <div class="fill-hint">アンケートとグラフ調整結果を保持するテーブル</div>
             <table class="doc-table">
-              <thead><tr><th>カラム名</th><th>データ型</th><th>NULL</th><th>デフォルト</th><th>制約</th><th>説明</th></tr></thead>
+              <thead><tr><th>カラム名</th><th>データ型</th><th>NULL</th><th>制約</th><th>説明</th></tr></thead>
               <tbody>
-                <tr><td>id</td><td>BIGINT</td><td>NO</td><td>AUTO_INCREMENT</td><td>PK</td><td>回答結果ID</td></tr>
-                <tr><td>route_code</td><td>VARCHAR(32)</td><td>YES</td><td>NULL</td><td>INDEX</td><td>Bloom / Air / Deep / Exploratory</td></tr>
-                <tr><td>step1_answers_json</td><td>JSON</td><td>YES</td><td>NULL</td><td>-</td><td>STEP1回答</td></tr>
-                <tr><td>step2_answers_json</td><td>JSON</td><td>YES</td><td>NULL</td><td>-</td><td>STEP2回答</td></tr>
-                <tr><td>graph_axes_json</td><td>JSON</td><td>YES</td><td>NULL</td><td>-</td><td>微調整後グラフ値</td></tr>
-                <tr><td>created_at</td><td>DATETIME</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td>NOT NULL</td><td>作成日時</td></tr>
-                <tr><td>updated_at</td><td>DATETIME</td><td>NO</td><td>CURRENT_TIMESTAMP</td><td>NOT NULL</td><td>更新日時</td></tr>
+                <tr><td>id</td><td>BIGINT</td><td>NO</td><td>PK</td><td>回答結果ID</td></tr>
+                <tr><td>result_code</td><td>VARCHAR(32)</td><td>NO</td><td>UNIQUE</td><td>再取得用結果コード</td></tr>
+                <tr><td>route_code</td><td>VARCHAR(32)</td><td>YES</td><td>-</td><td>Bloom / Air / Deep / Exploratory などの分岐コード</td></tr>
+                <tr><td>step1_answers_json</td><td>JSON</td><td>YES</td><td>-</td><td>STEP1回答</td></tr>
+                <tr><td>step2_answers_json</td><td>JSON</td><td>YES</td><td>-</td><td>STEP2回答</td></tr>
+                <tr><td>graph_axes_json</td><td>JSON</td><td>YES</td><td>-</td><td>5軸グラフ値</td></tr>
+                <tr><td>created_at</td><td>DATETIME</td><td>NO</td><td>-</td><td>作成日時</td></tr>
+                <tr><td>updated_at</td><td>DATETIME</td><td>NO</td><td>-</td><td>更新日時</td></tr>
               </tbody>
             </table>
           </div>
@@ -144,37 +162,38 @@
 
         <section class="section" id="sec3">
           <h2 class="section-title"><span class="section-icon">3</span> インデックス設計</h2>
-
           <div class="fill-block">
             <div class="fill-label">インデックス一覧 <span class="required">必須</span></div>
             <table class="doc-table">
-              <thead><tr><th>テーブル名</th><th>インデックス名</th><th>対象カラム</th><th>種類</th><th>設計理由</th></tr></thead>
+              <thead><tr><th>テーブル名</th><th>インデックス / 制約名</th><th>対象カラム</th><th>種類</th><th>設計理由</th></tr></thead>
               <tbody>
-                <tr><td>reservation_slots</td><td>idx_reservation_slots_date_time</td><td>slot_date, slot_time</td><td>UNIQUE</td><td>同一日時の重複枠作成を防ぐため</td></tr>
-                <tr><td>reservations</td><td>idx_reservations_slot_id</td><td>reservation_slot_id</td><td>INDEX</td><td>予約枠単位で予約を検索しやすくするため</td></tr>
-                <tr><td>reservations</td><td>idx_reservations_created_at</td><td>created_at</td><td>INDEX</td><td>日付順の運用確認をしやすくするため</td></tr>
-                <tr><td>questionnaire_results</td><td>idx_questionnaire_results_route</td><td>route_code</td><td>INDEX</td><td>分岐ルート別の傾向分析をしやすくするため</td></tr>
+                <tr><td>visit_types</td><td>UNIQUE(code)</td><td>code</td><td>UNIQUE</td><td>来店種別コードの重複防止</td></tr>
+                <tr><td>reservation_slots</td><td>uq_reservation_slots_date_time</td><td>slot_date, slot_time</td><td>UNIQUE</td><td>同一日時の重複枠作成防止</td></tr>
+                <tr><td>reservations</td><td>UNIQUE(reservation_code)</td><td>reservation_code</td><td>UNIQUE</td><td>完了画面再取得に使うコードの一意性確保</td></tr>
+                <tr><td>questionnaire_results</td><td>UNIQUE(result_code)</td><td>result_code</td><td>UNIQUE</td><td>アンケート結果再取得コードの一意性確保</td></tr>
               </tbody>
             </table>
+            <p>補足: 「1日時点につき1件で受付終了」は現在アプリケーション側の重複予約防止と `reservation_slots.status=reserved` 更新で担保している。`reservations.reservation_slot_id` には現時点で DB 側の UNIQUE 制約は置いていない。</p>
           </div>
         </section>
 
         <section class="section" id="sec4">
           <h2 class="section-title"><span class="section-icon">4</span> 初期データ</h2>
-
           <div class="fill-block">
-            <div class="fill-label">マスタデータ・テストデータ <span class="required">必須</span></div>
-            <div class="fill-hint">予約種別の初期値と確認用データ</div>
+            <div class="fill-label">マスタデータ・初期データ <span class="required">必須</span></div>
             <div class="fill-content">
-<pre>INSERT INTO visit_types (code, name, description, created_at, updated_at) VALUES
-('workshop', '初回ワークショップ', '通常の香りワークショップ予約', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('followup', '再来店・微調整', '前回内容をもとにした再来店予約', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('gift', 'ギフト相談あり', 'ギフト用途を含む来店予約', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+<pre>visit_types:
+- workshop / 初回ワークショップ / 初回来店の香りづくり体験
+- followup / 再来店相談 / 再来店時の調整・相談向け
+- gift / ギフト相談 / ギフト用途の香り相談
 
-INSERT INTO reservation_slots (slot_date, slot_time, status, instructor_name, created_at, updated_at) VALUES
-('2026-03-20', '10:30:00', 'recommended', '山田', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('2026-03-20', '13:00:00', 'open', '田中', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('2026-03-20', '15:30:00', 'open', '佐藤', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);</pre>
+reservation_slots:
+- CURDATE() の翌日から 14 日分
+- 1日あたり 3 枠
+  - 10:30 recommended Haraguchi
+  - 13:00 open Shimizu
+  - 15:30 open Otsuka
+- 既存同日時枠がある場合は INSERT しない</pre>
             </div>
           </div>
         </section>
@@ -185,7 +204,3 @@ INSERT INTO reservation_slots (slot_date, slot_time, status, instructor_name, cr
   <script src="../js/main.js"></script>
 </body>
 </html>
-
-
-
-
