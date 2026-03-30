@@ -145,36 +145,19 @@
           <div class="fill-block">
             <div class="fill-label">企画フェーズ <span class="required">必須</span></div>
             <div class="fill-hint">どのようにアイデアを出し、企画をまとめたか</div>
-            <div class="fill-content"><p>（企画フェーズの詳細を入力）</p></div>
-            <div class="prompt-box">
-              <div class="prompt-title"><span class="material-symbols-outlined icon-sm">smart_toy</span> AIプロンプト例</div>
-              <div class="prompt-text">プロジェクトアーカイブ用に、制作物の「企画フェーズ」について説明する文章を書いてください。
-・どのようにアイデアを出したか：（方法）
-・参考にしたサービス：（サービス名）
-・ターゲットをどう決めたか：（決め方）
-読み手に企画力・調査力が伝わるようにしてください。</div>
-            </div>
+            <div class="fill-content"><p>企画提案書をもとに、来店前のユーザーに対して「診断」ではなく「香りづくりの準備体験」を提供する方向性を定めました。オンラインで好みを可視化し、オフラインでスタッフと一緒に仕上げる二段階体験を軸に据え、香りに興味はあるものの専門知識がなく選び方に迷いやすい20代後半〜40代前半を主なターゲットとして整理しました。また、回答負荷を上げすぎずに予約まで進める導線と、店舗側が事前に好みを把握しやすい構成を企画段階で明確にしました。</p></div>
           </div>
 
           <div class="fill-block">
             <div class="fill-label">設計フェーズ <span class="required">必須</span></div>
             <div class="fill-hint">設計時に意識したこと、工夫した点</div>
-            <div class="fill-content"><p>（設計フェーズの詳細を入力）</p></div>
+            <div class="fill-content"><p>サイトマップとワイヤーフレームでは、トップページからアンケートSTEP1、STEP2、香りグラフ、予約、予約完了へと迷わず進める一方向の導線を設計しました。画面ごとに役割を分け、トップページでは期待形成と安心材料の提示、アンケートでは「ナビ / 回答 / 補足」の役割分担、グラフでは可視化と微調整、予約では傾向確認と入力を一画面で理解できる構成にしています。デザイン面では、静かな上質感、やわらかな期待感、清潔感をキーワードに、余白を広く取りつつ押しつけのないUIになるよう整理しました。</p></div>
           </div>
 
           <div class="fill-block">
             <div class="fill-label">実装フェーズ <span class="required">必須</span></div>
             <div class="fill-hint">実装で苦労した点、解決方法</div>
-            <div class="fill-content"><p>（実装フェーズの詳細を入力）</p></div>
-            <div class="prompt-box">
-              <div class="prompt-title"><span class="material-symbols-outlined icon-sm">smart_toy</span> AIプロンプト例</div>
-              <div class="prompt-text">プロジェクトアーカイブ用に、制作物の「実装フェーズ」について説明する文章を書いてください。
-・特に苦労した機能：（機能名）
-・どんなエラー/問題が起きたか：（問題）
-・どう解決したか：（解決方法）
-・学んだこと：（学び）
-読み手に問題解決能力が伝わるようにしてください。</div>
-            </div>
+            <div class="fill-content"><p>実装では、HTML / CSS / JavaScript による画面構築に加え、Spring Boot / Thymeleaf / MyBatis / MySQL を用いたバックエンド連携まで対応しました。特に、STEP1・STEP2 の回答保持、graph 画面での結果保存、予約ページでの予約枠取得と予約登録、完了画面での再取得までを一連の流れとしてつなぐ点に苦労しました。そこで、回答途中は sessionStorage で一時保持しつつ、graph 以降は API と DB に保存する構成に整理し、予約 API・アンケート結果 API・予約完了再取得の仕様をそろえることで、フロントとバックエンドの接続を安定させました。さらに、MySQL 導入、Docker 対応、レスポンシブ調整まで進め、実運用を見据えた形に整えました。</p></div>
           </div>
         </section>
 
