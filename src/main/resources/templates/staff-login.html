@@ -6,31 +6,80 @@
   <title>店舗スタッフログイン | Fregrance</title>
   <link rel="stylesheet" th:href="@{/css/admin.css}">
 </head>
-<body class="admin-body">
-  <main class="login-shell">
-    <section class="login-card">
-      <p class="eyebrow">Store Staff</p>
-      <h1>予約管理ログイン</h1>
-      <p class="muted">店舗スタッフ用の管理画面です。ログイン後に予約一覧とアンケート内容を確認できます。</p>
-
-      <div class="alert success" th:if="${param.logout}">
-        ログアウトしました。
-      </div>
-      <div class="alert error" th:if="${param.error}">
-        ユーザー名またはパスワードが正しくありません。
+<body class="admin-body admin-login-page">
+  <main class="login-shell login-shell-wide">
+    <section class="login-console">
+      <div class="console-window-bar">
+        <span></span>
+        <span></span>
+        <span></span>
       </div>
 
-      <form th:action="@{/login}" method="post" class="login-form">
-        <label class="field">
-          <span>ユーザー名</span>
-          <input type="text" name="username" autocomplete="username" required>
-        </label>
-        <label class="field">
-          <span>パスワード</span>
-          <input type="password" name="password" autocomplete="current-password" required>
-        </label>
-        <button type="submit" class="primary-button">ログインする</button>
-      </form>
+      <section class="console-panel">
+        <header class="console-topbar table-like-topbar">
+          <div class="console-cell console-brand">FRAGRANCE WORKSHOP</div>
+          <div class="console-cell console-center">Staff Console</div>
+          <div class="console-cell console-status">店舗スタッフ用</div>
+        </header>
+
+        <section class="console-hero">
+          <div>
+            <h1>店舗スタッフ用 予約管理ログイン</h1>
+            <p class="console-lead">業務システムらしいワイド入力とステータス帯を持つ実運用寄りの案です。</p>
+          </div>
+          <div class="console-badge">ログイン画面</div>
+        </section>
+
+        <section class="console-metrics metrics-four-cols" aria-label="管理指標の見本表示">
+          <article class="metric-card metric-card-green">
+            <span class="metric-label">本日の予約 / 全体の予約</span>
+            <strong class="metric-value" th:text="|${todayReservationCount}件 / ${allReservationCount}件|">0件 / 0件</strong>
+          </article>
+          <article class="metric-card metric-card-pink">
+            <span class="metric-label">キャンセル</span>
+            <strong class="metric-value">2件</strong>
+          </article>
+          <article class="metric-card metric-card-blue">
+            <span class="metric-label">未確認メモ</span>
+            <strong class="metric-value">5件</strong>
+          </article>
+          <article class="metric-card metric-card-white">
+            <span class="metric-label">担当スタッフ</span>
+            <strong class="metric-value">6名</strong>
+          </article>
+        </section>
+
+        <section class="login-workbench">
+          <div class="workbench-tag">STORE ACCESS</div>
+          <h2>スタッフ認証</h2>
+          <p class="muted">Enter キーでもログインできる業務向け設計です。視線移動を減らした横長フォームで構成しています。</p>
+
+          <div class="alert success" th:if="${param.logout}">
+            ログアウトしました。
+          </div>
+          <div class="alert error" th:if="${param.error}">
+            ユーザー名またはパスワードが正しくありません。
+          </div>
+
+          <form th:action="@{/login}" method="post" class="login-form login-form-inline">
+            <label class="field field-wide">
+              <span>ユーザー名</span>
+              <input type="text" name="username" autocomplete="username" placeholder="staff-manager" required>
+            </label>
+            <label class="field field-wide">
+              <span>パスワード</span>
+              <input type="password" name="password" autocomplete="current-password" placeholder="••••••••••••" required>
+            </label>
+            <div class="login-action">
+              <button type="submit" class="primary-button login-submit">ログイン</button>
+            </div>
+          </form>
+
+          <div class="console-note">
+            お知らせ: 予約一覧では来店日時・予約コード・担当・状態を並べて確認できます。
+          </div>
+        </section>
+      </section>
     </section>
   </main>
 </body>

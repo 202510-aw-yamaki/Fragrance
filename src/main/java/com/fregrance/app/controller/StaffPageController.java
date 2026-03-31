@@ -27,7 +27,9 @@ public class StaffPageController {
     }
 
     @GetMapping("/login")
-    public String showLogin() {
+    public String showLogin(Model model) {
+        model.addAttribute("todayReservationCount", staffReservationService.countTodayReservations());
+        model.addAttribute("allReservationCount", staffReservationService.countAllReservations());
         return "staff-login";
     }
 

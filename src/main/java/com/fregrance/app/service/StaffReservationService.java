@@ -1,6 +1,7 @@
 package com.fregrance.app.service;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +30,17 @@ public class StaffReservationService {
         return reservationMapper.findAllForStaff().stream()
             .map(this::toSummary)
             .toList();
+    }
+
+    public int countTodayReservations() {
+        LocalDate today = LocalDate.now();
+        return (int) findAllReservations().stream()
+            .filter(reservation -> today.equals(reservation.slotDate()))
+            .count();
+    }
+
+    public int countAllReservations() {
+        return findAllReservations().size();
     }
 
     public StaffReservationDetail findReservationDetail(String reservationCode) {

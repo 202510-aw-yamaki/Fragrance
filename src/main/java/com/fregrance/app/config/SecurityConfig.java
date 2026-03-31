@@ -14,10 +14,10 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
-    @Value("${app.staff.username:staff}")
+    @Value("${app.staff.username:rohera}")
     private String staffUsername;
 
-    @Value("${app.staff.password:fregrance-staff}")
+    @Value("${app.staff.password:Staff}")
     private String staffPassword;
 
     @Bean
