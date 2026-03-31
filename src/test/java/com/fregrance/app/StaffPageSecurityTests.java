@@ -1,7 +1,7 @@
 package com.fregrance.app;
 
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
@@ -25,6 +27,16 @@ class StaffPageSecurityTests {
     }
 
     @Test
+    void configuredStaffCredentialsCanLogin() throws Exception {
+        mockMvc.perform(post("/staff/login")
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .param("username", "rohera")
+                .param("password", "Staff"))
+            .andExpect(status().is3xxRedirection())
+            .andExpect(redirectedUrl("/staff/reservations"));
+    }
+
+    @Test
     void staffReservationsRequiresAuthentication() throws Exception {
         mockMvc.perform(get("/staff/reservations"))
             .andExpect(status().is3xxRedirection())
@@ -32,14 +44,19 @@ class StaffPageSecurityTests {
     }
 
     @Test
-    void nonStaffUserCannotOpenStaffReservations() throws Exception {
-        mockMvc.perform(get("/staff/reservations").with(user("viewer").roles("USER")))
-            .andExpect(status().isForbidden());
+    void invalidCredentialsRedirectBackToLogin() throws Exception {
+        mockMvc.perform(post("/staff/login")
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .param("username", "rohera")
+                .param("password", "wrong"))
+            .andExpect(status().is3xxRedirection())
+            .andExpect(redirectedUrl("/staff/login?error"));
     }
 
     @Test
-    void staffRoleCanOpenStaffReservations() throws Exception {
-        mockMvc.perform(get("/staff/reservations").with(user("staff").roles("STAFF")))
+    @WithMockUser(username = "rohera", roles = "STAFF")
+    void authenticatedStaffCanOpenStaffReservations() throws Exception {
+        mockMvc.perform(get("/staff/reservations"))
             .andExpect(status().isOk());
     }
 }

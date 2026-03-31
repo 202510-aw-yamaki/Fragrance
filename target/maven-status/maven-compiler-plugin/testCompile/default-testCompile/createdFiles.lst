@@ -1,3 +1,4 @@
 com\fregrance\app\FregranceApplicationTests.class
 com\fregrance\app\ReservationApiTests.class
+com\fregrance\app\StaffPageSecurityTests.class
 com\fregrance\app\QuestionnaireApiTests.class

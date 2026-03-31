@@ -1,5 +1,6 @@
 package com.fregrance.app.controller;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +28,10 @@ public class StaffPageController {
     }
 
     @GetMapping("/login")
-    public String showLogin(Model model) {
+    public String showLogin(Authentication authentication, Model model) {
+        if (isStaffAuthenticated(authentication)) {
+            return "redirect:/staff/reservations";
+        }
         model.addAttribute("todayReservationCount", staffReservationService.countTodayReservations());
         model.addAttribute("allReservationCount", staffReservationService.countAllReservations());
         return "staff-login";
@@ -50,5 +54,12 @@ public class StaffPageController {
 
         model.addAttribute("reservation", reservation);
         return "staff-reservation-detail";
+    }
+
+    private boolean isStaffAuthenticated(Authentication authentication) {
+        return authentication != null
+            && authentication.isAuthenticated()
+            && authentication.getAuthorities().stream()
+                .anyMatch(authority -> "ROLE_STAFF".equals(authority.getAuthority()));
     }
 }

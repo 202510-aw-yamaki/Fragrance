@@ -61,14 +61,20 @@
             ユーザー名またはパスワードが正しくありません。
           </div>
 
-          <form th:action="@{/login}" method="post" class="login-form login-form-inline">
+          <form th:action="@{/staff/login}" method="post" class="login-form login-form-inline">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
             <label class="field field-wide">
               <span>ユーザー名</span>
-              <input type="text" name="username" autocomplete="username" placeholder="staff-manager" required>
+              <input type="text" name="username" autocomplete="username" required>
             </label>
-            <label class="field field-wide">
+            <label class="field field-wide password-field">
               <span>パスワード</span>
-              <input type="password" name="password" autocomplete="current-password" placeholder="••••••••••••" required>
+              <div class="password-input-wrap">
+                <input id="staff-password" type="password" name="password" autocomplete="current-password" required>
+                <button type="button" class="password-toggle" aria-label="パスワードを表示" aria-pressed="false" data-password-toggle>
+                  表示
+                </button>
+              </div>
             </label>
             <div class="login-action">
               <button type="submit" class="primary-button login-submit">ログイン</button>
@@ -82,5 +88,20 @@
       </section>
     </section>
   </main>
+
+  <script>
+    const toggleButton = document.querySelector('[data-password-toggle]');
+    const passwordInput = document.getElementById('staff-password');
+
+    if (toggleButton && passwordInput) {
+      toggleButton.addEventListener('click', () => {
+        const showPassword = passwordInput.type === 'password';
+        passwordInput.type = showPassword ? 'text' : 'password';
+        toggleButton.textContent = showPassword ? '非表示' : '表示';
+        toggleButton.setAttribute('aria-pressed', String(showPassword));
+        toggleButton.setAttribute('aria-label', showPassword ? 'パスワードを非表示' : 'パスワードを表示');
+      });
+    }
+  </script>
 </body>
 </html>

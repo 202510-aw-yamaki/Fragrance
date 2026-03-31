@@ -15,7 +15,8 @@
     </div>
     <div class="header-actions">
       <a class="secondary-button link-button" th:href="@{/staff/reservations}">一覧へ戻る</a>
-      <form th:action="@{/logout}" method="post">
+      <form th:action="@{/staff/logout}" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
         <button type="submit" class="secondary-button">ログアウト</button>
       </form>
     </div>
@@ -112,3 +113,4 @@
   </main>
 </body>
 </html>
+
