@@ -351,6 +351,42 @@ h3 {
   color: #8b837a;
 }
 
+.password-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-input-wrap input {
+  padding-right: 84px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  min-width: 56px;
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid #d8c8ba;
+  border-radius: 999px;
+  background: #fff7ef;
+  color: #7b5a45;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.password-toggle:hover {
+  background: #f6e6d9;
+}
+
+.password-toggle:focus-visible {
+  outline: 2px solid rgba(201, 139, 106, 0.35);
+  outline-offset: 2px;
+}
 .login-action {
   display: flex;
 }
@@ -551,7 +587,43 @@ th {
     justify-content: flex-start;
   }
 
-  .login-action {
+  .password-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-input-wrap input {
+  padding-right: 84px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  min-width: 56px;
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid #d8c8ba;
+  border-radius: 999px;
+  background: #fff7ef;
+  color: #7b5a45;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.password-toggle:hover {
+  background: #f6e6d9;
+}
+
+.password-toggle:focus-visible {
+  outline: 2px solid rgba(201, 139, 106, 0.35);
+  outline-offset: 2px;
+}
+.login-action {
     width: 100%;
   }
 }
