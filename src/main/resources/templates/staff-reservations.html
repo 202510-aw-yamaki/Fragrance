@@ -6,79 +6,240 @@
   <title>予約一覧 | Fregrance Staff</title>
   <link rel="stylesheet" th:href="@{/css/admin.css}">
 </head>
-<body class="admin-body">
-  <header class="admin-header">
-    <div>
-      <p class="eyebrow">Fregrance Staff</p>
-      <h1>予約一覧</h1>
-      <p class="muted">予約状況とアンケート連携有無をまとめて確認できます。</p>
-    </div>
-    <form th:action="@{/staff/logout}" method="post">
-      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-      <button type="submit" class="secondary-button">ログアウト</button>
-    </form>
-  </header>
-
-  <main class="admin-main">
-    <div class="alert error" th:if="${missingReservationCode}">
-      指定された予約コード <strong th:text="${missingReservationCode}"></strong> は見つかりませんでした。
-    </div>
-
-    <section class="summary-panel">
-      <div class="summary-item">
-        <span class="summary-label">総予約数</span>
-        <strong th:text="${#lists.size(reservations)}">0</strong>
+<body class="admin-body admin-list-page">
+  <main class="login-shell login-shell-wide list-shell">
+    <section class="login-console list-console">
+      <div class="console-window-bar">
+        <span></span>
+        <span></span>
+        <span></span>
       </div>
-      <div class="summary-item">
-        <span class="summary-label">アンケート連携あり</span>
-        <strong th:text="${reservations.?[questionnaireResultCode != null].size()}">0</strong>
-      </div>
-    </section>
 
-    <section class="table-card">
-      <div class="table-scroll">
-        <table>
-          <thead>
-            <tr>
-              <th>来店日時</th>
-              <th>予約コード</th>
-              <th>来店種別</th>
-              <th>人数</th>
-              <th>担当</th>
-              <th>枠状態</th>
-              <th>アンケート</th>
-              <th>詳細</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr th:if="${#lists.isEmpty(reservations)}">
-              <td colspan="8" class="empty-cell">予約はまだ登録されていません。</td>
-            </tr>
-            <tr th:each="reservation : ${reservations}">
-              <td>
-                <div class="table-primary" th:text="${#temporals.format(reservation.slotDate, 'yyyy/MM/dd')}"></div>
-                <div class="table-secondary" th:text="${#temporals.format(reservation.slotTime, 'HH:mm')}"></div>
-              </td>
-              <td th:text="${reservation.reservationCode}"></td>
-              <td th:text="${reservation.visitTypeLabel}"></td>
-              <td th:text="${reservation.guestCountLabel}"></td>
-              <td th:text="${reservation.instructorName ?: '-'}"></td>
-              <td>
-                <span class="status-chip" th:text="${reservation.slotStatus}"></span>
-              </td>
-              <td>
-                <span th:if="${reservation.questionnaireResultCode}" th:text="${reservation.questionnaireResultCode}"></span>
-                <span th:unless="${reservation.questionnaireResultCode}">未連携</span>
-              </td>
-              <td>
-                <a class="text-link" th:href="@{/staff/reservations/{code}(code=${reservation.reservationCode})}">詳細を見る</a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <section class="console-panel list-panel">
+        <header class="console-topbar table-like-topbar list-topbar">
+          <div class="console-cell console-brand">FRAGRANCE WORKSHOP</div>
+          <div class="console-cell console-center">Staff Console</div>
+          <div class="console-cell console-status">予約一覧</div>
+        </header>
+
+        <section class="list-hero">
+          <div>
+            <h1>お客様の来店日時 予約一覧</h1>
+            <p class="console-lead">上部に集計サマリーを置いた、朝の確認に向く管理画面案です。</p>
+          </div>
+          <form th:action="@{/staff/logout}" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <button type="submit" class="primary-button list-logout">ログアウト</button>
+          </form>
+        </section>
+
+        <div class="alert error" th:if="${missingReservationCode}">
+          指定された予約コード <strong th:text="${missingReservationCode}"></strong> は見つかりませんでした。
+        </div>
+
+        <section class="list-metrics metrics-five-cols" aria-label="予約集計">
+          <article class="metric-card metric-card-green">
+            <span class="metric-label">本日来店</span>
+            <strong class="metric-value" th:text="${todayReservationCount} + '件'">0件</strong>
+          </article>
+          <article class="metric-card metric-card-pink">
+            <span class="metric-label">アンケート連携</span>
+            <strong class="metric-value" th:text="${linkedReservationCount} + '件'">0件</strong>
+          </article>
+          <article class="metric-card metric-card-white">
+            <span class="metric-label">総予約数</span>
+            <strong class="metric-value" th:text="${allReservationCount} + '件'">0件</strong>
+          </article>
+          <article class="metric-card metric-card-blue">
+            <span class="metric-label">未対応</span>
+            <strong class="metric-value" th:text="${uncheckedReservationCount} + '件'">0件</strong>
+          </article>
+          <article class="metric-card metric-card-white metric-card-wide-text">
+            <span class="metric-label">表示条件</span>
+            <strong class="metric-value" th:text="|${selectedVisitType != '' ? selectedVisitType : '全来店種別'} / ${selectedInstructor != '' ? selectedInstructor : '全担当'}|">全来店種別 / 全担当</strong>
+          </article>
+        </section>
+
+        <form th:action="@{/staff/reservations}" method="get" class="list-filter-bar list-filter-bar-auto" aria-label="絞り込み条件">
+          <input type="hidden" name="sort" th:value="${sort}">
+          <input type="hidden" name="dir" th:value="${dir}">
+          <input type="hidden" name="size" th:value="${pageSize}">
+          <label class="field filter-field">
+            <span>来店種別</span>
+            <select name="visitType" aria-label="来店種別で絞り込み" onchange="this.form.submit()">
+              <option value="">すべて</option>
+              <option th:each="option : ${visitTypeOptions}" th:value="${option}" th:text="${option}" th:selected="${option == selectedVisitType}"></option>
+            </select>
+          </label>
+          <label class="field filter-field">
+            <span>担当</span>
+            <select name="instructor" aria-label="担当で絞り込み" onchange="this.form.submit()">
+              <option value="">すべて</option>
+              <option th:each="option : ${instructorOptions}" th:value="${option}" th:text="${option}" th:selected="${option == selectedInstructor}"></option>
+            </select>
+          </label>
+          <div class="list-filter-summary">
+            <span class="summary-label">現在の並び順</span>
+            <strong th:text="|${currentSortLabel} / ${dir == 'asc' ? '昇順' : '降順'}|"></strong>
+          </div>
+
+        </form>
+
+        <section class="table-card list-table-card">
+          <div class="table-scroll">
+            <table class="reservation-list-table">
+              <thead>
+                <tr>
+                  <th>
+                    <form th:action="@{/staff/reservations}" method="get" class="sort-form">
+                      <input type="hidden" name="page" value="1">
+                      <input type="hidden" name="size" th:value="${pageSize}">
+                      <input type="hidden" name="visitType" th:value="${selectedVisitType}">
+                      <input type="hidden" name="instructor" th:value="${selectedInstructor}">
+                      <input type="hidden" name="sort" value="visitDate">
+                      <input type="hidden" name="dir" th:value="${sort == 'visitDate' and dir == 'asc' ? 'desc' : 'asc'}">
+                      <button type="submit" class="sort-button">
+                        来店日時 <span th:text="${sort == 'visitDate' ? (dir == 'asc' ? '↑' : '↓') : '↕'}">↕</span>
+                      </button>
+                    </form>
+                  </th>
+                  <th>
+                    <form th:action="@{/staff/reservations}" method="get" class="sort-form">
+                      <input type="hidden" name="page" value="1">
+                      <input type="hidden" name="size" th:value="${pageSize}">
+                      <input type="hidden" name="visitType" th:value="${selectedVisitType}">
+                      <input type="hidden" name="instructor" th:value="${selectedInstructor}">
+                      <input type="hidden" name="sort" value="reservationCode">
+                      <input type="hidden" name="dir" th:value="${sort == 'reservationCode' and dir == 'asc' ? 'desc' : 'asc'}">
+                      <button type="submit" class="sort-button">
+                        予約コード <span th:text="${sort == 'reservationCode' ? (dir == 'asc' ? '↑' : '↓') : '↕'}">↕</span>
+                      </button>
+                    </form>
+                  </th>
+                  <th>
+                    <form th:action="@{/staff/reservations}" method="get" class="sort-form">
+                      <input type="hidden" name="page" value="1">
+                      <input type="hidden" name="size" th:value="${pageSize}">
+                      <input type="hidden" name="visitType" th:value="${selectedVisitType}">
+                      <input type="hidden" name="instructor" th:value="${selectedInstructor}">
+                      <input type="hidden" name="sort" value="visitType">
+                      <input type="hidden" name="dir" th:value="${sort == 'visitType' and dir == 'asc' ? 'desc' : 'asc'}">
+                      <button type="submit" class="sort-button">
+                        来店種別 <span th:text="${sort == 'visitType' ? (dir == 'asc' ? '↑' : '↓') : '↕'}">↕</span>
+                      </button>
+                    </form>
+                  </th>
+                  <th>
+                    <form th:action="@{/staff/reservations}" method="get" class="sort-form">
+                      <input type="hidden" name="page" value="1">
+                      <input type="hidden" name="size" th:value="${pageSize}">
+                      <input type="hidden" name="visitType" th:value="${selectedVisitType}">
+                      <input type="hidden" name="instructor" th:value="${selectedInstructor}">
+                      <input type="hidden" name="sort" value="guestCount">
+                      <input type="hidden" name="dir" th:value="${sort == 'guestCount' and dir == 'asc' ? 'desc' : 'asc'}">
+                      <button type="submit" class="sort-button">
+                        人数 <span th:text="${sort == 'guestCount' ? (dir == 'asc' ? '↑' : '↓') : '↕'}">↕</span>
+                      </button>
+                    </form>
+                  </th>
+                  <th>
+                    <form th:action="@{/staff/reservations}" method="get" class="sort-form">
+                      <input type="hidden" name="page" value="1">
+                      <input type="hidden" name="size" th:value="${pageSize}">
+                      <input type="hidden" name="visitType" th:value="${selectedVisitType}">
+                      <input type="hidden" name="instructor" th:value="${selectedInstructor}">
+                      <input type="hidden" name="sort" value="instructor">
+                      <input type="hidden" name="dir" th:value="${sort == 'instructor' and dir == 'asc' ? 'desc' : 'asc'}">
+                      <button type="submit" class="sort-button">
+                        担当 <span th:text="${sort == 'instructor' ? (dir == 'asc' ? '↑' : '↓') : '↕'}">↕</span>
+                      </button>
+                    </form>
+                  </th>
+                  <th>
+                    <form th:action="@{/staff/reservations}" method="get" class="sort-form">
+                      <input type="hidden" name="page" value="1">
+                      <input type="hidden" name="size" th:value="${pageSize}">
+                      <input type="hidden" name="visitType" th:value="${selectedVisitType}">
+                      <input type="hidden" name="instructor" th:value="${selectedInstructor}">
+                      <input type="hidden" name="sort" value="reservationCreated">
+                      <input type="hidden" name="dir" th:value="${sort == 'reservationCreated' and dir == 'asc' ? 'desc' : 'asc'}">
+                      <button type="submit" class="sort-button">
+                        予約日時 <span th:text="${sort == 'reservationCreated' ? (dir == 'asc' ? '↑' : '↓') : '↕'}">↕</span>
+                      </button>
+                    </form>
+                  </th>
+                  <th>確認</th>
+                  <th>
+                    <form th:action="@{/staff/reservations}" method="get" class="sort-form">
+                      <input type="hidden" name="page" value="1">
+                      <input type="hidden" name="size" th:value="${pageSize}">
+                      <input type="hidden" name="visitType" th:value="${selectedVisitType}">
+                      <input type="hidden" name="instructor" th:value="${selectedInstructor}">
+                      <input type="hidden" name="sort" value="slotStatus">
+                      <input type="hidden" name="dir" th:value="${sort == 'slotStatus' and dir == 'asc' ? 'desc' : 'asc'}">
+                      <button type="submit" class="sort-button">
+                        状態 <span th:text="${sort == 'slotStatus' ? (dir == 'asc' ? '↑' : '↓') : '↕'}">↕</span>
+                      </button>
+                    </form>
+                  </th>
+                  <th>詳細</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:if="${#lists.isEmpty(reservations)}">
+                  <td colspan="9" class="empty-cell">該当する予約はありません。</td>
+                </tr>
+                <tr th:each="reservation : ${reservations}">
+                  <td class="table-emphasis" th:text="|${#temporals.format(reservation.slotDate, 'yyyy/MM/dd')} ${#temporals.format(reservation.slotTime, 'HH:mm')}|"></td>
+                  <td class="table-code" th:text="${reservation.reservationCode}"></td>
+                  <td th:text="${reservation.visitTypeLabel}"></td>
+                  <td th:text="${reservation.guestCountLabel}"></td>
+                  <td th:text="${reservation.instructorName ?: '-'}"></td>
+                  <td>
+                    <div class="table-primary" th:text="${#temporals.format(reservation.createdAt, 'yyyy/MM/dd HH:mm')}"></div>
+                    <div class="table-secondary" th:text="|(${reservation.slotStatus})|"></div>
+                  </td>
+                  <td>
+                    <span class="memo-chip" th:text="${reservation.questionnaireResultCode != null ? '確認済' : '要確認'}"></span>
+                  </td>
+                  <td>
+                    <span class="status-chip" th:classappend="${reservation.questionnaireResultCode != null} ? ' status-chip-green' : ' status-chip-neutral'"
+                      th:text="${reservation.questionnaireResultCode != null} ? '連携済' : '未連携'">未連携</span>
+                  </td>
+                  <td>
+                    <a class="secondary-button link-button detail-button" th:href="@{/staff/reservations/{code}(code=${reservation.reservationCode})}">詳細</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <div class="list-pagination-bar">
+          <form th:action="@{/staff/reservations}" method="get" class="page-size-form">
+            <input type="hidden" name="visitType" th:value="${selectedVisitType}">
+            <input type="hidden" name="instructor" th:value="${selectedInstructor}">
+            <input type="hidden" name="sort" th:value="${sort}">
+            <input type="hidden" name="dir" th:value="${dir}">
+            <input type="hidden" name="page" value="1">
+            <label>
+              <span>表示件数</span>
+              <select name="size" onchange="this.form.submit()">
+                <option th:each="option : ${pageSizeOptions}" th:value="${option}" th:text="${option} + '件'" th:selected="${option == pageSize}"></option>
+              </select>
+            </label>
+          </form>
+
+          <p class="pagination-summary" th:text="${totalItems == 0 ? '0件表示' : ((page - 1) * pageSize + 1) + ' - ' + (((page - 1) * pageSize + #lists.size(reservations))) + '件 / 全' + totalItems + '件'}">0件表示</p>
+
+          <nav class="pagination-nav" aria-label="予約一覧ページ送り">
+            <a class="page-link" th:classappend="${!hasPrev} ? ' is-disabled'" th:href="${hasPrev} ? @{/staff/reservations(page=${prevPage},size=${pageSize},sort=${sort},dir=${dir},visitType=${selectedVisitType},instructor=${selectedInstructor})} : '#'">前へ</a>
+            <a th:each="pageNumber : ${pageNumbers}" class="page-link" th:classappend="${pageNumber == page} ? ' page-link-current'" th:href="@{/staff/reservations(page=${pageNumber},size=${pageSize},sort=${sort},dir=${dir},visitType=${selectedVisitType},instructor=${selectedInstructor})}" th:text="${pageNumber}">1</a>
+            <a class="page-link" th:classappend="${!hasNext} ? ' is-disabled'" th:href="${hasNext} ? @{/staff/reservations(page=${nextPage},size=${pageSize},sort=${sort},dir=${dir},visitType=${selectedVisitType},instructor=${selectedInstructor})} : '#'">次へ</a>
+          </nav>
+        </div>
+      </section>
     </section>
   </main>
 </body>
 </html>
-
