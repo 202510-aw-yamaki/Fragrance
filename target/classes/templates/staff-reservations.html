@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>予約一覧 | Fregrance Staff</title>
+  <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+<body class="admin-body">
+  <header class="admin-header">
+    <div>
+      <p class="eyebrow">Fregrance Staff</p>
+      <h1>予約一覧</h1>
+      <p class="muted">予約状況とアンケート連携有無をまとめて確認できます。</p>
+    </div>
+    <form th:action="@{/logout}" method="post">
+      <button type="submit" class="secondary-button">ログアウト</button>
+    </form>
+  </header>
+
+  <main class="admin-main">
+    <div class="alert error" th:if="${missingReservationCode}">
+      指定された予約コード <strong th:text="${missingReservationCode}"></strong> は見つかりませんでした。
+    </div>
+
+    <section class="summary-panel">
+      <div class="summary-item">
+        <span class="summary-label">総予約数</span>
+        <strong th:text="${#lists.size(reservations)}">0</strong>
+      </div>
+      <div class="summary-item">
+        <span class="summary-label">アンケート連携あり</span>
+        <strong th:text="${reservations.?[questionnaireResultCode != null].size()}">0</strong>
+      </div>
+    </section>
+
+    <section class="table-card">
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>来店日時</th>
+              <th>予約コード</th>
+              <th>来店種別</th>
+              <th>人数</th>
+              <th>担当</th>
+              <th>枠状態</th>
+              <th>アンケート</th>
+              <th>詳細</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:if="${#lists.isEmpty(reservations)}">
+              <td colspan="8" class="empty-cell">予約はまだ登録されていません。</td>
+            </tr>
+            <tr th:each="reservation : ${reservations}">
+              <td>
+                <div class="table-primary" th:text="${#temporals.format(reservation.slotDate, 'yyyy/MM/dd')}"></div>
+                <div class="table-secondary" th:text="${#temporals.format(reservation.slotTime, 'HH:mm')}"></div>
+              </td>
+              <td th:text="${reservation.reservationCode}"></td>
+              <td th:text="${reservation.visitTypeLabel}"></td>
+              <td th:text="${reservation.guestCountLabel}"></td>
+              <td th:text="${reservation.instructorName ?: '-'}"></td>
+              <td>
+                <span class="status-chip" th:text="${reservation.slotStatus}"></span>
+              </td>
+              <td>
+                <span th:if="${reservation.questionnaireResultCode}" th:text="${reservation.questionnaireResultCode}"></span>
+                <span th:unless="${reservation.questionnaireResultCode}">未連携</span>
+              </td>
+              <td>
+                <a class="text-link" th:href="@{/staff/reservations/{code}(code=${reservation.reservationCode})}">詳細を見る</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

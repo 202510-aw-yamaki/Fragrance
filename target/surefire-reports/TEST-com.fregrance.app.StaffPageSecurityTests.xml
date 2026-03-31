@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="com.fregrance.app.FregranceApplicationTests" time="7.483" tests="1" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="com.fregrance.app.StaffPageSecurityTests" time="1.863" tests="4" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="21"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -50,7 +50,7 @@
     <property name="java.vendor.url.bug" value="https://bugreport.java.com/bugreport/"/>
     <property name="java.io.tmpdir" value="C:\Users\academia\AppData\Local\Temp\"/>
     <property name="catalina.home" value="C:\Users\academia\AppData\Local\Temp\tomcat.0.18068419202327839319"/>
-    <property name="com.zaxxer.hikari.pool_number" value="1"/>
+    <property name="com.zaxxer.hikari.pool_number" value="2"/>
     <property name="java.version" value="21.0.10"/>
     <property name="user.dir" value="C:\academia\src\Fregrance"/>
     <property name="os.arch" value="amd64"/>
@@ -69,10 +69,18 @@
     <property name="java.class.version" value="65.0"/>
     <property name="LOGGED_APPLICATION_NAME" value="[fregrance] "/>
   </properties>
-  <testcase name="healthEndpointReturnsOk" classname="com.fregrance.app.FregranceApplicationTests" time="1.2">
-    <system-out><![CDATA[12:54:00.411 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.fregrance.app.FregranceApplicationTests]: FregranceApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-12:54:00.580 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.fregrance.app.FregranceApplication for test class com.fregrance.app.FregranceApplicationTests
-12:54:00.865 [main] INFO org.springframework.boot.devtools.restart.RestartApplicationListener -- Restart disabled due to context in which it is running
+  <testcase name="nonStaffUserCannotOpenStaffReservations" classname="com.fregrance.app.StaffPageSecurityTests" time="0.056">
+    <system-out><![CDATA[2026-03-31T12:54:08.934+09:00 DEBUG 15816 --- [fregrance] [           main] .b.t.c.SpringBootTestContextBootstrapper : Neither @ContextConfiguration nor @ContextHierarchy found for test class [StaffPageSecurityTests]: using SpringBootContextLoader
+2026-03-31T12:54:08.935+09:00  INFO 15816 --- [fregrance] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.fregrance.app.StaffPageSecurityTests]: StaffPageSecurityTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-03-31T12:54:08.936+09:00 DEBUG 15816 --- [fregrance] [           main] .b.t.c.SpringBootTestContextBootstrapper : Using ContextCustomizerFactory implementations for test class [StaffPageSecurityTests]: [ImportsContextCustomizerFactory, ExcludeFilterContextCustomizerFactory, HttpGraphQlTesterContextCustomizerFactory, DuplicateJsonObjectContextCustomizerFactory, MockitoContextCustomizerFactory, TestRestTemplateContextCustomizerFactory, WebTestClientContextCustomizerFactory, DisableReactorResourceFactoryGlobalResourcesContextCustomizerFactory, OnFailureConditionReportContextCustomizerFactory, OverrideAutoConfigurationContextCustomizerFactory, ObservabilityContextCustomizerFactory, TypeExcludeFiltersContextCustomizerFactory, PropertyMappingContextCustomizerFactory, WebDriverContextCustomizerFactory, BeanOverrideContextCustomizerFactory, MockServerContainerContextCustomizerFactory, DynamicPropertiesContextCustomizerFactory]
+2026-03-31T12:54:08.964+09:00 DEBUG 15816 --- [fregrance] [           main] .b.t.c.SpringBootTestContextBootstrapper : Using ContextCustomizers for test class [StaffPageSecurityTests]: [ImportsContextCustomizer, ExcludeFilterContextCustomizer, DuplicateJsonObjectContextCustomizer, MockitoContextCustomizer, TestRestTemplateContextCustomizer, DisableReactorResourceFactoryGlobalResourcesContextCustomizerCustomizer, OnFailureConditionReportContextCustomizer, DisableObservabilityContextCustomizer, PropertyMappingContextCustomizer, WebDriverContextCustomizer, DynamicPropertiesContextCustomizer]
+2026-03-31T12:54:08.965+09:00  INFO 15816 --- [fregrance] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.fregrance.app.FregranceApplication for test class com.fregrance.app.StaffPageSecurityTests
+2026-03-31T12:54:08.971+09:00 DEBUG 15816 --- [fregrance] [           main] .b.t.c.SpringBootTestContextBootstrapper : Using TestExecutionListeners for test class [StaffPageSecurityTests]: [ServletTestExecutionListener, DirtiesContextBeforeModesTestExecutionListener, ApplicationEventsTestExecutionListener, MockitoTestExecutionListener, BeanOverrideTestExecutionListener, DependencyInjectionTestExecutionListener, DirtiesContextTestExecutionListener, CommonCachesTestExecutionListener, TransactionalTestExecutionListener, SqlScriptsTestExecutionListener, EventPublishingTestExecutionListener, WithSecurityContextTestExecutionListener, ReactorContextTestExecutionListener, ResetMocksTestExecutionListener, RestDocsTestExecutionListener, MockRestServiceServerResetTestExecutionListener, MockMvcPrintOnlyOnFailureTestExecutionListener, WebDriverTestExecutionListener, MockWebServiceServerTestExecutionListener, MockitoResetTestExecutionListener]
+2026-03-31T12:54:08.991+09:00  INFO 15816 --- [fregrance] [           main] o.s.b.d.r.RestartApplicationListener     : Restart disabled due to context in which it is running
+2026-03-31T12:54:09.003+09:00 DEBUG 15816 --- [fregrance] [           main] o.s.boot.env.OriginTrackedYamlLoader     : Loading from YAML: class path resource [application.yml]
+2026-03-31T12:54:09.010+09:00 DEBUG 15816 --- [fregrance] [           main] o.s.boot.env.OriginTrackedYamlLoader     : Merging document (no matchers set): {spring={application={name=fregrance}, thymeleaf={cache=false}, sql={init={mode=always}}, datasource={url=${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/fregrance?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Tokyo&characterEncoding=UTF-8}, username=${SPRING_DATASOURCE_USERNAME:fregrance_user}, password=${SPRING_DATASOURCE_PASSWORD:proclimb}, driver-class-name=com.mysql.cj.jdbc.Driver}}, mybatis={mapper-locations=classpath:mapper/*.xml, configuration={map-underscore-to-camel-case=true}}, server={port=${PORT:8080}}, logging={level={root=INFO}}}
+2026-03-31T12:54:09.013+09:00 DEBUG 15816 --- [fregrance] [           main] o.s.boot.env.OriginTrackedYamlLoader     : Loaded 1 document from YAML resource: class path resource [application.yml]
+2026-03-31T12:54:09.029+09:00 DEBUG 15816 --- [fregrance] [           main] .s.b.w.s.c.ApplicationServletEnvironment : Activating profiles []
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -83,37 +91,30 @@
 
  :: Spring Boot ::               (v3.5.11)
 
-2026-03-31T12:54:01.311+09:00  INFO 15816 --- [fregrance] [           main] c.f.app.FregranceApplicationTests        : Starting FregranceApplicationTests using Java 21.0.10 with PID 15816 (started by academia in C:\academia\src\Fregrance)
-2026-03-31T12:54:01.312+09:00  INFO 15816 --- [fregrance] [           main] c.f.app.FregranceApplicationTests        : No active profile set, falling back to 1 default profile: "default"
-2026-03-31T12:54:01.312+09:00 DEBUG 15816 --- [fregrance] [           main] o.s.boot.SpringApplication               : Loading source class com.fregrance.app.FregranceApplication
-2026-03-31T12:54:01.339+09:00 DEBUG 15816 --- [fregrance] [           main] ConfigServletWebServerApplicationContext : Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@175acfb2
-2026-03-31T12:54:02.591+09:00 DEBUG 15816 --- [fregrance] [           main] o.s.b.a.AutoConfigurationPackages        : @EnableAutoConfiguration was declared on a class in the package 'com.fregrance.app'. Automatic @Repository and @Entity scanning is enabled.
-2026-03-31T12:54:03.694+09:00 DEBUG 15816 --- [fregrance] [           main] .s.b.w.e.t.TomcatServletWebServerFactory : Code archive: C:\Users\academia\.m2\repository\org\springframework\boot\spring-boot\3.5.11\spring-boot-3.5.11.jar
-2026-03-31T12:54:03.694+09:00 DEBUG 15816 --- [fregrance] [           main] .s.b.w.e.t.TomcatServletWebServerFactory : Code archive: C:\Users\academia\.m2\repository\org\springframework\boot\spring-boot\3.5.11\spring-boot-3.5.11.jar
-2026-03-31T12:54:03.694+09:00 DEBUG 15816 --- [fregrance] [           main] .s.b.w.e.t.TomcatServletWebServerFactory : None of the document roots [src/main/webapp, public, static] point to a directory and will be ignored.
-2026-03-31T12:54:03.725+09:00  INFO 15816 --- [fregrance] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 0 (http)
-2026-03-31T12:54:03.741+09:00  INFO 15816 --- [fregrance] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2026-03-31T12:54:03.741+09:00  INFO 15816 --- [fregrance] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.52]
-2026-03-31T12:54:03.811+09:00  INFO 15816 --- [fregrance] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2026-03-31T12:54:03.811+09:00 DEBUG 15816 --- [fregrance] [           main] w.s.c.ServletWebServerApplicationContext : Published root WebApplicationContext as ServletContext attribute with name [org.springframework.web.context.WebApplicationContext.ROOT]
-2026-03-31T12:54:03.811+09:00  INFO 15816 --- [fregrance] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2473 ms
-2026-03-31T12:54:03.863+09:00 DEBUG 15816 --- [fregrance] [           main] o.s.b.w.s.ServletContextInitializerBeans : Mapping filters: springSecurityFilterChain urls=[/*] order=-100, characterEncodingFilter urls=[/*] order=-2147483648, formContentFilter urls=[/*] order=-9900, requestContextFilter urls=[/*] order=-105
-2026-03-31T12:54:03.864+09:00 DEBUG 15816 --- [fregrance] [           main] o.s.b.w.s.ServletContextInitializerBeans : Mapping servlets: dispatcherServlet urls=[/]
-2026-03-31T12:54:03.908+09:00 DEBUG 15816 --- [fregrance] [           main] o.s.b.w.s.f.OrderedRequestContextFilter  : Filter 'requestContextFilter' configured for use
-2026-03-31T12:54:03.918+09:00 DEBUG 15816 --- [fregrance] [           main] s.b.w.s.f.OrderedCharacterEncodingFilter : Filter 'characterEncodingFilter' configured for use
-2026-03-31T12:54:03.918+09:00 DEBUG 15816 --- [fregrance] [           main] .DelegatingFilterProxyRegistrationBean$1 : Filter 'springSecurityFilterChain' configured for use
-2026-03-31T12:54:03.918+09:00 DEBUG 15816 --- [fregrance] [           main] o.s.b.w.s.f.OrderedFormContentFilter     : Filter 'formContentFilter' configured for use
-2026-03-31T12:54:04.132+09:00  INFO 15816 --- [fregrance] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2026-03-31T12:54:04.444+09:00  INFO 15816 --- [fregrance] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3ca17943
-2026-03-31T12:54:04.447+09:00  INFO 15816 --- [fregrance] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2026-03-31T12:54:05.174+09:00  INFO 15816 --- [fregrance] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name userDetailsService
-2026-03-31T12:54:05.277+09:00  INFO 15816 --- [fregrance] [           main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
-2026-03-31T12:54:05.411+09:00 DEBUG 15816 --- [fregrance] [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : 18 mappings in 'requestMappingHandlerMapping'
-2026-03-31T12:54:05.501+09:00 DEBUG 15816 --- [fregrance] [           main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
-2026-03-31T12:54:05.768+09:00 DEBUG 15816 --- [fregrance] [           main] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
-2026-03-31T12:54:05.960+09:00 DEBUG 15816 --- [fregrance] [           main] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 1 @ExceptionHandler, 1 ResponseBodyAdvice
-2026-03-31T12:54:06.445+09:00  INFO 15816 --- [fregrance] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 50831 (http) with context path '/'
-2026-03-31T12:54:06.473+09:00 DEBUG 15816 --- [fregrance] [           main] .s.b.a.l.ConditionEvaluationReportLogger : 
+2026-03-31T12:54:09.046+09:00  INFO 15816 --- [fregrance] [           main] c.fregrance.app.StaffPageSecurityTests   : Starting StaffPageSecurityTests using Java 21.0.10 with PID 15816 (started by academia in C:\academia\src\Fregrance)
+2026-03-31T12:54:09.047+09:00  INFO 15816 --- [fregrance] [           main] c.fregrance.app.StaffPageSecurityTests   : No active profile set, falling back to 1 default profile: "default"
+2026-03-31T12:54:09.047+09:00 DEBUG 15816 --- [fregrance] [           main] o.s.boot.SpringApplication               : Loading source class com.fregrance.app.FregranceApplication
+2026-03-31T12:54:09.050+09:00 DEBUG 15816 --- [fregrance] [           main] o.s.w.c.s.GenericWebApplicationContext   : Refreshing org.springframework.web.context.support.GenericWebApplicationContext@73b10975
+2026-03-31T12:54:09.436+09:00 DEBUG 15816 --- [fregrance] [           main] o.s.b.a.AutoConfigurationPackages        : @EnableAutoConfiguration was declared on a class in the package 'com.fregrance.app'. Automatic @Repository and @Entity scanning is enabled.
+2026-03-31T12:54:09.634+09:00  INFO 15816 --- [fregrance] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
+2026-03-31T12:54:09.648+09:00  INFO 15816 --- [fregrance] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Added connection com.mysql.cj.jdbc.ConnectionImpl@755033c5
+2026-03-31T12:54:09.648+09:00  INFO 15816 --- [fregrance] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
+2026-03-31T12:54:09.915+09:00  INFO 15816 --- [fregrance] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name userDetailsService
+2026-03-31T12:54:09.925+09:00  INFO 15816 --- [fregrance] [           main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2026-03-31T12:54:09.945+09:00 DEBUG 15816 --- [fregrance] [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : 18 mappings in 'requestMappingHandlerMapping'
+2026-03-31T12:54:09.959+09:00 DEBUG 15816 --- [fregrance] [           main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
+2026-03-31T12:54:10.047+09:00 DEBUG 15816 --- [fregrance] [           main] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2026-03-31T12:54:10.067+09:00 DEBUG 15816 --- [fregrance] [           main] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 1 @ExceptionHandler, 1 ResponseBodyAdvice
+2026-03-31T12:54:10.208+09:00 DEBUG 15816 --- [fregrance] [           main] o.s.b.w.s.ServletContextInitializerBeans : Mapping filters: springSecurityFilterChain urls=[/*] order=-100, characterEncodingFilter urls=[/*] order=-2147483648, formContentFilter urls=[/*] order=-9900, requestContextFilter urls=[/*] order=-105
+2026-03-31T12:54:10.208+09:00 DEBUG 15816 --- [fregrance] [           main] o.s.b.w.s.ServletContextInitializerBeans : Mapping servlets: 
+2026-03-31T12:54:10.227+09:00 DEBUG 15816 --- [fregrance] [           main] s.b.w.s.f.OrderedCharacterEncodingFilter : Filter 'characterEncodingFilter' configured for use
+2026-03-31T12:54:10.227+09:00 DEBUG 15816 --- [fregrance] [           main] o.s.b.w.s.f.OrderedFormContentFilter     : Filter 'formContentFilter' configured for use
+2026-03-31T12:54:10.227+09:00 DEBUG 15816 --- [fregrance] [           main] o.s.b.w.s.f.OrderedRequestContextFilter  : Filter 'requestContextFilter' configured for use
+2026-03-31T12:54:10.227+09:00 DEBUG 15816 --- [fregrance] [           main] .DelegatingFilterProxyRegistrationBean$1 : Filter 'springSecurityFilterChain' configured for use
+2026-03-31T12:54:10.228+09:00  INFO 15816 --- [fregrance] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-03-31T12:54:10.228+09:00  INFO 15816 --- [fregrance] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-03-31T12:54:10.229+09:00  INFO 15816 --- [fregrance] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-03-31T12:54:10.258+09:00 DEBUG 15816 --- [fregrance] [           main] .s.b.a.l.ConditionEvaluationReportLogger : 
 
 
 ============================
@@ -180,13 +181,6 @@ Positive matches:
 
    DispatcherServletAutoConfiguration.DispatcherServletRegistrationConfiguration#dispatcherServletRegistration matched:
       - @ConditionalOnBean (names: dispatcherServlet types: org.springframework.web.servlet.DispatcherServlet; SearchStrategy: all) found bean 'dispatcherServlet' (OnBeanCondition)
-
-   EmbeddedWebServerFactoryCustomizerAutoConfiguration matched:
-      - @ConditionalOnWebApplication (required) found 'session' scope (OnWebApplicationCondition)
-      - @ConditionalOnWarDeployment the application is not deployed as a WAR file. (OnWarDeploymentCondition)
-
-   EmbeddedWebServerFactoryCustomizerAutoConfiguration.TomcatWebServerFactoryCustomizerConfiguration matched:
-      - @ConditionalOnClass found required classes 'org.apache.catalina.startup.Tomcat', 'org.apache.coyote.UpgradeProtocol' (OnClassCondition)
 
    ErrorMvcAutoConfiguration matched:
       - @ConditionalOnClass found required classes 'jakarta.servlet.Servlet', 'org.springframework.web.servlet.DispatcherServlet' (OnClassCondition)
@@ -289,6 +283,27 @@ Positive matches:
 
    LifecycleAutoConfiguration#defaultLifecycleProcessor matched:
       - @ConditionalOnMissingBean (names: lifecycleProcessor; SearchStrategy: current) did not find any beans (OnBeanCondition)
+
+   MockMvcAutoConfiguration matched:
+      - found 'session' scope (OnWebApplicationCondition)
+
+   MockMvcConfiguration#mockMvc matched:
+      - @ConditionalOnMissingBean (types: org.springframework.test.web.servlet.MockMvc; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   MockMvcConfiguration#mockMvcBuilder matched:
+      - @ConditionalOnMissingBean (types: org.springframework.test.web.servlet.MockMvcBuilder; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   MockMvcSecurityConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors' (OnClassCondition)
+
+   MockMvcSecurityConfiguration#securityMockMvcBuilderCustomizer matched:
+      - @ConditionalOnBean (names: springSecurityFilterChain; SearchStrategy: all) found bean 'springSecurityFilterChain' (OnBeanCondition)
+
+   MockMvcTesterConfiguration matched:
+      - @ConditionalOnClass found required class 'org.assertj.core.api.Assert' (OnClassCondition)
+
+   MockMvcTesterConfiguration#mockMvcTester matched:
+      - @ConditionalOnMissingBean (types: org.springframework.test.web.servlet.assertj.MockMvcTester; SearchStrategy: all) did not find any beans (OnBeanCondition)
 
    MultipartAutoConfiguration matched:
       - @ConditionalOnClass found required classes 'jakarta.servlet.Servlet', 'org.springframework.web.multipart.support.StandardServletMultipartResolver', 'jakarta.servlet.MultipartConfigElement' (OnClassCondition)
@@ -694,21 +709,11 @@ Negative matches:
       Did not match:
          - @ConditionalOnClass did not find required class 'com.unboundid.ldap.listener.InMemoryDirectoryServer' (OnClassCondition)
 
-   EmbeddedWebServerFactoryCustomizerAutoConfiguration.JettyWebServerFactoryCustomizerConfiguration:
+   EmbeddedWebServerFactoryCustomizerAutoConfiguration:
       Did not match:
-         - @ConditionalOnClass did not find required classes 'org.eclipse.jetty.server.Server', 'org.eclipse.jetty.util.Loader', 'org.eclipse.jetty.ee10.webapp.WebAppContext' (OnClassCondition)
-
-   EmbeddedWebServerFactoryCustomizerAutoConfiguration.NettyWebServerFactoryCustomizerConfiguration:
-      Did not match:
-         - @ConditionalOnClass did not find required class 'reactor.netty.http.server.HttpServer' (OnClassCondition)
-
-   EmbeddedWebServerFactoryCustomizerAutoConfiguration.TomcatWebServerFactoryCustomizerConfiguration#tomcatVirtualThreadsProtocolHandlerCustomizer:
-      Did not match:
-         - @ConditionalOnThreading did not find VIRTUAL (OnThreadingCondition)
-
-   EmbeddedWebServerFactoryCustomizerAutoConfiguration.UndertowWebServerFactoryCustomizerConfiguration:
-      Did not match:
-         - @ConditionalOnClass did not find required classes 'io.undertow.Undertow', 'org.xnio.SslClientAuthMode' (OnClassCondition)
+         - Application is deployed as a WAR file. (OnWarDeploymentCondition)
+      Matched:
+         - @ConditionalOnWebApplication (required) found 'session' scope (OnWebApplicationCondition)
 
    ErrorWebFluxAutoConfiguration:
       Did not match:
@@ -897,6 +902,26 @@ Negative matches:
    MessageSourceAutoConfiguration:
       Did not match:
          - ResourceBundle did not find bundle with basename messages (MessageSourceAutoConfiguration.ResourceBundleCondition)
+
+   MockMvcAutoConfiguration#dispatcherServlet:
+      Did not match:
+         - @ConditionalOnMissingBean (types: org.springframework.web.servlet.DispatcherServlet; SearchStrategy: all) found beans of type 'org.springframework.web.servlet.DispatcherServlet' dispatcherServlet (OnBeanCondition)
+
+   MockMvcAutoConfiguration#dispatcherServletPath:
+      Did not match:
+         - @ConditionalOnMissingBean (types: org.springframework.boot.autoconfigure.web.servlet.DispatcherServletPath; SearchStrategy: all) found beans of type 'org.springframework.boot.autoconfigure.web.servlet.DispatcherServletPath' dispatcherServletRegistration (OnBeanCondition)
+
+   MockMvcAutoConfiguration.WebTestClientMockMvcConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.web.reactive.function.client.WebClient' (OnClassCondition)
+
+   MockMvcWebClientAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.htmlunit.WebClient' (OnClassCondition)
+
+   MockMvcWebDriverAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.openqa.selenium.htmlunit.HtmlUnitDriver' (OnClassCondition)
 
    MongoAutoConfiguration:
       Did not match:
@@ -1284,6 +1309,10 @@ Negative matches:
       Did not match:
          - @ConditionalOnClass did not find required class 'io.undertow.websockets.jsr.Bootstrap' (OnClassCondition)
 
+   WebTestClientAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.web.reactive.function.client.WebClient' (OnClassCondition)
+
    XADataSourceAutoConfiguration:
       Did not match:
          - @ConditionalOnClass did not find required class 'jakarta.transaction.TransactionManager' (OnClassCondition)
@@ -1302,9 +1331,9 @@ Unconditional classes:
 
     org.springframework.boot.autoconfigure.ssl.SslAutoConfiguration
 
-    org.springframework.boot.autoconfigure.context.LifecycleAutoConfiguration
-
     org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration
+
+    org.springframework.boot.autoconfigure.context.LifecycleAutoConfiguration
 
     org.springframework.boot.autoconfigure.availability.ApplicationAvailabilityAutoConfiguration
 
@@ -1312,34 +1341,20 @@ Unconditional classes:
 
 
 
-2026-03-31T12:54:06.485+09:00  INFO 15816 --- [fregrance] [           main] c.f.app.FregranceApplicationTests        : Started FregranceApplicationTests in 5.638 seconds (process running for 6.999)
-2026-03-31T12:54:06.494+09:00 DEBUG 15816 --- [fregrance] [           main] o.s.b.a.ApplicationAvailabilityBean      : Application availability state LivenessState changed to CORRECT
-2026-03-31T12:54:06.498+09:00 DEBUG 15816 --- [fregrance] [           main] o.s.boot.devtools.restart.Restarter      : Creating new Restarter for thread Thread[#1,main,5,main]
-2026-03-31T12:54:06.500+09:00 DEBUG 15816 --- [fregrance] [           main] o.s.b.a.ApplicationAvailabilityBean      : Application availability state ReadinessState changed to ACCEPTING_TRAFFIC
-2026-03-31T12:54:07.374+09:00 DEBUG 15816 --- [fregrance] [           main] o.s.web.client.RestTemplate              : HTTP GET http://localhost:50831/api/health
-2026-03-31T12:54:07.375+09:00 DEBUG 15816 --- [fregrance] [           main] o.s.web.client.RestTemplate              : Accept=[text/plain, application/json, application/*+json, */*]
-2026-03-31T12:54:07.504+09:00  INFO 15816 --- [fregrance] [o-auto-1-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2026-03-31T12:54:07.507+09:00  INFO 15816 --- [fregrance] [o-auto-1-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2026-03-31T12:54:07.508+09:00 DEBUG 15816 --- [fregrance] [o-auto-1-exec-1] o.s.web.servlet.DispatcherServlet        : Detected StandardServletMultipartResolver
-2026-03-31T12:54:07.508+09:00 DEBUG 15816 --- [fregrance] [o-auto-1-exec-1] o.s.web.servlet.DispatcherServlet        : Detected AcceptHeaderLocaleResolver
-2026-03-31T12:54:07.508+09:00 DEBUG 15816 --- [fregrance] [o-auto-1-exec-1] o.s.web.servlet.DispatcherServlet        : Detected FixedThemeResolver
-2026-03-31T12:54:07.510+09:00 DEBUG 15816 --- [fregrance] [o-auto-1-exec-1] o.s.web.servlet.DispatcherServlet        : Detected org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator@3538a129
-2026-03-31T12:54:07.510+09:00 DEBUG 15816 --- [fregrance] [o-auto-1-exec-1] o.s.web.servlet.DispatcherServlet        : Detected org.springframework.web.servlet.support.SessionFlashMapManager@2ce62e27
-2026-03-31T12:54:07.510+09:00 DEBUG 15816 --- [fregrance] [o-auto-1-exec-1] o.s.web.servlet.DispatcherServlet        : enableLoggingRequestDetails='false': request parameters and headers will be masked to prevent unsafe logging of potentially sensitive data
-2026-03-31T12:54:07.510+09:00  INFO 15816 --- [fregrance] [o-auto-1-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
-2026-03-31T12:54:07.546+09:00 DEBUG 15816 --- [fregrance] [o-auto-1-exec-1] o.s.web.servlet.DispatcherServlet        : GET "/api/health", parameters={}
-2026-03-31T12:54:07.548+09:00 DEBUG 15816 --- [fregrance] [o-auto-1-exec-1] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.fregrance.app.controller.HealthController#health()
-2026-03-31T12:54:07.591+09:00 DEBUG 15816 --- [fregrance] [o-auto-1-exec-1] m.m.a.RequestResponseBodyMethodProcessor : Using 'application/json', given [text/plain, application/json, application/*+json, */*] and supported [application/json, application/*+json]
-2026-03-31T12:54:07.591+09:00 DEBUG 15816 --- [fregrance] [o-auto-1-exec-1] m.m.a.RequestResponseBodyMethodProcessor : Writing [{status=ok}]
-2026-03-31T12:54:07.611+09:00 DEBUG 15816 --- [fregrance] [o-auto-1-exec-1] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
-2026-03-31T12:54:07.632+09:00 DEBUG 15816 --- [fregrance] [           main] o.s.web.client.RestTemplate              : Response 200 OK
-2026-03-31T12:54:07.633+09:00 DEBUG 15816 --- [fregrance] [           main] o.s.web.client.RestTemplate              : Reading to [java.lang.String] as "application/json"
+2026-03-31T12:54:10.263+09:00  INFO 15816 --- [fregrance] [           main] c.fregrance.app.StaffPageSecurityTests   : Started StaffPageSecurityTests in 1.275 seconds (process running for 10.776)
+2026-03-31T12:54:10.264+09:00 DEBUG 15816 --- [fregrance] [           main] o.s.b.a.ApplicationAvailabilityBean      : Application availability state LivenessState changed to CORRECT
+2026-03-31T12:54:10.265+09:00 DEBUG 15816 --- [fregrance] [           main] o.s.b.a.ApplicationAvailabilityBean      : Application availability state ReadinessState changed to ACCEPTING_TRAFFIC
 ]]></system-out>
-    <system-err><![CDATA[Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
-WARNING: A Java agent has been loaded dynamically (C:\Users\academia\.m2\repository\net\bytebuddy\byte-buddy-agent\1.17.8\byte-buddy-agent-1.17.8.jar)
-WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
-WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
-WARNING: Dynamic loading of agents will be disallowed by default in a future release
-]]></system-err>
   </testcase>
+  <testcase name="staffRoleCanOpenStaffReservations" classname="com.fregrance.app.StaffPageSecurityTests" time="0.405">
+    <system-out><![CDATA[2026-03-31T12:54:10.348+09:00 DEBUG 15816 --- [fregrance] [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.fregrance.app.controller.StaffPageController#showReservationList(String, Model)
+2026-03-31T12:54:10.378+09:00 DEBUG 15816 --- [fregrance] [           main] o.s.w.s.v.ContentNegotiatingViewResolver : Selected '*/*' given [*/*]
+]]></system-out>
+  </testcase>
+  <testcase name="staffLoginPageIsPublic" classname="com.fregrance.app.StaffPageSecurityTests" time="0.019">
+    <system-out><![CDATA[2026-03-31T12:54:10.742+09:00 DEBUG 15816 --- [fregrance] [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.fregrance.app.controller.StaffPageController#showLogin()
+2026-03-31T12:54:10.742+09:00 DEBUG 15816 --- [fregrance] [           main] o.s.w.s.v.ContentNegotiatingViewResolver : Selected '*/*' given [*/*]
+]]></system-out>
+  </testcase>
+  <testcase name="staffReservationsRequiresAuthentication" classname="com.fregrance.app.StaffPageSecurityTests" time="0.032"/>
 </testsuite>

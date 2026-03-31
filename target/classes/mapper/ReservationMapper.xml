@@ -17,6 +17,28 @@
     <result property="createdAt" column="created_at" />
     <result property="updatedAt" column="updated_at" />
   </resultMap>
+
+  <resultMap id="StaffReservationRecordResultMap" type="com.fregrance.app.model.StaffReservationRecord">
+    <id property="reservationCode" column="reservation_code" />
+    <result property="reservationSlotId" column="reservation_slot_id" />
+    <result property="visitTypeLabel" column="visit_type_label" />
+    <result property="guestCount" column="guest_count" />
+    <result property="staffMemo" column="staff_memo" />
+    <result property="summaryHeadline" column="summary_headline" />
+    <result property="questionnaireResultCode" column="questionnaire_result_code" />
+    <result property="slotLabel" column="slot_label" />
+    <result property="createdAt" column="created_at" />
+    <result property="updatedAt" column="updated_at" />
+    <result property="slotDate" column="slot_date" />
+    <result property="slotTime" column="slot_time" />
+    <result property="slotStatus" column="slot_status" />
+    <result property="instructorName" column="instructor_name" />
+    <result property="routeCode" column="route_code" />
+    <result property="step1AnswersJson" column="step1_answers_json" />
+    <result property="step2AnswersJson" column="step2_answers_json" />
+    <result property="graphAxesJson" column="graph_axes_json" />
+  </resultMap>
+
   <insert id="insert" parameterType="com.fregrance.app.model.Reservation" useGeneratedKeys="true" keyProperty="id">
     INSERT INTO reservations (
       reservation_code,
@@ -44,10 +66,61 @@
       CURRENT_TIMESTAMP
     )
   </insert>
+
   <select id="findByReservationCode" resultMap="ReservationResultMap">
     SELECT id, reservation_code, reservation_slot_id, visit_type_id, visit_type_label,
            guest_count, staff_memo, summary_headline, questionnaire_result_code, slot_label, created_at, updated_at
     FROM reservations
     WHERE reservation_code = #{reservationCode}
+  </select>
+
+  <select id="findAllForStaff" resultMap="StaffReservationRecordResultMap">
+    SELECT r.reservation_code,
+           r.reservation_slot_id,
+           r.visit_type_label,
+           r.guest_count,
+           r.staff_memo,
+           r.summary_headline,
+           r.questionnaire_result_code,
+           r.slot_label,
+           r.created_at,
+           r.updated_at,
+           rs.slot_date,
+           rs.slot_time,
+           rs.status AS slot_status,
+           rs.instructor_name,
+           qr.route_code,
+           qr.step1_answers_json,
+           qr.step2_answers_json,
+           qr.graph_axes_json
+    FROM reservations r
+    INNER JOIN reservation_slots rs ON rs.id = r.reservation_slot_id
+    LEFT JOIN questionnaire_results qr ON qr.result_code = r.questionnaire_result_code
+    ORDER BY rs.slot_date ASC, rs.slot_time ASC, r.created_at DESC
+  </select>
+
+  <select id="findDetailForStaff" resultMap="StaffReservationRecordResultMap">
+    SELECT r.reservation_code,
+           r.reservation_slot_id,
+           r.visit_type_label,
+           r.guest_count,
+           r.staff_memo,
+           r.summary_headline,
+           r.questionnaire_result_code,
+           r.slot_label,
+           r.created_at,
+           r.updated_at,
+           rs.slot_date,
+           rs.slot_time,
+           rs.status AS slot_status,
+           rs.instructor_name,
+           qr.route_code,
+           qr.step1_answers_json,
+           qr.step2_answers_json,
+           qr.graph_axes_json
+    FROM reservations r
+    INNER JOIN reservation_slots rs ON rs.id = r.reservation_slot_id
+    LEFT JOIN questionnaire_results qr ON qr.result_code = r.questionnaire_result_code
+    WHERE r.reservation_code = #{reservationCode}
   </select>
 </mapper>

@@ -13,6 +13,8 @@ import com.fregrance.app.dto.QuestionnaireResultResponse;
 import com.fregrance.app.form.QuestionnaireResultForm;
 import com.fregrance.app.service.QuestionnaireResultService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/questionnaire-results")
 public class QuestionnaireApiController {
@@ -24,7 +26,7 @@ public class QuestionnaireApiController {
     }
 
     @PostMapping
-    public ResponseEntity<QuestionnaireResultResponse> createQuestionnaireResult(@RequestBody QuestionnaireResultForm form) {
+    public ResponseEntity<QuestionnaireResultResponse> createQuestionnaireResult(@Valid @RequestBody QuestionnaireResultForm form) {
         QuestionnaireResultResponse response = questionnaireResultService.createResult(form);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

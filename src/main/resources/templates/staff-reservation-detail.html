@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>予約詳細 | Fregrance Staff</title>
+  <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+<body class="admin-body">
+  <header class="admin-header">
+    <div>
+      <p class="eyebrow">Reservation Detail</p>
+      <h1>予約詳細</h1>
+      <p class="muted" th:text="${reservation.reservationCode}"></p>
+    </div>
+    <div class="header-actions">
+      <a class="secondary-button link-button" th:href="@{/staff/reservations}">一覧へ戻る</a>
+      <form th:action="@{/logout}" method="post">
+        <button type="submit" class="secondary-button">ログアウト</button>
+      </form>
+    </div>
+  </header>
+
+  <main class="admin-main detail-grid">
+    <section class="panel">
+      <h2>予約情報</h2>
+      <dl class="detail-list">
+        <div>
+          <dt>来店日時</dt>
+          <dd>
+            <span th:text="${#temporals.format(reservation.slotDate, 'yyyy/MM/dd')}"></span>
+            <span th:text="${#temporals.format(reservation.slotTime, 'HH:mm')}"></span>
+          </dd>
+        </div>
+        <div>
+          <dt>来店種別</dt>
+          <dd th:text="${reservation.visitTypeLabel}"></dd>
+        </div>
+        <div>
+          <dt>人数</dt>
+          <dd th:text="${reservation.guestCountLabel}"></dd>
+        </div>
+        <div>
+          <dt>担当</dt>
+          <dd th:text="${reservation.instructorName ?: '-'}"></dd>
+        </div>
+        <div>
+          <dt>枠状態</dt>
+          <dd><span class="status-chip" th:text="${reservation.slotStatus}"></span></dd>
+        </div>
+        <div>
+          <dt>予約登録日時</dt>
+          <dd th:text="${#temporals.format(reservation.createdAt, 'yyyy/MM/dd HH:mm')}"></dd>
+        </div>
+        <div>
+          <dt>スタッフメモ</dt>
+          <dd th:text="${reservation.staffMemo ?: '未入力'}"></dd>
+        </div>
+        <div>
+          <dt>要約見出し</dt>
+          <dd th:text="${reservation.summaryHeadline ?: '未保存'}"></dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="panel">
+      <h2>アンケート連携</h2>
+      <dl class="detail-list">
+        <div>
+          <dt>結果コード</dt>
+          <dd th:text="${reservation.questionnaireResultCode ?: '未連携'}"></dd>
+        </div>
+        <div>
+          <dt>ルートコード</dt>
+          <dd th:text="${reservation.routeCode ?: '未保存'}"></dd>
+        </div>
+      </dl>
+
+      <div class="subsection" th:if="${reservation.hasQuestionnaire()}">
+        <h3>STEP1 回答</h3>
+        <ul class="kv-list" th:if="${!#maps.isEmpty(reservation.step1Answers)}">
+          <li th:each="entry : ${reservation.step1Answers.entrySet()}">
+            <span th:text="${entry.key}"></span>
+            <strong th:text="${entry.value}"></strong>
+          </li>
+        </ul>
+        <p class="muted" th:if="${#maps.isEmpty(reservation.step1Answers)}">保存済み回答はありません。</p>
+
+        <h3>STEP2 回答</h3>
+        <ul class="kv-list" th:if="${!#maps.isEmpty(reservation.step2Answers)}">
+          <li th:each="entry : ${reservation.step2Answers.entrySet()}">
+            <span th:text="${entry.key}"></span>
+            <strong th:text="${entry.value}"></strong>
+          </li>
+        </ul>
+        <p class="muted" th:if="${#maps.isEmpty(reservation.step2Answers)}">保存済み回答はありません。</p>
+
+        <h3>グラフ軸</h3>
+        <ul class="kv-list" th:if="${!#maps.isEmpty(reservation.graphAxes)}">
+          <li th:each="entry : ${reservation.graphAxes.entrySet()}">
+            <span th:text="${entry.key}"></span>
+            <strong th:text="${entry.value}"></strong>
+          </li>
+        </ul>
+        <p class="muted" th:if="${#maps.isEmpty(reservation.graphAxes)}">保存済みグラフ値はありません。</p>
+      </div>
+
+      <p class="muted" th:unless="${reservation.hasQuestionnaire()}">
+        この予約にはアンケート結果が紐付いていません。
+      </p>
+    </section>
+  </main>
+</body>
+</html>

@@ -81,6 +81,46 @@ class QuestionnaireApiTests {
         assertThat(graphAxes).containsEntry("woody", 36);
     }
 
+    @Test
+    void createQuestionnaireResultReturnsBadRequestWhenRequiredFieldsAreMissing() {
+        Map<String, Object> request = new LinkedHashMap<>();
+        request.put("routeCode", "");
+        request.put("step1Answers", Map.of());
+        request.put("step2Answers", Map.of());
+        request.put("graphAxes", Map.of());
+
+        ResponseEntity<String> response = restTemplate.postForEntity(
+            "/api/questionnaire-results",
+            request,
+            String.class
+        );
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(response.getBody()).contains("VALIDATION_ERROR");
+        assertThat(response.getBody()).contains("routeCode");
+        assertThat(response.getBody()).contains("step1Answers");
+        assertThat(response.getBody()).contains("step2Answers");
+        assertThat(response.getBody()).contains("graphAxes");
+    }
+
+    @Test
+    void createQuestionnaireResultReturnsBadRequestWhenGraphAxisIsOutOfRange() {
+        Map<String, Object> request = buildRequest();
+        @SuppressWarnings("unchecked")
+        Map<String, Integer> graphAxes = (Map<String, Integer>) request.get("graphAxes");
+        graphAxes.put("floral", 120);
+
+        ResponseEntity<String> response = restTemplate.postForEntity(
+            "/api/questionnaire-results",
+            request,
+            String.class
+        );
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(response.getBody()).contains("VALIDATION_ERROR");
+        assertThat(response.getBody()).contains("graphAxes[floral]");
+    }
+
     private Map<String, Object> buildRequest() {
         Map<String, String> step1Answers = new LinkedHashMap<>();
         step1Answers.put("Q1", "alpha");
