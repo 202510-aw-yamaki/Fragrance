@@ -902,19 +902,13 @@ th {
   grid-template-columns: 1fr 1fr 1.1fr;
 }
 
-.list-filter-summary {
+.list-filter-summary-group {
   display: grid;
   gap: 8px;
   align-self: end;
-  align-content: start;
-  padding: 12px 16px;
-  min-height: 52px;
-  border: 1px solid #dfd2c5;
-  border-radius: 18px;
-  background: #fff;
 }
 
-.list-filter-summary .summary-label {
+.list-filter-summary-label {
   display: block;
   margin: 0;
   color: #8b7f74;
@@ -922,7 +916,17 @@ th {
   font-weight: 700;
 }
 
-.list-filter-summary strong {
+.list-filter-summary {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  min-height: 52px;
+  border: 1px solid #dfd2c5;
+  border-radius: 18px;
+  background: #fff;
+}
+
+.list-filter-summary-value {
   display: block;
   font-size: 15px;
   line-height: 1.3;

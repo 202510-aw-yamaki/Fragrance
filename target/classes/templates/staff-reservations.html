@@ -81,9 +81,11 @@
               <option th:each="option : ${instructorOptions}" th:value="${option}" th:text="${option}" th:selected="${option == selectedInstructor}"></option>
             </select>
           </label>
-          <div class="list-filter-summary">
-            <span class="summary-label">現在の並び順</span>
-            <strong th:text="|${currentSortLabel} / ${dir == 'asc' ? '昇順' : '降順'}|"></strong>
+          <div class="list-filter-summary-group">
+            <span class="list-filter-summary-label">現在の並び順</span>
+            <div class="list-filter-summary" aria-label="現在の並び順">
+              <strong class="list-filter-summary-value" th:text="|${currentSortLabel} / ${dir == 'asc' ? '昇順' : '降順'}|"></strong>
+            </div>
           </div>
 
         </form>
