@@ -41,20 +41,20 @@
         </div>
 
         <section class="list-metrics metrics-five-cols" aria-label="予約集計">
-          <article class="metric-card metric-card-green">
-            <span class="metric-label">本日来店</span>
+          <article class="metric-card metric-card-green metric-card-split">
+            <span class="metric-label"><span>本日</span><span>来店</span></span>
             <strong class="metric-value" th:text="${todayReservationCount} + '件'">0件</strong>
           </article>
-          <article class="metric-card metric-card-pink">
-            <span class="metric-label">アンケート連携</span>
+          <article class="metric-card metric-card-pink metric-card-split">
+            <span class="metric-label"><span>アンケート</span><span>連携</span></span>
             <strong class="metric-value" th:text="${linkedReservationCount} + '件'">0件</strong>
           </article>
-          <article class="metric-card metric-card-white">
-            <span class="metric-label">総予約数</span>
+          <article class="metric-card metric-card-white metric-card-split">
+            <span class="metric-label"><span>総</span><span>予約数</span></span>
             <strong class="metric-value" th:text="${allReservationCount} + '件'">0件</strong>
           </article>
-          <article class="metric-card metric-card-blue">
-            <span class="metric-label">未対応</span>
+          <article class="metric-card metric-card-blue metric-card-split">
+            <span class="metric-label"><span>未</span><span>対応</span></span>
             <strong class="metric-value" th:text="${uncheckedReservationCount} + '件'">0件</strong>
           </article>
           <article class="metric-card metric-card-white metric-card-wide-text">

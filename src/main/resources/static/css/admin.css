@@ -191,6 +191,13 @@ body.admin-body {
   border: 1px solid #e4d5c8;
 }
 
+.metric-card-split {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
 .metric-card-green {
   background: #edf5e8;
 }
@@ -213,6 +220,24 @@ body.admin-body {
   color: #8b7f74;
   font-size: 12px;
   font-weight: 700;
+}
+
+.metric-card-split .metric-label {
+  display: grid;
+  gap: 2px;
+  margin-bottom: 0;
+  flex-shrink: 0;
+}
+
+.metric-card-split .metric-label span {
+  display: block;
+  line-height: 1.15;
+}
+
+.metric-card-split .metric-value {
+  font-size: 28px;
+  text-align: right;
+  white-space: nowrap;
 }
 
 .metric-value {
@@ -1016,6 +1041,10 @@ th {
   .metrics-five-cols,
   .list-filter-bar {
     grid-template-columns: 1fr;
+  }
+
+  .metric-card-split {
+    align-items: flex-start;
   }
 
   .list-logout {
