@@ -58,7 +58,7 @@ WITH RECURSIVE sample_seq AS (
   UNION ALL
   SELECT seq_no + 1
   FROM sample_seq
-  WHERE seq_no < 25
+  WHERE seq_no < 27
 )
 SELECT
   CONCAT('SAMPLE-RESULT-', LPAD(seq_no, 3, '0')),
@@ -116,7 +116,7 @@ WITH numbered_slots AS (
 sample_slots AS (
   SELECT *
   FROM numbered_slots
-  WHERE seq_no <= 25
+  WHERE seq_no <= 27
 ),
 visit_type_map AS (
   SELECT code, id, name
@@ -125,12 +125,12 @@ visit_type_map AS (
 SELECT
   CONCAT('SAMPLE-', DATE_FORMAT(CURDATE(), '%y%m'), '-', LPAD(sample_slots.seq_no, 3, '0')),
   sample_slots.id,
-  CASE ((sample_slots.seq_no - 1) % 3)
+  CASE (((sample_slots.seq_no - 1) DIV 3) % 3)
     WHEN 0 THEN (SELECT id FROM visit_type_map WHERE code = 'workshop')
     WHEN 1 THEN (SELECT id FROM visit_type_map WHERE code = 'followup')
     ELSE (SELECT id FROM visit_type_map WHERE code = 'gift')
   END,
-  CASE ((sample_slots.seq_no - 1) % 3)
+  CASE (((sample_slots.seq_no - 1) DIV 3) % 3)
     WHEN 0 THEN '初回ワークショップ'
     WHEN 1 THEN '再来店相談'
     ELSE 'ギフト相談'
