@@ -2,6 +2,7 @@ package com.fregrance.app.service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -79,11 +80,20 @@ public class ReservationService {
         return response;
     }
 
+    public List<String> findReservationVisitTypeOptions() {
+        if (visitTypeMapper == null) {
+            return List.of("初回ワークショップ", "再来店相談", "ギフト相談");
+        }
+        return visitTypeMapper.findAllActive().stream()
+            .map(VisitType::getName)
+            .toList();
+    }
+
     @Transactional
     private ReservationResponse createReservationWithDatabase(ReservationForm form) {
         ParsedSlot parsedSlot = parseSlotId(form.getSlotId());
         ReservationSlot slot = reservationSlotMapper.findByDateAndTime(parsedSlot.date(), parsedSlot.time());
-        VisitType visitType = visitTypeMapper.findByCode(toVisitTypeCode(form.getVisitType()));
+        VisitType visitType = visitTypeMapper.findByName(form.getVisitType());
 
         if (slot == null) {
             throw new ResourceNotFoundException("Selected reservation slot was not found");
@@ -102,14 +112,16 @@ public class ReservationService {
         reservation.setReservationCode(generateReservationCode());
         reservation.setReservationSlotId(slot.getId());
         reservation.setVisitTypeId(visitType.getId());
-        reservation.setVisitTypeLabel(form.getVisitType());
+        reservation.setVisitTypeLabel(visitType.getName());
         reservation.setGuestCount(parseGuestCount(form.getGuestCount()));
         reservation.setStaffMemo(form.getStaffMemo());
         reservation.setSummaryHeadline(form.getSummaryHeadline());
         reservation.setQuestionnaireResultCode(form.getQuestionnaireResultCode());
         reservation.setSlotLabel(form.getSlotLabel());
+        reservation.setVipCustomerFlag(false);
         reservationMapper.insert(reservation);
 
+        form.setVisitType(visitType.getName());
         return buildResponse(reservation.getReservationCode(), form);
     }
 
@@ -144,14 +156,6 @@ public class ReservationService {
             return 4;
         }
         return Integer.parseInt(guestCount.replace("名", ""));
-    }
-
-    private String toVisitTypeCode(String visitType) {
-        return switch (visitType) {
-            case "再来店の調整相談" -> "followup";
-            case "ギフト相談あり" -> "gift";
-            default -> "workshop";
-        };
     }
 
     private boolean isReservableStatus(String status) {

@@ -14,4 +14,6 @@ public interface ReservationMapper {
     Reservation findByReservationCode(@Param("reservationCode") String reservationCode);
     List<StaffReservationRecord> findAllForStaff();
     StaffReservationRecord findDetailForStaff(@Param("reservationCode") String reservationCode);
+    int updateVipCustomerFlag(@Param("reservationCode") String reservationCode, @Param("vipCustomerFlag") boolean vipCustomerFlag);
+    int logicalDeleteByCodes(@Param("reservationCodes") List<String> reservationCodes);
 }

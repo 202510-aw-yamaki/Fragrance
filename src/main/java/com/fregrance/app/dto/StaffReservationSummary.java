@@ -14,6 +14,7 @@ public record StaffReservationSummary(
     String guestCountLabel,
     String slotStatus,
     String questionnaireResultCode,
-    LocalDateTime createdAt
+    LocalDateTime createdAt,
+    boolean vipCustomerFlag
 ) {
 }

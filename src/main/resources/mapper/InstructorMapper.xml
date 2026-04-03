@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fregrance.app.mapper.InstructorMapper">
+  <resultMap id="InstructorResultMap" type="com.fregrance.app.model.Instructor">
+    <id property="id" column="id" />
+    <result property="name" column="name" />
+    <result property="deleted" column="is_deleted" />
+    <result property="createdAt" column="created_at" />
+    <result property="updatedAt" column="updated_at" />
+  </resultMap>
+  <select id="findAllActive" resultMap="InstructorResultMap">
+    SELECT id, name, is_deleted, created_at, updated_at
+    FROM instructors
+    WHERE is_deleted = 0
+    ORDER BY id ASC
+  </select>
+  <select id="findById" resultMap="InstructorResultMap">
+    SELECT id, name, is_deleted, created_at, updated_at
+    FROM instructors
+    WHERE id = #{id}
+  </select>
+  <select id="findByName" resultMap="InstructorResultMap">
+    SELECT id, name, is_deleted, created_at, updated_at
+    FROM instructors
+    WHERE name = #{name}
+    LIMIT 1
+  </select>
+  <insert id="insert" parameterType="com.fregrance.app.model.Instructor" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO instructors (name, is_deleted, created_at, updated_at)
+    VALUES (#{name}, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+  </insert>
+  <update id="logicalDelete">
+    UPDATE instructors
+    SET is_deleted = 1,
+        updated_at = CURRENT_TIMESTAMP
+    WHERE id = #{id}
+      AND is_deleted = 0
+  </update>
+</mapper>

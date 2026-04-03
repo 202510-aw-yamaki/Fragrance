@@ -8,27 +8,37 @@
     <result property="slotDate" column="slot_date" />
     <result property="slotTime" column="slot_time" />
     <result property="status" column="status" />
+    <result property="instructorId" column="instructor_id" />
     <result property="instructorName" column="instructor_name" />
     <result property="createdAt" column="created_at" />
     <result property="updatedAt" column="updated_at" />
   </resultMap>
   <select id="findAvailableByDate" resultMap="ReservationSlotResultMap">
-    SELECT id, slot_date, slot_time, status, instructor_name, created_at, updated_at
-    FROM reservation_slots
-    WHERE slot_date = #{slotDate}
-      AND status IN ('open', 'recommended')
-    ORDER BY slot_time ASC
+    SELECT rs.id, rs.slot_date, rs.slot_time, rs.status, rs.instructor_id,
+           COALESCE(i.name, rs.instructor_name) AS instructor_name,
+           rs.created_at, rs.updated_at
+    FROM reservation_slots rs
+    LEFT JOIN instructors i ON i.id = rs.instructor_id
+    WHERE rs.slot_date = #{slotDate}
+      AND rs.status IN ('open', 'recommended')
+    ORDER BY rs.slot_time ASC
   </select>
   <select id="findByDateAndTime" resultMap="ReservationSlotResultMap">
-    SELECT id, slot_date, slot_time, status, instructor_name, created_at, updated_at
-    FROM reservation_slots
-    WHERE slot_date = #{slotDate}
-      AND slot_time = #{slotTime}
+    SELECT rs.id, rs.slot_date, rs.slot_time, rs.status, rs.instructor_id,
+           COALESCE(i.name, rs.instructor_name) AS instructor_name,
+           rs.created_at, rs.updated_at
+    FROM reservation_slots rs
+    LEFT JOIN instructors i ON i.id = rs.instructor_id
+    WHERE rs.slot_date = #{slotDate}
+      AND rs.slot_time = #{slotTime}
   </select>
   <select id="findById" resultMap="ReservationSlotResultMap">
-    SELECT id, slot_date, slot_time, status, instructor_name, created_at, updated_at
-    FROM reservation_slots
-    WHERE id = #{id}
+    SELECT rs.id, rs.slot_date, rs.slot_time, rs.status, rs.instructor_id,
+           COALESCE(i.name, rs.instructor_name) AS instructor_name,
+           rs.created_at, rs.updated_at
+    FROM reservation_slots rs
+    LEFT JOIN instructors i ON i.id = rs.instructor_id
+    WHERE rs.id = #{id}
   </select>
   <update id="updateStatusIfAvailable">
     UPDATE reservation_slots

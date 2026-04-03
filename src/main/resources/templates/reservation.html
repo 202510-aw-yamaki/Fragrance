@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ja">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 
 <head>
   <meta charset="UTF-8">
@@ -8,8 +8,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/common.css">
-  <link rel="stylesheet" href="css/reservation.css">
+  <link rel="stylesheet" th:href="@{/css/common.css}">
+  <link rel="stylesheet" th:href="@{/css/reservation.css}">
 </head>
 
 <body class="page-canvas">
@@ -63,9 +63,7 @@
                 <div class="field">
                   <label class="field-label-note" for="visit-type">来店内容</label>
                   <select id="visit-type">
-                    <option value="初回ワークショップ">初回ワークショップ</option>
-                    <option value="再来店の調整相談">再来店の調整相談</option>
-                    <option value="ギフト相談あり">ギフト相談あり</option>
+                    <option th:each="option, stat : ${visitTypeOptions}" th:value="${option}" th:text="${option}" th:selected="${stat.first}"></option>
                   </select>
                 </div>
                 <div class="field">

@@ -1,5 +1,7 @@
 package com.fregrance.app.model;
+
 import java.time.LocalDateTime;
+
 public class Reservation {
     private Long id;
     private String reservationCode;
@@ -11,8 +13,12 @@ public class Reservation {
     private String summaryHeadline;
     private String questionnaireResultCode;
     private String slotLabel;
+    private boolean deleted;
+    private LocalDateTime deletedAt;
+    private boolean vipCustomerFlag;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getReservationCode() { return reservationCode; }
@@ -33,6 +39,12 @@ public class Reservation {
     public void setQuestionnaireResultCode(String questionnaireResultCode) { this.questionnaireResultCode = questionnaireResultCode; }
     public String getSlotLabel() { return slotLabel; }
     public void setSlotLabel(String slotLabel) { this.slotLabel = slotLabel; }
+    public boolean isDeleted() { return deleted; }
+    public void setDeleted(boolean deleted) { this.deleted = deleted; }
+    public LocalDateTime getDeletedAt() { return deletedAt; }
+    public void setDeletedAt(LocalDateTime deletedAt) { this.deletedAt = deletedAt; }
+    public boolean isVipCustomerFlag() { return vipCustomerFlag; }
+    public void setVipCustomerFlag(boolean vipCustomerFlag) { this.vipCustomerFlag = vipCustomerFlag; }
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
     public LocalDateTime getUpdatedAt() { return updatedAt; }

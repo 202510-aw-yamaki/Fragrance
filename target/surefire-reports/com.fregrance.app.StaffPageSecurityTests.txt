@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.fregrance.app.StaffPageSecurityTests
 -------------------------------------------------------------------------------
-Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.684 s -- in com.fregrance.app.StaffPageSecurityTests
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.811 s -- in com.fregrance.app.StaffPageSecurityTests

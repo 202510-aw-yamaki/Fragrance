@@ -1,10 +1,19 @@
 package com.fregrance.app.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import com.fregrance.app.service.ReservationService;
 
 @Controller
 public class FragrancePageController {
+
+    private final ReservationService reservationService;
+
+    public FragrancePageController(ReservationService reservationService) {
+        this.reservationService = reservationService;
+    }
 
     @GetMapping({"/", "/index.html"})
     public String showTop() {
@@ -27,7 +36,8 @@ public class FragrancePageController {
     }
 
     @GetMapping({"/reservation", "/reservation.html"})
-    public String showReservation() {
+    public String showReservation(Model model) {
+        model.addAttribute("visitTypeOptions", reservationService.findReservationVisitTypeOptions());
         return "reservation";
     }
 

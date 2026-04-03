@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -52,7 +53,9 @@ public class StaffPageController {
         @RequestParam(defaultValue = "asc") String dir,
         @RequestParam(defaultValue = "1") int page,
         @RequestParam(defaultValue = "10") int size,
-        Model model) {
+        @RequestParam(defaultValue = "false") boolean showDormant,
+        Model model
+    ) {
         List<StaffReservationSummary> allReservations = staffReservationService.findAllReservations();
         List<StaffReservationSummary> filteredReservations = staffReservationService.findReservations(visitType, instructor, sort, dir);
 
@@ -68,6 +71,8 @@ public class StaffPageController {
         model.addAttribute("missingReservationCode", missing);
         model.addAttribute("visitTypeOptions", staffReservationService.findVisitTypeOptions());
         model.addAttribute("instructorOptions", staffReservationService.findInstructorOptions());
+        model.addAttribute("activeVisitTypes", staffReservationService.findActiveVisitTypes());
+        model.addAttribute("activeInstructors", staffReservationService.findActiveInstructors());
         model.addAttribute("selectedVisitType", visitType == null ? "" : visitType);
         model.addAttribute("selectedInstructor", instructor == null ? "" : instructor);
         model.addAttribute("sort", sort);
@@ -87,6 +92,8 @@ public class StaffPageController {
         model.addAttribute("uncheckedReservationCount", (int) allReservations.stream().filter(item -> item.questionnaireResultCode() == null).count());
         model.addAttribute("allReservationCount", allReservations.size());
         model.addAttribute("currentSortLabel", currentSortLabel(sort));
+        model.addAttribute("showDormantModal", showDormant);
+        model.addAttribute("dormantReservations", showDormant ? staffReservationService.findDormantReservations() : List.of());
         return "staff-reservations";
     }
 
@@ -102,13 +109,73 @@ public class StaffPageController {
         return "staff-reservation-detail";
     }
 
+    @PostMapping("/visit-types")
+    public String createVisitType(@RequestParam String visitTypeName, RedirectAttributes redirectAttributes) {
+        staffReservationService.addVisitType(visitTypeName);
+        redirectAttributes.addFlashAttribute("message", "来店種別を追加しました。");
+        return "redirect:/staff/reservations";
+    }
+
+    @PostMapping("/visit-types/{id}/delete")
+    public String deleteVisitType(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        staffReservationService.deleteVisitType(id);
+        redirectAttributes.addFlashAttribute("message", "来店種別を論理削除しました。既存表示はそのまま残ります。");
+        return "redirect:/staff/reservations";
+    }
+
+    @PostMapping("/instructors")
+    public String createInstructor(@RequestParam String instructorName, RedirectAttributes redirectAttributes) {
+        staffReservationService.addInstructor(instructorName);
+        redirectAttributes.addFlashAttribute("message", "担当を追加しました。");
+        return "redirect:/staff/reservations";
+    }
+
+    @PostMapping("/instructors/{id}/delete")
+    public String deleteInstructor(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        staffReservationService.deleteInstructor(id);
+        redirectAttributes.addFlashAttribute("message", "担当を論理削除しました。既存表示はそのまま残ります。");
+        return "redirect:/staff/reservations";
+    }
+
+    @PostMapping("/reservations/{reservationCode}/vip")
+    public String updateVipFlag(
+        @PathVariable String reservationCode,
+        @RequestParam boolean vipCustomerFlag,
+        @RequestParam(defaultValue = "false") boolean showDormant,
+        RedirectAttributes redirectAttributes
+    ) {
+        staffReservationService.updateVipCustomerFlag(reservationCode, vipCustomerFlag);
+        redirectAttributes.addFlashAttribute("message", vipCustomerFlag ? "優良顧客フラグを設定しました。" : "優良顧客フラグを解除しました。");
+        if (showDormant) {
+            redirectAttributes.addAttribute("showDormant", true);
+            return "redirect:/staff/reservations";
+        }
+        return "redirect:/staff/reservations/" + reservationCode;
+    }
+
+    @PostMapping("/reservations/delete-dormant")
+    public String deleteDormantReservations(
+        @RequestParam(required = false, name = "reservationCodes") List<String> reservationCodes,
+        RedirectAttributes redirectAttributes
+    ) {
+        if (reservationCodes == null || reservationCodes.isEmpty()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "削除対象を選択してください。");
+            redirectAttributes.addAttribute("showDormant", true);
+            return "redirect:/staff/reservations";
+        }
+        int deleted = staffReservationService.logicalDeleteDormantReservations(reservationCodes);
+        redirectAttributes.addFlashAttribute("message", deleted + "件を論理削除しました。");
+        redirectAttributes.addAttribute("showDormant", true);
+        return "redirect:/staff/reservations";
+    }
+
     private String currentSortLabel(String sort) {
         return switch (sort) {
             case "reservationCode" -> "予約コード";
             case "visitType" -> "来店種別";
             case "guestCount" -> "人数";
             case "instructor" -> "担当";
-            case "reservationCreated" -> "予約日時";
+            case "reservationCreated" -> "予約作成日時";
             case "slotStatus" -> "状態";
             default -> "来店日時";
         };

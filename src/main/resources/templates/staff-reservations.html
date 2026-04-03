@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>予約一覧 | Fregrance Staff</title>
+  <title>スタッフ一覧 | Fregrance Staff</title>
   <link rel="stylesheet" th:href="@{/css/admin.css}">
 </head>
 <body class="admin-body admin-list-page">
@@ -16,7 +16,7 @@
       </div>
 
       <section class="console-panel list-panel">
-        <header class="console-topbar table-like-topbar list-topbar">
+        <header class="console-topbar list-topbar">
           <div class="console-cell console-brand">FRAGRANCE WORKSHOP</div>
           <div class="console-cell console-center">Staff Console</div>
           <div class="console-cell console-status">予約一覧</div>
@@ -24,46 +24,51 @@
 
         <section class="list-hero">
           <div>
-            <h1>お客様の来店日時 予約一覧</h1>
+            <h1>スタッフ予約一覧</h1>
             <div class="list-hero-copy-row">
-              <p class="console-lead">上部に集計サマリーを置いた、朝の確認に向く管理画面案です。</p>
-              <p class="list-hero-note">テーブル右側の「詳細」ボタンクリックで、詳細画面に遷移します。</p>
+              <p class="console-lead">来店予約の確認、種別・担当の管理、半年未来店候補の抽出をまとめて扱います。</p>
+              <p class="list-hero-note">ソート後はスクロール位置を復元し、表ヘッダーは一覧内で固定します。</p>
             </div>
           </div>
-          <form th:action="@{/staff/logout}" method="post">
-            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-            <button type="submit" class="primary-button list-logout">ログアウト</button>
-          </form>
+          <div class="hero-actions">
+            <a class="secondary-button link-button" th:href="@{/staff/reservations(showDormant=true,visitType=${selectedVisitType},instructor=${selectedInstructor},sort=${sort},dir=${dir},page=${page},size=${pageSize})}">半年未来店一覧</a>
+            <form th:action="@{/staff/logout}" method="post">
+              <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+              <button type="submit" class="primary-button list-logout">ログアウト</button>
+            </form>
+          </div>
         </section>
 
         <div class="alert error" th:if="${missingReservationCode}">
           指定された予約コード <strong th:text="${missingReservationCode}"></strong> は見つかりませんでした。
         </div>
+        <div class="alert success" th:if="${message}" th:text="${message}"></div>
+        <div class="alert error" th:if="${errorMessage}" th:text="${errorMessage}"></div>
 
-        <section class="list-metrics metrics-five-cols" aria-label="予約集計">
+        <section class="list-metrics metrics-five-cols" aria-label="スタッフ集計">
           <article class="metric-card metric-card-green metric-card-split">
-            <span class="metric-label"><span>本日</span><span>来店</span></span>
+            <span class="metric-label"><span>本日</span><span>予約数</span></span>
             <strong class="metric-value" th:text="${todayReservationCount} + '件'">0件</strong>
           </article>
           <article class="metric-card metric-card-pink metric-card-split">
-            <span class="metric-label"><span>アンケート</span><span>連携</span></span>
+            <span class="metric-label"><span>アンケート</span><span>連携済み</span></span>
             <strong class="metric-value" th:text="${linkedReservationCount} + '件'">0件</strong>
           </article>
           <article class="metric-card metric-card-white metric-card-split">
-            <span class="metric-label"><span>総</span><span>予約数</span></span>
+            <span class="metric-label"><span>全体</span><span>予約数</span></span>
             <strong class="metric-value" th:text="${allReservationCount} + '件'">0件</strong>
           </article>
           <article class="metric-card metric-card-blue metric-card-split">
-            <span class="metric-label"><span>未</span><span>対応</span></span>
+            <span class="metric-label"><span>未</span><span>連携</span></span>
             <strong class="metric-value" th:text="${uncheckedReservationCount} + '件'">0件</strong>
           </article>
           <article class="metric-card metric-card-white metric-card-wide-text">
-            <span class="metric-label">表示条件</span>
+            <span class="metric-label">現在の絞り込み</span>
             <strong class="metric-value" th:text="|${selectedVisitType != '' ? selectedVisitType : '全来店種別'} / ${selectedInstructor != '' ? selectedInstructor : '全担当'}|">全来店種別 / 全担当</strong>
           </article>
         </section>
 
-        <form th:action="@{/staff/reservations}" method="get" class="list-filter-bar list-filter-bar-auto" aria-label="絞り込み条件">
+        <form th:action="@{/staff/reservations}" method="get" class="list-filter-bar list-filter-bar-auto auto-submit-form" aria-label="絞り込み">
           <input type="hidden" name="sort" th:value="${sort}">
           <input type="hidden" name="dir" th:value="${dir}">
           <input type="hidden" name="size" th:value="${pageSize}">
@@ -87,12 +92,45 @@
               <strong class="list-filter-summary-value" th:text="|${currentSortLabel} / ${dir == 'asc' ? '昇順' : '降順'}|"></strong>
             </div>
           </div>
-
         </form>
+
+        <section class="master-admin-grid" aria-label="マスタ管理">
+          <article class="master-card">
+            <h2>来店種別管理</h2>
+            <form th:action="@{/staff/visit-types}" method="post" class="master-add-form">
+              <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+              <input type="text" name="visitTypeName" placeholder="来店種別を追加" maxlength="100">
+              <button type="submit" class="secondary-button">追加</button>
+            </form>
+            <div class="master-chip-list">
+              <form th:each="type : ${activeVisitTypes}" th:action="@{/staff/visit-types/{id}/delete(id=${type.id})}" method="post" class="master-chip-form" onsubmit="return confirm('本当に削除しますか？');">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                <span class="master-chip-label" th:text="${type.name}"></span>
+                <button type="submit" class="chip-delete-button" aria-label="来店種別を削除">削除</button>
+              </form>
+            </div>
+          </article>
+
+          <article class="master-card">
+            <h2>担当管理</h2>
+            <form th:action="@{/staff/instructors}" method="post" class="master-add-form">
+              <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+              <input type="text" name="instructorName" placeholder="担当を追加" maxlength="100">
+              <button type="submit" class="secondary-button">追加</button>
+            </form>
+            <div class="master-chip-list">
+              <form th:each="item : ${activeInstructors}" th:action="@{/staff/instructors/{id}/delete(id=${item.id})}" method="post" class="master-chip-form" onsubmit="return confirm('本当に削除しますか？');">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                <span class="master-chip-label" th:text="${item.name}"></span>
+                <button type="submit" class="chip-delete-button" aria-label="担当を削除">削除</button>
+              </form>
+            </div>
+          </article>
+        </section>
 
         <section class="table-card list-table-card">
           <div class="list-table-toolbar">
-            <form th:action="@{/staff/reservations}" method="get" class="page-size-form page-size-form-top">
+            <form th:action="@{/staff/reservations}" method="get" class="page-size-form page-size-form-top auto-submit-form">
               <input type="hidden" name="visitType" th:value="${selectedVisitType}">
               <input type="hidden" name="instructor" th:value="${selectedInstructor}">
               <input type="hidden" name="sort" th:value="${sort}">
@@ -112,100 +150,51 @@
               <strong th:text="|${currentSortLabel} / ${dir == 'asc' ? '昇順' : '降順'}|"></strong>
             </div>
           </div>
-          <div class="table-scroll">
+          <div class="table-scroll sticky-table-scroll" id="reservation-table-scroll">
             <table class="reservation-list-table">
               <thead>
                 <tr>
                   <th>
                     <form th:action="@{/staff/reservations}" method="get" class="sort-form">
-                      <input type="hidden" name="page" value="1">
-                      <input type="hidden" name="size" th:value="${pageSize}">
-                      <input type="hidden" name="visitType" th:value="${selectedVisitType}">
-                      <input type="hidden" name="instructor" th:value="${selectedInstructor}">
-                      <input type="hidden" name="sort" value="visitDate">
-                      <input type="hidden" name="dir" th:value="${sort == 'visitDate' and dir == 'asc' ? 'desc' : 'asc'}">
-                      <button type="submit" class="sort-button">
-                        来店日時 <span th:text="${sort == 'visitDate' ? (dir == 'asc' ? '↑' : '↓') : '↕'}">↕</span>
-                      </button>
+                      <input type="hidden" name="page" value="1"><input type="hidden" name="size" th:value="${pageSize}"><input type="hidden" name="visitType" th:value="${selectedVisitType}"><input type="hidden" name="instructor" th:value="${selectedInstructor}"><input type="hidden" name="sort" value="visitDate"><input type="hidden" name="dir" th:value="${sort == 'visitDate' and dir == 'asc' ? 'desc' : 'asc'}">
+                      <button type="submit" class="sort-button">来店日時 <span th:text="${sort == 'visitDate' ? (dir == 'asc' ? '▲' : '▼') : '⇅'}">⇅</span></button>
                     </form>
                   </th>
                   <th>
                     <form th:action="@{/staff/reservations}" method="get" class="sort-form">
-                      <input type="hidden" name="page" value="1">
-                      <input type="hidden" name="size" th:value="${pageSize}">
-                      <input type="hidden" name="visitType" th:value="${selectedVisitType}">
-                      <input type="hidden" name="instructor" th:value="${selectedInstructor}">
-                      <input type="hidden" name="sort" value="reservationCode">
-                      <input type="hidden" name="dir" th:value="${sort == 'reservationCode' and dir == 'asc' ? 'desc' : 'asc'}">
-                      <button type="submit" class="sort-button">
-                        予約コード <span th:text="${sort == 'reservationCode' ? (dir == 'asc' ? '↑' : '↓') : '↕'}">↕</span>
-                      </button>
+                      <input type="hidden" name="page" value="1"><input type="hidden" name="size" th:value="${pageSize}"><input type="hidden" name="visitType" th:value="${selectedVisitType}"><input type="hidden" name="instructor" th:value="${selectedInstructor}"><input type="hidden" name="sort" value="reservationCode"><input type="hidden" name="dir" th:value="${sort == 'reservationCode' and dir == 'asc' ? 'desc' : 'asc'}">
+                      <button type="submit" class="sort-button">予約コード <span th:text="${sort == 'reservationCode' ? (dir == 'asc' ? '▲' : '▼') : '⇅'}">⇅</span></button>
                     </form>
                   </th>
                   <th>
                     <form th:action="@{/staff/reservations}" method="get" class="sort-form">
-                      <input type="hidden" name="page" value="1">
-                      <input type="hidden" name="size" th:value="${pageSize}">
-                      <input type="hidden" name="visitType" th:value="${selectedVisitType}">
-                      <input type="hidden" name="instructor" th:value="${selectedInstructor}">
-                      <input type="hidden" name="sort" value="visitType">
-                      <input type="hidden" name="dir" th:value="${sort == 'visitType' and dir == 'asc' ? 'desc' : 'asc'}">
-                      <button type="submit" class="sort-button">
-                        来店種別 <span th:text="${sort == 'visitType' ? (dir == 'asc' ? '↑' : '↓') : '↕'}">↕</span>
-                      </button>
+                      <input type="hidden" name="page" value="1"><input type="hidden" name="size" th:value="${pageSize}"><input type="hidden" name="visitType" th:value="${selectedVisitType}"><input type="hidden" name="instructor" th:value="${selectedInstructor}"><input type="hidden" name="sort" value="visitType"><input type="hidden" name="dir" th:value="${sort == 'visitType' and dir == 'asc' ? 'desc' : 'asc'}">
+                      <button type="submit" class="sort-button">来店種別 <span th:text="${sort == 'visitType' ? (dir == 'asc' ? '▲' : '▼') : '⇅'}">⇅</span></button>
                     </form>
                   </th>
                   <th>
                     <form th:action="@{/staff/reservations}" method="get" class="sort-form">
-                      <input type="hidden" name="page" value="1">
-                      <input type="hidden" name="size" th:value="${pageSize}">
-                      <input type="hidden" name="visitType" th:value="${selectedVisitType}">
-                      <input type="hidden" name="instructor" th:value="${selectedInstructor}">
-                      <input type="hidden" name="sort" value="guestCount">
-                      <input type="hidden" name="dir" th:value="${sort == 'guestCount' and dir == 'asc' ? 'desc' : 'asc'}">
-                      <button type="submit" class="sort-button">
-                        人数 <span th:text="${sort == 'guestCount' ? (dir == 'asc' ? '↑' : '↓') : '↕'}">↕</span>
-                      </button>
+                      <input type="hidden" name="page" value="1"><input type="hidden" name="size" th:value="${pageSize}"><input type="hidden" name="visitType" th:value="${selectedVisitType}"><input type="hidden" name="instructor" th:value="${selectedInstructor}"><input type="hidden" name="sort" value="guestCount"><input type="hidden" name="dir" th:value="${sort == 'guestCount' and dir == 'asc' ? 'desc' : 'asc'}">
+                      <button type="submit" class="sort-button">人数 <span th:text="${sort == 'guestCount' ? (dir == 'asc' ? '▲' : '▼') : '⇅'}">⇅</span></button>
                     </form>
                   </th>
                   <th>
                     <form th:action="@{/staff/reservations}" method="get" class="sort-form">
-                      <input type="hidden" name="page" value="1">
-                      <input type="hidden" name="size" th:value="${pageSize}">
-                      <input type="hidden" name="visitType" th:value="${selectedVisitType}">
-                      <input type="hidden" name="instructor" th:value="${selectedInstructor}">
-                      <input type="hidden" name="sort" value="instructor">
-                      <input type="hidden" name="dir" th:value="${sort == 'instructor' and dir == 'asc' ? 'desc' : 'asc'}">
-                      <button type="submit" class="sort-button">
-                        担当 <span th:text="${sort == 'instructor' ? (dir == 'asc' ? '↑' : '↓') : '↕'}">↕</span>
-                      </button>
+                      <input type="hidden" name="page" value="1"><input type="hidden" name="size" th:value="${pageSize}"><input type="hidden" name="visitType" th:value="${selectedVisitType}"><input type="hidden" name="instructor" th:value="${selectedInstructor}"><input type="hidden" name="sort" value="instructor"><input type="hidden" name="dir" th:value="${sort == 'instructor' and dir == 'asc' ? 'desc' : 'asc'}">
+                      <button type="submit" class="sort-button">担当 <span th:text="${sort == 'instructor' ? (dir == 'asc' ? '▲' : '▼') : '⇅'}">⇅</span></button>
                     </form>
                   </th>
                   <th>
                     <form th:action="@{/staff/reservations}" method="get" class="sort-form">
-                      <input type="hidden" name="page" value="1">
-                      <input type="hidden" name="size" th:value="${pageSize}">
-                      <input type="hidden" name="visitType" th:value="${selectedVisitType}">
-                      <input type="hidden" name="instructor" th:value="${selectedInstructor}">
-                      <input type="hidden" name="sort" value="reservationCreated">
-                      <input type="hidden" name="dir" th:value="${sort == 'reservationCreated' and dir == 'asc' ? 'desc' : 'asc'}">
-                      <button type="submit" class="sort-button">
-                        予約日時 <span th:text="${sort == 'reservationCreated' ? (dir == 'asc' ? '↑' : '↓') : '↕'}">↕</span>
-                      </button>
+                      <input type="hidden" name="page" value="1"><input type="hidden" name="size" th:value="${pageSize}"><input type="hidden" name="visitType" th:value="${selectedVisitType}"><input type="hidden" name="instructor" th:value="${selectedInstructor}"><input type="hidden" name="sort" value="reservationCreated"><input type="hidden" name="dir" th:value="${sort == 'reservationCreated' and dir == 'asc' ? 'desc' : 'asc'}">
+                      <button type="submit" class="sort-button">予約作成日時 <span th:text="${sort == 'reservationCreated' ? (dir == 'asc' ? '▲' : '▼') : '⇅'}">⇅</span></button>
                     </form>
                   </th>
-                  <th>確認</th>
+                  <th>優良</th>
                   <th>
                     <form th:action="@{/staff/reservations}" method="get" class="sort-form">
-                      <input type="hidden" name="page" value="1">
-                      <input type="hidden" name="size" th:value="${pageSize}">
-                      <input type="hidden" name="visitType" th:value="${selectedVisitType}">
-                      <input type="hidden" name="instructor" th:value="${selectedInstructor}">
-                      <input type="hidden" name="sort" value="slotStatus">
-                      <input type="hidden" name="dir" th:value="${sort == 'slotStatus' and dir == 'asc' ? 'desc' : 'asc'}">
-                      <button type="submit" class="sort-button">
-                        状態 <span th:text="${sort == 'slotStatus' ? (dir == 'asc' ? '↑' : '↓') : '↕'}">↕</span>
-                      </button>
+                      <input type="hidden" name="page" value="1"><input type="hidden" name="size" th:value="${pageSize}"><input type="hidden" name="visitType" th:value="${selectedVisitType}"><input type="hidden" name="instructor" th:value="${selectedInstructor}"><input type="hidden" name="sort" value="slotStatus"><input type="hidden" name="dir" th:value="${sort == 'slotStatus' and dir == 'asc' ? 'desc' : 'asc'}">
+                      <button type="submit" class="sort-button">状態 <span th:text="${sort == 'slotStatus' ? (dir == 'asc' ? '▲' : '▼') : '⇅'}">⇅</span></button>
                     </form>
                   </th>
                   <th>詳細</th>
@@ -213,7 +202,7 @@
               </thead>
               <tbody>
                 <tr th:if="${#lists.isEmpty(reservations)}">
-                  <td colspan="9" class="empty-cell">該当する予約はありません。</td>
+                  <td colspan="10" class="empty-cell">該当する予約はありません。</td>
                 </tr>
                 <tr th:each="reservation : ${reservations}">
                   <td class="table-emphasis" th:text="|${#temporals.format(reservation.slotDate, 'yyyy/MM/dd')} ${#temporals.format(reservation.slotTime, 'HH:mm')}|"></td>
@@ -222,16 +211,9 @@
                   <td th:text="${reservation.guestCountLabel}"></td>
                   <td th:text="${reservation.instructorName ?: '-'}"></td>
                   <td class="table-created-at" th:text="${#temporals.format(reservation.createdAt, 'yyyy/MM/dd HH:mm')}"></td>
-                  <td>
-                    <span class="memo-chip" th:text="${reservation.questionnaireResultCode != null ? '確認済' : '要確認'}"></span>
-                  </td>
-                  <td>
-                    <span class="status-chip" th:classappend="${reservation.questionnaireResultCode != null} ? ' status-chip-green' : ' status-chip-neutral'"
-                      th:text="${reservation.questionnaireResultCode != null} ? '連携済' : '未連携'">未連携</span>
-                  </td>
-                  <td>
-                    <a class="secondary-button link-button detail-button" th:href="@{/staff/reservations/{code}(code=${reservation.reservationCode})}">詳細</a>
-                  </td>
+                  <td><span class="memo-chip" th:text="${reservation.vipCustomerFlag ? '優良顧客' : '通常'}"></span></td>
+                  <td><span class="status-chip" th:classappend="${reservation.questionnaireResultCode != null} ? ' status-chip-green' : ' status-chip-neutral'" th:text="${reservation.questionnaireResultCode != null} ? '連携済み' : '未連携'">未連携</span></td>
+                  <td><a class="secondary-button link-button detail-button" th:href="@{/staff/reservations/{code}(code=${reservation.reservationCode})}" target="_blank" rel="noopener">詳細</a></td>
                 </tr>
               </tbody>
             </table>
@@ -240,8 +222,7 @@
 
         <div class="list-pagination-bar">
           <p class="pagination-summary" th:text="${totalItems == 0 ? '0件表示' : ((page - 1) * pageSize + 1) + ' - ' + (((page - 1) * pageSize + #lists.size(reservations))) + '件 / 全' + totalItems + '件'}">0件表示</p>
-
-          <nav class="pagination-nav" aria-label="予約一覧ページ送り">
+          <nav class="pagination-nav" aria-label="予約一覧ページ切り替え">
             <a class="page-link" th:classappend="${!hasPrev} ? ' is-disabled'" th:href="${hasPrev} ? @{/staff/reservations(page=${prevPage},size=${pageSize},sort=${sort},dir=${dir},visitType=${selectedVisitType},instructor=${selectedInstructor})} : '#'">前へ</a>
             <a th:each="pageNumber : ${pageNumbers}" class="page-link" th:classappend="${pageNumber == page} ? ' page-link-current'" th:href="@{/staff/reservations(page=${pageNumber},size=${pageSize},sort=${sort},dir=${dir},visitType=${selectedVisitType},instructor=${selectedInstructor})}" th:text="${pageNumber}">1</a>
             <a class="page-link" th:classappend="${!hasNext} ? ' is-disabled'" th:href="${hasNext} ? @{/staff/reservations(page=${nextPage},size=${pageSize},sort=${sort},dir=${dir},visitType=${selectedVisitType},instructor=${selectedInstructor})} : '#'">次へ</a>
@@ -250,5 +231,122 @@
       </section>
     </section>
   </main>
+
+  <div class="admin-modal" th:if="${showDormantModal}" th:classappend="${showDormantModal} ? ' open'">
+    <div class="admin-modal-backdrop"></div>
+    <section class="admin-modal-card">
+      <header class="admin-modal-header">
+        <div>
+          <p class="eyebrow">Dormant Reservations</p>
+          <h2>半年以上来店がない候補</h2>
+          <p class="muted">優良顧客フラグ未設定かつ半年以上来店がない予約を表示しています。</p>
+        </div>
+        <a class="secondary-button link-button" th:href="@{/staff/reservations(visitType=${selectedVisitType},instructor=${selectedInstructor},sort=${sort},dir=${dir},page=${page},size=${pageSize})}">閉じる</a>
+      </header>
+
+      <div class="admin-modal-body">
+        <p class="muted" th:if="${#lists.isEmpty(dormantReservations)}">対象候補はありません。</p>
+
+        <form th:if="${!#lists.isEmpty(dormantReservations)}" th:action="@{/staff/reservations/delete-dormant}" method="post" id="dormant-delete-form">
+          <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+          <div class="modal-action-row">
+            <label class="bulk-check-label"><input type="checkbox" id="select-all-dormant"> すべて選択</label>
+            <button type="submit" class="primary-button">選択した候補を削除</button>
+          </div>
+          <div class="table-scroll modal-table-scroll" id="dormant-table-scroll">
+            <table class="reservation-list-table dormant-table">
+              <thead>
+                <tr>
+                  <th>選択</th>
+                  <th>来店日時</th>
+                  <th>予約コード</th>
+                  <th>来店種別</th>
+                  <th>担当</th>
+                  <th>詳細</th>
+                  <th>優良顧客フラグ</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:each="reservation : ${dormantReservations}">
+                  <td><input type="checkbox" name="reservationCodes" th:value="${reservation.reservationCode}" class="dormant-check"></td>
+                  <td th:text="|${#temporals.format(reservation.slotDate, 'yyyy/MM/dd')} ${#temporals.format(reservation.slotTime, 'HH:mm')}|"></td>
+                  <td th:text="${reservation.reservationCode}"></td>
+                  <td th:text="${reservation.visitTypeLabel}"></td>
+                  <td th:text="${reservation.instructorName ?: '-'}"></td>
+                  <td><a class="secondary-button link-button detail-button" th:href="@{/staff/reservations/{code}(code=${reservation.reservationCode})}" target="_blank" rel="noopener">詳細を開く</a></td>
+                  <td>
+                    <form th:action="@{/staff/reservations/{reservationCode}/vip(reservationCode=${reservation.reservationCode})}" method="post" class="inline-form inline-form-gap">
+                      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                      <input type="hidden" name="vipCustomerFlag" value="true">
+                      <input type="hidden" name="showDormant" value="true">
+                      <button type="submit" class="secondary-button">フラグ付与</button>
+                    </form>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </form>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    (() => {
+      const pageKey = 'staff-reservations-window-scroll';
+      const tableKey = 'staff-reservations-table-scroll';
+      const windowForms = document.querySelectorAll('.sort-form, .page-size-form-top, .list-filter-bar');
+      const tableScroll = document.getElementById('reservation-table-scroll');
+      const dormantForm = document.getElementById('dormant-delete-form');
+      const selectAll = document.getElementById('select-all-dormant');
+      const dormantChecks = Array.from(document.querySelectorAll('.dormant-check'));
+
+      const saveScrollPosition = () => {
+        sessionStorage.setItem(pageKey, String(window.scrollY));
+        if (tableScroll) {
+          sessionStorage.setItem(tableKey, String(tableScroll.scrollTop));
+        }
+      };
+
+      windowForms.forEach((form) => {
+        form.addEventListener('submit', saveScrollPosition);
+      });
+
+      window.addEventListener('load', () => {
+        const savedWindow = sessionStorage.getItem(pageKey);
+        if (savedWindow !== null) {
+          window.scrollTo({ top: Number(savedWindow), behavior: 'auto' });
+          sessionStorage.removeItem(pageKey);
+        }
+        const savedTable = sessionStorage.getItem(tableKey);
+        if (tableScroll && savedTable !== null) {
+          tableScroll.scrollTop = Number(savedTable);
+          sessionStorage.removeItem(tableKey);
+        }
+      });
+
+      if (selectAll) {
+        selectAll.addEventListener('change', () => {
+          dormantChecks.forEach((check) => {
+            check.checked = selectAll.checked;
+          });
+        });
+      }
+
+      if (dormantForm) {
+        dormantForm.addEventListener('submit', (event) => {
+          const selectedCount = dormantChecks.filter((check) => check.checked).length;
+          if (selectedCount === 0) {
+            event.preventDefault();
+            window.alert('削除対象を選択してください。');
+            return;
+          }
+          if (!window.confirm('選択した予約を論理削除します。よろしいですか？')) {
+            event.preventDefault();
+          }
+        });
+      }
+    })();
+  </script>
 </body>
 </html>

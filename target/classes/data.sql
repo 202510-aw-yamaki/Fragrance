@@ -1,17 +1,31 @@
-INSERT INTO visit_types (code, name, description, created_at, updated_at)
+INSERT INTO visit_types (code, name, description, is_deleted, created_at, updated_at)
 VALUES
-  ('workshop', '初回ワークショップ', '初回来店の香りづくり体験', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-  ('followup', '再来店相談', '再来店時の調整・相談向け', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-  ('gift', 'ギフト相談', 'ギフト用途の香り相談', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+  ('workshop', '初回ワークショップ', '初回予約向けの香りづくり案内', 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  ('followup', '再来店相談', '再来店時の相談と追加提案向け', 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  ('gift', 'ギフト相談', 'ギフト用途の香り選び相談向け', 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
 ON DUPLICATE KEY UPDATE
   name = VALUES(name),
   description = VALUES(description),
   updated_at = CURRENT_TIMESTAMP;
 
+INSERT INTO instructors (name, is_deleted, created_at, updated_at)
+VALUES
+  ('原口', 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  ('清水', 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  ('大塚', 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+ON DUPLICATE KEY UPDATE
+  updated_at = CURRENT_TIMESTAMP;
+
+UPDATE reservation_slots rs
+INNER JOIN instructors i ON i.name = rs.instructor_name
+SET rs.instructor_id = i.id
+WHERE rs.instructor_id IS NULL;
+
 INSERT INTO reservation_slots (
   slot_date,
   slot_time,
   status,
+  instructor_id,
   instructor_name,
   created_at,
   updated_at
@@ -34,6 +48,7 @@ SELECT
   DATE_ADD(CURDATE(), INTERVAL seq.day_offset DAY),
   CAST(slot_patterns.slot_time AS TIME),
   slot_patterns.status,
+  (SELECT id FROM instructors WHERE name = slot_patterns.instructor_name LIMIT 1),
   slot_patterns.instructor_name,
   CURRENT_TIMESTAMP,
   CURRENT_TIMESTAMP
@@ -103,13 +118,14 @@ WITH numbered_slots AS (
     rs.id,
     rs.slot_date,
     rs.slot_time,
-    rs.instructor_name,
+    COALESCE(i.name, rs.instructor_name) AS instructor_name,
     ROW_NUMBER() OVER (ORDER BY rs.slot_date, rs.slot_time, rs.id) AS seq_no,
     ROW_NUMBER() OVER (
-      PARTITION BY COALESCE(rs.instructor_name, '担当未定')
+      PARTITION BY COALESCE(i.name, rs.instructor_name, '担当未設定')
       ORDER BY RAND(rs.id * 163 + DAYOFMONTH(rs.slot_date))
     ) AS instructor_seq
   FROM reservation_slots rs
+  LEFT JOIN instructors i ON i.id = rs.instructor_id
   WHERE rs.slot_date >= DATE_ADD(CURDATE(), INTERVAL 1 DAY)
 ),
 sample_slots AS (
@@ -120,6 +136,7 @@ sample_slots AS (
 visit_type_map AS (
   SELECT code, id, name
   FROM visit_types
+  WHERE is_deleted = 0
 )
 SELECT
   CONCAT('SAMPLE-', DATE_FORMAT(CURDATE(), '%y%m'), '-', LPAD(sample_slots.seq_no, 3, '0')),
@@ -136,30 +153,30 @@ SELECT
   END,
   1 + FLOOR(RAND(sample_slots.seq_no * 173) * 4),
   ELT(1 + FLOOR(RAND(sample_slots.seq_no * 179) * 8),
-    '香りの方向性を比較しながら案内希望',
-    '前回の香りを基準に再調整したい',
+    '香りの方向性を比較しながら提案希望',
+    '前回の香りを参考に相談したい',
     '贈り先の好みをヒアリング予定',
-    '柑橘寄りとウッディ寄りで迷っている',
-    '当日の所要時間は短めを希望',
-    'ペアで香りの違いを比べたい',
-    '仕事向けと休日向けで使い分けたい',
-    '贈答用候補を2案ほど見たい'
+    '季節寄りとウッディ寄りで迷っている',
+    '仕事帰り時間帯のため短めを希望',
+    'ペアで香りの違いを試したい',
+    '好みは未定だが落ち着く系を希望',
+    '診断結果を2案ほど見たい'
   ),
   ELT(1 + FLOOR(RAND(sample_slots.seq_no * 181) * 8),
-    '初回ヒアリング予定',
+    '初回ヒアリング対応',
     '再来店フォローアップ',
-    'ギフト提案候補あり',
-    '比較提案メイン',
-    '短時間調整希望',
-    '季節提案を優先',
-    '香りの持続時間を相談',
-    '複数候補を試香予定'
+    'ギフト候補確認あり',
+    '季節提案メイン',
+    '短時間相談希望',
+    '診断結果を参照',
+    '香りの強さ比較を希望',
+    '人数構成を要確認'
   ),
   CASE
     WHEN FLOOR(RAND(sample_slots.seq_no * 191) * 5) = 0 THEN NULL
     ELSE CONCAT('SAMPLE-RESULT-', LPAD(1 + FLOOR(RAND(sample_slots.seq_no * 193) * 27), 3, '0'))
   END,
-  CONCAT(DATE_FORMAT(sample_slots.slot_date, '%Y/%m/%d'), ' ', DATE_FORMAT(sample_slots.slot_time, '%H:%i'), ' ', COALESCE(sample_slots.instructor_name, '担当未定')),
+  CONCAT(DATE_FORMAT(sample_slots.slot_date, '%Y/%m/%d'), ' ', DATE_FORMAT(sample_slots.slot_time, '%H:%i'), ' ', COALESCE(sample_slots.instructor_name, '担当未設定')),
   DATE_SUB(CURRENT_TIMESTAMP, INTERVAL (8 + FLOOR(RAND(sample_slots.seq_no * 197) * 120)) HOUR),
   DATE_SUB(CURRENT_TIMESTAMP, INTERVAL (8 + FLOOR(RAND(sample_slots.seq_no * 197) * 120)) HOUR)
 FROM sample_slots

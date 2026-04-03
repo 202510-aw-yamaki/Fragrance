@@ -22,7 +22,8 @@ public record StaffReservationDetail(
     Map<String, String> step2Answers,
     Map<String, Integer> graphAxes,
     LocalDateTime createdAt,
-    LocalDateTime updatedAt
+    LocalDateTime updatedAt,
+    boolean vipCustomerFlag
 ) {
     public boolean hasQuestionnaire() {
         return questionnaireResultCode != null && !questionnaireResultCode.isBlank();

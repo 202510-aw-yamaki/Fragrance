@@ -8,12 +8,42 @@
     <result property="code" column="code" />
     <result property="name" column="name" />
     <result property="description" column="description" />
+    <result property="deleted" column="is_deleted" />
     <result property="createdAt" column="created_at" />
     <result property="updatedAt" column="updated_at" />
   </resultMap>
   <select id="findByCode" resultMap="VisitTypeResultMap">
-    SELECT id, code, name, description, created_at, updated_at
+    SELECT id, code, name, description, is_deleted, created_at, updated_at
     FROM visit_types
     WHERE code = #{code}
+      AND is_deleted = 0
   </select>
+  <select id="findAllActive" resultMap="VisitTypeResultMap">
+    SELECT id, code, name, description, is_deleted, created_at, updated_at
+    FROM visit_types
+    WHERE is_deleted = 0
+    ORDER BY id ASC
+  </select>
+  <select id="findById" resultMap="VisitTypeResultMap">
+    SELECT id, code, name, description, is_deleted, created_at, updated_at
+    FROM visit_types
+    WHERE id = #{id}
+  </select>
+  <select id="findByName" resultMap="VisitTypeResultMap">
+    SELECT id, code, name, description, is_deleted, created_at, updated_at
+    FROM visit_types
+    WHERE name = #{name}
+    LIMIT 1
+  </select>
+  <insert id="insert" parameterType="com.fregrance.app.model.VisitType" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO visit_types (code, name, description, is_deleted, created_at, updated_at)
+    VALUES (#{code}, #{name}, #{description}, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+  </insert>
+  <update id="logicalDelete">
+    UPDATE visit_types
+    SET is_deleted = 1,
+        updated_at = CURRENT_TIMESTAMP
+    WHERE id = #{id}
+      AND is_deleted = 0
+  </update>
 </mapper>

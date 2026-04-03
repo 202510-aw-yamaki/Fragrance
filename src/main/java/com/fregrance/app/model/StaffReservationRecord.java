@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class StaffReservationRecord {
-
     private String reservationCode;
     private Long reservationSlotId;
     private String visitTypeLabel;
@@ -24,6 +23,7 @@ public class StaffReservationRecord {
     private String step1AnswersJson;
     private String step2AnswersJson;
     private String graphAxesJson;
+    private boolean vipCustomerFlag;
 
     public String getReservationCode() { return reservationCode; }
     public void setReservationCode(String reservationCode) { this.reservationCode = reservationCode; }
@@ -61,4 +61,6 @@ public class StaffReservationRecord {
     public void setStep2AnswersJson(String step2AnswersJson) { this.step2AnswersJson = step2AnswersJson; }
     public String getGraphAxesJson() { return graphAxesJson; }
     public void setGraphAxesJson(String graphAxesJson) { this.graphAxesJson = graphAxesJson; }
+    public boolean isVipCustomerFlag() { return vipCustomerFlag; }
+    public void setVipCustomerFlag(boolean vipCustomerFlag) { this.vipCustomerFlag = vipCustomerFlag; }
 }

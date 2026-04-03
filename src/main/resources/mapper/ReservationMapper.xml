@@ -14,6 +14,9 @@
     <result property="summaryHeadline" column="summary_headline" />
     <result property="questionnaireResultCode" column="questionnaire_result_code" />
     <result property="slotLabel" column="slot_label" />
+    <result property="deleted" column="is_deleted" />
+    <result property="deletedAt" column="deleted_at" />
+    <result property="vipCustomerFlag" column="vip_customer_flag" />
     <result property="createdAt" column="created_at" />
     <result property="updatedAt" column="updated_at" />
   </resultMap>
@@ -37,6 +40,7 @@
     <result property="step1AnswersJson" column="step1_answers_json" />
     <result property="step2AnswersJson" column="step2_answers_json" />
     <result property="graphAxesJson" column="graph_axes_json" />
+    <result property="vipCustomerFlag" column="vip_customer_flag" />
   </resultMap>
 
   <insert id="insert" parameterType="com.fregrance.app.model.Reservation" useGeneratedKeys="true" keyProperty="id">
@@ -50,6 +54,8 @@
       summary_headline,
       questionnaire_result_code,
       slot_label,
+      is_deleted,
+      vip_customer_flag,
       created_at,
       updated_at
     ) VALUES (
@@ -62,6 +68,8 @@
       #{summaryHeadline},
       #{questionnaireResultCode},
       #{slotLabel},
+      0,
+      #{vipCustomerFlag},
       CURRENT_TIMESTAMP,
       CURRENT_TIMESTAMP
     )
@@ -69,9 +77,11 @@
 
   <select id="findByReservationCode" resultMap="ReservationResultMap">
     SELECT id, reservation_code, reservation_slot_id, visit_type_id, visit_type_label,
-           guest_count, staff_memo, summary_headline, questionnaire_result_code, slot_label, created_at, updated_at
+           guest_count, staff_memo, summary_headline, questionnaire_result_code, slot_label,
+           is_deleted, deleted_at, vip_customer_flag, created_at, updated_at
     FROM reservations
     WHERE reservation_code = #{reservationCode}
+      AND is_deleted = 0
   </select>
 
   <select id="findAllForStaff" resultMap="StaffReservationRecordResultMap">
@@ -85,17 +95,20 @@
            r.slot_label,
            r.created_at,
            r.updated_at,
+           r.vip_customer_flag,
            rs.slot_date,
            rs.slot_time,
            rs.status AS slot_status,
-           rs.instructor_name,
+           COALESCE(i.name, rs.instructor_name) AS instructor_name,
            qr.route_code,
            qr.step1_answers_json,
            qr.step2_answers_json,
            qr.graph_axes_json
     FROM reservations r
     INNER JOIN reservation_slots rs ON rs.id = r.reservation_slot_id
+    LEFT JOIN instructors i ON i.id = rs.instructor_id
     LEFT JOIN questionnaire_results qr ON qr.result_code = r.questionnaire_result_code
+    WHERE r.is_deleted = 0
     ORDER BY rs.slot_date ASC, rs.slot_time ASC, r.created_at DESC
   </select>
 
@@ -110,17 +123,40 @@
            r.slot_label,
            r.created_at,
            r.updated_at,
+           r.vip_customer_flag,
            rs.slot_date,
            rs.slot_time,
            rs.status AS slot_status,
-           rs.instructor_name,
+           COALESCE(i.name, rs.instructor_name) AS instructor_name,
            qr.route_code,
            qr.step1_answers_json,
            qr.step2_answers_json,
            qr.graph_axes_json
     FROM reservations r
     INNER JOIN reservation_slots rs ON rs.id = r.reservation_slot_id
+    LEFT JOIN instructors i ON i.id = rs.instructor_id
     LEFT JOIN questionnaire_results qr ON qr.result_code = r.questionnaire_result_code
     WHERE r.reservation_code = #{reservationCode}
+      AND r.is_deleted = 0
   </select>
+
+  <update id="updateVipCustomerFlag">
+    UPDATE reservations
+    SET vip_customer_flag = #{vipCustomerFlag},
+        updated_at = CURRENT_TIMESTAMP
+    WHERE reservation_code = #{reservationCode}
+      AND is_deleted = 0
+  </update>
+
+  <update id="logicalDeleteByCodes">
+    UPDATE reservations
+    SET is_deleted = 1,
+        deleted_at = CURRENT_TIMESTAMP,
+        updated_at = CURRENT_TIMESTAMP
+    WHERE is_deleted = 0
+      AND reservation_code IN
+      <foreach collection="reservationCodes" item="reservationCode" open="(" separator="," close=")">
+        #{reservationCode}
+      </foreach>
+  </update>
 </mapper>

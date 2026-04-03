@@ -17,10 +17,12 @@ C:\academia\src\Fregrance\src\main\java\com\fregrance\app\exception\ResourceNotF
 C:\academia\src\Fregrance\src\main\java\com\fregrance\app\form\QuestionnaireResultForm.java
 C:\academia\src\Fregrance\src\main\java\com\fregrance\app\form\ReservationForm.java
 C:\academia\src\Fregrance\src\main\java\com\fregrance\app\FregranceApplication.java
+C:\academia\src\Fregrance\src\main\java\com\fregrance\app\mapper\InstructorMapper.java
 C:\academia\src\Fregrance\src\main\java\com\fregrance\app\mapper\QuestionnaireResultMapper.java
 C:\academia\src\Fregrance\src\main\java\com\fregrance\app\mapper\ReservationMapper.java
 C:\academia\src\Fregrance\src\main\java\com\fregrance\app\mapper\ReservationSlotMapper.java
 C:\academia\src\Fregrance\src\main\java\com\fregrance\app\mapper\VisitTypeMapper.java
+C:\academia\src\Fregrance\src\main\java\com\fregrance\app\model\Instructor.java
 C:\academia\src\Fregrance\src\main\java\com\fregrance\app\model\QuestionnaireResult.java
 C:\academia\src\Fregrance\src\main\java\com\fregrance\app\model\Reservation.java
 C:\academia\src\Fregrance\src\main\java\com\fregrance\app\model\ReservationSlot.java
