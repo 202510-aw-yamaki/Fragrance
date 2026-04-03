@@ -24,11 +24,11 @@ WITH RECURSIVE seq AS (
   WHERE day_offset < 14
 ),
 slot_patterns AS (
-  SELECT '10:30:00' AS slot_time, 'recommended' AS status, 'Haraguchi' AS instructor_name
+  SELECT '10:30:00' AS slot_time, 'recommended' AS status, '原口' AS instructor_name
   UNION ALL
-  SELECT '13:00:00', 'open', 'Shimizu'
+  SELECT '13:00:00', 'open', '清水'
   UNION ALL
-  SELECT '15:30:00', 'open', 'Otsuka'
+  SELECT '15:30:00', 'open', '大塚'
 )
 SELECT
   DATE_ADD(CURDATE(), INTERVAL seq.day_offset DAY),
