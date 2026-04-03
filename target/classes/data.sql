@@ -62,29 +62,24 @@ WITH RECURSIVE sample_seq AS (
 )
 SELECT
   CONCAT('SAMPLE-RESULT-', LPAD(seq_no, 3, '0')),
-  ELT(((seq_no - 1) % 4) + 1, 'A1', 'B2', 'C3', 'D4'),
-  CASE ((seq_no - 1) % 5)
-    WHEN 0 THEN JSON_OBJECT('purpose', 'refresh', 'mood', 'clean', 'strength', 'soft')
-    WHEN 1 THEN JSON_OBJECT('purpose', 'gift', 'mood', 'bright', 'strength', 'medium')
-    WHEN 2 THEN JSON_OBJECT('purpose', 'focus', 'mood', 'calm', 'strength', 'rich')
-    WHEN 3 THEN JSON_OBJECT('purpose', 'selfcare', 'mood', 'warm', 'strength', 'soft')
-    ELSE JSON_OBJECT('purpose', 'switch', 'mood', 'fresh', 'strength', 'medium')
-  END,
-  CASE ((seq_no - 1) % 4)
-    WHEN 0 THEN JSON_OBJECT('note', 'citrus', 'scene', 'morning')
-    WHEN 1 THEN JSON_OBJECT('note', 'floral', 'scene', 'holiday')
-    WHEN 2 THEN JSON_OBJECT('note', 'woody', 'scene', 'work')
-    ELSE JSON_OBJECT('note', 'tea', 'scene', 'night')
-  END,
-  CASE ((seq_no - 1) % 5)
-    WHEN 0 THEN JSON_OBJECT('sweet', 2, 'fresh', 5, 'calm', 4, 'deep', 2)
-    WHEN 1 THEN JSON_OBJECT('sweet', 4, 'fresh', 3, 'calm', 2, 'deep', 3)
-    WHEN 2 THEN JSON_OBJECT('sweet', 1, 'fresh', 4, 'calm', 5, 'deep', 4)
-    WHEN 3 THEN JSON_OBJECT('sweet', 3, 'fresh', 2, 'calm', 4, 'deep', 5)
-    ELSE JSON_OBJECT('sweet', 5, 'fresh', 2, 'calm', 3, 'deep', 1)
-  END,
-  DATE_SUB(CURRENT_TIMESTAMP, INTERVAL (30 - seq_no) HOUR),
-  DATE_SUB(CURRENT_TIMESTAMP, INTERVAL (30 - seq_no) HOUR)
+  ELT(1 + FLOOR(RAND(seq_no * 101) * 4), 'A1', 'B2', 'C3', 'D4'),
+  JSON_OBJECT(
+    'purpose', ELT(1 + FLOOR(RAND(seq_no * 103) * 6), 'refresh', 'gift', 'focus', 'selfcare', 'switch', 'special'),
+    'mood', ELT(1 + FLOOR(RAND(seq_no * 107) * 6), 'clean', 'bright', 'calm', 'warm', 'fresh', 'elegant'),
+    'strength', ELT(1 + FLOOR(RAND(seq_no * 109) * 3), 'soft', 'medium', 'rich')
+  ),
+  JSON_OBJECT(
+    'note', ELT(1 + FLOOR(RAND(seq_no * 113) * 6), 'citrus', 'floral', 'woody', 'tea', 'musk', 'herbal'),
+    'scene', ELT(1 + FLOOR(RAND(seq_no * 127) * 6), 'morning', 'holiday', 'work', 'night', 'travel', 'gift')
+  ),
+  JSON_OBJECT(
+    'sweet', 1 + FLOOR(RAND(seq_no * 131) * 5),
+    'fresh', 1 + FLOOR(RAND(seq_no * 137) * 5),
+    'calm', 1 + FLOOR(RAND(seq_no * 139) * 5),
+    'deep', 1 + FLOOR(RAND(seq_no * 149) * 5)
+  ),
+  DATE_SUB(CURRENT_TIMESTAMP, INTERVAL (12 + FLOOR(RAND(seq_no * 151) * 96)) HOUR),
+  DATE_SUB(CURRENT_TIMESTAMP, INTERVAL (12 + FLOOR(RAND(seq_no * 151) * 96)) HOUR)
 FROM sample_seq
 LEFT JOIN questionnaire_results existing
   ON existing.result_code = CONCAT('SAMPLE-RESULT-', LPAD(sample_seq.seq_no, 3, '0'))
@@ -109,14 +104,18 @@ WITH numbered_slots AS (
     rs.slot_date,
     rs.slot_time,
     rs.instructor_name,
-    ROW_NUMBER() OVER (ORDER BY rs.slot_date, rs.slot_time, rs.id) AS seq_no
+    ROW_NUMBER() OVER (ORDER BY rs.slot_date, rs.slot_time, rs.id) AS seq_no,
+    ROW_NUMBER() OVER (
+      PARTITION BY COALESCE(rs.instructor_name, '担当未定')
+      ORDER BY RAND(rs.id * 163 + DAYOFMONTH(rs.slot_date))
+    ) AS instructor_seq
   FROM reservation_slots rs
   WHERE rs.slot_date >= DATE_ADD(CURDATE(), INTERVAL 1 DAY)
 ),
 sample_slots AS (
   SELECT *
   FROM numbered_slots
-  WHERE seq_no <= 27
+  WHERE instructor_seq <= 9
 ),
 visit_type_map AS (
   SELECT code, id, name
@@ -125,40 +124,44 @@ visit_type_map AS (
 SELECT
   CONCAT('SAMPLE-', DATE_FORMAT(CURDATE(), '%y%m'), '-', LPAD(sample_slots.seq_no, 3, '0')),
   sample_slots.id,
-  CASE (((sample_slots.seq_no - 1) DIV 3) % 3)
+  CASE ((sample_slots.instructor_seq - 1) % 3)
     WHEN 0 THEN (SELECT id FROM visit_type_map WHERE code = 'workshop')
     WHEN 1 THEN (SELECT id FROM visit_type_map WHERE code = 'followup')
     ELSE (SELECT id FROM visit_type_map WHERE code = 'gift')
   END,
-  CASE (((sample_slots.seq_no - 1) DIV 3) % 3)
+  CASE ((sample_slots.instructor_seq - 1) % 3)
     WHEN 0 THEN '初回ワークショップ'
     WHEN 1 THEN '再来店相談'
     ELSE 'ギフト相談'
   END,
-  CASE ((sample_slots.seq_no - 1) % 4)
-    WHEN 0 THEN 1
-    WHEN 1 THEN 2
-    WHEN 2 THEN 3
-    ELSE 4
-  END,
-  ELT(((sample_slots.seq_no - 1) % 5) + 1,
+  1 + FLOOR(RAND(sample_slots.seq_no * 173) * 4),
+  ELT(1 + FLOOR(RAND(sample_slots.seq_no * 179) * 8),
     '香りの方向性を比較しながら案内希望',
     '前回の香りを基準に再調整したい',
     '贈り先の好みをヒアリング予定',
     '柑橘寄りとウッディ寄りで迷っている',
-    '当日の所要時間は短めを希望'
+    '当日の所要時間は短めを希望',
+    'ペアで香りの違いを比べたい',
+    '仕事向けと休日向けで使い分けたい',
+    '贈答用候補を2案ほど見たい'
   ),
-  ELT(((sample_slots.seq_no - 1) % 5) + 1,
+  ELT(1 + FLOOR(RAND(sample_slots.seq_no * 181) * 8),
     '初回ヒアリング予定',
     '再来店フォローアップ',
     'ギフト提案候補あり',
     '比較提案メイン',
-    '短時間調整希望'
+    '短時間調整希望',
+    '季節提案を優先',
+    '香りの持続時間を相談',
+    '複数候補を試香予定'
   ),
-  CASE WHEN sample_slots.seq_no % 5 = 0 THEN NULL ELSE CONCAT('SAMPLE-RESULT-', LPAD(sample_slots.seq_no, 3, '0')) END,
+  CASE
+    WHEN FLOOR(RAND(sample_slots.seq_no * 191) * 5) = 0 THEN NULL
+    ELSE CONCAT('SAMPLE-RESULT-', LPAD(1 + FLOOR(RAND(sample_slots.seq_no * 193) * 27), 3, '0'))
+  END,
   CONCAT(DATE_FORMAT(sample_slots.slot_date, '%Y/%m/%d'), ' ', DATE_FORMAT(sample_slots.slot_time, '%H:%i'), ' ', COALESCE(sample_slots.instructor_name, '担当未定')),
-  DATE_SUB(CURRENT_TIMESTAMP, INTERVAL (50 - sample_slots.seq_no) HOUR),
-  DATE_SUB(CURRENT_TIMESTAMP, INTERVAL (50 - sample_slots.seq_no) HOUR)
+  DATE_SUB(CURRENT_TIMESTAMP, INTERVAL (8 + FLOOR(RAND(sample_slots.seq_no * 197) * 120)) HOUR),
+  DATE_SUB(CURRENT_TIMESTAMP, INTERVAL (8 + FLOOR(RAND(sample_slots.seq_no * 197) * 120)) HOUR)
 FROM sample_slots
 LEFT JOIN reservations existing
   ON existing.reservation_code = CONCAT('SAMPLE-', DATE_FORMAT(CURDATE(), '%y%m'), '-', LPAD(sample_slots.seq_no, 3, '0'))
