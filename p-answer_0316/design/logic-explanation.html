@@ -18,143 +18,148 @@
         <div class="doc-meta">
           <span><span class="material-symbols-outlined icon-sm">calendar_today</span> 作成日: 2026-03-16</span>
           <span><span class="material-symbols-outlined icon-sm">person</span> 作成者: Codex</span>
-          <span><span class="material-symbols-outlined icon-sm">push_pin</span> Ver 1.1</span>
+          <span><span class="material-symbols-outlined icon-sm">push_pin</span> Ver 1.2</span>
         </div>
       </header>
       <div class="doc-body">
-<div class="info-box info"><strong>運用注記</strong> 本資料は Spring Boot 実装前提で整理した作業用ドキュメントです。内容は今後の作業進行に応じて追記・更新する前提であり、この時点では未記入項目や今後の実装検討事項を含みます。着手前には対象画面、関連Markdown、最新の引継ぎメモを確認したうえで反映してください。</div>
-        <div class="toc"><div class="toc-title">目次</div><ol class="toc-list"><li><a href="#sec1">ログイン処理のロジック</a></li><li><a href="#sec2">バリデーション処理のロジック</a></li><li><a href="#sec3">検索処理のロジック</a></li><li><a href="#sec4">権限チェックのロジック</a></li><li><a href="#sec5">ステータス遷移のロジック</a></li></ol></div>
+<div class="info-box info"><strong>運用注記</strong> 本資料は 2026-04-06 時点の実装ロジックを基準に更新しています。旧案にあった未実装の認可階層や仮想ステータス遷移は削除し、現行のフォーム検証、API 例外処理、スタッフ画面処理に合わせています。</div>
+        <div class="toc"><div class="toc-title">目次</div><ol class="toc-list"><li><a href="#sec1">ログイン処理のロジック</a></li><li><a href="#sec2">バリデーション処理のロジック</a></li><li><a href="#sec3">検索処理のロジック</a></li><li><a href="#sec4">権限チェックのロジック</a></li><li><a href="#sec5">状態更新のロジック</a></li></ol></div>
 
         <section class="section" id="sec1">
           <h2 class="section-title"><span class="section-icon">1</span> ログイン処理のロジック</h2>
-          <div class="fill-block"><div class="fill-label">フローチャート <span class="required">必須</span></div><div class="fill-content"><p>公開向けページは匿名アクセスのまま実装し、ここでは Spring Boot 導入時に必要なスタッフ管理画面の認証ロジックを定義する。</p><pre class="code-block">[スタッフが /staff/login にアクセス]
-  -> loginId / password 入力
-  -> AuthenticationManager で認証
-     -> 失敗: login画面にエラー表示
-     -> 成功: SecurityContext へ保存
-  -> /staff/reservations にリダイレクト
-  -> 予約一覧表示</pre></div></div>
-          <div class="fill-block"><div class="fill-label">疑似コード <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">if path == "/staff/login" then
-    show login form
-else if path startsWith "/staff" then
-    authResult = authenticate(loginId, password)
-    if authResult.failed then
-        return loginView(errorMessage)
+          <div class="fill-block"><div class="fill-label">フローチャート <span class="required">必須</span></div><div class="fill-content"><p>スタッフ画面は <code>SecurityConfig</code> のフォームログインで保護している。認証ユーザーは DB ではなく、現状は <code>application.yml</code> の値を使った <code>InMemoryUserDetailsManager</code> で構成する。</p><pre class="code-block">[スタッフが /staff/login にアクセス]
+  -> StaffPageController.showLogin()
+  -> 既に認証済みなら /staff/reservations へリダイレクト
+  -> 未認証なら login 画面を表示
+
+[ログインフォーム送信]
+  -> POST /staff/login
+  -> Spring Security が username / password を認証
+     -> 失敗: /staff/login?error
+     -> 成功: /staff/reservations へ遷移
+  -> 以後 /staff/** は ROLE_STAFF 必須</pre></div></div>
+          <div class="fill-block"><div class="fill-label">疑似コード <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">if request.path == "/staff/login" and request.method == GET then
+    if authenticatedAsStaff(authentication) then
+        return redirect("/staff/reservations")
     end if
-    setSecurityContext(authResult.user)
-    return redirect("/staff/reservations")
-else
-    allowPublicAccess()
-end if</pre></div></div>
+    return loginView(withCounts)
+end if
+
+if request.path startsWith "/staff" then
+    requireRole("STAFF")
+end if
+
+formLogin(
+    loginPage = "/staff/login",
+    loginProcessingUrl = "/staff/login",
+    successUrl = "/staff/reservations",
+    failureUrl = "/staff/login?error"
+)</pre></div></div>
         </section>
 
         <section class="section" id="sec2">
           <h2 class="section-title"><span class="section-icon">2</span> バリデーション処理のロジック</h2>
-          <div class="fill-block"><div class="fill-label">バリデーションの判定フロー <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">[フォーム送信]
-  -> 質問回答の必須チェック
-  -> 分岐ルートに必要なQ6/Q7の存在確認
-  -> Q8 の存在確認
-  -> 予約日時の存在確認
-  -> 人数範囲の確認
-  -> メモ文字数確認
-     -> エラーあり: 項目別メッセージを返却
-     -> エラーなし: Serviceへ進む</pre></div></div>
-          <div class="fill-block"><div class="fill-label">疑似コード <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">errors = []
+          <div class="fill-block"><div class="fill-label">バリデーションの判定フロー <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">[アンケート結果送信]
+  -> QuestionnaireResultForm を @Valid で検証
+  -> routeCode 必須
+  -> step1Answers / step2Answers / graphAxes 必須
+  -> graphAxes の各値は 0..100
+     -> エラーあり: ApiExceptionHandler が 400 JSON を返す
+     -> エラーなし: QuestionnaireResultService.createResult()
 
-if step1Answers.count < 5 then
-    errors.add("STEP1 の回答が不足しています")
-end if
-if routeAnswers.invalidFor(routeType) then
-    errors.add("分岐質問の回答が不足しています")
-end if
-if q8 is empty then
-    errors.add("最後の質問に回答してください")
-end if
-if reservationDateTime is empty then
-    errors.add("予約日時を選択してください")
-end if
-if guestCount < 1 or guestCount > 4 then
-    errors.add("人数を正しく選択してください")
-end if
-if note.length > 200 then
-    errors.add("メモは200文字以内で入力してください")
+[予約送信]
+  -> ReservationForm を @Valid で検証
+  -> slotId / slotLabel / visitType / guestCount 必須
+  -> staffMemo は 500 文字以下
+  -> ReservationService が visitType / slot / status を業務検証
+     -> 不正入力: InvalidRequestException
+     -> 枠競合: ReservationConflictException
+     -> 枠未存在: ResourceNotFoundException</pre></div></div>
+          <div class="fill-block"><div class="fill-label">疑似コード <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">validateBean(form)
+
+if form is ReservationForm then
+    slot = reservationSlotMapper.findByDateAndTime(parsedDate, parsedTime)
+    if slot == null then
+        throw ResourceNotFoundException
+    end if
+
+    visitType = visitTypeMapper.findByName(form.visitType)
+    if visitType == null then
+        throw InvalidRequestException
+    end if
+
+    if slot.status not in ["open", "recommended"] then
+        throw ReservationConflictException
+    end if
 end if
 
-return errors</pre></div></div>
+on MethodArgumentNotValidException:
+    return ErrorResponse(
+        code = "VALIDATION_ERROR",
+        message = "Request validation failed",
+        fieldErrors = bindingResult.fieldErrors
+    )</pre></div></div>
         </section>
 
         <section class="section" id="sec3">
           <h2 class="section-title"><span class="section-icon">3</span> 検索処理のロジック</h2>
-          <div class="fill-block"><div class="fill-label">動的SQLの条件分岐 <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">SELECT *
-FROM reservation_slots
-WHERE slot_date = :date
-  AND status = 'OPEN'
-  AND deleted = false
+          <div class="fill-block"><div class="fill-label">予約枠検索のロジック <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">公開予約枠 API
 
-if menuType != null then
-  AND menu_type = :menuType
-end if
+1. GET /api/reservation-slots?date=yyyy-mm-dd
+2. ReservationApiController が LocalDate に変換
+3. ReservationSlotService.findAvailableSlots(date)
+4. ReservationSlotMapper.findAvailableByDate(slotDate)
+5. 取得した ReservationSlot を ReservationSlotResponse に変換
+6. slotId = yyyy-mm-dd_HHmm 形式で返す</pre></div></div>
+          <div class="fill-block"><div class="fill-label">スタッフ一覧検索のロジック <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">スタッフ用予約一覧
 
-if staffId != null then
-  AND staff_id = :staffId
-end if
-
-ORDER BY start_time ASC</pre></div></div>
-          <div class="fill-block"><div class="fill-label">複合検索のロジック <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">スタッフ用予約一覧検索
-
-条件:
-- 予約日
-- 予約状態
-- ルート種別
-- 担当者
-- キーワード(確認番号 / メモ)
+入力条件:
+- visitType
+- instructor
+- sort
+- dir
+- page
+- size
 
 処理:
-1. 必須の日付または期間条件を受け取る
-2. 任意条件があれば WHERE に追加する
-3. キーワードは reservation_code または customer_memo に対して LIKE 検索
-4. 一覧は reserved_at ASC を基本にする
-5. 管理用途では updated_at DESC に切り替え可能にする</pre></div></div>
+1. StaffReservationService.findAllReservations() で全件取得
+2. visitType / instructor の一致条件で絞り込み
+3. sort と dir で Comparator を切り替え
+4. Controller 側でページング計算
+5. 追加で today 件数、未連携件数、休眠候補一覧を集計
+6. テンプレート staff-reservations に反映</pre></div></div>
         </section>
 
         <section class="section" id="sec4">
           <h2 class="section-title"><span class="section-icon">4</span> 権限チェックのロジック</h2>
-          <div class="fill-block"><div class="fill-label">ロール判定のフロー <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">if requestPath in publicPaths then
+          <div class="fill-block"><div class="fill-label">ルート判定のフロー <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">if path in ["/", "/css/**", "/img/**", "/api/**", "/questionnaire", "/questionnaire_step2", "/fragrance-graph", "/reservation", "/reservation-complete", "/staff/login"] then
     permitAll
-else if requestPath startsWith "/staff" then
-    require STAFF or ADMIN
-else if requestPath startsWith "/admin" then
-    require ADMIN
+else if path startsWith "/staff/" then
+    require ROLE_STAFF
 else
-    deny
+    permitAll
 end if</pre></div></div>
-          <div class="fill-block"><div class="fill-label">データアクセス制御のロジック <span class="required">必須</span></div><div class="fill-content"><p>公開APIでは予約枠の空き情報と完了表示用の最小情報だけを返す。個別予約の回答詳細やメモはスタッフ画面経由でのみ参照可能とし、削除・枠閉鎖・スタッフ管理は `ADMIN` のみに限定する。これにより、来店前情報を扱うシステムとして必要な最小限の保護を確保する。</p></div></div>
+          <div class="fill-block"><div class="fill-label">データアクセス制御のロジック <span class="required">必須</span></div><div class="fill-content"><p>公開 API はアンケート結果、予約枠、予約確認情報、ヘルスチェックを匿名で扱える。一方で予約一覧、予約詳細、VIP フラグ更新、来店種別・担当者マスタ操作、休眠予約の論理削除は <code>/staff/**</code> に集約し、認証済みスタッフのみ実行できる。</p><p>現行実装に <code>ADMIN</code> 専用階層はなく、設計上の権限区分は <code>ROLE_STAFF</code> のみで運用している。</p></div></div>
         </section>
 
         <section class="section" id="sec5">
-          <h2 class="section-title"><span class="section-icon">5</span> ステータス遷移のロジック</h2>
-          <div class="fill-block"><div class="fill-label">状態遷移図 <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">INPUTTING
-  -> PENDING
-  -> CONFIRMED
-  -> COMPLETED
-  -> CANCELED
+          <h2 class="section-title"><span class="section-icon">5</span> 状態更新のロジック</h2>
+          <div class="fill-block"><div class="fill-label">予約枠と予約の更新フロー <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">予約作成時
 
-意味
-- INPUTTING: 入力中またはプレビュー段階
-- PENDING: API受領済み、枠確保前
-- CONFIRMED: 予約確定済み
-- COMPLETED: 来店完了
-- CANCELED: 取消済み</pre></div></div>
-          <div class="fill-block"><div class="fill-label">遷移可否の判定ロジック <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">if status == INPUTTING and validationPassed then
-    status = PENDING
-else if status == PENDING and slotAvailable then
-    status = CONFIRMED
-else if status == CONFIRMED and visited then
-    status = COMPLETED
-else if status in [PENDING, CONFIRMED] and cancelRequested then
-    status = CANCELED
-else
-    throw InvalidStatusTransitionException
+1. slotId を date + time に分解
+2. reservation_slots から対象枠を取得
+3. status が open / recommended のみ予約可能
+4. updateStatusIfAvailable(id, "reserved") を実行
+5. reservations に新規 INSERT
+6. API 応答 status は "CONFIRMED" を返す</pre></div></div>
+          <div class="fill-block"><div class="fill-label">関連フラグ更新の判定ロジック <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">if updateVipFlag requested then
+    reservationMapper.updateVipCustomerFlag(reservationCode, vipCustomerFlag)
+end if
+
+if deleteDormantReservations requested then
+    dormant = reservations older than 6 months and vipCustomerFlag == false
+    eligibleCodes = dormant intersect request.codes
+    reservationMapper.logicalDeleteByCodes(eligibleCodes)
 end if</pre></div></div>
         </section>
       </div>
@@ -163,5 +168,3 @@ end if</pre></div></div>
   <script src="../js/main.js"></script>
 </body>
 </html>
-
-

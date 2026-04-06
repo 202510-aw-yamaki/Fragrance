@@ -18,176 +18,248 @@
         <div class="doc-meta">
           <span><span class="material-symbols-outlined icon-sm">calendar_today</span> 作成日: 2026-03-16</span>
           <span><span class="material-symbols-outlined icon-sm">person</span> 作成者: Codex</span>
-          <span><span class="material-symbols-outlined icon-sm">push_pin</span> Ver 1.2</span>
+          <span><span class="material-symbols-outlined icon-sm">push_pin</span> Ver 1.3</span>
         </div>
       </header>
       <div class="doc-body">
-<div class="info-box info"><strong>運用注記</strong> 本資料は Spring Boot 実装前提で整理した作業用ドキュメントです。内容は今後の作業進行に応じて追記・更新する前提であり、この時点では未記入項目や今後の実装検討事項を含みます。着手前には対象画面、関連Markdown、最新の引継ぎメモを確認したうえで反映してください。</div>
+<div class="info-box info"><strong>運用注記</strong> 本資料は 2026-04-06 時点の <code>com.fregrance.app</code> 実装を基準に更新しています。設計検討時の仮クラス名ではなく、現行の Controller / Service / Mapper / Model / DTO / Form / Security 構成に合わせて記載しています。</div>
         <div class="toc"><div class="toc-title">目次</div><ol class="toc-list"><li><a href="#sec1">パッケージ構成</a></li><li><a href="#sec2">Model / DTO</a></li><li><a href="#sec3">Mapper</a></li><li><a href="#sec4">Service</a></li><li><a href="#sec5">Controller</a></li><li><a href="#sec6">クラス間の依存関係</a></li></ol></div>
 
         <section class="section" id="sec1">
           <h2 class="section-title"><span class="section-icon">1</span> パッケージ構成</h2>
-          <div class="fill-block"><div class="fill-label">ディレクトリ構造 <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">src/main/java/com/example/fragrance/
+          <div class="fill-block"><div class="fill-label">ディレクトリ構造 <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">src/main/java/com/fregrance/app/
+  |- advice/
+  |   `- ApiExceptionHandler.java
+  |- config/
+  |   `- SecurityConfig.java
   |- controller/
   |   |- FragrancePageController.java
+  |   |- HealthController.java
   |   |- QuestionnaireApiController.java
-  |   |- ReservationController.java
-  |   `- StaffReservationController.java
-  |- service/
-  |   |- QuestionnaireResultService.java
-  |   |- FragranceProfileService.java
-  |   |- ReservationService.java
-  |   `- ReservationSlotService.java
-  |- mapper/
-  |   |- QuestionnaireAnswerMapper.java
-  |   |- FragranceProfileMapper.java
-  |   |- ReservationMapper.java
-  |   |- ReservationSlotMapper.java
-  |   `- StaffUserMapper.java
-  |- model/
-  |   |- QuestionnaireAnswerModel.java
-  |   |- FragranceProfileModel.java
-  |   |- ReservationModel.java
-  |   |- ReservationSlotModel.java
-  |   `- StaffUserModel.java
-  |- form/
-  |   |- QuestionnaireForm.java
-  |   `- ReservationForm.java
+  |   |- ReservationApiController.java
+  |   `- StaffPageController.java
   |- dto/
+  |   |- ErrorResponse.java
+  |   |- QuestionnaireResultResponse.java
   |   |- ReservationResponse.java
   |   |- ReservationSlotResponse.java
-  |   |- ErrorResponse.java
-  |   `- StaffReservationDetailResponse.java
-  |- security/
-  |   |- SecurityConfig.java
-  |   `- StaffUserDetailsService.java
-  `- validation/
-      |- QuestionnaireValidator.java
-      `- ReservationValidator.java</pre></div></div>
-          <div class="fill-block"><div class="fill-label">パッケージの役割 <span class="required">必須</span></div><div class="fill-content"><p>Spring Boot 実装では、画面返却、REST API、業務ロジック、MyBatis Mapper、認証、バリデーションを分離する。既存の静的HTMLの責務を安全に移し替えるため、Service に業務処理、Mapper に SQL、DTO / Form に入出力定義を寄せる。</p></div></div>
+  |   |- StaffReservationDetail.java
+  |   `- StaffReservationSummary.java
+  |- exception/
+  |   |- InvalidRequestException.java
+  |   |- ReservationConflictException.java
+  |   `- ResourceNotFoundException.java
+  |- form/
+  |   |- QuestionnaireResultForm.java
+  |   `- ReservationForm.java
+  |- mapper/
+  |   |- InstructorMapper.java
+  |   |- QuestionnaireResultMapper.java
+  |   |- ReservationMapper.java
+  |   |- ReservationSlotMapper.java
+  |   `- VisitTypeMapper.java
+  |- model/
+  |   |- Instructor.java
+  |   |- QuestionnaireResult.java
+  |   |- Reservation.java
+  |   |- ReservationSlot.java
+  |   |- StaffReservationRecord.java
+  |   `- VisitType.java
+  `- service/
+      |- QuestionnaireResultService.java
+      |- ReservationService.java
+      |- ReservationSlotService.java
+      `- StaffReservationService.java</pre></div></div>
+          <div class="fill-block"><div class="fill-label">パッケージの役割 <span class="required">必須</span></div><div class="fill-content"><p>画面表示は <code>Controller</code>、JSON API は <code>RestController</code>、業務処理は <code>Service</code>、DB I/O は MyBatis <code>Mapper</code>、入出力定義は <code>Form</code> / <code>DTO</code>、永続化対象は <code>Model</code> に分離している。例外整形は <code>advice</code>、認証設定は <code>config</code>、業務例外は <code>exception</code> に集約する。</p></div></div>
         </section>
 
         <section class="section" id="sec2">
           <h2 class="section-title"><span class="section-icon">2</span> Model / DTO</h2>
-          <div class="fill-block"><div class="fill-label">Task.java <span class="required">必須</span></div><div class="fill-content"><p>`Task.java` 相当は、MyBatis で扱う予約モデル `ReservationModel.java` とする。</p><pre class="code-block">ReservationModel
+          <div class="fill-block"><div class="fill-label">Reservation / QuestionnaireResult <span class="required">必須</span></div><div class="fill-content"><p>現行実装では予約本体とアンケート結果を別モデルで保持する。</p><pre class="code-block">Reservation
 - Long id
 - String reservationCode
-- LocalDateTime reservedAt
+- Long reservationSlotId
+- Long visitTypeId
+- String visitTypeLabel
 - Integer guestCount
-- String visitPurpose
-- String customerMemo
-- String routeType
-- String status
-- Long slotId
+- String staffMemo
+- String summaryHeadline
+- String questionnaireResultCode
+- String slotLabel
+- boolean vipCustomerFlag
+- LocalDateTime createdAt
+- LocalDateTime updatedAt
+
+QuestionnaireResult
+- Long id
+- String resultCode
+- String routeCode
+- String step1AnswersJson
+- String step2AnswersJson
+- String graphAxesJson
 - LocalDateTime createdAt
 - LocalDateTime updatedAt</pre></div></div>
-          <div class="fill-block"><div class="fill-label">User.java <span class="required">必須</span></div><div class="fill-content"><p>`User.java` 相当は管理画面利用者を表す `StaffUserModel.java` とし、公開側ユーザーは匿名利用のため保持しない。来店前情報は `QuestionnaireAnswerModel` と `FragranceProfileModel` に保持する。</p><pre class="code-block">StaffUserModel
+          <div class="fill-block"><div class="fill-label">周辺 Model / DTO / Form <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">ReservationSlot
 - Long id
-- String loginId
-- String passwordHash
-- String displayName
-- String role
+- LocalDate slotDate
+- LocalTime slotTime
+- String status
+- Long instructorId
+- String instructorName
 
-QuestionnaireAnswerModel
+VisitType
 - Long id
-- Long reservationId
-- String questionCode
-- String answerCode
-- Integer answerOrder
+- String code
+- String name
+- String description
+- boolean deleted
 
-FragranceProfileModel
+Instructor
 - Long id
-- Long reservationId
-- Integer floralScore
-- Integer freshScore
-- Integer woodyScore
-- Integer spicyScore
-- Integer sweetScore</pre></div></div>
+- String name
+- boolean deleted
+
+ReservationResponse
+- String reservationCode
+- String slotId
+- String slotLabel
+- String visitType
+- String guestCount
+- String staffMemo
+- String status
+
+QuestionnaireResultResponse
+- String resultCode
+- String routeCode
+- Map&lt;String, String&gt; step1Answers
+- Map&lt;String, String&gt; step2Answers
+- Map&lt;String, Integer&gt; graphAxes</pre></div></div>
         </section>
 
         <section class="section" id="sec3">
           <h2 class="section-title"><span class="section-icon">3</span> Mapper</h2>
-          <div class="fill-block"><div class="fill-label">TaskMapper.java <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">ReservationMapper
-+ insertReservation(ReservationModel reservation)
-+ selectByReservationCode(String code)
-+ selectById(Long id)
+          <div class="fill-block"><div class="fill-label">Mapper 一覧 <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">QuestionnaireResultMapper
++ insert(QuestionnaireResult questionnaireResult)
++ findByResultCode(String resultCode)
 
-QuestionnaireAnswerMapper
-+ insertAnswers(List&lt;QuestionnaireAnswerModel&gt; answers)
-+ selectByReservationId(Long reservationId)
-
-FragranceProfileMapper
-+ insertProfile(FragranceProfileModel profile)
-+ selectByReservationId(Long reservationId)
+ReservationMapper
++ insert(Reservation reservation)
++ findByReservationCode(String reservationCode)
++ findAllForStaff()
++ findDetailForStaff(String reservationCode)
++ updateVipCustomerFlag(String reservationCode, boolean vipCustomerFlag)
++ logicalDeleteByCodes(List&lt;String&gt; reservationCodes)
 
 ReservationSlotMapper
-+ selectAvailableByDate(LocalDate date)
-+ updateStatus(Long slotId, String status)
++ findAvailableByDate(LocalDate slotDate)
++ findByDateAndTime(LocalDate slotDate, LocalTime slotTime)
++ findById(Long id)
++ updateStatusIfAvailable(Long id, String status)
 
-StaffUserMapper
-+ selectByLoginId(String loginId)</pre></div></div>
+VisitTypeMapper
++ findByCode(String code)
++ findAllActive()
++ findById(Long id)
++ findByName(String name)
++ insert(VisitType visitType)
++ logicalDelete(Long id)
+
+InstructorMapper
++ findAllActive()
++ findById(Long id)
++ findByName(String name)
++ insert(Instructor instructor)
++ logicalDelete(Long id)</pre></div></div>
         </section>
 
         <section class="section" id="sec4">
           <h2 class="section-title"><span class="section-icon">4</span> Service（サービス）</h2>
-          <div class="fill-block"><div class="fill-label">TaskService.java <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">QuestionnaireResultService
-+ normalizeAnswers(QuestionnaireForm form)
-
-FragranceProfileService
-+ calculateRoute(List&lt;QuestionnaireAnswerModel&gt; answers)
-+ calculateAxisScores(List&lt;QuestionnaireAnswerModel&gt; answers)
+          <div class="fill-block"><div class="fill-label">Service 一覧 <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">QuestionnaireResultService
++ createResult(QuestionnaireResultForm form)
++ findByResultCode(String resultCode)
 
 ReservationService
 + createReservation(ReservationForm form)
-+ buildCompletionView(String reservationCode)
++ findByReservationCode(String reservationCode)
++ findReservationVisitTypeOptions()
 
 ReservationSlotService
 + findAvailableSlots(LocalDate date)
-+ reserveSlot(Long slotId)</pre></div></div>
+
+StaffReservationService
++ findAllReservations()
++ findReservations(String visitType, String instructorName, String sortBy, String direction)
++ findVisitTypeOptions()
++ findActiveVisitTypes()
++ findInstructorOptions()
++ findActiveInstructors()
++ countTodayReservations()
++ countAllReservations()
++ findDormantReservations()
++ findReservationDetail(String reservationCode)
++ addVisitType(String name)
++ deleteVisitType(Long id)
++ addInstructor(String name)
++ deleteInstructor(Long id)
++ updateVipCustomerFlag(String reservationCode, boolean vipCustomerFlag)
++ logicalDeleteDormantReservations(List&lt;String&gt; reservationCodes)</pre></div></div>
         </section>
 
         <section class="section" id="sec5">
           <h2 class="section-title"><span class="section-icon">5</span> Controller（コントローラー）</h2>
-          <div class="fill-block"><div class="fill-label">TaskController.java <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">FragrancePageController
+          <div class="fill-block"><div class="fill-label">Controller 一覧 <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">FragrancePageController
 + showTop()
 + showQuestionnaireStep1()
-+ showQuestionnaireStep2(String routeType)
++ showQuestionnaireStep2()
 + showGraph()
-+ showReservation()
++ showReservation(Model model)
++ showReservationComplete()
 
 QuestionnaireApiController
-+ previewProfile(QuestionnaireForm form)
++ createQuestionnaireResult(QuestionnaireResultForm form)
++ getQuestionnaireResult(String resultCode)
 
-ReservationController
-+ getAvailableSlots(String date)
+ReservationApiController
++ getAvailableSlots(LocalDate date)
 + createReservation(ReservationForm form)
-+ showCompletion(String code)
++ getReservation(String reservationCode)
 
-StaffReservationController
-+ listReservations(SearchCondition condition)
-+ showReservationDetail(Long id)</pre></div></div>
+StaffPageController
++ redirectToReservations()
++ showLogin(Authentication authentication, Model model)
++ showReservationList(...)
++ showReservationDetail(String reservationCode, RedirectAttributes redirectAttributes, Model model)
++ createVisitType(String visitTypeName, RedirectAttributes redirectAttributes)
++ deleteVisitType(Long id, RedirectAttributes redirectAttributes)
++ createInstructor(String instructorName, RedirectAttributes redirectAttributes)
++ deleteInstructor(Long id, RedirectAttributes redirectAttributes)
++ updateVipFlag(String reservationCode, boolean vipCustomerFlag, boolean showDormant, RedirectAttributes redirectAttributes)
++ deleteDormantReservations(List&lt;String&gt; reservationCodes, RedirectAttributes redirectAttributes)
+
+HealthController
++ health()</pre></div></div>
         </section>
 
         <section class="section" id="sec6">
           <h2 class="section-title"><span class="section-icon">6</span> クラス間の依存関係</h2>
-          <div class="fill-block"><div class="fill-label">依存関係図 <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">FragrancePageController
-      |
-      v
-QuestionnaireApiController --> QuestionnaireResultService --> FragranceProfileService
-                                                        |
-                                                        v
-                                              FragranceProfileMapper
+          <div class="fill-block"><div class="fill-label">依存関係図 <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">FragrancePageController --> ReservationService --> VisitTypeMapper
 
-ReservationController --> ReservationService --> ReservationMapper
-                              |                    |
-                              |                    +--> QuestionnaireAnswerMapper
-                              |                    `--> FragranceProfileMapper
-                              |
-                              `--> ReservationSlotService --> ReservationSlotMapper
+QuestionnaireApiController --> QuestionnaireResultService --> QuestionnaireResultMapper
 
-StaffReservationController --> ReservationService
-StaffUserDetailsService -----> StaffUserMapper</pre></div></div>
-          <div class="fill-block"><div class="fill-label">DI（依存性注入）の仕組み <span class="optional">任意</span></div><div class="fill-content"><p>各 Controller は必要な Service のみを、各 Service は必要な Mapper のみをコンストラクタインジェクションで受け取る。依存の向きを固定することでテストしやすくし、MyBatis ベースの業務アプリへ移行しやすい構成にする。</p></div></div>
+ReservationApiController --> ReservationSlotService --> ReservationSlotMapper
+ReservationApiController --> ReservationService
+                         --> ReservationMapper
+                         --> ReservationSlotMapper
+                         `-> VisitTypeMapper
+
+StaffPageController --> StaffReservationService
+                     --> ReservationMapper
+                     --> VisitTypeMapper
+                     `-> InstructorMapper
+
+ApiExceptionHandler --> ErrorResponse
+SecurityConfig --> Spring Security FilterChain / InMemoryUserDetailsManager</pre></div></div>
+          <div class="fill-block"><div class="fill-label">DI（依存性注入）の仕組み <span class="optional">任意</span></div><div class="fill-content"><p>各 Controller / Service はコンストラクタインジェクションで依存を受け取る。公開 API 系では <code>ObjectProvider</code> を使い、Mapper 未構成時でもアプリを起動できるようにしている一方、スタッフ画面系は DB 前提の <code>Mapper</code> と <code>ObjectMapper</code> を直接注入している。</p></div></div>
         </section>
       </div>
     </main>

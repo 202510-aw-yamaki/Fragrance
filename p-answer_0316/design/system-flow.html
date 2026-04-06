@@ -18,15 +18,15 @@
         <div class="doc-meta">
           <span><span class="material-symbols-outlined icon-sm">calendar_today</span> 作成日: 2026-03-16</span>
           <span><span class="material-symbols-outlined icon-sm">person</span> 作成者: Codex</span>
-          <span><span class="material-symbols-outlined icon-sm">push_pin</span> Ver 1.2</span>
+          <span><span class="material-symbols-outlined icon-sm">push_pin</span> Ver 1.3</span>
         </div>
       </header>
       <div class="doc-body">
-<div class="info-box info"><strong>運用注記</strong> 本資料は Spring Boot 実装前提で整理した作業用ドキュメントです。内容は今後の作業進行に応じて追記・更新する前提であり、この時点では未記入項目や今後の実装検討事項を含みます。着手前には対象画面、関連Markdown、最新の引継ぎメモを確認したうえで反映してください。</div>
+<div class="info-box info"><strong>運用注記</strong> 本資料は 2026-04-06 時点の Spring Boot 実装に合わせて更新しています。旧資料に残っていた仮名クラス、未実装バリデータ、ADMIN 階層前提の記述は現行構成に置き換えています。</div>
         <div class="external-link-box">
           <div class="external-link-box-title"><span class="material-symbols-outlined">link</span> 設計方針</div>
-          <div class="external-link-box-desc">ここでは既存の静的フレグランスページを Spring Boot + MyBatis + RESTful API 構成へ載せ替える前提で、API、サービス、Mapper、バリデーション、認証を含む実装ガイドとして整理する。</div>
-          <div class="external-link-input"><input type="text" value="Spring Boot + MyBatis + REST API" readonly></div>
+          <div class="external-link-box-desc">公開ページ、公開 API、スタッフ画面、MyBatis、Spring Security を組み合わせた現在の実装フローを整理する。静的ページ案ではなく、実際に配置済みの Controller / Service / Mapper / schema.sql に沿って記載する。</div>
+          <div class="external-link-input"><input type="text" value="Spring Boot + MyBatis + Thymeleaf + REST API + Spring Security" readonly></div>
         </div>
         <div class="toc"><div class="toc-title">目次</div><ol class="toc-list"><li><a href="#sec1">システム全体構成</a></li><li><a href="#sec2">リクエスト処理フロー</a></li><li><a href="#sec3">画面遷移フロー</a></li><li><a href="#sec4">データフロー</a></li><li><a href="#sec5">認証・認可フロー</a></li></ol></div>
 
@@ -34,129 +34,147 @@
           <h2 class="section-title"><span class="section-icon">1</span> システム全体構成</h2>
           <div class="fill-block"><div class="fill-label">システム構成図 <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">[利用者ブラウザ]
   |- Top Page
-  |- Questionnaire Step1
-  |- Questionnaire Step2
+  |- Questionnaire Step1 / Step2
   |- Fragrance Graph
-  |- Reservation
-  `- Reservation Complete
+  |- Reservation / Reservation Complete
+  |- Staff Login
+  |- Staff Reservations
+  `- Staff Reservation Detail
         |
-        | HTTP / JSON / Template Rendering
+        | HTTP / HTML / JSON
         v
 [Spring Boot Application]
   |- controller
   |   |- FragrancePageController
   |   |- QuestionnaireApiController
-  |   |- ReservationController
-  |   `- StaffReservationController
+  |   |- ReservationApiController
+  |   |- StaffPageController
+  |   `- HealthController
   |- service
   |   |- QuestionnaireResultService
-  |   |- FragranceProfileService
   |   |- ReservationService
-  |   `- ReservationSlotService
+  |   |- ReservationSlotService
+  |   `- StaffReservationService
   |- mapper
-  |   |- QuestionnaireAnswerMapper
-  |   |- FragranceProfileMapper
+  |   |- QuestionnaireResultMapper
   |   |- ReservationMapper
   |   |- ReservationSlotMapper
-  |   `- StaffUserMapper
-  |- model / dto / form
-  |   |- ReservationModel
-  |   |- QuestionnaireAnswerModel
-  |   |- FragranceProfileModel
-  |   |- ReservationForm
-  |   `- ErrorResponse
-  |- security
-  |   `- SecurityConfig / UserDetailsService
-  `- validation / exception
-      |- ReservationValidator / QuestionnaireValidator
-      `- RestExceptionHandler
+  |   |- VisitTypeMapper
+  |   `- InstructorMapper
+  |- form / dto / model
+  |   |- QuestionnaireResultForm / ReservationForm
+  |   |- QuestionnaireResultResponse / ReservationResponse / ReservationSlotResponse
+  |   `- Reservation / ReservationSlot / QuestionnaireResult / VisitType / Instructor
+  |- config / advice / exception
+  |   |- SecurityConfig
+  |   |- ApiExceptionHandler
+  |   `- InvalidRequestException / ReservationConflictException / ResourceNotFoundException
+  `- resources
+      |- templates
+      |- mapper/*.xml
+      |- schema.sql
+      `- data.sql
         |
         v
 [Database]
-  |- questionnaire_answers
-  |- fragrance_profiles
+  |- questionnaire_results
   |- reservations
   |- reservation_slots
-  `- staff_users</pre></div></div>
-          <div class="fill-block"><div class="fill-label">レイヤー構成の説明 <span class="required">必須</span></div><div class="fill-content"><p>公開画面は Controller でテンプレート返却と REST API を分けて扱い、Service で分岐判定、5軸スコア算出、予約確定、重複枠チェックを担当する。DB 入出力は MyBatis Mapper に集約し、SQL を明示的に管理する。</p><p>入力値検証は Request DTO / Form に対するバリデーションで行い、例外は `@RestControllerAdvice` で統一する。これにより、現在のプロトタイプ導線を実運用向けの API と管理画面へ安全に接続できる。</p></div></div>
+  |- visit_types
+  `- instructors</pre></div></div>
+          <div class="fill-block"><div class="fill-label">レイヤー構成の説明 <span class="required">必須</span></div><div class="fill-content"><p>公開画面は <code>FragrancePageController</code> が Thymeleaf テンプレートを返し、公開データ取得・登録は <code>QuestionnaireApiController</code> と <code>ReservationApiController</code> が JSON API として提供する。スタッフ画面は <code>StaffPageController</code> が一覧、詳細、マスタ操作を担う。</p><p>DB アクセスは MyBatis Mapper に集約し、入力検証は <code>@Valid</code> と業務例外で補完する。例外応答は <code>ApiExceptionHandler</code> で統一し、スタッフ画面保護は <code>SecurityConfig</code> のフォームログインで行う。</p></div></div>
         </section>
 
         <section class="section" id="sec2">
           <h2 class="section-title"><span class="section-icon">2</span> リクエスト処理フロー</h2>
-          <div class="fill-block"><div class="fill-label">一覧表示の処理フロー <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">予約枠一覧表示
+          <div class="fill-block"><div class="fill-label">アンケート結果保存の処理フロー <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">アンケート結果保存
 
-1. ユーザーが reservation 画面を開く
-2. フロントが GET /api/reservation-slots?date=yyyy-mm-dd を呼ぶ
-3. ReservationController が日付形式を検証する
-4. ReservationSlotService が営業日と公開可否を確認する
-5. ReservationSlotMapper が reservation_slots を検索する
-6. Controller が ReservationSlotResponse の JSON を返す
-7. フロントがモーダルまたは一覧UIに反映する</pre></div></div>
-          <div class="fill-block"><div class="fill-label">登録処理のフロー <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">予約登録処理
+1. フロントが POST /api/questionnaire-results を送信
+2. QuestionnaireApiController が QuestionnaireResultForm を受領
+3. Bean Validation を実行
+4. QuestionnaireResultService.createResult(form)
+5. resultCode を生成
+6. questionnaire_results に JSON 列として保存
+7. QuestionnaireResultResponse を 201 Created で返す</pre></div></div>
+          <div class="fill-block"><div class="fill-label">予約登録の処理フロー <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">予約登録処理
 
-1. ユーザーが回答・予約情報を入力する
-2. フロントが POST /api/reservations を送信する
-3. ReservationController が ReservationForm を受領する
-4. Validation と Service が入力妥当性を確認する
-5. FragranceProfileService が回答から routeType と 5軸値を算出する
-6. ReservationService が重複予約を確認する
-7. ReservationService が ReservationModel / QuestionnaireAnswerModel / FragranceProfileModel を組み立てる
-8. 各 Mapper がトランザクション内で INSERT / UPDATE を実行する
-9. 予約確認番号を生成し、ReservationResponse を返す
-10. フロントが完了画面に遷移する</pre></div></div>
+1. フロントが POST /api/reservations を送信
+2. ReservationApiController が ReservationForm を受領
+3. Bean Validation を実行
+4. ReservationService が slotId を日付と時刻へ分解
+5. ReservationSlotMapper.findByDateAndTime() で枠を取得
+6. VisitTypeMapper.findByName() で来店種別を取得
+7. 枠状態が open / recommended か確認
+8. ReservationSlotMapper.updateStatusIfAvailable(id, "reserved")
+9. ReservationMapper.insert() で予約本体を保存
+10. ReservationResponse を 201 Created で返す</pre></div></div>
         </section>
 
         <section class="section" id="sec3">
           <h2 class="section-title"><span class="section-icon">3</span> 画面遷移フロー</h2>
           <div class="fill-block"><div class="fill-label">全体の画面遷移図 <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">[公開導線]
-/index
-  -> /questionnaire/step1
-  -> /questionnaire/step2?route={routeType}
-  -> /fragrance-graph
-  -> /reservation
-  -> /reservation/complete/{reservationCode}
+/ または /index.html
+  -> /questionnaire または /questionnaire.html
+  -> /questionnaire/step2 または /questionnaire_step2.html
+  -> /graph または /fragrance-graph.html
+  -> /reservation または /reservation.html
+  -> /reservation/complete または /reservation-complete.html
+
+[公開 API]
+POST /api/questionnaire-results
+GET  /api/questionnaire-results/{resultCode}
+GET  /api/reservation-slots?date=yyyy-mm-dd
+POST /api/reservations
+GET  /api/reservations/{reservationCode}
+GET  /api/health
 
 [管理導線]
 /staff/login
   -> /staff/reservations
-  -> /staff/reservations/{id}
-  -> /staff/reservations/{id}/memo
-
-補足
-- 公開導線は匿名アクセス
-- 管理導線は Spring Security で認証必須
-- routeType は Bloom / Air / Deep / Exploratory を使用</pre></div></div>
+  -> /staff/reservations/{reservationCode}
+  -> POST /staff/visit-types
+  -> POST /staff/instructors
+  -> POST /staff/reservations/{reservationCode}/vip
+  -> POST /staff/reservations/delete-dormant</pre></div></div>
         </section>
 
         <section class="section" id="sec4">
           <h2 class="section-title"><span class="section-icon">4</span> データフロー</h2>
-          <div class="fill-block"><div class="fill-label">Form → DTO / Model → Mapper → DB の変換フロー <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">QuestionnaireForm / ReservationForm
-   -> Validator
-   -> Request DTO
-   -> Service による整形
-   -> Model
-      |- QuestionnaireAnswerModel
-      |- FragranceProfileModel
-      `- ReservationModel
-   -> Mapper
-   -> DB保存
+          <div class="fill-block"><div class="fill-label">Form → Service → Mapper → DB の変換フロー <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">QuestionnaireResultForm
+   -> QuestionnaireResultService
+   -> QuestionnaireResult
+   -> QuestionnaireResultMapper
+   -> questionnaire_results
+
+ReservationForm
+   -> ReservationService
+   -> ReservationSlotMapper で対象枠取得・状態更新
+   -> Reservation
+   -> ReservationMapper
+   -> reservations
 
 取得時
 DB
  -> Mapper
- -> Service で表示用整形
- -> Response DTO / ViewModel
- -> HTML / JSON 応答</pre></div></div>
+ -> Service で DTO へ整形
+ -> Controller
+ -> HTML または JSON 応答</pre></div></div>
+          <div class="fill-block"><div class="fill-label">主要テーブルの関連 <span class="required">必須</span></div><div class="fill-content"><pre class="code-block">visit_types (1) --- (n) reservations
+reservation_slots (1) --- (n) reservations
+questionnaire_results.result_code --- reservations.questionnaire_result_code
+instructors (1) --- (n) reservation_slots</pre></div></div>
         </section>
 
         <section class="section" id="sec5">
           <h2 class="section-title"><span class="section-icon">5</span> 認証・認可フロー</h2>
-          <div class="fill-block"><div class="fill-label">Spring Security の認証フロー <span class="required">必須</span></div><div class="fill-content"><p>公開ページは `permitAll` とし、ログインを要求しない。スタッフ画面と管理APIは Spring Security で `STAFF` / `ADMIN` を扱い、権限ごとにアクセスを分離する。</p><pre class="code-block">1. /staff/login にアクセス
-2. UsernamePasswordAuthenticationFilter が認証
-3. 成功時に SecurityContext へ権限格納
-4. /staff/** は STAFF, ADMIN を許可
-5. /admin/** は ADMIN のみ許可
-6. 認証失敗時は login 画面または JSON エラーを返す</pre></div></div>
+          <div class="fill-block"><div class="fill-label">Spring Security の認証フロー <span class="required">必須</span></div><div class="fill-content"><p>公開ページと <code>/api/**</code> は匿名アクセスを許可し、<code>/staff/**</code> のみ <code>ROLE_STAFF</code> を要求する。スタッフ認証は <code>InMemoryUserDetailsManager</code> を使い、ユーザー名とパスワードは設定値から読み込む。</p><pre class="code-block">1. /staff/login に GET アクセス
+2. ログインフォームを表示
+3. /staff/login に POST
+4. Spring Security が認証
+5. 成功時は /staff/reservations
+6. 失敗時は /staff/login?error
+7. /staff/logout でログアウト
+8. /staff/** 以外は現状 permitAll</pre></div></div>
         </section>
       </div>
     </main>
